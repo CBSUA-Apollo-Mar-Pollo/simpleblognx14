@@ -12,12 +12,12 @@ const PasswordInput = React.forwardRef(({ className, type, ...props }, ref) => {
         showPassword ? (
           <EyeIcon
             onClick={() => setShowPassword(false)}
-            className="text-slate-500 w-5 h-5"
+            className="text-slate-500 w-5 h-5 select-none"
           />
         ) : (
           <EyeOffIcon
             onClick={() => setShowPassword(true)}
-            className="text-slate-500 w-5 h-5"
+            className="text-slate-500 w-5 h-5 select-none"
           />
         )
       }
