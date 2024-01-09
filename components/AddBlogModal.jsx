@@ -80,7 +80,7 @@ const AddBlogModal = ({ session }) => {
               </Avatar>
             </Link>
             <Input
-              className="rounded-full"
+              className="rounded-full "
               placeholder={`What's on your mind, ${
                 session.user.name.split(" ")[0]
               }`}

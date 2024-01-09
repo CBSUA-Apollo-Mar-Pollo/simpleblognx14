@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 const Input = React.forwardRef(({ suffix, className, type, ...props }, ref) => {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <input
         type={type}
         className={cn(
