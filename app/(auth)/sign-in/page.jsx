@@ -8,11 +8,24 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
+import { signInFormValidator } from "@/lib/validators/signInForm";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { AuthError } from "next-auth";
 
 const SignIn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // credentials sign in
+  const { handleSubmit, register } = useForm({
+    resolver: zodResolver(signInFormValidator),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  // google sign in
   const loginWithGoogle = async () => {
     setIsLoading(true);
 
@@ -28,6 +41,30 @@ const SignIn = () => {
       setIsLoading(false);
     }
   };
+
+  const loginInCredential = async (e) => {
+    try {
+      const { email, password } = e;
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    } catch (error) {
+      // console.log(error);
+      // if (error instanceof AuthError) {
+      //   switch (error.type) {
+      //     case "CredentialsSignin":
+      //       return { error: "Invalid credentials!" };
+      //     default:
+      //       return { error: "Something went wrong" };
+      //   }
+      // }
+
+      throw error;
+    }
+  };
+
   return (
     <div className="absolute inset-0">
       <div className="h-full w-screen grid grid-cols-2 items-center justify-center gap-20">
@@ -48,17 +85,25 @@ const SignIn = () => {
         {/* sign in form */}
         <div className=" mx-auto  flex flex-col items-center py-14 gap-5">
           <h1 className="text-3xl font-bold text-slate-800">Sign in</h1>
-          <form className="my-1 w-96 space-y-4">
+          <form
+            className="my-1 w-96 space-y-4"
+            onSubmit={handleSubmit((e) => {
+              loginInCredential(e);
+            })}
+          >
             <Input
               type="email"
               placeholder="Email"
               className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5"
+              {...register("email")}
             />
             <Input
               type="password"
               placeholder="Password"
               className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5"
+              {...register("password")}
             />
+
             <Button className="w-full rounded-full mt-1">
               Sign In with Email
             </Button>

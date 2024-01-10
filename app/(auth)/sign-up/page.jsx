@@ -13,10 +13,12 @@ import { useMutation } from "@tanstack/react-query";
 import { signUpFormValidator } from "@/lib/validators/signUpForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordInput } from "@/components/ui/PasswordInput";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const { toast } = useToast();
-
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -32,9 +34,44 @@ const SignUp = () => {
   });
 
   const { mutate: SignUp, isLoading } = useMutation({
-    mutationFn: async ({ name, email, password, confirmPassword }) => {
-      const payload = { name, email, password, confirmPassword };
-      console.log(payload);
+    mutationFn: async ({ name, email, password }) => {
+      const payload = { name, email, password };
+
+      const { data } = await axios.post("/api/signUp", payload);
+      return data;
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        // if email already use
+        if (err.response?.status === 409) {
+          return toast({
+            title: "Email is already taken",
+            description: "Please choose a different email.",
+            variant: "destructive",
+          });
+        }
+      }
+      if (err.response?.status === 422) {
+        return toast({
+          title: "Error",
+          description: "Invalid request data passed",
+          variant: "destructive",
+        });
+      }
+
+      return toast({
+        title: "There was an error",
+        description:
+          "Couldn't register your credentials, please try again later",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        description: "Success! Your account has been created.",
+        variant: "success",
+      });
+      router.push("/sign-in");
     },
   });
   return (
