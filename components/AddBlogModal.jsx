@@ -21,6 +21,7 @@ import useCustomHooks from "@/hooks/use-custom-hooks";
 import Link from "next/link";
 import { Avatar } from "./ui/Avatar";
 import Image from "next/image";
+import UserAvatar from "./UserAvatar";
 
 const AddBlogModal = ({ session }) => {
   const router = useRouter();
@@ -68,16 +69,13 @@ const AddBlogModal = ({ session }) => {
         {session && (
           <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg">
             <Link href={`/user/${session.user.id}`}>
-              <Avatar className="h-9 w-9 ">
-                <div className="relative aspect-square h-full w-full outline-none">
-                  <Image
-                    fill
-                    src={session.user.image}
-                    alt="profile image"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              </Avatar>
+              <UserAvatar
+                className="h-10 w-10 "
+                user={{
+                  name: session.user.name || null,
+                  image: session.user.image || null,
+                }}
+              />
             </Link>
             <Input
               className="rounded-full "

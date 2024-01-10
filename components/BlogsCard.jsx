@@ -4,22 +4,21 @@ import { Avatar } from "./ui/Avatar";
 import Image from "next/image";
 import { Dot } from "lucide-react";
 import { formatTimeToNow } from "@/lib/utils";
+import UserAvatar from "./UserAvatar";
 
 const BlogsCard = ({ blog }) => {
+  console.log(blog);
   return (
     <Card>
       <CardHeader>
         <div className="flex items-center gap-1 mb-3">
-          <Avatar className="h-9 w-9 ">
-            <div className="relative aspect-square h-full w-full outline-none">
-              <Image
-                fill
-                src={blog.author.image}
-                alt="profile image"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </Avatar>
+          <UserAvatar
+            className="h-10 w-10 "
+            user={{
+              name: blog.author.name || null,
+              image: blog.author.image || null,
+            }}
+          />
           <span>
             <Dot className="h-10 w-10" />
           </span>

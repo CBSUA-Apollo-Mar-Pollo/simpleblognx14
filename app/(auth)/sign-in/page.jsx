@@ -42,24 +42,20 @@ const SignIn = () => {
     }
   };
 
-  const loginInCredential = async (e) => {
+  const loginInCredential = async (data) => {
     try {
-      const { email, password } = e;
+      const { email, password } = data;
       await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        redirectTo: "/",
       });
     } catch (error) {
-      // console.log(error);
-      // if (error instanceof AuthError) {
-      //   switch (error.type) {
-      //     case "CredentialsSignin":
-      //       return { error: "Invalid credentials!" };
-      //     default:
-      //       return { error: "Something went wrong" };
-      //   }
-      // }
+      toast({
+        title: "There was an error",
+        description: "Error logging in with your credentials",
+        variant: "destructive",
+      });
 
       throw error;
     }
