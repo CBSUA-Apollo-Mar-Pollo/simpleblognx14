@@ -8,8 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "./ui/Button";
+import { Button } from "./ui/Button";
 import { Label } from "./ui/Label";
 import { Input } from "./ui/Input";
 import { Textarea } from "./ui/Textarea";
@@ -19,8 +18,6 @@ import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import Link from "next/link";
-import { Avatar } from "./ui/Avatar";
-import Image from "next/image";
 import UserAvatar from "./UserAvatar";
 
 const AddBlogModal = ({ session }) => {
@@ -62,7 +59,6 @@ const AddBlogModal = ({ session }) => {
       router.refresh();
     },
   });
-  console.log(session);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

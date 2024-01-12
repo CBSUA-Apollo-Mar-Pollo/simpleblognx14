@@ -5,6 +5,7 @@ import { getAuthSession } from "@/lib/auth";
 
 export default async function Blogs({ blogs }) {
   const session = await getAuthSession();
+  // console.log(session);
   return (
     <div className="flex flex-col items-center justify-center mt-[100px] z-2">
       <div className="my-5 w-5/12">

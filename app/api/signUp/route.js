@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { signUpFormValidator } from "@/lib/validators/signUpForm";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { generateVerificationToken } from "@/lib/token";
 
 export async function POST(req) {
   try {
@@ -29,11 +30,12 @@ export async function POST(req) {
       },
     });
 
-    return new Response("OK");
+    const verificationToken = await generateVerificationToken(email);
+
+    return new Response({ success: "Confirmation email sent" });
   } catch (error) {
-    console.log(error);
     if (error instanceof z.ZodError) {
-      return new Response("Invalid request data passed", { status: 422 });
+      return new Response("Invalid r equest data passed", { status: 422 });
     }
 
     return new Response(

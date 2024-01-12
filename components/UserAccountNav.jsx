@@ -10,6 +10,7 @@ import {
 } from "./ui/Dropdown-menu";
 import UserAvatar from "./UserAvatar";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 const UserAccountNav = ({ user }) => {
   return (
@@ -32,6 +33,13 @@ const UserAccountNav = ({ user }) => {
             )}
           </div>
         </div>
+        <DropdownMenuSeparator />
+
+        <Link href="/settings">
+          <DropdownMenuItem className="cursor-pointer">
+            Settings
+          </DropdownMenuItem>
+        </Link>
 
         <DropdownMenuSeparator />
 

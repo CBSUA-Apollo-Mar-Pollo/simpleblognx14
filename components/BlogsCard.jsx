@@ -1,13 +1,9 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
-import { Avatar } from "./ui/Avatar";
-import Image from "next/image";
-import { Dot } from "lucide-react";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 
 const BlogsCard = ({ blog }) => {
-  console.log(blog);
   return (
     <Card>
       <CardHeader>
@@ -19,10 +15,8 @@ const BlogsCard = ({ blog }) => {
               image: blog.author.image || null,
             }}
           />
-          <span>
-            <Dot className="h-10 w-10" />
-          </span>
-          <div>
+
+          <div className="px-2">
             <p className="font-semibold text-base">{blog.author.name}</p>
             <p className=" text-xs text-gray-600 ">
               {formatTimeToNow(new Date(blog?.createdAt))}
