@@ -63,10 +63,9 @@ const SignUpForm = () => {
     },
     onSuccess: () => {
       toast({
-        description: "Success! Your account has been created.",
+        description: "Email Confirmation sent",
         variant: "success",
       });
-      router.push("/sign-in");
     },
   });
   return (

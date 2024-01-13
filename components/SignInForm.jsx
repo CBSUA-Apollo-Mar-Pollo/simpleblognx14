@@ -47,35 +47,65 @@ const SignInForm = () => {
     }
   };
 
+  // login credentials
   const loginInCredential = async (data) => {
     const { email, password } = data;
-
     loginCheck(email)
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
+      .then((res) => {
+        if (res?.success) {
+          return toast({
+            title: "Action Required",
+            description: "Email confirmation sent ",
+            variant: "success",
+          });
+        }
+      })
+      .catch((e) => {
+        switch (e.message) {
+          case "Email does not exist":
+            return toast({
+              title: "Invalid log in",
+              description: "Email does not exist",
+              variant: "destructive",
+            });
+          default:
+            return toast({
+              title: "Something went wrong",
+              variant: "destructive",
+            });
+        }
+      });
 
-    // try {
-    //   const res = await signIn("credentials", {
-    //     email,
-    //     password,
-    //     redirect: false,
-    //   });
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
 
-    //   if (res.error) {
-    //     return toast({
-    //       title: "Invalid credentials",
-    //       description: "The email or password is incorrect",
-    //       variant: "destructive",
-    //     });
-    //   }
+      if (res.error === "AccessDenied") {
+        return toast({
+          title: "Access Denied",
+          description: "Your email is not verified yet",
+          variant: "destructive",
+        });
+      }
 
-    //   router.push("/");
-    // } catch (error) {
-    //   toast({
-    //     title: "Something went wrong",
-    //     variant: "destructive",
-    //   });
-    // }
+      if (res.error) {
+        return toast({
+          title: "Invalid credentials",
+          description: "The email or password is incorrect",
+          variant: "destructive",
+        });
+      }
+
+      router.push("/");
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

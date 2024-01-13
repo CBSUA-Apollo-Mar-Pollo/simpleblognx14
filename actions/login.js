@@ -1,19 +1,27 @@
 "use server";
 
 import { getUserByEmail } from "@/data/user";
+import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 
 export const loginCheck = async (values) => {
   const existingUser = await getUserByEmail(values);
 
+  // check if the user doesnt exist
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "Email does not exist" };
+    throw new Error("Email does not exist");
   }
 
+  // generate a verification token
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(
       existingUser.email
     );
-    return { sucess: "Confirmation email sent!" };
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
+    return { success: "Confirmation email sent!" };
   }
 };

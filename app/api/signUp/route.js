@@ -3,6 +3,7 @@ import { signUpFormValidator } from "@/lib/validators/signUpForm";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/lib/token";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export async function POST(req) {
   try {
@@ -31,6 +32,11 @@ export async function POST(req) {
     });
 
     const verificationToken = await generateVerificationToken(email);
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
 
     return new Response({ success: "Confirmation email sent" });
   } catch (error) {

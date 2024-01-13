@@ -9,7 +9,7 @@ export const getVerificationTokenByToken = async (token) => {
     });
 
     return verificationToken;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
