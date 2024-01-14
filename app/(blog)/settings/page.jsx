@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/Separator";
+import { Link } from "lucide-react";
 import React from "react";
 
 const page = () => {
@@ -11,7 +12,13 @@ const page = () => {
 
       <Separator className="my-4" />
 
-      <div className="grid px-10"></div>
+      <div className="grid px-10">
+        <div>
+          <ul>
+            <Link></Link>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };

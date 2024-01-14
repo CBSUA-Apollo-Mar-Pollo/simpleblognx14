@@ -99,7 +99,7 @@ const SignInForm = () => {
         });
       }
 
-      router.push("/");
+      window.location.replace("/");
     } catch (error) {
       toast({
         title: "Something went wrong",
@@ -185,6 +185,10 @@ const SignInForm = () => {
             </span>
           </Button>
         </div>
+        <Link className="text-sm mt-3 text-right" href="/reset-password">
+          Forgot your{" "}
+          <span className="text-blue-500 hover:underline">Password ?</span>
+        </Link>
         <Link className="text-sm mt-3 text-right" href="/sign-up">
           Don't have an account yet? <span className="underline">Sign up</span>
         </Link>
