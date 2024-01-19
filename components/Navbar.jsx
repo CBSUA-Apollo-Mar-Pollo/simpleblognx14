@@ -6,6 +6,9 @@ import { getAuthSession } from "@/lib/auth";
 import { Avatar } from "./ui/Avatar";
 import Image from "next/image";
 import UserAccountNav from "./UserAccountNav";
+import { Input } from "./ui/Input";
+import { Bell, Search } from "lucide-react";
+import { Icons } from "./Icons";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -17,9 +20,21 @@ const Navbar = async () => {
             EStoryaMo
           </Link>
         </div>
+        <div className="relative flex items-center">
+          <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20" />
+          <Input
+            placeholder="Search Posts"
+            className="pl-12 focus-visible:ring-transparent rounded-full w-[500px] text-sm"
+          />
+        </div>
         <div>
           {session ? (
-            <UserAccountNav user={session.user} />
+            <div className="flex items-center">
+              <div className="mr-4 bg-gray-100 p-2 rounded-full cursor-pointer hover:bg-gray-200">
+                <Icons.bell className="text-gray-500 " />
+              </div>
+              <UserAccountNav user={session.user} />
+            </div>
           ) : (
             // <Avatar>
             //   <div className="h-10 w-10">
