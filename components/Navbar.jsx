@@ -3,8 +3,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/Button";
 import { getAuthSession } from "@/lib/auth";
-import { Avatar } from "./ui/Avatar";
-import Image from "next/image";
 import UserAccountNav from "./UserAccountNav";
 import { Input } from "./ui/Input";
 import { Bell, Search } from "lucide-react";

@@ -27,7 +27,6 @@ export default function RootLayout({ children }) {
         <Providers>
           <main className="relative flex flex-col min-h-screen">
             <div className="flex-grow flex-1 ">{children}</div>
-
             <Toaster />
           </main>
         </Providers>
