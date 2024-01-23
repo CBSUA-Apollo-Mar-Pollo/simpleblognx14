@@ -1,3 +1,4 @@
+import PopularCard from "@/components/PopularCard";
 import Sidebar from "@/components/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
@@ -10,6 +11,9 @@ const Layout = async ({ children }) => {
         <Sidebar session={session} />
       </div>
       <div>{children}</div>
+      <div className="mt-[100px] relative">
+        <PopularCard />
+      </div>
     </div>
   );
 };

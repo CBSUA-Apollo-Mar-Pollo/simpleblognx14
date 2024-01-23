@@ -12,7 +12,7 @@ const explore = async () => {
     },
   });
   return (
-    <div className="mt-[20px]">
+    <div className="mt-[100px]">
       <Blogs blogs={blogs} />
     </div>
   );

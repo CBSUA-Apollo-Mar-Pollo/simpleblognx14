@@ -190,7 +190,7 @@ const SignInForm = () => {
           <span className="text-blue-500 hover:underline">Password ?</span>
         </Link>
         <Link className="text-sm mt-3 text-right" href="/sign-up">
-          Don't have an account yet? <span className="underline">Sign up</span>
+          Dont have an account yet? <span className="underline">Sign up</span>
         </Link>
       </div>
     </div>

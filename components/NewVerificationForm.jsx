@@ -41,7 +41,7 @@ const NewVerificationForm = () => {
           variant: "destructive",
         });
       });
-  }, [token, success, error]);
+  }, [token, success, error, toast]);
 
   useEffect(() => {
     onSubmit();

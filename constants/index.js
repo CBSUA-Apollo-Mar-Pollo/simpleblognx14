@@ -44,6 +44,7 @@ export const SideBarFirstLinks = [
     link: "/comments",
   },
 ];
+
 export const SideBarSecondLinks = [
   {
     Icon: <HomeIcon className="mr-4 text-gray-500 h-6" />,
