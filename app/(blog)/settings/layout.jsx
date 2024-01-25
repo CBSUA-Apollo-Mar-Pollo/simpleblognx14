@@ -4,7 +4,7 @@ import React from "react";
 
 const Layout = ({ children }) => {
   return (
-    <main className="mt-24 px-32">
+    <main className="mt-24 mx-72">
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-gray-600">Manage your account settings </p>
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
         <div className="col-span-1">
           <NavBarSettings />
         </div>
-        <div className="col-span-4">{children}</div>
+        <div className="col-span-4 mx-10">{children}</div>
       </div>
     </main>
   );

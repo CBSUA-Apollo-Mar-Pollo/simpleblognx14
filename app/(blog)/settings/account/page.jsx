@@ -1,4 +1,4 @@
-import SettingsForm from "@/components/SettingsForm";
+import AccountForm from "@/components/AccountForm";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
 
@@ -6,7 +6,7 @@ const accountForm = async () => {
   const session = await getAuthSession();
   return (
     <div>
-      <SettingsForm session={session} />
+      <AccountForm user={session.user} />
     </div>
   );
 };

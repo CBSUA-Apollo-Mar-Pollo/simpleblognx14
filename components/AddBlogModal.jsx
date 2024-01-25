@@ -103,14 +103,14 @@ const AddBlogModal = ({ session }) => {
             <Image
               width={45}
               height={45}
-              src={session.user.image}
+              src={session?.user.image}
               alt="profile image"
               referrerPolicy="no-referrer"
               className="rounded-full"
             />
             <div className="space-y-1">
               <p className="font-semibold text-gray-700 text-base pl-1">
-                {session.user.name}
+                {session?.user.name}
               </p>
               <Select>
                 <SelectTrigger className="h-6 w-24 font-medium text-sm focus:ring-0">
@@ -137,7 +137,7 @@ const AddBlogModal = ({ session }) => {
               onChange={(e) => setDescription(e.target.value)}
               rows={1}
               placeholder={`What's on your mind, ${
-                session.user.name.split(" ")[0]
+                session?.user.name.split(" ")[0]
               }`}
               className="focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-32 text-lg border-none"
             />

@@ -13,13 +13,13 @@ const BlogsCard = ({ blog }) => {
           <UserAvatar
             className="h-10 w-10 "
             user={{
-              name: blog.author.name || null,
-              image: blog.author.image || null,
+              name: blog.author?.name || null,
+              image: blog.author?.image || null,
             }}
           />
 
           <div className="px-2 pt-1">
-            <p className="font-semibold text-sm">{blog.author.name}</p>
+            <p className="font-semibold text-sm">{blog.author?.name}</p>
             <div className="flex items-center">
               <p className=" text-xs text-gray-600 ">
                 {formatTimeToNow(new Date(blog?.createdAt))}

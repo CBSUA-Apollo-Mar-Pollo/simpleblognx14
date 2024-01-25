@@ -3,6 +3,7 @@ import Blogs from "@/components/Blogs";
 import Sidebar from "@/components/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import PopularCard from "@/components/PopularCard";
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 
 export default async function Home() {
   const session = await getAuthSession();
@@ -13,16 +14,17 @@ export default async function Home() {
     orderBy: {
       createdAt: "desc",
     },
+    take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
   return (
-    <div className=" flex justify-between bg-stone-50">
-      <div className="mt-[70px]">
+    <div className="grid grid-cols-7 bg-stone-50">
+      <div className="mt-[70px] col-span-2 ">
         <Sidebar session={session} />
       </div>
-      <div className="mt-[100px]">
-        <Blogs blogs={blogs} />
+      <div className="mt-[100px] col-span-3 ">
+        <Blogs initialPosts={blogs} />
       </div>
-      <div className="mt-[100px] relative">
+      <div className="mt-[100px] col-span-1">
         <PopularCard />
       </div>
     </div>
