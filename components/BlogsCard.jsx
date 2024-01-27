@@ -4,6 +4,7 @@ import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
 import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
+import Image from "next/image";
 
 const BlogsCard = ({ blog }) => {
   return (
@@ -30,12 +31,25 @@ const BlogsCard = ({ blog }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="py-1">
-        <p className="px-8 text-justify leading-relaxed mb-5">
+      <CardContent className="p-0">
+        <p className="px-3 text-justify leading-relaxed mb-1">
           {blog.description}
         </p>
-        <Separator className="my-1" />
-        <div className="flex justify-center">
+        {blog.image && (
+          <div className="relative">
+            <Image
+              sizes="100vw"
+              width={0}
+              height={0}
+              style={{ width: "100%", height: "auto" }}
+              src={blog.image}
+              alt="profile image"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+        )}
+        <Separator className="" />
+        <div className="flex justify-center my-2">
           <div className="flex items-center gap-2  hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
             <ThumbsUp className="h-6 w-6" />
             <span className="pt-1 font-medium text-sm">Like</span>

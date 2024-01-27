@@ -47,6 +47,7 @@ model Blog {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  image       String?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String

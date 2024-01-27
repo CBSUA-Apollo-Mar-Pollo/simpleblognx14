@@ -24,7 +24,9 @@ import { Separator } from "./ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "./ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, X } from "lucide-react";
+import { UploadDropzone } from "@uploadthing/react";
+import { uploadFiles } from "@/lib/uploadThing";
 
 const AddBlogModal = ({ session }) => {
   const router = useRouter();
@@ -32,11 +34,15 @@ const AddBlogModal = ({ session }) => {
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
+  const [imageFile, setImageFile] = useState(null);
+  const [toggleImageUpload, setToggleImageUpload] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const { mutate: createBlog, isLoading } = useMutation({
     mutationFn: async () => {
       const payload = {
         description,
+        imageUrl,
       };
       const { data } = await axios.post("/api/blog", payload);
       return data;
@@ -67,7 +73,7 @@ const AddBlogModal = ({ session }) => {
       setTitle("");
       setDescription("");
       setOpen(false);
-      router.refresh();
+      window.location.reload();
     },
   });
   return (
@@ -93,13 +99,13 @@ const AddBlogModal = ({ session }) => {
           </div>
         )}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="p-2">
+        <DialogHeader className="py-2 px-4">
           <DialogTitle className="text-2xl font-bold">Create post</DialogTitle>
         </DialogHeader>
         <Separator />
         <div className="grid gap-3 py-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
             <Image
               width={45}
               height={45}
@@ -130,7 +136,7 @@ const AddBlogModal = ({ session }) => {
               </Select>
             </div>
           </div>
-          <div className="grid items-center">
+          <div className="grid items-center max-h-64 overflow-auto">
             <Textarea
               id="desc"
               value={description}
@@ -138,17 +144,63 @@ const AddBlogModal = ({ session }) => {
               rows={1}
               placeholder={`What's on your mind, ${
                 session?.user.name.split(" ")[0]
-              }`}
-              className="focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-32 text-lg border-none"
+              }?`}
+              className="focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-24 text-base border-none resize-none"
             />
+
+            {/* Image upload UI */}
+            {toggleImageUpload && (
+              <div className="flex items-center justify-center w-full border border-gray-300 rounded-md p-2 relative">
+                {imageUrl.length ? (
+                  <div className="">
+                    <Image
+                      sizes="100vw"
+                      width={0}
+                      height={0}
+                      style={{ width: "100%", height: "auto" }}
+                      src={imageUrl}
+                      alt="profile image"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      className="absolute right-4 top-6 py-1 px-2 rounded-full bg-gray-100"
+                      onClick={() =>
+                        setToggleImageUpload((prevState) => !prevState)
+                      }
+                    >
+                      <X className="w-5 h-5 font-bold" />
+                    </Button>
+                    <UploadDropzone
+                      appearance={{
+                        container: {
+                          width: "100%",
+                        },
+                      }}
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        setImageUrl(res[0].url);
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </div>
 
           <div className=" border border-gray-300 rounded-md px-4 flex justify-between items-center py-1">
             <h1 className="font-semibold text-gray-600">Add to your post</h1>
             <div>
-              <div className="hover:bg-gray-100 p-2 rounded-full cursor-pointer">
+              <Button
+                variant="ghost"
+                className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                onClick={() => setToggleImageUpload((prevState) => !prevState)}
+              >
                 <ImagePlus className="text-green-600 " />
-              </div>
+              </Button>
             </div>
           </div>
         </div>

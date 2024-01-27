@@ -4,8 +4,8 @@ import { getUserByEmail } from "@/data/user";
 import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 
-export const loginCheck = async (values) => {
-  const existingUser = await getUserByEmail(values);
+export const loginCheck = async (email) => {
+  const existingUser = await getUserByEmail(email);
 
   // check if the user doesnt exist
   if (!existingUser || !existingUser.email || !existingUser.password) {

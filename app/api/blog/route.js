@@ -12,11 +12,12 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description } = BlogValidator.parse(body);
+    const { description, imageUrl } = BlogValidator.parse(body);
 
     await db.blog.create({
       data: {
         description,
+        image: imageUrl,
         authorId: session.user.id,
       },
     });
