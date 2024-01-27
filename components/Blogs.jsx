@@ -45,8 +45,8 @@ export default function Blogs({ initialPosts }) {
 
   return (
     <div className="flex flex-col items-center justify-center z-2 space-y-3">
-      <AddBlogModal session={session} />
-      <div className="flex flex-col col-span-2 space-y-3 pb-10">
+      <div className="flex flex-col col-span-2 space-y-3">
+        <AddBlogModal session={session} />
         {posts.map((blog) => (
           <li key={blog.id} className="list-none" ref={ref}>
             <BlogsCard blog={blog} />
