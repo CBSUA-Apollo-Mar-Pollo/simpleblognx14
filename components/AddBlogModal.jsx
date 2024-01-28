@@ -29,12 +29,10 @@ import { UploadDropzone } from "@uploadthing/react";
 import { uploadFiles } from "@/lib/uploadThing";
 
 const AddBlogModal = ({ session }) => {
-  const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
-  const [imageFile, setImageFile] = useState(null);
   const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
@@ -70,7 +68,7 @@ const AddBlogModal = ({ session }) => {
       });
     },
     onSuccess: () => {
-      setTitle("");
+      setImageUrl("");
       setDescription("");
       setOpen(false);
       window.location.reload();
@@ -106,13 +104,12 @@ const AddBlogModal = ({ session }) => {
         <Separator />
         <div className="grid gap-3 py-1">
           <div className="flex items-center gap-2 px-4">
-            <Image
-              width={45}
-              height={45}
-              src={session?.user.image}
-              alt="profile image"
-              referrerPolicy="no-referrer"
-              className="rounded-full"
+            <UserAvatar
+              className="h-10 w-10 "
+              user={{
+                name: session?.user.name || null,
+                image: session?.user.image || null,
+              }}
             />
             <div className="space-y-1">
               <p className="font-semibold text-gray-700 text-base pl-1">

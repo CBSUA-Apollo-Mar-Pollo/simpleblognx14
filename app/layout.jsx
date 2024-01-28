@@ -17,18 +17,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="light">
       <body
-        className={cn(
-          "relative h-full font-sons antialiased",
-          poppins.className
-        )}
+        className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
-          <main className="relative flex flex-col min-h-screen">
-            <div className="flex-grow flex-1 ">{children}</div>
-            <Toaster />
-          </main>
+          <div className="mx-auto h-full bg-stone-50">{children}</div>
+          <Toaster />
         </Providers>
       </body>
     </html>

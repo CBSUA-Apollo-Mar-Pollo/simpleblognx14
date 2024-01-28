@@ -44,21 +44,26 @@ export default function Blogs({ initialPosts }) {
   const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
 
   return (
-    <div className="flex flex-col items-center justify-center z-2 space-y-3">
-      <div className="flex flex-col col-span-2 space-y-3">
-        <AddBlogModal session={session} />
-        {posts.map((blog) => (
-          <li key={blog.id} className="list-none" ref={ref}>
-            <BlogsCard blog={blog} />
-          </li>
-        ))}
+    <div className="z-2 space-y-3">
+      <ul className="flex flex-col col-span-2 space-y-3 pb-10">
+        {posts.map((blog, index) => {
+          if (index === posts.length - 1) {
+            return (
+              <li key={blog.id} className="list-none" ref={ref}>
+                <BlogsCard blog={blog} />
+              </li>
+            );
+          } else {
+            return <BlogsCard blog={blog} key={blog.id} />;
+          }
+        })}
 
         {isFetchingNextPage && (
           <li className="flex justify-center my-20">
             <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
           </li>
         )}
-      </div>
+      </ul>
     </div>
   );
 }

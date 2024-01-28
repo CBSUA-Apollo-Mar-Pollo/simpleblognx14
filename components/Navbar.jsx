@@ -11,8 +11,8 @@ import { Icons } from "./Icons";
 const Navbar = async () => {
   const session = await getAuthSession();
   return (
-    <div className="fixed inset-x-0 h-fit z-10 bg-white shadow-sm">
-      <div className="container max-w-full -full mx-auto px-[40px] flex items-center justify-between gap-2">
+    <div className="fixed top-0 inset-x-0 h-fit z-10 bg-white shadow-sm z[10]">
+      <div className="container max-w-full h-full mx-auto px-[40px] flex items-center justify-between gap-2">
         <div className="my-4">
           <Link href="/" className="text-4xl font-bold">
             EStoryaMo

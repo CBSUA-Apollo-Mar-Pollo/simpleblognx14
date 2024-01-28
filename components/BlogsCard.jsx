@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
 import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
 import Image from "next/image";
+import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
+  const pRef = useRef(null);
   return (
     <Card>
       <CardHeader className="py-3">
@@ -36,16 +38,26 @@ const BlogsCard = ({ blog }) => {
           {blog.description}
         </p>
         {blog.image && (
-          <div className="relative">
+          <div
+            className="relative overflow-clip w-full "
+            // ref={pRef}
+          >
             <Image
               sizes="100vw"
               width={0}
               height={0}
-              style={{ width: "100%", height: "auto" }}
               src={blog.image}
               alt="profile image"
               referrerPolicy="no-referrer"
+              className="object-contain w-full transition "
             />
+            {/* {pRef.current?.clientHeight >= 300 ? (
+              <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
+                <Button className="px-36 text-xs bg-opacity-90">
+                  SEE FULL IMAGE
+                </Button>
+              </div>
+            ) : null} */}
           </div>
         )}
         <Separator className="" />

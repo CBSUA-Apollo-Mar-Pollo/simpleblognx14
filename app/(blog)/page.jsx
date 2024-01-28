@@ -4,6 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import PopularCard from "@/components/PopularCard";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
+import AddBlogModal from "@/components/AddBlogModal";
 
 export default async function Home() {
   const session = await getAuthSession();
@@ -17,14 +18,15 @@ export default async function Home() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
   return (
-    <div className="grid grid-cols-7 bg-stone-50">
-      <div className="mt-[70px] col-span-2 ">
+    <div className="grid grid-cols-3">
+      <div className="mt-[73px] col-span-1 ">
         <Sidebar session={session} />
       </div>
-      <div className="mt-[100px] col-span-3 ">
+      <div className="mt-[100px] space-y-3">
+        <AddBlogModal session={session} />
         <Blogs initialPosts={blogs} />
       </div>
-      <div className="mt-[100px] col-span-1">
+      <div className="mt-[100px] col-span-1 overflow-hidden">
         <PopularCard />
       </div>
     </div>

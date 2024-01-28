@@ -15,8 +15,8 @@ import Link from "next/link";
 const Sidebar = ({ session }) => {
   const pathname = usePathname();
   return (
-    <div className="fixed start-0 h-screen z-10shadow-sm w-80 px-4 max-h-[90vh] overflow-auto bg-white">
-      <div className="space-y-2 pt-10">
+    <div className="fixed start-0 h-screen z-10 shadow-sm  px-4 max-h-[90vh] overflow-auto bg-white">
+      <div className="space-y-2 pt-7">
         {/* different side bar depends if the user is log in or not */}
         {session?.user
           ? SideBarFirstLinks.map((item, index) => (
