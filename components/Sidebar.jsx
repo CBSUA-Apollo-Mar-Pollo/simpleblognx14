@@ -15,7 +15,7 @@ import Link from "next/link";
 const Sidebar = ({ session }) => {
   const pathname = usePathname();
   return (
-    <div className="fixed start-0 h-screen z-10 shadow-sm  px-4 max-h-[90vh] overflow-auto bg-white">
+    <div className="fixed left-0 w-[22vw] h-screen z-10 shadow-sm  px-4 max-h-[90vh] hover:overflow-auto bg-white rounded">
       <div className="space-y-2 pt-7">
         {/* different side bar depends if the user is log in or not */}
         {session?.user
@@ -26,7 +26,7 @@ const Sidebar = ({ session }) => {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathname === item.link ? "bg-gray-200" : "",
-                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent"
+                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-2"
                 )}
               >
                 {item.Icon} {/* icon */}
@@ -42,7 +42,7 @@ const Sidebar = ({ session }) => {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathname === item.link ? "bg-gray-200" : "",
-                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent"
+                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-2"
                 )}
               >
                 {item.Icon} {/* icon */}
@@ -65,7 +65,7 @@ const Sidebar = ({ session }) => {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               pathname === item.link ? "bg-gray-200" : "",
-              "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent"
+              "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-2"
             )}
           >
             {item.Icon}

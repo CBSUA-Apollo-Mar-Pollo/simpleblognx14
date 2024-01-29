@@ -14,8 +14,9 @@ export default function Blogs({ initialPosts }) {
   const { data: session } = useSession();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
-    root: lastPostRef.current,
-    threshold: 1,
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.8,
   });
 
   const fetchPosts = async ({ pageParam }) => {
@@ -35,6 +36,8 @@ export default function Blogs({ initialPosts }) {
     initialData: { pages: [initialPosts], pageParams: [1] },
   });
 
+  console.log(entry, "entry");
+
   useEffect(() => {
     if (entry?.isIntersecting) {
       fetchNextPage();
@@ -45,7 +48,7 @@ export default function Blogs({ initialPosts }) {
 
   return (
     <div className="z-2 space-y-3">
-      <ul className="flex flex-col col-span-2 space-y-3 pb-10">
+      <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
         {posts.map((blog, index) => {
           if (index === posts.length - 1) {
             return (

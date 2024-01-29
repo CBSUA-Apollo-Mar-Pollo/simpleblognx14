@@ -5,10 +5,10 @@ import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
 import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
 import Image from "next/image";
-import { Button } from "./ui/Button";
+// import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
-  const pRef = useRef(null);
+  // const pRef = useRef(null);
   return (
     <Card>
       <CardHeader className="py-3">
