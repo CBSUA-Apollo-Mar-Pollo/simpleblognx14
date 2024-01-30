@@ -5,6 +5,7 @@ import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
 import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
 import Image from "next/image";
+import CommentSection from "./CommentSection";
 // import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
@@ -38,8 +39,9 @@ const BlogsCard = ({ blog }) => {
           {blog.description}
         </p>
         {blog.image && (
-          <div
-            className="relative overflow-clip w-full "
+          <a
+            href={`/postComment/${blog.id}`}
+            className="relative overflow-clip w-full"
             // ref={pRef}
           >
             <Image
@@ -49,7 +51,7 @@ const BlogsCard = ({ blog }) => {
               src={blog.image}
               alt="profile image"
               referrerPolicy="no-referrer"
-              className="object-contain w-full transition "
+              className="object-contain w-full transition"
             />
             {/* {pRef.current?.clientHeight >= 300 ? (
               <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
@@ -58,18 +60,21 @@ const BlogsCard = ({ blog }) => {
                 </Button>
               </div>
             ) : null} */}
-          </div>
+          </a>
         )}
         <Separator className="" />
-        <div className="flex justify-center my-2">
+        <div className="flex justify-between my-2 mx-5">
           <div className="flex items-center gap-2  hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
             <ThumbsUp className="h-6 w-6" />
             <span className="pt-1 font-medium text-sm">Like</span>
           </div>
-          <div className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
+          <a
+            href={`/postComment/${blog.id}`}
+            className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
+          >
             <MessageCircle className="h-6 w-6" />
             <span className=" font-medium text-sm">Comment</span>
-          </div>
+          </a>
           <div className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
             <Forward className="h-6 w-6" />
             <span className=" font-medium text-sm">Share</span>

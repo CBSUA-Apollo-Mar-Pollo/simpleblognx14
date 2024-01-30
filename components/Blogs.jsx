@@ -36,8 +36,6 @@ export default function Blogs({ initialPosts }) {
     initialData: { pages: [initialPosts], pageParams: [1] },
   });
 
-  console.log(entry, "entry");
-
   useEffect(() => {
     if (entry?.isIntersecting) {
       fetchNextPage();

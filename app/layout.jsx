@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
-          <div className="mx-auto h-full bg-stone-50">{children}</div>
+          <div className="mx-auto  ">{children}</div>
           <Toaster />
         </Providers>
       </body>

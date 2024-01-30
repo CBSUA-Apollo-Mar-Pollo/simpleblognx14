@@ -18,8 +18,8 @@ export default async function Home() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
   return (
-    <div className="grid grid-cols-4 gap-x-[20rem]">
-      <div className="mt-[75px] col-span-1  ">
+    <div className="grid grid-cols-4 gap-x-[20rem] bg-stone-50">
+      <div className="mt-[72px] col-span-1  ">
         <Sidebar session={session} />
       </div>
       <div className="mt-[100px] space-y-3 col-span-2">

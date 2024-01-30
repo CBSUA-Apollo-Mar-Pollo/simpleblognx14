@@ -4,7 +4,7 @@ import React from "react";
 
 const Layout = ({ children }) => {
   return (
-    <main className="mx-72">
+    <main className="mx-72 pt-28 ">
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-gray-600">Manage your account settings </p>
