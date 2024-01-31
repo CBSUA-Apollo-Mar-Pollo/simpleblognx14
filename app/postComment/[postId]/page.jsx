@@ -1,4 +1,4 @@
-import PostCommentCard from "@/components/PostCommentCard";
+import PostCommentCard from "@/components/postComment/PostCommentCard";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";

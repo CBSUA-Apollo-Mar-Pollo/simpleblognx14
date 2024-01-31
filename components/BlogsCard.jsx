@@ -5,7 +5,7 @@ import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
 import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
 import Image from "next/image";
-import CommentSection from "./CommentSection";
+import CommentSection from "./postComment/CommentSection";
 // import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {

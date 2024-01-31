@@ -40,6 +40,7 @@ model User {
   birthdate     DateTime?
   accounts      Account[]
   blogs         Blog[]
+  Comment       Comment[]
 }
 
 model Blog {
@@ -49,8 +50,28 @@ model Blog {
   updatedAt   DateTime @updatedAt
   image       String?
 
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String
+  Comment  Comment[]
+}
+
+model Comment {
+  id   String @id @default(cuid())
+  text String
+
+  createdAt DateTime @default(now())
+
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
+
+  blog   Blog   @relation(fields: [postId], references: [id])
+  postId String
+
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  commentId String?
 }
 
 model verificationToken {
