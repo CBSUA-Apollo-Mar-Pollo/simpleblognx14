@@ -1,9 +1,15 @@
 import React from "react";
 import UserAvatar from "../UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import { Dot, Globe, MoreHorizontal } from "lucide-react";
+import {
+  Dot,
+  Globe,
+  MessageCircle,
+  MessageSquare,
+  MoreHorizontal,
+} from "lucide-react";
 
-const PostDescription = ({ post }) => {
+const PostDescription = ({ post, commentAmt }) => {
   return (
     <div className="my-2 mx-3">
       <div className="flex items-center justify-between gap-1">
@@ -36,6 +42,13 @@ const PostDescription = ({ post }) => {
       <div className="text-white my-2 mb-5">
         <p className="text-sm">{post.description}</p>
       </div>
+
+      {commentAmt !== 0 && (
+        <div className="flex items-center justify-end gap-x-1 text-neutral-400">
+          {commentAmt}
+          <MessageCircle className="h-4 w-4" />
+        </div>
+      )}
     </div>
   );
 };

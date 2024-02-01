@@ -8,10 +8,12 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { Button } from "../ui/Button";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const CreateComment = ({ session, postId }) => {
   const [textareaValue, setTextareaValue] = useState("");
   const { toast } = useToast();
+  const router = useRouter();
 
   const { mutate: comment, isLoading } = useMutation({
     mutationFn: async ({ postId, text }) => {
@@ -61,7 +63,7 @@ const CreateComment = ({ session, postId }) => {
   }, [textareaValue]);
 
   return (
-    <div className="flex gap-x-4 mx-4 my-4 fixed bottom-0">
+    <div className="flex gap-x-4 px-4 py-2 fixed bottom-0 bg-neutral-900">
       <UserAvatar
         className="h-10 w-10 "
         user={{
@@ -82,7 +84,7 @@ const CreateComment = ({ session, postId }) => {
         />
         {/* icons */}
 
-        <div className="absolute bottom-0  flex items-center justify-between w-full space-y-1 px-2">
+        <div className="absolute bottom-0 flex items-center justify-between w-full space-y-1 px-2">
           <div className="hover:bg-neutral-700 rounded-full cursor-pointer mt-1">
             <Camera className="mx-2 my-2 p-0.5 text-neutral-300" />
           </div>

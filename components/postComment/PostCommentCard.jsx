@@ -14,6 +14,9 @@ const PostCommentCard = async ({ post, session }) => {
     include: {
       author: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
   return (
     <div className="grid grid-cols-4 relative">
@@ -28,8 +31,8 @@ const PostCommentCard = async ({ post, session }) => {
 
         <Separator className="bg-gray-700" />
 
-        <div className="overflow-y-scroll">
-          <PostDescription post={post} />
+        <div className="overflow-auto max-h-[100vh]">
+          <PostDescription post={post} commentAmt={comments.length} />
 
           <Separator className="bg-gray-700" />
 
@@ -37,13 +40,11 @@ const PostCommentCard = async ({ post, session }) => {
 
           <Separator className="bg-gray-700" />
 
-          {session?.user && (
-            <CommentSection
-              session={session}
-              postId={post.id}
-              comments={comments}
-            />
-          )}
+          <CommentSection
+            session={session}
+            postId={post.id}
+            comments={comments}
+          />
         </div>
       </div>
     </div>

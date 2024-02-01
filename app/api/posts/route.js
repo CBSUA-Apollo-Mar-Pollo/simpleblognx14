@@ -20,6 +20,7 @@ export async function GET(req) {
       skip: (parseInt(page) - 1) * parseInt(limit),
       include: {
         author: true,
+        comments: true,
       },
       orderBy: {
         createdAt: "desc",

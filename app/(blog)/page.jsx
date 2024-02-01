@@ -11,6 +11,7 @@ export default async function Home() {
   const blogs = await db.blog.findMany({
     include: {
       author: true,
+      comments: true,
     },
     orderBy: {
       createdAt: "desc",

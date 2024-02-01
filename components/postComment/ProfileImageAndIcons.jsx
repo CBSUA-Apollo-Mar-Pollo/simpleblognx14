@@ -3,6 +3,8 @@ import React from "react";
 import { Icons } from "../Icons";
 import UserAccountNav from "../UserAccountNav";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/Button";
 
 const ProfileImageAndIcons = ({ session }) => {
   return (

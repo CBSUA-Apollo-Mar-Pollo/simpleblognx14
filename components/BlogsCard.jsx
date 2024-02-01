@@ -3,7 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
-import { Dot, Forward, Globe, MessageCircle, ThumbsUp } from "lucide-react";
+import {
+  Dot,
+  Forward,
+  Globe,
+  MessageCircle,
+  MessageSquare,
+  ThumbsUp,
+} from "lucide-react";
 import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
 // import { Button } from "./ui/Button";
@@ -35,7 +42,7 @@ const BlogsCard = ({ blog }) => {
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <p className="px-3 text-justify leading-relaxed mb-1">
+        <p className="px-3 text-justify leading-relaxed mb-1 font-medium">
           {blog.description}
         </p>
         {blog.image && (
@@ -60,6 +67,15 @@ const BlogsCard = ({ blog }) => {
                 </Button>
               </div>
             ) : null} */}
+          </a>
+        )}
+        {blog.comments.length !== 0 && (
+          <a
+            href={`/postComment/${blog.id}`}
+            className="py-3 flex items-center justify-end mr-4 text-sm hover:underline"
+          >
+            {blog.comments.length}{" "}
+            {blog.comments.length === 1 ? "Comment" : "Comments"}
           </a>
         )}
         <Separator className="" />

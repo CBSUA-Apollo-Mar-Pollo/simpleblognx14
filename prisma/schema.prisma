@@ -50,9 +50,10 @@ model Blog {
   updatedAt   DateTime @updatedAt
   image       String?
 
-  author   User      @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id])
   authorId String
-  Comment  Comment[]
+
+  comments Comment[]
 }
 
 model Comment {
