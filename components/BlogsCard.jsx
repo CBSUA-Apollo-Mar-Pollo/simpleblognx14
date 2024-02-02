@@ -3,16 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
-import {
-  Dot,
-  Forward,
-  Globe,
-  MessageCircle,
-  MessageSquare,
-  ThumbsUp,
-} from "lucide-react";
+import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
+import PostVote from "./post-vote/PostVote";
+import Link from "next/link";
+
 // import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
@@ -46,7 +42,7 @@ const BlogsCard = ({ blog }) => {
           {blog.description}
         </p>
         {blog.image && (
-          <a
+          <Link
             href={`/postComment/${blog.id}`}
             className="relative overflow-clip w-full"
             // ref={pRef}
@@ -58,39 +54,41 @@ const BlogsCard = ({ blog }) => {
               src={blog.image}
               alt="profile image"
               referrerPolicy="no-referrer"
-              className="object-contain w-full transition"
+              className="object-contain w-full transition max-h-[30rem] bg-black"
             />
-            {/* {pRef.current?.clientHeight >= 300 ? (
+            {/* {pRef.current?.clientHeight >= 600 ? (
               <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
                 <Button className="px-36 text-xs bg-opacity-90">
                   SEE FULL IMAGE
                 </Button>
               </div>
             ) : null} */}
-          </a>
+          </Link>
         )}
+
         {blog.comments.length !== 0 && (
-          <a
+          <Link
             href={`/postComment/${blog.id}`}
             className="py-3 flex items-center justify-end mr-4 text-sm hover:underline"
           >
             {blog.comments.length}{" "}
             {blog.comments.length === 1 ? "Comment" : "Comments"}
-          </a>
+          </Link>
         )}
         <Separator className="" />
-        <div className="flex justify-between my-2 mx-5">
-          <div className="flex items-center gap-2  hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
-            <ThumbsUp className="h-6 w-6" />
-            <span className="pt-1 font-medium text-sm">Like</span>
+
+        {/* home post vote comment and share */}
+        <div className="flex justify-between my-1 gap-x-2 mx-5">
+          <div className="flex items-center gap-2 px-10 py-1 rounded cursor-pointer">
+            <PostVote />
           </div>
-          <a
+          <Link
             href={`/postComment/${blog.id}`}
             className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
           >
             <MessageCircle className="h-6 w-6" />
             <span className=" font-medium text-sm">Comment</span>
-          </a>
+          </Link>
           <div className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
             <Forward className="h-6 w-6" />
             <span className=" font-medium text-sm">Share</span>

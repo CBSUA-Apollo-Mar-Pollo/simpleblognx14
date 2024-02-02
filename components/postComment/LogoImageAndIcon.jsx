@@ -1,6 +1,6 @@
 "use client";
 
-import { Scaling, X } from "lucide-react";
+import { Download, Scaling, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,10 +17,10 @@ const LogoImageAndIcon = ({ image }) => {
         {/* close button and logo */}
         <div className="flex items-center justify-center gap-2">
           <div
-            className="py-2 px-2 cursor-pointer hover:bg-gray-800 rounded-full transition"
+            className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition"
             onClick={close}
           >
-            <X className="w-7 h-7 text-white" />
+            <X className=" text-white" />
           </div>
           <Link href="/" className="font-bold">
             <span className="py-[2px] px-4 rounded-full bg-yellow-400 text-3xl">
@@ -29,8 +29,13 @@ const LogoImageAndIcon = ({ image }) => {
           </Link>
         </div>
         {/* enter fullscreen */}
-        <div className="py-4 px-4 cursor-pointer hover:bg-gray-800 rounded-full transition">
-          <Scaling className="text-white" />
+        <div className="flex">
+          <div className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition">
+            <Download className="text-white" />
+          </div>
+          <div className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition">
+            <Scaling className="text-white" />
+          </div>
         </div>
       </div>
 

@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import React from "react";
 
 const postComment = async ({ params }) => {
-  const session = await getAuthSession();
   const post = await db.blog.findFirst({
     where: {
       id: params.postId,
@@ -14,7 +13,7 @@ const postComment = async ({ params }) => {
     },
   });
 
-  return <PostCommentCard post={post} session={session} />;
+  return <PostCommentCard post={post} />;
 };
 
 export default postComment;
