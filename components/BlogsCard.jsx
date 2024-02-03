@@ -8,10 +8,11 @@ import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
 import PostVote from "./post-vote/PostVote";
 import Link from "next/link";
-
+import PostDescriptionCard from "./PostDescriptionCard";
 // import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
+  // console.log(blog);
   // const pRef = useRef(null);
   return (
     <Card>
@@ -79,16 +80,24 @@ const BlogsCard = ({ blog }) => {
 
         {/* home post vote comment and share */}
         <div className="flex justify-between my-1 gap-x-2 mx-5">
+          {/* vote */}
           <div className="flex items-center gap-2 px-10 py-1 rounded cursor-pointer">
             <PostVote />
           </div>
-          <Link
-            href={`/postComment/${blog.id}`}
-            className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
-          >
-            <MessageCircle className="h-6 w-6" />
-            <span className=" font-medium text-sm">Comment</span>
-          </Link>
+          {/* comment button */}
+          {blog?.image ? (
+            <Link
+              href={`/postComment/${blog.id}`}
+              className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
+            >
+              <MessageCircle className="h-6 w-6" />
+              <span className=" font-medium text-sm">Comment</span>
+            </Link>
+          ) : (
+            <PostDescriptionCard blog={blog} />
+          )}
+
+          {/* share */}
           <div className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
             <Forward className="h-6 w-6" />
             <span className=" font-medium text-sm">Share</span>
