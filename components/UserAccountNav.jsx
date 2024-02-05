@@ -28,7 +28,10 @@ const UserAccountNav = ({ user }) => {
         />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="bg-white px-2 py-3" align="end">
+      <DropdownMenuContent
+        className="bg-white px-2 py-3 min-w-[20vw]"
+        align="end"
+      >
         <div className="flex items-center justify-start gap-x-4 p-2">
           <UserAvatar
             className="h-10 w-10 "

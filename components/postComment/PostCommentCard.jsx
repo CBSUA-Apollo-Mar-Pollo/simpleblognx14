@@ -28,13 +28,13 @@ const PostCommentCard = async ({ post }) => {
       </div>
 
       {/* comment side */}
-      <div className="col-span-1 bg-neutral-900 max-h-full relative">
+      <div className="col-span-1 bg-neutral-800 max-h-full relative">
         <ProfileImageAndIcons session={session} />
 
         <Separator className="bg-gray-700" />
 
         <div
-          className={`overflow-auto max-h-[100vh]  ${
+          className={`overflow-auto max-h-[100vh] ${
             session?.user ? "pb-[22vh]" : "pb-[10vh]"
           }`}
         >

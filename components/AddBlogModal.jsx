@@ -7,15 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-
-import { Label } from "./ui/Label";
+} from "./ui/Dialog";
 import { Input } from "./ui/Input";
 import { Textarea } from "./ui/Textarea";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
@@ -26,7 +23,6 @@ import { Select, SelectItem, SelectTrigger, SelectValue } from "./ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
 import { ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
-import { uploadFiles } from "@/lib/uploadThing";
 
 const AddBlogModal = ({ session }) => {
   const [title, setTitle] = useState("");

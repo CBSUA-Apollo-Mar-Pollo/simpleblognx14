@@ -20,7 +20,7 @@ export default async function Home() {
   });
   return (
     <div className="grid grid-cols-4 gap-x-[20rem] bg-stone-50">
-      <div className="mt-[72px] col-span-1  ">
+      <div className="mt-[60px] col-span-1  ">
         <Sidebar session={session} />
       </div>
       <div className="mt-[100px] space-y-3 col-span-2">

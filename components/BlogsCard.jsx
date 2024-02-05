@@ -3,7 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import { Separator } from "./ui/Separator";
-import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
+import {
+  Dot,
+  Forward,
+  Globe,
+  MessageCircle,
+  MoreHorizontal,
+} from "lucide-react";
 import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
 import PostVote from "./post-vote/PostVote";
@@ -17,29 +23,37 @@ const BlogsCard = ({ blog }) => {
   return (
     <Card>
       <CardHeader className="py-3">
-        <div className="flex items-center gap-1">
-          <UserAvatar
-            className="h-10 w-10 "
-            user={{
-              name: blog.author?.name || null,
-              image: blog.author?.image || null,
-            }}
-          />
+        <div className="flex items-center justify-between gap-1">
+          {/* profile image  */}
+          <div className="flex items-center gap-1">
+            <UserAvatar
+              className="h-10 w-10 "
+              user={{
+                name: blog.author?.name || null,
+                image: blog.author?.image || null,
+              }}
+            />
 
-          <div className="px-2 pt-1">
-            <p className="font-semibold text-sm">{blog.author?.name}</p>
-            <div className="flex items-center">
-              <p className=" text-xs text-gray-600 ">
-                {formatTimeToNow(new Date(blog?.createdAt))}
-              </p>
-              <Dot className="-mx-1 text-gray-600" />
-              <Globe className="h-3 w-3 text-gray-600" />
+            <div className="px-2 pt-1">
+              <p className="font-semibold text-sm">{blog.author?.name}</p>
+              <div className="flex items-center">
+                <p className=" text-xs text-gray-600 ">
+                  {formatTimeToNow(new Date(blog?.createdAt))}
+                </p>
+                <Dot className="-mx-1 text-gray-600" />
+                <Globe className="h-3 w-3 text-gray-600" />
+              </div>
             </div>
+          </div>
+          {/* option */}
+          <div className="hover:bg-neutral-100 py-2 px-2 rounded-full cursor-pointer">
+            <MoreHorizontal />
           </div>
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <p className="px-3 text-justify leading-relaxed mb-1 font-medium">
+        {/* post content */}
+        <p className="px-7 text-justify leading-relaxed mb-1 font-medium">
           {blog.description}
         </p>
         {blog.image && (
@@ -67,15 +81,21 @@ const BlogsCard = ({ blog }) => {
           </Link>
         )}
 
-        {blog.comments.length !== 0 && (
-          <Link
-            href={`/postComment/${blog.id}`}
-            className="py-3 flex items-center justify-end mr-4 text-sm hover:underline"
-          >
-            {blog.comments.length}{" "}
-            {blog.comments.length === 1 ? "Comment" : "Comments"}
-          </Link>
-        )}
+        {blog.comments.length !== 0 &&
+          (blog?.image ? (
+            <Link
+              href={`/postComment/${blog.id}`}
+              className="py-3 flex items-center justify-end mr-4 text-sm hover:underline"
+            >
+              {blog.comments.length}{" "}
+              {blog.comments.length === 1 ? "Comment" : "Comments"}
+            </Link>
+          ) : (
+            <div className="py-3 flex items-center justify-end mr-4 text-sm hover:underline">
+              {blog.comments.length}{" "}
+              {blog.comments.length === 1 ? "Comment" : "Comments"}
+            </div>
+          ))}
         <Separator className="" />
 
         {/* home post vote comment and share */}

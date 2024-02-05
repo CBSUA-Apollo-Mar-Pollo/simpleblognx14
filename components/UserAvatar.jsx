@@ -18,7 +18,7 @@ const UserAvatar = ({ user, ...props }) => {
       ) : (
         <AvatarFallback>
           <span className="sr-only">{user?.name}</span>
-          <Icons.user className="h-4 w-4" />
+          <Icons.user className="h-4 w-4 text-black" />
         </AvatarFallback>
       )}
     </Avatar>

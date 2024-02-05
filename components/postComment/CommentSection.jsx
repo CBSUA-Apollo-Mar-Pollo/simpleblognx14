@@ -7,8 +7,10 @@ import { cn, formatTimeToNow } from "@/lib/utils";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
 import PostVote from "../post-vote/PostVote";
 import { Button } from "../ui/Button";
+import { usePathname } from "next/navigation";
 
-const CommentSection = ({ session, postId, comments }) => {
+const CommentSection = ({ session, postId, comments, fetch }) => {
+  const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(null);
   useEffect(() => {
     // Remove the body scrollbar when the component mounts
@@ -21,7 +23,7 @@ const CommentSection = ({ session, postId, comments }) => {
   }, []);
   return (
     <>
-      <div className="mt-2 pl-4 pr-1 ">
+      <div className="mt-2 pl-4 pr-1 overflow-auto">
         <div className="text-end py-2">
           <p className="text-neutral-300 text-sm font-medium">
             <span className="px-2 cursor-pointer">Top comments</span>
@@ -44,10 +46,10 @@ const CommentSection = ({ session, postId, comments }) => {
               <div className="flex items-center gap-x-1">
                 <div className="bg-neutral-500 rounded-xl px-4 py-2">
                   <p className="text-white text-sm font-medium">
-                    {comment.author.name}
+                    {comment?.author?.name}
                   </p>
                   <p className="text-white text-sm font-light">
-                    {comment.text}
+                    {comment?.text}
                   </p>
                 </div>
 
@@ -100,7 +102,15 @@ const CommentSection = ({ session, postId, comments }) => {
         ))}
       </div>
 
-      {session?.user && <CreateComment session={session} postId={postId} />}
+      {session?.user && (
+        <div
+          className={`fixed bottom-0 ${
+            pathname.startsWith("/postComment") ? "w-[25vw]" : "w-full"
+          }`}
+        >
+          <CreateComment session={session} postId={postId} fetch={fetch} />
+        </div>
+      )}
     </>
   );
 };

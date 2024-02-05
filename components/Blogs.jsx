@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import AddBlogModal from "./AddBlogModal";
 import BlogsCard from "./BlogsCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";

@@ -10,7 +10,7 @@ import { Button } from "../ui/Button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-const CreateComment = ({ session, postId }) => {
+const CreateComment = ({ session, postId, className, fetch }) => {
   const [textareaValue, setTextareaValue] = useState("");
   const { toast } = useToast();
   const router = useRouter();
@@ -49,6 +49,7 @@ const CreateComment = ({ session, postId }) => {
     onSuccess: () => {
       setTextareaValue("");
       router.refresh();
+      fetch();
     },
   });
 
@@ -63,7 +64,7 @@ const CreateComment = ({ session, postId }) => {
   }, [textareaValue]);
 
   return (
-    <div className="flex gap-x-4 px-4 py-2 fixed bottom-0 bg-neutral-900">
+    <div className={`flex gap-x-4 px-4 py-2 bg-neutral-800 ${className}`}>
       <UserAvatar
         className="h-10 w-10 "
         user={{
@@ -74,10 +75,10 @@ const CreateComment = ({ session, postId }) => {
 
       {/* TODO: create a component for comment section */}
 
-      <div className="relative">
+      <div className="relative flex-1">
         <Textarea
           id="auto-resize-textarea"
-          className="pt-3 pl-4 pb-10 max-h-auto overflow-hidden h-auto rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white w-[19vw] focus-visible:border-neutral-600 resize-none"
+          className="pt-3 pl-4 pb-10 max-h-auto overflow-hidden h-auto rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
           placeholder="write an answer..."
           value={textareaValue}
           onChange={handleTextareaChange}
