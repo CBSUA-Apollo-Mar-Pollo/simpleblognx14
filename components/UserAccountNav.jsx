@@ -32,7 +32,7 @@ const UserAccountNav = ({ user }) => {
         className="bg-white px-2 py-2 min-w-[20vw]"
         align="end"
       >
-        <Link href="/me">
+        <Link href={`/user/${user.id}`}>
           <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer">
             <UserAvatar
               className="h-10 w-10 "

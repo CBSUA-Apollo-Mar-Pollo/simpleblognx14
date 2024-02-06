@@ -26,26 +26,28 @@ const BlogsCard = ({ blog }) => {
       <CardHeader className="py-3">
         <div className="flex items-center justify-between gap-1">
           {/* profile image  */}
-          <div className="flex items-center gap-1">
-            <UserAvatar
-              className="h-10 w-10 "
-              user={{
-                name: blog.author?.name || null,
-                image: blog.author?.image || null,
-              }}
-            />
+          <Link href={`/user/${blog?.author.id}`}>
+            <div className="flex items-center gap-1">
+              <UserAvatar
+                className="h-10 w-10 "
+                user={{
+                  name: blog.author?.name || null,
+                  image: blog.author?.image || null,
+                }}
+              />
 
-            <div className="px-2 pt-1">
-              <p className="font-semibold text-sm">{blog.author?.name}</p>
-              <div className="flex items-center">
-                <p className=" text-xs text-gray-600 ">
-                  {formatTimeToNow(new Date(blog?.createdAt))}
-                </p>
-                <Dot className="-mx-1 text-gray-600" />
-                <Globe className="h-3 w-3 text-gray-600" />
+              <div className="px-2 pt-1">
+                <p className="font-semibold text-sm">{blog.author?.name}</p>
+                <div className="flex items-center">
+                  <p className=" text-xs text-gray-600 ">
+                    {formatTimeToNow(new Date(blog?.createdAt))}
+                  </p>
+                  <Dot className="-mx-1 text-gray-600" />
+                  <Globe className="h-3 w-3 text-gray-600" />
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
           {/* option */}
           <PostOption authorId={blog.author.id} authorName={blog.author.name} />
         </div>

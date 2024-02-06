@@ -4,12 +4,10 @@ import React, { useEffect, useRef } from "react";
 import BlogsCard from "./BlogsCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import { useSession } from "next-auth/react";
 import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
 
-export default function Blogs({ initialPosts }) {
-  const { data: session } = useSession();
+export default function Blogs({ initialPosts, session }) {
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
     root: null,
@@ -49,11 +47,11 @@ export default function Blogs({ initialPosts }) {
           if (index === posts.length - 1) {
             return (
               <li key={blog.id} className="list-none" ref={ref}>
-                <BlogsCard blog={blog} />
+                <BlogsCard blog={blog} session={session} />
               </li>
             );
           } else {
-            return <BlogsCard blog={blog} key={blog.id} />;
+            return <BlogsCard blog={blog} key={blog.id} session={session} />;
           }
         })}
 

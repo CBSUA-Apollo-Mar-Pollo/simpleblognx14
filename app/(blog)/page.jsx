@@ -25,7 +25,7 @@ export default async function Home() {
       </div>
       <div className="mt-[100px] space-y-3 col-span-2">
         <AddBlogModal session={session} />
-        <Blogs initialPosts={blogs} />
+        <Blogs initialPosts={blogs} session={session} />
       </div>
       <div className="mt-[100px] col-span-1 overflow-hidden">
         <PopularCard />

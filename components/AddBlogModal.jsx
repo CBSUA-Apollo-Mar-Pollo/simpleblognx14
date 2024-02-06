@@ -75,7 +75,7 @@ const AddBlogModal = ({ session }) => {
       <DialogTrigger asChild>
         {session && (
           <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white">
-            <Link href={`/user/${session.user.id}`}>
+            <Link href={`/user/${session?.user.id}`}>
               <UserAvatar
                 className="h-10 w-10 "
                 user={{
