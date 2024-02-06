@@ -5,8 +5,6 @@ import UserAvatar from "../UserAvatar";
 import CreateComment from "./CreateComment";
 import { cn, formatTimeToNow } from "@/lib/utils";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
-import PostVote from "../post-vote/PostVote";
-import { Button } from "../ui/Button";
 import { usePathname } from "next/navigation";
 
 const CommentSection = ({ session, postId, comments, fetch }) => {

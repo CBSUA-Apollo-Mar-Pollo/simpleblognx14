@@ -49,7 +49,9 @@ const CreateComment = ({ session, postId, className, fetch }) => {
     onSuccess: () => {
       setTextareaValue("");
       router.refresh();
-      fetch();
+      if (typeof fetch === "function") {
+        fetch();
+      }
     },
   });
 

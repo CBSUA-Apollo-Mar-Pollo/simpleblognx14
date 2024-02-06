@@ -29,28 +29,32 @@ const UserAccountNav = ({ user }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white px-2 py-3 min-w-[20vw]"
+        className="bg-white px-2 py-2 min-w-[20vw]"
         align="end"
       >
-        <div className="flex items-center justify-start gap-x-4 p-2">
-          <UserAvatar
-            className="h-10 w-10 "
-            user={{ name: user.name || null, image: user.image || null }}
-          />
+        <Link href="/me">
+          <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer">
+            <UserAvatar
+              className="h-10 w-10 "
+              user={{ name: user.name || null, image: user.image || null }}
+            />
 
-          <div className="flex flex-col leading-none">
-            {user.name && (
-              <p className="font-bold text-lg text-neutral-600">{user.name}</p>
-            )}
-            {user.email && (
-              <p className="w-[200px] truncate text-sm text-neutral-600">
-                {user.email}
-              </p>
-            )}
-          </div>
-        </div>
+            <div className="flex flex-col leading-none">
+              {user.name && (
+                <p className="font-bold text-lg text-neutral-600">
+                  {user.name}
+                </p>
+              )}
+              {user.email && (
+                <p className="w-[200px] truncate text-sm text-neutral-600">
+                  {user.email}
+                </p>
+              )}
+            </div>
+          </DropdownMenuItem>
+        </Link>
 
-        <DropdownMenuSeparator className="my-4" />
+        <DropdownMenuSeparator className="my-2" />
 
         <Link href="/settings">
           <DropdownMenuItem className="cursor-pointer gap-x-2">

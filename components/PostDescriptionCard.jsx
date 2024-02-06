@@ -46,7 +46,7 @@ const PostDescriptionCard = ({ blog }) => {
       <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none">
         <DialogHeader className="px-4 py-4 border-b-[1px] border-neutral-600">
           <DialogTitle className="text-xl text-center font-semibold text-white">
-            {blog?.author.name.split(" ")[0]}'s Post
+            {blog?.author.name.split(" ")[0]}&apos;s Post
           </DialogTitle>
         </DialogHeader>
 
@@ -106,7 +106,7 @@ const PostDescriptionCard = ({ blog }) => {
           </div>
 
           {/* comment section */}
-          <div className="w-full mb-[15vh]">
+          <div className={`w-full ${session?.user ? "mb-[15vh]" : "mb-5"} `}>
             <CommentSection
               session={session}
               postId={blog.id}

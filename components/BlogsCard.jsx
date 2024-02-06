@@ -15,6 +15,7 @@ import CommentSection from "./postComment/CommentSection";
 import PostVote from "./post-vote/PostVote";
 import Link from "next/link";
 import PostDescriptionCard from "./PostDescriptionCard";
+import PostOption from "./PostOption";
 // import { Button } from "./ui/Button";
 
 const BlogsCard = ({ blog }) => {
@@ -46,9 +47,7 @@ const BlogsCard = ({ blog }) => {
             </div>
           </div>
           {/* option */}
-          <div className="hover:bg-neutral-100 py-2 px-2 rounded-full cursor-pointer">
-            <MoreHorizontal />
-          </div>
+          <PostOption authorId={blog.author.id} authorName={blog.author.name} />
         </div>
       </CardHeader>
       <CardContent className="p-0">
