@@ -1,16 +1,16 @@
-import UserAvatar from "@/components/UserAvatar";
-import ProfilePicture from "@/components/UserProfile/ProfilePicture";
-import { Button } from "@/components/ui/Button";
-import { Separator } from "@/components/ui/Separator";
-import { getAuthSession } from "@/lib/auth";
-import { Camera, Pen } from "lucide-react";
-import { redirect } from "next/navigation";
+import ProfilePicture from "@/components/UserProfile/ProfilePicture/ProfilePicture";
 import React from "react";
+import { UTApi } from "uploadthing/server";
 
 const UserProfile = async ({ user }) => {
+  const deleteImage = async (image) => {
+    "use server";
+    const utapi = new UTApi();
+    await utapi.deleteFiles(image.substring(image.lastIndexOf("/") + 1));
+  };
   return (
-    <div className="flex justify-center mt-[60px] bg-neutral-100">
-      <ProfilePicture user={user} />
+    <div className="mt-[60px] bg-neutral-100 ">
+      <ProfilePicture user={user} deleteImage={deleteImage} />
     </div>
   );
 };

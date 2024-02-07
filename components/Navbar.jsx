@@ -11,7 +11,7 @@ import { Icons } from "./Icons";
 const Navbar = async () => {
   const session = await getAuthSession();
   return (
-    <div className="fixed top-0 inset-x-0 h-fit z-10 bg-white shadow-sm ">
+    <div className="fixed top-0 inset-x-0 h-fit z-20 bg-white shadow-sm ">
       <div className="container max-w-full h-full mx-auto px-[30px] flex items-center justify-between gap-2">
         {/* logo and search bar  */}
         <div className="my-2.5 flex items-center gap-x-2">

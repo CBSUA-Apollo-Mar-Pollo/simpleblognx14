@@ -87,3 +87,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+.scroll-container::-webkit-scrollbar {
+  width: 0; /* Hide scrollbar */
+}
+/* Optionally, you can add additional styling for the scrollbar track and thumb */
+/* .scroll-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 8px;
+} */
