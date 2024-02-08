@@ -24,7 +24,7 @@ const UserAccountNav = ({ user }) => {
       <DropdownMenuTrigger>
         <UserAvatar
           className="h-10 w-10 "
-          user={{ name: user.name || null, image: user.image || null }}
+          user={{ name: user.name || null, image: user?.image || null }}
         />
       </DropdownMenuTrigger>
 
@@ -36,18 +36,18 @@ const UserAccountNav = ({ user }) => {
           <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer">
             <UserAvatar
               className="h-10 w-10 "
-              user={{ name: user.name || null, image: user.image || null }}
+              user={{ name: user.name || null, image: user?.image || null }}
             />
 
             <div className="flex flex-col leading-none">
-              {user.name && (
+              {user?.name && (
                 <p className="font-bold text-lg text-neutral-600">
-                  {user.name}
+                  {user?.name}
                 </p>
               )}
-              {user.email && (
+              {user?.email && (
                 <p className="w-[200px] truncate text-sm text-neutral-600">
-                  {user.email}
+                  {user?.email}
                 </p>
               )}
             </div>

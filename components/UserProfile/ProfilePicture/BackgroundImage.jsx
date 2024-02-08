@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
+  console.log(user);
   const [dragging, setDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
   const containerRef = useRef(null);
@@ -57,7 +58,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                 className="w-[70vw] max-h-screen cursor-move"
                 draggable="false"
                 ref={imageRef}
-                onMouseMove={getImagePosition} // Call when the mouse moves over the image
               />
             </div>
           </div>
@@ -97,7 +97,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           {/* profile pic */}
           <div className="absolute bottom-0 top-[22vw] left-[4vw]">
             <UserAvatar
-              className="h-44 w-44 border-4 border-neutral-800"
+              className="h-44 w-44 border-4 border-neutral-600"
               user={{
                 name: user?.name || null,
                 image: user?.image || null,
@@ -106,7 +106,38 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           </div>
         </div>
       ) : (
-        <div className="w-[70vw] bg-neutral-900 h-[60vh] rounded-b-2xl relative">
+        <div className="relative">
+          {user.backgroundImage ? (
+            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
+              <div className="scroll-container">
+                <Image
+                  sizes="100vw"
+                  width={0}
+                  height={0}
+                  src={user.backgroundImage}
+                  alt="profile image"
+                  referrerPolicy="no-referrer"
+                  className="w-[70vw] max-h-screen cursor-move"
+                  draggable="false"
+                  ref={imageRef}
+                />
+              </div>
+            </div>
+          ) : (
+            <div
+              className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={() => setDragging(false)}
+              ref={containerRef}
+            >
+              <div className="scroll-container">
+                <div className="w-[70vw] max-h-screen cursor-move" />
+              </div>
+            </div>
+          )}
+
           {session?.user.id === user.id && (
             <UploadButton
               className="absolute bottom-5 right-10 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
@@ -121,7 +152,9 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                       <div className="flex items-center gap-x-2">
                         <Camera className="text-white" fill="black" />
                         <span className="font-semibold text-sm">
-                          Add cover photo
+                          {user.backgroundImage
+                            ? "Edit cover photo"
+                            : "Add cover photo"}
                         </span>
                       </div>
                     );
@@ -142,7 +175,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           {/* profile pic */}
           <div className="absolute bottom-0 top-[22vw] left-[4vw]">
             <UserAvatar
-              className="h-44 w-44 border-4 border-neutral-800"
+              className="h-44 w-44 border-4 border-neutral-700"
               user={{
                 name: user?.name || null,
                 image: user?.image || null,

@@ -18,7 +18,7 @@ import PostDescriptionCard from "./PostDescriptionCard";
 import PostOption from "./PostOption";
 // import { Button } from "./ui/Button";
 
-const BlogsCard = ({ blog }) => {
+const BlogsCard = ({ blog, session }) => {
   // console.log(blog);
   // const pRef = useRef(null);
   return (
@@ -37,7 +37,7 @@ const BlogsCard = ({ blog }) => {
               />
 
               <div className="px-2 pt-1">
-                <p className="font-semibold text-sm">{blog.author?.name}</p>
+                <p className="font-semibold text-sm">{blog?.author?.name}</p>
                 <div className="flex items-center">
                   <p className=" text-xs text-gray-600 ">
                     {formatTimeToNow(new Date(blog?.createdAt))}
@@ -49,7 +49,12 @@ const BlogsCard = ({ blog }) => {
             </div>
           </Link>
           {/* option */}
-          <PostOption authorId={blog.author.id} authorName={blog.author.name} />
+          {session?.user && (
+            <PostOption
+              authorId={blog.author.id}
+              authorName={blog.author.name}
+            />
+          )}
         </div>
       </CardHeader>
       <CardContent className="p-0">

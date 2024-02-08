@@ -24,7 +24,7 @@ import { SelectContent } from "@radix-ui/react-select";
 import { ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 
-const AddBlogModal = ({ session }) => {
+const AddBlogModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
@@ -72,26 +72,24 @@ const AddBlogModal = ({ session }) => {
   });
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {session && (
-          <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white">
-            <Link href={`/user/${session?.user.id}`}>
-              <UserAvatar
-                className="h-10 w-10 "
-                user={{
-                  name: session.user.name || null,
-                  image: session.user.image || null,
-                }}
-              />
-            </Link>
-            <Input
-              className="rounded-full "
-              placeholder={`What's on your mind, ${
-                session.user.name.split(" ")[0]
-              }`}
+      <DialogTrigger className="w-full">
+        <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white">
+          <Link href={`/user/${session?.user.id}`}>
+            <UserAvatar
+              className="h-10 w-10 "
+              user={{
+                name: session?.user.name || null || user?.name,
+                image: session?.user.image || null || user?.image,
+              }}
             />
-          </div>
-        )}
+          </Link>
+          <Input
+            className="rounded-full "
+            placeholder={`What's on your mind, ${
+              session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
+            }`}
+          />
+        </div>
       </DialogTrigger>
       <DialogContent className="p-2">
         <DialogHeader className="py-2 px-4">
@@ -103,13 +101,13 @@ const AddBlogModal = ({ session }) => {
             <UserAvatar
               className="h-10 w-10 "
               user={{
-                name: session?.user.name || null,
-                image: session?.user.image || null,
+                name: session?.user.name || null || user?.name,
+                image: session?.user.image || null || user?.image,
               }}
             />
             <div className="space-y-1">
               <p className="font-semibold text-gray-700 text-base pl-1">
-                {session?.user.name}
+                {session?.user.name || user?.name}
               </p>
               <Select>
                 <SelectTrigger className="h-6 w-24 font-medium text-sm focus:ring-0">
@@ -136,7 +134,7 @@ const AddBlogModal = ({ session }) => {
               onChange={(e) => setDescription(e.target.value)}
               rows={1}
               placeholder={`What's on your mind, ${
-                session?.user.name.split(" ")[0]
+                session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
               }?`}
               className="focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-24 text-base border-none resize-none"
             />

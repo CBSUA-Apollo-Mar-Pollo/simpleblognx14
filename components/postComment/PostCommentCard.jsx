@@ -38,7 +38,11 @@ const PostCommentCard = async ({ post }) => {
             session?.user ? "pb-[22vh]" : "pb-[10vh]"
           }`}
         >
-          <PostDescription post={post} commentAmt={comments.length} />
+          <PostDescription
+            post={post}
+            commentAmt={comments.length}
+            session={session}
+          />
 
           <Separator className="bg-gray-700" />
 

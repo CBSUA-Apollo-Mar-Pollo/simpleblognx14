@@ -16,7 +16,7 @@ const Navbar = async () => {
         {/* logo and search bar  */}
         <div className="my-2.5 flex items-center gap-x-2">
           <Link href="/" className="font-bold">
-            <span className="py-[2px] px-4 rounded-full bg-yellow-400 text-3xl">
+            <span className=" px-3.5 rounded-full bg-yellow-400 text-3xl">
               E
             </span>
           </Link>
@@ -24,7 +24,7 @@ const Navbar = async () => {
             <Search className="absolute left-4 h-6 w-5 text-gray-500 z-20" />
             <Input
               placeholder="Search Posts"
-              className="pl-12 focus-visible:ring-transparent border border-gray-300 rounded-full w-[300px] text-sm"
+              className="pl-12 focus-visible:ring-transparent border border-gray-300 rounded-full w-[270px] text-sm"
             />
           </div>
         </div>

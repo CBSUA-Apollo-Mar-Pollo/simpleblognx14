@@ -16,9 +16,11 @@ const UserAvatar = ({ user, ...props }) => {
           />
         </div>
       ) : (
-        <AvatarFallback>
+        <AvatarFallback className="bg-neutral-200">
           <span className="sr-only">{user?.name}</span>
-          <Icons.user className="h-4 w-4 text-black" />
+          <div className="h-full w-full">
+            <Image src="/user.png" fill className="h-full w-full" />
+          </div>
         </AvatarFallback>
       )}
     </Avatar>

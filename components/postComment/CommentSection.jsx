@@ -51,13 +51,15 @@ const CommentSection = ({ session, postId, comments, fetch }) => {
                   </p>
                 </div>
 
-                <div
-                  className={`hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer ${
-                    isHovered === index ? "block" : "opacity-0"
-                  }`}
-                >
-                  <MoreHorizontal className="text-white" />
-                </div>
+                {session?.user && (
+                  <div
+                    className={`hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer ${
+                      isHovered === index ? "block" : "opacity-0"
+                    }`}
+                  >
+                    <MoreHorizontal className="text-white" />
+                  </div>
+                )}
               </div>
 
               <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2 py-2">

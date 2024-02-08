@@ -19,12 +19,12 @@ export default async function Home() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
   return (
-    <div className="grid grid-cols-4 gap-x-[20rem] bg-stone-50">
+    <div className="grid grid-cols-4 gap-x-[20rem] ">
       <div className="mt-[60px] col-span-1  ">
         <Sidebar session={session} />
       </div>
       <div className="mt-[100px] space-y-3 col-span-2">
-        <AddBlogModal session={session} />
+        {session?.user && <AddBlogModal session={session} />}
         <Blogs initialPosts={blogs} session={session} />
       </div>
       <div className="mt-[100px] col-span-1 overflow-hidden">

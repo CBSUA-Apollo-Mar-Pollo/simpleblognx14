@@ -9,7 +9,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 
-const PostDescription = ({ post, commentAmt }) => {
+const PostDescription = ({ post, commentAmt, session }) => {
   return (
     <div className="my-2 mx-3">
       <div className="flex items-center justify-between gap-1">
@@ -34,9 +34,11 @@ const PostDescription = ({ post, commentAmt }) => {
           </div>
         </div>
 
-        <div className="hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
-          <MoreHorizontal className="text-white" />
-        </div>
+        {session?.user && (
+          <div className="hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
+            <MoreHorizontal className="text-white" />
+          </div>
+        )}
       </div>
 
       <div className="text-white my-2 mb-5">
