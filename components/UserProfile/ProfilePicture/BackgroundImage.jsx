@@ -47,6 +47,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             onMouseLeave={() => setDragging(false)}
             ref={containerRef}
           >
+            {/* show the image that will be uploaded  */}
             <div className="scroll-container">
               <Image
                 sizes="100vw"
@@ -107,6 +108,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
         </div>
       ) : (
         <div className="relative">
+          {/* if the uploaded a cover photo */}
           {user.backgroundImage ? (
             <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
               <div className="scroll-container">
@@ -124,6 +126,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
               </div>
             </div>
           ) : (
+            // show a blank cover photo
             <div
               className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900"
               onMouseDown={handleMouseDown}
