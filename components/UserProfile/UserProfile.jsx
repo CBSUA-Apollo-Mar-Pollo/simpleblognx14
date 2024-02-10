@@ -7,6 +7,7 @@ import UserAllPosts from "./UserAllPosts";
 import { getAuthSession } from "@/lib/auth";
 import AddBlogModal from "../AddBlogModal";
 import UserDetails from "./UserDetails";
+import axios from "axios";
 
 const UserProfile = async ({ user }) => {
   const session = await getAuthSession();
@@ -25,6 +26,14 @@ const UserProfile = async ({ user }) => {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
+  const getCoverPhoto = await db.blog.findFirst({
+    where: {
+      image: user.backgroundImage,
+    },
+  });
+
+  user.coverPhotoId = getCoverPhoto?.id;
+
   // delete image in upload thing if the user click the cancel button
   const deleteImage = async (image) => {
     "use server";
@@ -33,7 +42,7 @@ const UserProfile = async ({ user }) => {
   };
 
   return (
-    <div className="mt-[60px] bg-neutral-100">
+    <div className="mt-[60px] ">
       <ProfilePicture user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}

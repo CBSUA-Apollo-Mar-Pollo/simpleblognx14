@@ -1,3 +1,4 @@
+import { COMMENT_PAGE } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { commentValidator } from "@/lib/validators/commentValidator";
@@ -17,6 +18,7 @@ export async function POST(req) {
       orderBy: {
         createdAt: "desc",
       },
+      take: COMMENT_PAGE,
     });
 
     return new Response(JSON.stringify(comments));

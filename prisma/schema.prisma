@@ -40,9 +40,10 @@ model User {
   password        String?
   birthdate       DateTime?
 
-  accounts Account[]
-  blogs    Blog[]
-  Comment  Comment[]
+  accounts         Account[]
+  blogs            Blog[]
+  Comment          Comment[]
+  UserPostedImages UserPostedImages[]
 }
 
 model Blog {
@@ -55,6 +56,16 @@ model Blog {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
+  comments Comment[]
+}
+
+model UserPostedImages {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  image     String?
+
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String
   comments Comment[]
 }
 
@@ -74,7 +85,9 @@ model Comment {
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  commentId String?
+  commentId          String?
+  UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
+  userPostedImagesId String?
 }
 
 model verificationToken {

@@ -6,6 +6,7 @@ import VoteCommentAndShare from "./VoteCommentAndShare";
 import CommentSection from "./CommentSection";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
+import { COMMENT_PAGE } from "@/config";
 
 const PostCommentCard = async ({ post }) => {
   const session = await getAuthSession();
@@ -19,6 +20,7 @@ const PostCommentCard = async ({ post }) => {
     orderBy: {
       createdAt: "desc",
     },
+    take: COMMENT_PAGE,
   });
   return (
     <div className="grid grid-cols-4 relative">
@@ -53,7 +55,7 @@ const PostCommentCard = async ({ post }) => {
           <CommentSection
             session={session}
             postId={post.id}
-            comments={comments}
+            initialComments={comments}
           />
         </div>
       </div>

@@ -22,6 +22,13 @@ export async function POST(req) {
       },
     });
 
+    await db.userPostedImages.create({
+      data: {
+        image: imageUrl,
+        authorId: session.user.id,
+      },
+    });
+
     return new Response("OK");
   } catch (error) {
     console.log(error);

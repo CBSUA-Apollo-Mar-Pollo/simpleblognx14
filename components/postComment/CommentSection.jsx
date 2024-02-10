@@ -6,8 +6,11 @@ import CreateComment from "./CreateComment";
 import { cn, formatTimeToNow } from "@/lib/utils";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { COMMENT_PAGE } from "@/config";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Button } from "../ui/Button";
 
-const CommentSection = ({ session, postId, comments, fetch }) => {
+const CommentSection = ({ session, postId, initialComments, getComments }) => {
   const pathname = usePathname();
   const [isHovered, setIsHovered] = useState(null);
   useEffect(() => {
@@ -19,6 +22,30 @@ const CommentSection = ({ session, postId, comments, fetch }) => {
       document.body.style.overflow = "visible";
     };
   }, []);
+
+  const fetchComments = async ({ pageParam }) => {
+    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${postId}`;
+
+    const res = await fetch(query);
+
+    return res.json();
+  };
+
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["viewMoreComments"],
+      queryFn: fetchComments,
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        const maxPage = lastPage?.length;
+        const nextPage = allPages?.length + 1;
+        return maxPage ? nextPage : undefined;
+      },
+      initialData: { pages: [initialComments], pageParams: [1] },
+    });
+
+  const comments = data?.pages?.flatMap((page) => page) ?? initialComments;
+
   return (
     <>
       <div className="mt-2 pl-4 pr-1 overflow-auto">
@@ -102,13 +129,27 @@ const CommentSection = ({ session, postId, comments, fetch }) => {
         ))}
       </div>
 
+      {hasNextPage && (
+        <Button
+          variant="ghost"
+          className="text-white hover:underline hover:bg-neutral-800 focus:ring-0 focus:outline-none"
+          onClick={() => fetchNextPage()}
+        >
+          {comments.length <= COMMENT_PAGE - 1 ? "" : "View more comments"}
+        </Button>
+      )}
+
       {session?.user && (
         <div
           className={`fixed bottom-0 ${
             pathname.startsWith("/postComment") ? "w-[25vw]" : "w-full"
           }`}
         >
-          <CreateComment session={session} postId={postId} fetch={fetch} />
+          <CreateComment
+            session={session}
+            postId={postId}
+            getComments={getComments}
+          />
         </div>
       )}
     </>

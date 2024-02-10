@@ -8,10 +8,14 @@ import BackgroundImage from "./BackgroundImage";
 
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 const ProfilePicture = ({ user, deleteImage }) => {
   const { data: session } = useSession();
   const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter();
+  const toast = useToast();
 
   const { mutate: saveCoverImage, isLoading } = useMutation({
     mutationFn: async () => {
@@ -30,15 +34,28 @@ const ProfilePicture = ({ user, deleteImage }) => {
         variant: "destructive",
       });
     },
-    onSuccess: () => {
-      setImageUrl("");
-      router.refresh();
-      toast({
-        description: "Account profile has been updated",
-        variant: "success",
-      });
+    onSuccess: async () => {
+      const payload = {
+        description: `${user.name} change his cover photo`,
+        imageUrl: imageUrl,
+      };
+      axios
+        .post("/api/blog", payload)
+        .then((response) => {
+          // Success
+          window.location.reload();
+        })
+        .catch((error) => {
+          setImageUrl("");
+          router.refresh();
+          return toast({
+            description: "Something went wrong",
+            variant: "destructive",
+          });
+        });
     },
   });
+
   return (
     <div className="relative">
       {imageUrl.length !== 0 && (

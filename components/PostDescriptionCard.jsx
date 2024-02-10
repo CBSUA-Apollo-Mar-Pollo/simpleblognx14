@@ -20,7 +20,7 @@ import axios from "axios";
 const PostDescriptionCard = ({ blog }) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
-  const { mutate: fetch } = useMutation({
+  const { mutate: getComments } = useMutation({
     mutationFn: async () => {
       const payload = { postId: blog.id };
       const { data } = await axios.post(
@@ -35,7 +35,7 @@ const PostDescriptionCard = ({ blog }) => {
   });
 
   return (
-    <Dialog onOpenChange={() => fetch()}>
+    <Dialog onOpenChange={() => getComments()}>
       <DialogTrigger>
         <div className="flex items-center gap-2 hover:bg-gray-200 px-10  py-3 rounded cursor-pointer">
           <MessageCircle className="h-6 w-6" />
@@ -110,8 +110,8 @@ const PostDescriptionCard = ({ blog }) => {
             <CommentSection
               session={session}
               postId={blog.id}
-              comments={comments}
-              fetch={fetch}
+              initialComments={comments}
+              getComments={getComments}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ import { Button } from "../ui/Button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-const CreateComment = ({ session, postId, className, fetch }) => {
+const CreateComment = ({ session, postId, className, getComments }) => {
   const [textareaValue, setTextareaValue] = useState("");
   const { toast } = useToast();
   const router = useRouter();
@@ -49,8 +49,8 @@ const CreateComment = ({ session, postId, className, fetch }) => {
     onSuccess: () => {
       setTextareaValue("");
       router.refresh();
-      if (typeof fetch === "function") {
-        fetch();
+      if (typeof getComments === "function") {
+        getComments();
       }
     },
   });

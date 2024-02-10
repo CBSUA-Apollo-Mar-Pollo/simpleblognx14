@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, buttonVariants } from "./ui/Button";
 import { Separator } from "./ui/Separator";
 import { usePathname } from "next/navigation";
@@ -14,8 +14,21 @@ import Link from "next/link";
 
 const Sidebar = ({ session }) => {
   const pathname = usePathname();
+  const [toggleScrollBar, setToggleScrollBar] = useState(false);
+  const handleScrollBar = () => {
+    setToggleScrollBar(true);
+  };
+  const handleMouseLeave = () => {
+    setToggleScrollBar(false);
+  };
   return (
-    <div className="fixed left-0 w-[22vw] h-screen z-10 shadow-sm px-4 max-h-[90vh] hover:overflow-auto bg-white">
+    <div
+      className={`sticky top-10 w-[22vw] h-screen z-10 shadow-sm px-4 max-h-[95vh] ${
+        toggleScrollBar ? "overflow-auto" : "overflow-hidden"
+      } bg-white`}
+      onMouseEnter={handleScrollBar}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="space-y-2 pt-7">
         {/* different side bar depends if the user is log in or not */}
         {session?.user

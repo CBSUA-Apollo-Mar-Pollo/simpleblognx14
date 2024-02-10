@@ -5,7 +5,18 @@ import { buttonVariants } from "./ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
 import { Input } from "./ui/Input";
-import { Bell, Grip, Search } from "lucide-react";
+import {
+  Album,
+  Bell,
+  Gamepad2,
+  Grip,
+  Headphones,
+  Home,
+  Newspaper,
+  Play,
+  PlayCircle,
+  Search,
+} from "lucide-react";
 import { Icons } from "./Icons";
 
 const Navbar = async () => {
@@ -24,9 +35,17 @@ const Navbar = async () => {
             <Search className="absolute left-4 h-6 w-5 text-gray-500 z-20" />
             <Input
               placeholder="Search Posts"
-              className="pl-12 focus-visible:ring-transparent border border-gray-300 rounded-full w-[270px] text-sm"
+              className="pl-12 focus-visible:ring-transparent border border-gray-300 rounded-full w-[250px] text-sm"
             />
           </div>
+        </div>
+
+        <div className="flex space-x-28 mr-[10rem] text-neutral-600">
+          <Home />
+          <PlayCircle />
+          <Gamepad2 />
+          <Newspaper />
+          <Album />
         </div>
 
         {/* notification and profile pic */}

@@ -1,11 +1,11 @@
 import UserAvatar from "@/components/UserAvatar";
 import { UploadButton } from "@uploadthing/react";
-import { Camera } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useRef, useState } from "react";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
-  console.log(user);
   const [dragging, setDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
   const containerRef = useRef(null);
@@ -65,7 +65,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
 
           {session?.user.id === user.id && (
             <UploadButton
-              className="absolute bottom-5 right-10 z-10 ut-button:bg-white ut-button:text-black ut-button:w-[14rem] ut-button:hover:bg-gray-100 ut-button:px-1"
+              className="absolute bottom-5 right-10 z-10 ut-button:bg-white ut-button:text-black ut-button:w-[14rem] ut-button:hover:bg-gray-100 ut-button:px-1 ut-button:ut-uploading:text-red-300"
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
                 setImageUrl(res[0].url);
@@ -80,12 +80,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                           Change cover photo
                         </span>
                       </div>
-                    );
-                  }
-
-                  if (isUploading) {
-                    return (
-                      <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
                     );
                   }
                 },
@@ -111,7 +105,10 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           {/* if the uploaded a cover photo */}
           {user.backgroundImage ? (
             <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
-              <div className="scroll-container">
+              <Link
+                href={`/postComment/${user.coverPhotoId}`}
+                className="scroll-container"
+              >
                 <Image
                   sizes="100vw"
                   width={0}
@@ -119,22 +116,14 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                   src={user.backgroundImage}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="w-[70vw] max-h-screen cursor-move"
-                  draggable="false"
+                  className="w-[80vw] max-h-fit"
                   ref={imageRef}
                 />
-              </div>
+              </Link>
             </div>
           ) : (
             // show a blank cover photo
-            <div
-              className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900"
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={() => setDragging(false)}
-              ref={containerRef}
-            >
+            <div className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
               <div className="scroll-container">
                 <div className="w-[70vw] max-h-screen cursor-move" />
               </div>
