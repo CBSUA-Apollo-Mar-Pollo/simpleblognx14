@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "../../ui/Button";
+import { Button, buttonVariants } from "../../ui/Button";
 import { Separator } from "../../ui/Separator";
 import { useSession } from "next-auth/react";
 import BackgroundImage from "./BackgroundImage";
-
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import ProfileButtons from "./ProfileButtons";
+import { useRouter } from "next/navigation";
 
 const ProfilePicture = ({ user, deleteImage }) => {
   const { data: session } = useSession();
@@ -96,32 +96,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
         <Separator className="mt-10 bg-neutral-300" />
 
         <div className="mr-10">
-          <ul className="flex justify-end text-neutral-800 py-1">
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold"
-            >
-              Post
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold"
-            >
-              About
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold"
-            >
-              Photos
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold"
-            >
-              More
-            </Button>
-          </ul>
+          <ProfileButtons userId={user.id} />
         </div>
       </div>
     </div>

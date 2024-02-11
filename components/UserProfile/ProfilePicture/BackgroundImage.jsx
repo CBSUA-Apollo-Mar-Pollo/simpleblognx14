@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react";
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
+  const [translateY, setTranslateY] = useState(0); // State to store translateY value
   const containerRef = useRef(null);
   const imageRef = useRef(null);
 
@@ -21,6 +22,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
       const deltaY = e.clientY - dragStartY;
       containerRef.current.scrollTop -= deltaY;
       setDragStartY(e.clientY);
+      setTranslateY((prevTranslateY) => prevTranslateY + deltaY); // Accumulate deltaY
     }
   };
 
@@ -34,13 +36,16 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
       //   console.log("Image position:", imageRect);
     }
   };
+
+  console.log(translateY);
+
   return (
     <div className="relative flex justify-center">
       {/* div if user is not yet to upload background image */}
       {imageUrl.length ? (
         <div className="relative">
           <div
-            className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900"
+            className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -56,7 +61,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                 src={imageUrl}
                 alt="profile image"
                 referrerPolicy="no-referrer"
-                className="w-[70vw] max-h-screen cursor-move"
+                className="w-[80vw] max-h-fit"
                 draggable="false"
                 ref={imageRef}
               />
@@ -104,7 +109,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
         <div className="relative">
           {/* if the uploaded a cover photo */}
           {user.backgroundImage ? (
-            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
+            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 relative">
               <Link
                 href={`/postComment/${user.coverPhotoId}`}
                 className="scroll-container"
@@ -116,7 +121,8 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                   src={user.backgroundImage}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="w-[80vw] max-h-fit"
+                  className="w-[80vw] max-h-fit "
+                  // style={{ transform: `translateY(-721px)` }}
                   ref={imageRef}
                 />
               </Link>

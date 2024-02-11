@@ -40,7 +40,7 @@ const Navbar = async () => {
           </div>
         </div>
 
-        <div className="flex space-x-28 mr-[10rem] text-neutral-600">
+        <div className="flex space-x-28 mr-[12rem] text-neutral-600">
           <Home />
           <PlayCircle />
           <Gamepad2 />

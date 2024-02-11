@@ -2,12 +2,13 @@ import AddBlogModal from "@/components/AddBlogModal";
 import ProfilePicture from "@/components/UserProfile/ProfilePicture/ProfilePicture";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserDetails from "@/components/UserProfile/UserDetails";
+import UserPhotos from "@/components/UserProfile/UserPhotos";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
 
-const UserProfilePage = async ({ params }) => {
+const UserProfilePagePhotos = async ({ params }) => {
   const session = await getAuthSession();
   const user = await db.user.findFirst({
     where: {
@@ -16,20 +17,6 @@ const UserProfilePage = async ({ params }) => {
     include: {
       blogs: true,
     },
-  });
-  const initialPosts = await db.blog.findMany({
-    // get all posts by user
-    where: {
-      authorId: user.id,
-    },
-    include: {
-      comments: true,
-      author: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
   const getCoverPhoto = await db.blog.findFirst({
@@ -52,23 +39,11 @@ const UserProfilePage = async ({ params }) => {
       <ProfilePicture user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2">
-        <div className="col-span-3 relative">
-          <div className="sticky top-20">
-            <UserDetails />
-          </div>
-        </div>
-        <div className="mx-2 space-y-2 col-span-4">
-          {session?.user.id === user.id && <AddBlogModal user={user} />}
-          <UserAllPosts
-            initialPosts={initialPosts}
-            userId={user.id}
-            session={session}
-          />
-        </div>
+      <div className="bg-neutral-200 px-60 py-5">
+        <UserPhotos userId={params.userId} />
       </div>
     </div>
   );
 };
 
-export default UserProfilePage;
+export default UserProfilePagePhotos;

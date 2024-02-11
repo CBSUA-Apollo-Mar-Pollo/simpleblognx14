@@ -31,14 +31,14 @@ const PostOption = ({ authorId, authorName }) => {
         className=" rounded-md min-w-[15rem] text-neutral-700 p-2"
         align="end"
       >
-        <DropdownMenuItem className="cursor-pointer gap-x-2 py-2">
+        <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start">
           <span className="">
             <Pin />
           </span>
           <span className="font-bold ">Pin post</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer gap-x-2 py-2">
-          <span className="">
+        <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start">
+          <span className="mt-0.5">
             <Bookmark />
           </span>
           <div>
@@ -64,8 +64,8 @@ const PostOption = ({ authorId, authorName }) => {
 
               <h6 className="font-bold">Move to archive</h6>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer gap-x-2 py-2">
-              <span className="">
+            <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start">
+              <span className="mt-0.5">
                 <Trash2 />
               </span>
               <div>
