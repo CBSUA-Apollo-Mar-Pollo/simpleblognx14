@@ -11,7 +11,7 @@ import { AlertTriangle, MoveLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const page = () => {
+const ErrorPage = () => {
   return (
     <div className="h-full w-full">
       <div className="flex flex-col items-center justify-center h-screen ">
@@ -39,4 +39,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ErrorPage;

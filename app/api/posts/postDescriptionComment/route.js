@@ -21,7 +21,7 @@ export async function POST(req) {
       take: COMMENT_PAGE,
     });
 
-    return new Response(JSON.stringify(comments));
+    return new Response(JSON.stringify(comments), { status: 200 });
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

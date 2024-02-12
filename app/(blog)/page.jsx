@@ -6,7 +6,7 @@ import PopularCard from "@/components/PopularCard";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import AddBlogModal from "@/components/AddBlogModal";
 
-export default async function Home() {
+export default async function HomePage() {
   const session = await getAuthSession();
   const blogs = await db.blog.findMany({
     include: {

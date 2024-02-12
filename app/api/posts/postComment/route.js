@@ -23,7 +23,7 @@ export async function PATCH(req) {
       },
     });
 
-    return new Response("OK");
+    return new Response("OK", { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response("Invalid request data passed", { status: 422 });

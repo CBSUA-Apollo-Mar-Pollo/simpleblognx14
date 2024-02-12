@@ -1,15 +1,10 @@
-import AddBlogModal from "@/components/AddBlogModal";
 import ProfilePicture from "@/components/UserProfile/ProfilePicture/ProfilePicture";
-import UserAllPosts from "@/components/UserProfile/UserAllPosts";
-import UserDetails from "@/components/UserProfile/UserDetails";
 import UserPhotos from "@/components/UserProfile/UserPhotos";
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
+import { UTApi } from "uploadthing/server";
 
 const UserProfilePagePhotos = async ({ params }) => {
-  const session = await getAuthSession();
   const user = await db.user.findFirst({
     where: {
       id: params.userId,

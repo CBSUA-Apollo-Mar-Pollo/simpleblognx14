@@ -1,9 +1,7 @@
-import UserAvatar from "@/components/UserAvatar";
-import { UploadButton } from "@uploadthing/react";
-import { Camera, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
+import UploadButtonAndProfilePic from "./UploadButtonAndProfilePic";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);
@@ -37,8 +35,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
     }
   };
 
-  console.log(translateY);
-
   return (
     <div className="relative flex justify-center">
       {/* div if user is not yet to upload background image */}
@@ -68,42 +64,11 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           </div>
 
-          {session?.user.id === user.id && (
-            <UploadButton
-              className="absolute bottom-5 right-10 z-10 ut-button:bg-white ut-button:text-black ut-button:w-[14rem] ut-button:hover:bg-gray-100 ut-button:px-1 ut-button:ut-uploading:text-red-300"
-              endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                setImageUrl(res[0].url);
-              }}
-              content={{
-                button({ ready, isUploading }) {
-                  if (ready) {
-                    return (
-                      <div className="flex items-center gap-x-2">
-                        <Camera className="text-white" fill="black" />
-                        <span className="font-semibold text-sm">
-                          Change cover photo
-                        </span>
-                      </div>
-                    );
-                  }
-                },
-                allowedContent({ ready, fileTypes, isUploading }) {
-                  return "";
-                },
-              }}
-            />
-          )}
-          {/* profile pic */}
-          <div className="absolute bottom-0 top-[22vw] left-[4vw]">
-            <UserAvatar
-              className="h-44 w-44 border-4 border-neutral-600"
-              user={{
-                name: user?.name || null,
-                image: user?.image || null,
-              }}
-            />
-          </div>
+          <UploadButtonAndProfilePic
+            setImageUrl={setImageUrl}
+            user={user}
+            session={session}
+          />
         </div>
       ) : (
         <div className="relative">
@@ -136,50 +101,11 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           )}
 
-          {session?.user.id === user.id && (
-            <UploadButton
-              className="absolute bottom-5 right-10 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
-              endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                setImageUrl(res[0].url);
-              }}
-              content={{
-                button({ ready, isUploading }) {
-                  if (ready) {
-                    return (
-                      <div className="flex items-center gap-x-2">
-                        <Camera className="text-white" fill="black" />
-                        <span className="font-semibold text-sm">
-                          {user.backgroundImage
-                            ? "Edit cover photo"
-                            : "Add cover photo"}
-                        </span>
-                      </div>
-                    );
-                  }
-
-                  if (isUploading) {
-                    return (
-                      <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
-                    );
-                  }
-                },
-                allowedContent({ ready, fileTypes, isUploading }) {
-                  return "";
-                },
-              }}
-            />
-          )}
-          {/* profile pic */}
-          <div className="absolute bottom-0 top-[22vw] left-[4vw]">
-            <UserAvatar
-              className="h-44 w-44 border-4 border-neutral-700"
-              user={{
-                name: user?.name || null,
-                image: user?.image || null,
-              }}
-            />
-          </div>
+          <UploadButtonAndProfilePic
+            setImageUrl={setImageUrl}
+            user={user}
+            session={session}
+          />
         </div>
       )}
     </div>

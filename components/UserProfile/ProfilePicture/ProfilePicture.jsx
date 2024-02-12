@@ -36,7 +36,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
     },
     onSuccess: async () => {
       const payload = {
-        description: `${user.name} change his cover photo`,
+        description: `${user.name} updated his cover photo`,
         imageUrl: imageUrl,
       };
       axios
@@ -78,6 +78,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
           </div>
         </div>
       )}
+
       <div className="mx-52">
         <BackgroundImage
           imageUrl={imageUrl}
@@ -87,7 +88,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
         />
 
         <div className="mt-3 w-full">
-          <div className="ml-[18rem]">
+          <div className="ml-[16rem]">
             <h1 className="font-bold text-4xl">{user?.name}</h1>
             <span className="text-sm">{user.email}</span>
           </div>

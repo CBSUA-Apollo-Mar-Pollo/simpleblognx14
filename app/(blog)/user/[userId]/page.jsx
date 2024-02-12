@@ -6,6 +6,7 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
+import { UTApi } from "uploadthing/server";
 
 const UserProfilePage = async ({ params }) => {
   const session = await getAuthSession();

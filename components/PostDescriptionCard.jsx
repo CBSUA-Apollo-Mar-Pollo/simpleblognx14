@@ -23,7 +23,7 @@ const PostDescriptionCard = ({ blog }) => {
   const { mutate: getComments } = useMutation({
     mutationFn: async () => {
       const payload = { postId: blog.id };
-      const { data } = await axios.post(
+      const { data } = await axios.fetch(
         "/api/posts/postDescriptionComment",
         payload
       );
