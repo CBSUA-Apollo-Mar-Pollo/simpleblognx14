@@ -9,10 +9,11 @@ import { usePathname } from "next/navigation";
 import { COMMENT_PAGE } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
+import CommentSectionCard from "./CommentSectionCard";
 
 const CommentSection = ({ session, postId, initialComments, getComments }) => {
   const pathname = usePathname();
-  const [isHovered, setIsHovered] = useState(null);
+
   useEffect(() => {
     // Remove the body scrollbar when the component mounts
     document.body.style.overflow = "hidden";
@@ -26,12 +27,12 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
   const fetchComments = async ({ pageParam }) => {
     const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${postId}`;
 
-    const res = await fetch(query);
+    const res = await fetch(query, { cache: "no-store" });
 
     return res.json();
   };
 
-  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+  const { data, fetchNextPage, refetch, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: ["viewMoreComments"],
       queryFn: fetchComments,
@@ -55,77 +56,12 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
           </p>
         </div>
         {comments.map((comment, index) => (
-          <div
+          <CommentSectionCard
             key={index}
-            className="flex gap-x-2"
-            onMouseEnter={() => setIsHovered(index)}
-            onMouseLeave={() => setIsHovered(null)}
-          >
-            <UserAvatar
-              className="h-10 w-10 "
-              user={{
-                image: comment?.author?.image || null,
-              }}
-            />
-            <div>
-              <div className="flex items-center gap-x-1">
-                <div className="bg-neutral-500 rounded-xl px-4 py-2">
-                  <p className="text-white text-sm font-medium">
-                    {comment?.author?.name}
-                  </p>
-                  <p className="text-white text-sm font-light">
-                    {comment?.text}
-                  </p>
-                </div>
-
-                {session?.user && (
-                  <div
-                    className={`hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer ${
-                      isHovered === index ? "block" : "opacity-0"
-                    }`}
-                  >
-                    <MoreHorizontal className="text-white" />
-                  </div>
-                )}
-              </div>
-
-              <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2 py-2">
-                <span className="font-extralight">
-                  {" "}
-                  {formatTimeToNow(new Date(comment.createdAt))}
-                </span>
-
-                <div className="flex items-center">
-                  {/* upvote button */}
-                  <button
-                    //   onClick={() => vote("UP")}
-                    className="hover:bg-neutral-800  rounded-full p-1"
-                  >
-                    <ArrowBigUp
-                      className={cn("h-6 w-6 text-zinc-700 hover:text-white")}
-                    />
-                  </button>
-
-                  {/* currentvote */}
-                  <p className="text-center font-medium text-xs text-zinc-300 px-2">
-                    0
-                  </p>
-
-                  {/* downvote button */}
-                  <button
-                    //   onClick={() => vote("DOWN")}
-                    className="hover:bg-neutral-800 rounded-full p-1"
-                  >
-                    <ArrowBigDown
-                      className={cn("h-6 w-6 text-zinc-700 hover:text-white")}
-                    />
-                  </button>
-                </div>
-
-                <span className="hover:underline cursor-pointer">Reply</span>
-              </div>
-            </div>
-          </div>
+            comment={comment}
+            session={session}
+            index={index}
+          />
         ))}
       </div>
 
@@ -135,7 +71,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
           className="text-white hover:underline hover:bg-neutral-800 focus:ring-0 focus:outline-none"
           onClick={() => fetchNextPage()}
         >
-          {comments.length <= COMMENT_PAGE - 1 ? "" : "View more comments"}
+          {comments.length < COMMENT_PAGE - 1 ? "" : "View more comments"}
         </Button>
       )}
 
@@ -149,6 +85,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
             session={session}
             postId={postId}
             getComments={getComments}
+            refetch={refetch}
           />
         </div>
       )}

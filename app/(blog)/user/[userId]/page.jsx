@@ -55,8 +55,8 @@ const UserProfilePage = async ({ params }) => {
       {/* user all posts */}
       <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2">
         <div className="col-span-3 relative">
-          <div className="sticky top-20">
-            <UserDetails />
+          <div className="sticky top-[4.5rem]">
+            <UserDetails userId={user.id} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">

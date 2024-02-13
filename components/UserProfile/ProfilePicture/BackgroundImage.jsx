@@ -6,9 +6,9 @@ import UploadButtonAndProfilePic from "./UploadButtonAndProfilePic";
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
-  const [translateY, setTranslateY] = useState(0); // State to store translateY value
   const containerRef = useRef(null);
   const imageRef = useRef(null);
+  const [childPosition, setChildPosition] = useState(null);
 
   const handleMouseDown = (e) => {
     setDragging(true);
@@ -20,7 +20,8 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
       const deltaY = e.clientY - dragStartY;
       containerRef.current.scrollTop -= deltaY;
       setDragStartY(e.clientY);
-      setTranslateY((prevTranslateY) => prevTranslateY + deltaY); // Accumulate deltaY
+      console.log(containerRef.current.scrollTop, "scrollTop");
+      console.log(imageRef.current.getBoundingClientRect(), "height ");
     }
   };
 
@@ -77,7 +78,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 relative">
               <Link
                 href={`/postComment/${user.coverPhotoId}`}
-                className="scroll-container"
+                className="scroll-container relative"
               >
                 <Image
                   sizes="100vw"
@@ -86,9 +87,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                   src={user.backgroundImage}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="w-[80vw] max-h-fit "
-                  // style={{ transform: `translateY(-721px)` }}
-                  ref={imageRef}
+                  className="w-[80vw] max-h-fit"
                 />
               </Link>
             </div>

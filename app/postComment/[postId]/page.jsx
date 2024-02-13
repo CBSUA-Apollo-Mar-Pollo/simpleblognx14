@@ -9,6 +9,10 @@ const postComment = async ({ params }) => {
     },
     include: {
       author: true,
+      comments: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 

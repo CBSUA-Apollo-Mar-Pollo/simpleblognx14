@@ -10,7 +10,13 @@ import { Button } from "../ui/Button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-const CreateComment = ({ session, postId, className, getComments }) => {
+const CreateComment = ({
+  session,
+  postId,
+  className,
+  getComments,
+  refetch,
+}) => {
   const [textareaValue, setTextareaValue] = useState("");
   const { toast } = useToast();
   const router = useRouter();
@@ -51,6 +57,9 @@ const CreateComment = ({ session, postId, className, getComments }) => {
       router.refresh();
       if (typeof getComments === "function") {
         getComments();
+      }
+      if (typeof refetch === "function") {
+        refetch();
       }
     },
   });

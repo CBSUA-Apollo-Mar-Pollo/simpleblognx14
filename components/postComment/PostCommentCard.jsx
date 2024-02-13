@@ -20,7 +20,6 @@ const PostCommentCard = async ({ post }) => {
     orderBy: {
       createdAt: "desc",
     },
-    take: COMMENT_PAGE,
   });
   return (
     <div className="grid grid-cols-4 relative">
@@ -42,7 +41,7 @@ const PostCommentCard = async ({ post }) => {
         >
           <PostDescription
             post={post}
-            commentAmt={comments.length}
+            commentAmt={post.comments.length}
             session={session}
           />
 

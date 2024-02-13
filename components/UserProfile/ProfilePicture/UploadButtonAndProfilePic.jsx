@@ -51,9 +51,36 @@ const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
             }}
           />
           {session?.user.id === user.id && (
-            <div className="bg-neutral-200 absolute bottom-4 right-1 rounded-full p-1">
-              <Camera className="text-neutral-200 h-8 w-8" fill="black" />
-            </div>
+            <UploadButton
+              className="ut-button:bg-neutral-300 absolute bottom-1 ut-button:hover:bg-neutral-400 right-0 ut-button:rounded-full ut-button:w-10"
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                setImageUrl(res[0].url);
+              }}
+              content={{
+                button({ ready, isUploading }) {
+                  if (ready) {
+                    return (
+                      <div className="flex items-center gap-x-2">
+                        <Camera
+                          className="text-neutral-200 h-8 w-8"
+                          fill="black"
+                        />
+                      </div>
+                    );
+                  }
+
+                  if (isUploading) {
+                    return (
+                      <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
+                    );
+                  }
+                },
+                allowedContent({ ready, fileTypes, isUploading }) {
+                  return "";
+                },
+              }}
+            />
           )}
         </div>
       </div>
