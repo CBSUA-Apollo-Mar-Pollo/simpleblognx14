@@ -79,7 +79,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
         </div>
       )}
 
-      <div className="mx-52">
+      <div className="mx-52 ">
         <BackgroundImage
           imageUrl={imageUrl}
           setImageUrl={setImageUrl}

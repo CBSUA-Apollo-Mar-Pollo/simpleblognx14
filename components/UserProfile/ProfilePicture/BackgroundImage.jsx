@@ -20,8 +20,8 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
       const deltaY = e.clientY - dragStartY;
       containerRef.current.scrollTop -= deltaY;
       setDragStartY(e.clientY);
-      console.log(containerRef.current.scrollTop, "scrollTop");
-      console.log(imageRef.current.getBoundingClientRect(), "height ");
+      // console.log(containerRef.current.scrollTop, "scrollTop");
+      // console.log(imageRef.current.getBoundingClientRect(), "height ");
     }
   };
 
@@ -72,13 +72,13 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           />
         </div>
       ) : (
-        <div className="relative">
+        <div>
           {/* if the uploaded a cover photo */}
           {user.backgroundImage ? (
-            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 relative">
+            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
               <Link
                 href={`/postComment/${user.coverPhotoId}`}
-                className="scroll-container relative"
+                className="scroll-container"
               >
                 <Image
                   sizes="100vw"
@@ -88,15 +88,14 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                   alt="profile image"
                   referrerPolicy="no-referrer"
                   className="w-[80vw] max-h-fit"
+                  style={{ transform: "translateY()" }} // Adjust the percentage as needed
                 />
               </Link>
             </div>
           ) : (
             // show a blank cover photo
-            <div className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900">
-              <div className="scroll-container">
-                <div className="w-[70vw] max-h-screen cursor-move" />
-              </div>
+            <div className=" rounded-b-3xl scroll-container bg-neutral-900">
+              <div className="w-[70vw] max-h-screen" />
             </div>
           )}
 

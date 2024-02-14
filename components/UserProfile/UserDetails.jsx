@@ -4,7 +4,6 @@ import { Button } from "../ui/Button";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import Image from "next/image";
-import { Pencil } from "lucide-react";
 
 const UserDetails = async ({ userId }) => {
   const userImages = await db.userPostedImages.findMany({

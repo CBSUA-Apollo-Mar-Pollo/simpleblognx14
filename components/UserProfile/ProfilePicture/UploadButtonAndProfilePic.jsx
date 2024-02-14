@@ -2,6 +2,8 @@ import UserAvatar from "@/components/UserAvatar";
 import { UploadButton } from "@uploadthing/react";
 import { Camera, Loader2 } from "lucide-react";
 import React from "react";
+import UpdateProfilePic from "./UpdateProfilePicModal";
+import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
 const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
   return (
@@ -50,38 +52,12 @@ const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
               image: user?.image || null,
             }}
           />
-          {session?.user.id === user.id && (
-            <UploadButton
-              className="ut-button:bg-neutral-300 absolute bottom-1 ut-button:hover:bg-neutral-400 right-0 ut-button:rounded-full ut-button:w-10"
-              endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                setImageUrl(res[0].url);
-              }}
-              content={{
-                button({ ready, isUploading }) {
-                  if (ready) {
-                    return (
-                      <div className="flex items-center gap-x-2">
-                        <Camera
-                          className="text-neutral-200 h-8 w-8"
-                          fill="black"
-                        />
-                      </div>
-                    );
-                  }
-
-                  if (isUploading) {
-                    return (
-                      <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
-                    );
-                  }
-                },
-                allowedContent({ ready, fileTypes, isUploading }) {
-                  return "";
-                },
-              }}
-            />
-          )}
+          {session?.user.id === user.id &&
+          !user.image?.includes("googleusercontent.com") ? (
+            <div className="bg-neutral-300 absolute bottom-4 hover:bg-neutral-400 right-0 rounded-full py-1 px-1 h-10">
+              <UpdateProfilePicModal userId={user.id} />
+            </div>
+          ) : null}
         </div>
       </div>
     </>
