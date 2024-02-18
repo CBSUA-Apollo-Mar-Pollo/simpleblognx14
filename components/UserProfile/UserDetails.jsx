@@ -1,9 +1,10 @@
 import React from "react";
 import { Card, CardContent } from "../ui/Card";
-import { Button } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
 import { db } from "@/lib/db";
 import Link from "next/link";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 const UserDetails = async ({ userId }) => {
   const userImages = await db.userPostedImages.findMany({
@@ -23,7 +24,6 @@ const UserDetails = async ({ userId }) => {
           <div className="flex flex-col space-y-4">
             <Button>Add Bio</Button>
             <Button>Edit details</Button>
-            <Button>Add Featured</Button>
           </div>
         </CardContent>
       </Card>
@@ -32,12 +32,15 @@ const UserDetails = async ({ userId }) => {
         <CardContent className=" py-0.5">
           <div className="flex items-center justify-between p-0.5 w-full">
             <h2 className="text-xl font-bold py-4">Photos</h2>
-            <Button
-              variant="ghost"
-              className="font-medium text-md text-blue-500"
+            <Link
+              href={`/user/${userId}/photos`}
+              className={cn(
+                buttonVariants({ variant: "ghost" }),
+                "font-medium text-md text-blue-500"
+              )}
             >
               See all photos
-            </Button>
+            </Link>
           </div>
 
           {/* photos */}

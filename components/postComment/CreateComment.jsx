@@ -68,6 +68,19 @@ const CreateComment = ({
     setTextareaValue(event.target.value);
   };
 
+  const handleEnterPress = (event) => {
+    if (event.key === "Enter" && textareaValue.trim()) {
+      // Prevent default form submission behavior
+      event.preventDefault();
+
+      // Call the comment function with the postId and textareaValue
+      comment({ postId, text: textareaValue });
+
+      // Clear the textarea after successful comment
+      setTextareaValue("");
+    }
+  };
+
   useEffect(() => {
     const textarea = document.getElementById("auto-resize-textarea");
     textarea.style.height = "auto";
@@ -93,6 +106,7 @@ const CreateComment = ({
           placeholder="write an answer..."
           value={textareaValue}
           onChange={handleTextareaChange}
+          onKeyDown={handleEnterPress} // Add event handler for key presses
         />
         {/* icons */}
 
@@ -101,6 +115,7 @@ const CreateComment = ({
             <Camera className="mx-2 my-2 p-0.5 text-neutral-300" />
           </div>
           <Button
+            type="submit"
             variant="ghost"
             disabled={textareaValue.length === 0}
             className="hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0"

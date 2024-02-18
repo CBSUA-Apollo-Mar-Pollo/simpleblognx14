@@ -39,20 +39,20 @@ const ProfilePicture = ({ user, deleteImage }) => {
         description: `${user.name} updated his cover photo`,
         imageUrl: imageUrl,
       };
-      // axios
-      //   .post("/api/blog", payload)
-      //   .then((response) => {
-      //     // Success
-      //     window.location.reload();
-      //   })
-      //   .catch((error) => {
-      //     setImageUrl("");
-      //     router.refresh();
-      //     return toast({
-      //       description: "Something went wrong",
-      //       variant: "destructive",
-      //     });
-      //   });
+      axios
+        .post("/api/blog", payload)
+        .then((response) => {
+          // Success
+          window.location.reload();
+        })
+        .catch((error) => {
+          setImageUrl("");
+          router.refresh();
+          return toast({
+            description: "Something went wrong",
+            variant: "destructive",
+          });
+        });
     },
   });
 

@@ -88,7 +88,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                   alt="profile image"
                   referrerPolicy="no-referrer"
                   className="w-[80vw] max-h-fit"
-                  style={{ transform: "translateY()" }} // Adjust the percentage as needed
+                  // style={{ transform: "translateY()" }} // Adjust the percentage as needed
                 />
               </Link>
             </div>

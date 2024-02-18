@@ -1,3 +1,4 @@
+import UpdatingProfilePicLoader from "@/components/Loaders/UpdatingProfilePicLoader";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,
@@ -6,15 +7,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/Dialog";
+import { LoaderContext } from "@/context/LoaderContext";
+import { useToast } from "@/hooks/use-toast";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Camera, Loader2 } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Avatar from "react-avatar-edit";
 
 const UpdateProfilePicModal = ({ userId }) => {
+  const router = useRouter();
+  const { setIsLoading } = useContext(LoaderContext);
+  const { toast } = useToast();
   const [src, setSrc] = useState(
     "https://utfs.io/f/dfc00bb0-e905-45e1-a6b3-b8794eedd42e-naku7h.webp"
   );
@@ -25,6 +32,7 @@ const UpdateProfilePicModal = ({ userId }) => {
     name: "",
     type: "",
   });
+  const [open, setOpen] = useState(false);
 
   const [newfile, setNewfile] = useState();
 
@@ -67,6 +75,7 @@ const UpdateProfilePicModal = ({ userId }) => {
   };
 
   const save = () => {
+    setIsLoading(true);
     uploadFiles("imageUploader", {
       files: [newfile],
     })
@@ -76,18 +85,32 @@ const UpdateProfilePicModal = ({ userId }) => {
         };
         await axios.post("/api/userProf/updateProfilePic", payload);
         setToggleUpload(false);
-        window.location.reload();
+        setIsLoading(false);
+        setOpen(false);
+        router.refresh();
       })
       .catch((error) => {
         // Handle any errors that occur during the upload
-        console.error("Error uploading file:", error);
+        setToggleUpload(false);
+        setIsLoading(false);
+        setOpen(false);
+        router.refresh();
+        return toast({
+          title: "Error",
+          description: "Error uploading file",
+          variant: "destructive",
+        });
       });
   };
+
   return (
     <Dialog
+      open={open}
+      className="z-10"
       onOpenChange={() => {
         fetchUserImages();
         setToggleUpload(false);
+        setOpen((prevState) => !prevState);
       }}
     >
       <DialogTrigger>
@@ -95,7 +118,7 @@ const UpdateProfilePicModal = ({ userId }) => {
           <Camera className="text-neutral-200 h-8 w-8" fill="black" />
         </div>
       </DialogTrigger>
-      <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none">
+      <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none z-50">
         <DialogHeader className="px-4 py-4 border-b-[1px] border-neutral-600">
           <DialogTitle className="text-xl text-center font-semibold text-white">
             Choose profile picture
@@ -117,6 +140,7 @@ const UpdateProfilePicModal = ({ userId }) => {
                 fontWeight: "500",
                 cursor: "pointer",
                 padding: "200px 250px",
+                fontSize: "1.3rem",
               }}
               onClose={onClose}
               onCrop={onCrop}
