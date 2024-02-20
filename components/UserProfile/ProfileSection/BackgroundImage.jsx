@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
-import UploadButtonAndProfilePic from "./UploadButtonAndProfilePic";
+import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
+import ProfilePIc from "./ProfilePIc";
+import { Loader2 } from "lucide-react";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);
@@ -9,6 +11,10 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const containerRef = useRef(null);
   const imageRef = useRef(null);
   const [childPosition, setChildPosition] = useState(null);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  const handleImageLoad = () => setImageLoading(false);
+  const handleImageError = () => setImageLoading(false);
 
   const handleMouseDown = (e) => {
     setDragging(true);
@@ -49,8 +55,13 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             onMouseLeave={() => setDragging(false)}
             ref={containerRef}
           >
+            {imageLoading && (
+              <div className="flex items-center justify-center gap-x-2 text-lg h-full">
+                <Loader2 className="w-10 h-10  animate-spin text-white" />
+              </div>
+            )}
             {/* show the image that will be uploaded  */}
-            <div className="scroll-container">
+            <div className="scroll-container relative">
               <Image
                 sizes="100vw"
                 width={0}
@@ -61,19 +72,24 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                 className="w-[80vw] max-h-fit"
                 draggable="false"
                 ref={imageRef}
+                onLoad={handleImageLoad}
+                onError={handleImageError}
               />
             </div>
           </div>
 
-          <UploadButtonAndProfilePic
+          {/* button for uploading cover photo */}
+          <UpdateCoverPhotoButton
             setImageUrl={setImageUrl}
             user={user}
             session={session}
           />
+
+          <ProfilePIc user={user} session={session} />
         </div>
       ) : (
         <div>
-          {/* if the uploaded a cover photo */}
+          {/* if the user has uploaded a cover photo display it */}
           {user.backgroundImage ? (
             <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
               <Link
@@ -99,11 +115,13 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           )}
 
-          <UploadButtonAndProfilePic
+          <UpdateCoverPhotoButton
             setImageUrl={setImageUrl}
             user={user}
             session={session}
           />
+
+          <ProfilePIc user={user} session={session} />
         </div>
       )}
     </div>

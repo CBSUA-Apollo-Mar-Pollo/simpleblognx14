@@ -1,6 +1,6 @@
 import React from "react";
-import { Separator } from "./ui/Separator";
-import { Input } from "./ui/Input";
+import { Separator } from "../ui/Separator";
+import { Input } from "../ui/Input";
 
 import {
   Select,
@@ -9,17 +9,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/Select";
-import { Button } from "./ui/Button";
+} from "../ui/Select";
+import { Button } from "../ui/Button";
 
 const ProfileForm = ({ user }) => {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-semibold">Profile</h1>
-        <p className="text-sm text-gray-500">
-          This is how others will see you on site
-        </p>
+        <h1 className="text-2xl font-bold">Customize profile</h1>
+        <p className="text-sm text-gray-500">Profile information</p>
       </div>
       <Separator className="my-5" />
 

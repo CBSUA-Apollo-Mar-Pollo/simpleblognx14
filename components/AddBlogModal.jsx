@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ import { Select, SelectItem, SelectTrigger, SelectValue } from "./ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
 import { ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
+import { LoaderContext } from "@/context/LoaderContext";
 
 const AddBlogModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
@@ -31,6 +32,7 @@ const AddBlogModal = ({ session, user }) => {
   const { signinToast } = useCustomHooks();
   const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
 
   const { mutate: createBlog, isLoading } = useMutation({
     mutationFn: async () => {
@@ -42,6 +44,7 @@ const AddBlogModal = ({ session, user }) => {
       return data;
     },
     onError: (err) => {
+      setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           setOpen(false);
@@ -67,6 +70,7 @@ const AddBlogModal = ({ session, user }) => {
       setImageUrl("");
       setDescription("");
       setOpen(false);
+      setIsLoading(false);
       window.location.reload();
     },
   });
@@ -201,7 +205,11 @@ const AddBlogModal = ({ session, user }) => {
             type="submit"
             isLoading={isLoading}
             disabled={description.length === 0}
-            onClick={() => createBlog()}
+            onClick={() => {
+              createBlog();
+              setIsLoading(true);
+              setLoaderDescription("Posting");
+            }}
           >
             Post
           </Button>

@@ -5,7 +5,7 @@ import React from "react";
 import UpdateProfilePic from "./UpdateProfilePicModal";
 import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
-const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
+const UpdateCoverPhotoButton = ({ setImageUrl, session, user }) => {
   return (
     <>
       {session?.user.id === user.id && (
@@ -18,7 +18,12 @@ const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
           content={{
             button({ ready, isUploading }) {
               if (ready) {
-                return (
+                return isUploading ? (
+                  <div className="flex items-center justify-center gap-x-2">
+                    <Loader2 className="w-5 h-5 text-zinc-800 animate-spin my-10" />
+                    <span className="text-sm">loading...</span>
+                  </div>
+                ) : (
                   <div className="flex items-center gap-x-2">
                     <Camera className="text-white" fill="black" />
                     <span className="font-semibold text-sm">
@@ -31,9 +36,7 @@ const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
               }
 
               if (isUploading) {
-                return (
-                  <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
-                );
+                <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />;
               }
             },
             allowedContent({ ready, fileTypes, isUploading }) {
@@ -42,26 +45,8 @@ const UploadButtonAndProfilePic = ({ setImageUrl, user, session }) => {
           }}
         />
       )}
-      {/* profile pic */}
-      <div className="absolute bottom-0 top-[22vw] left-[4vw]">
-        <div className="relative">
-          <UserAvatar
-            className="h-44 w-44 border-4 border-neutral-50"
-            user={{
-              name: user?.name || null,
-              image: user?.image || null,
-            }}
-          />
-          {session?.user.id === user.id &&
-          !user.image?.includes("googleusercontent.com") ? (
-            <div className="bg-neutral-300 absolute bottom-4 hover:bg-neutral-400 right-0 rounded-full py-1 px-1 h-10">
-              <UpdateProfilePicModal userId={user.id} />
-            </div>
-          ) : null}
-        </div>
-      </div>
     </>
   );
 };
 
-export default UploadButtonAndProfilePic;
+export default UpdateCoverPhotoButton;

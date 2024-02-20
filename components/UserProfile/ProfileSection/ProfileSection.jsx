@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, buttonVariants } from "../../ui/Button";
 import { Separator } from "../../ui/Separator";
 import { useSession } from "next-auth/react";
@@ -10,12 +10,14 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import ProfileButtons from "./ProfileButtons";
 import { useRouter } from "next/navigation";
+import { LoaderContext } from "@/context/LoaderContext";
 
-const ProfilePicture = ({ user, deleteImage }) => {
+const ProfileSection = ({ user, deleteImage }) => {
   const { data: session } = useSession();
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
-  const toast = useToast();
+  const { toast } = useToast();
+  const { setIsLoading } = useContext(LoaderContext);
 
   const { mutate: saveCoverImage, isLoading } = useMutation({
     mutationFn: async () => {
@@ -27,10 +29,11 @@ const ProfilePicture = ({ user, deleteImage }) => {
       return data;
     },
     onError: (err) => {
+      setIsLoading(false);
       //  if there are any other errors beside the server error
-      toast({
+      return toast({
         title: "There was an error",
-        description: "Could not save your cover photo",
+        description: "Could not update your cover photo",
         variant: "destructive",
       });
     },
@@ -42,10 +45,12 @@ const ProfilePicture = ({ user, deleteImage }) => {
       axios
         .post("/api/blog", payload)
         .then((response) => {
+          setIsLoading(false);
           // Success
           window.location.reload();
         })
         .catch((error) => {
+          setIsLoading(false);
           setImageUrl("");
           router.refresh();
           return toast({
@@ -58,6 +63,7 @@ const ProfilePicture = ({ user, deleteImage }) => {
 
   return (
     <div className="relative">
+      {/* display when this buttons when the user is changing his/her cover photo */}
       {imageUrl.length !== 0 && (
         <div className="bg-neutral-700 absolute top-0 z-10 opacity-80 text-white w-full">
           <div className="flex justify-end py-2 gap-x-4 mx-5">
@@ -71,7 +77,10 @@ const ProfilePicture = ({ user, deleteImage }) => {
             </Button>
             <Button
               className="bg-blue-600 hover:bg-blue-700"
-              onClick={() => saveCoverImage()}
+              onClick={() => {
+                saveCoverImage();
+                setIsLoading(true);
+              }}
             >
               Save Changes
             </Button>
@@ -104,4 +113,4 @@ const ProfilePicture = ({ user, deleteImage }) => {
   );
 };
 
-export default ProfilePicture;
+export default ProfileSection;

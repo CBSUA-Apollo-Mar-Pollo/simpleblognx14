@@ -1,7 +1,7 @@
 import AddBlogModal from "@/components/AddBlogModal";
-import ProfilePicture from "@/components/UserProfile/ProfilePicture/ProfilePicture";
+import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
-import UserDetails from "@/components/UserProfile/UserDetails";
+import UserBio from "@/components/UserProfile/UserBio";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -49,14 +49,14 @@ const UserProfilePage = async ({ params }) => {
   };
 
   return (
-    <div className="mt-[60px] ">
-      <ProfilePicture user={user} deleteImage={deleteImage} />
+    <div className="">
+      <ProfileSection user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}
       <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2">
         <div className="col-span-3 relative">
           <div className="sticky top-[4.5rem]">
-            <UserDetails userId={user.id} />
+            <UserBio userId={user.id} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">

@@ -22,12 +22,14 @@ export async function POST(req) {
       },
     });
 
-    await db.userPostedImages.create({
-      data: {
-        image: imageUrl,
-        authorId: session.user.id,
-      },
-    });
+    if (imageUrl) {
+      await db.userPostedImages.create({
+        data: {
+          image: imageUrl,
+          authorId: session.user.id,
+        },
+      });
+    }
 
     return new Response("OK");
   } catch (error) {

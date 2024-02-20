@@ -1,8 +1,8 @@
-import AccountForm from "@/components/AccountForm";
+import AccountForm from "@/components/SettingsComponent/AccountForm";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
 
-const accountForm = async () => {
+const AccountFormPage = async () => {
   const session = await getAuthSession();
   return (
     <div>
@@ -11,4 +11,4 @@ const accountForm = async () => {
   );
 };
 
-export default accountForm;
+export default AccountFormPage;

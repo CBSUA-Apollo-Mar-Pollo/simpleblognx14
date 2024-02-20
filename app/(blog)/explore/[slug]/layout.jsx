@@ -7,11 +7,11 @@ const Layout = async ({ children }) => {
   const session = await getAuthSession();
   return (
     <div className="flex bg-stone-50">
-      <div className="mt-[70px]">
+      <div className="">
         <Sidebar session={session} />
       </div>
       <div>{children}</div>
-      <div className="mt-[100px] relative">
+      <div className=" relative">
         <PopularCard />
       </div>
     </div>

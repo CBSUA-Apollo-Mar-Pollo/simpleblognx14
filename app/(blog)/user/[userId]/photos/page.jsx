@@ -1,4 +1,4 @@
-import ProfilePicture from "@/components/UserProfile/ProfilePicture/ProfilePicture";
+import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
 import UserPhotos from "@/components/UserProfile/UserPhotos";
 import { db } from "@/lib/db";
 import React from "react";
@@ -30,8 +30,8 @@ const UserProfilePagePhotos = async ({ params }) => {
   };
 
   return (
-    <div className="mt-[60px] ">
-      <ProfilePicture user={user} deleteImage={deleteImage} />
+    <div className="">
+      <ProfileSection user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}
       <div className="bg-neutral-200 px-60 py-5">

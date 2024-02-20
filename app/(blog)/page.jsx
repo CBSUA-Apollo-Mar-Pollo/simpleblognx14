@@ -20,14 +20,14 @@ export default async function HomePage() {
   });
   return (
     <div className="grid grid-cols-4 ">
-      <div className="mt-[60px] col-span-1 relative">
+      <div className=" col-span-1 relative">
         <Sidebar session={session} />
       </div>
-      <div className="mt-[100px] space-y-3 col-span-2 mx-[5rem] ">
+      <div className="mt-5 space-y-3 col-span-2 mx-[5rem] ">
         {session?.user && <AddBlogModal session={session} />}
         <Blogs initialPosts={blogs} session={session} />
       </div>
-      <div className="mt-[100px] col-span-1 relative">
+      <div className=" col-span-1 relative">
         <PopularCard />
       </div>
     </div>

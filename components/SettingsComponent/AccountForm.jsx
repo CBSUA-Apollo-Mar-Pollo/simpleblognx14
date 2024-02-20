@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Separator } from "./ui/Separator";
-import { Input } from "./ui/Input";
+import { Separator } from "../ui/Separator";
+import { Input } from "../ui/Input";
 
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Calendar } from "./ui/Calendar";
+import { Calendar } from "../ui/Calendar";
 import { format } from "date-fns";
-import { Button } from "./ui/Button";
+import { Button } from "../ui/Button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
@@ -61,7 +61,7 @@ const AccountForm = ({ user }) => {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-semibold">Account</h1>
+        <h1 className="text-2xl font-bold">Account</h1>
         <p className="text-sm text-gray-500">Update your account settings.</p>
       </div>
       <Separator className="my-5" />

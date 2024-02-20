@@ -12,7 +12,7 @@ const page = async () => {
     },
   });
   return (
-    <div className="mt-[100px]">
+    <div className="">
       <Blogs blogs={blogs} />
     </div>
   );

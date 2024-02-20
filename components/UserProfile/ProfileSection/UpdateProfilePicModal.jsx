@@ -1,4 +1,4 @@
-import UpdatingProfilePicLoader from "@/components/Loaders/UpdatingProfilePicLoader";
+import UpdatingProfilePicLoader from "@/components/Loaders/BackgroundLoader";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,
@@ -13,14 +13,13 @@ import { uploadFiles } from "@/lib/uploadThing";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { Camera, Loader2 } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Avatar from "react-avatar-edit";
 
 const UpdateProfilePicModal = ({ userId }) => {
   const router = useRouter();
-  const { setIsLoading } = useContext(LoaderContext);
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const { toast } = useToast();
   const [src, setSrc] = useState(
     "https://utfs.io/f/dfc00bb0-e905-45e1-a6b3-b8794eedd42e-naku7h.webp"
@@ -76,6 +75,7 @@ const UpdateProfilePicModal = ({ userId }) => {
 
   const save = () => {
     setIsLoading(true);
+    setLoaderDescription("Updating");
     uploadFiles("imageUploader", {
       files: [newfile],
     })

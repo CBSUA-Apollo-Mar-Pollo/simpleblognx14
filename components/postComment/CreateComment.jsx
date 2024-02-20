@@ -102,7 +102,7 @@ const CreateComment = ({
       <div className="relative flex-1">
         <Textarea
           id="auto-resize-textarea"
-          className="pt-3 pl-4 pb-10 max-h-auto overflow-hidden h-auto rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
+          className="pt-3 pl-4 min-h-[2px] pb-10 overflow-hidden rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
           placeholder="write an answer..."
           value={textareaValue}
           onChange={handleTextareaChange}

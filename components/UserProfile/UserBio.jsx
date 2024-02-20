@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-const UserDetails = async ({ userId }) => {
+const UserBio = async ({ userId }) => {
   const userImages = await db.userPostedImages.findMany({
     where: {
       authorId: userId,
@@ -79,4 +79,4 @@ const UserDetails = async ({ userId }) => {
   );
 };
 
-export default UserDetails;
+export default UserBio;

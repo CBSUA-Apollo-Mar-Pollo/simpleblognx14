@@ -29,7 +29,7 @@ const Sidebar = ({ session }) => {
       onMouseEnter={handleScrollBar}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="space-y-2 pt-7">
+      <div className="space-y-2 pt-5">
         {/* different side bar depends if the user is log in or not */}
         {session?.user
           ? SideBarFirstLinks.map((item, index) => (

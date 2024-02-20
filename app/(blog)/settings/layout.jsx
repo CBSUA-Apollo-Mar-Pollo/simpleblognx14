@@ -1,23 +1,18 @@
-import NavBarSettings from "@/components/NavBarSettings";
-import { Separator } from "@/components/ui/Separator";
+import NavBarSettings from "@/components/SettingsComponent/NavBarSettings";
 import React from "react";
 
 const Layout = ({ children }) => {
   return (
-    <main className="mx-72 pt-28 ">
-      <div>
-        <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-gray-600">Manage your account settings </p>
+    <div className="grid grid-cols-9 bg-gray-100 h-screen relative">
+      <div className="col-span-2 pl-5 px-2 bg-white shadow-[rgba(0,0,0,0.1)_0px_4px_10px_-1px] border-r">
+        <NavBarSettings />
       </div>
-
-      <Separator className="my-4" />
-      <div className="grid grid-cols-5 px-4 space-y-2 gap-2 ">
-        <div className="col-span-1">
-          <NavBarSettings />
+      <div className="col-span-7 ">
+        <div className="bg-white mx-32 my-5 rounded-xl px-10 py-5 border border-gray-200 h-auto">
+          {children}
         </div>
-        <div className="col-span-4 mx-10">{children}</div>
       </div>
-    </main>
+    </div>
   );
 };
 
