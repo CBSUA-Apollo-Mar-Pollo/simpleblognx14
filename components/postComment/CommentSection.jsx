@@ -10,6 +10,7 @@ import { COMMENT_PAGE } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
 import CommentSectionCard from "./CommentSectionCard";
+import { getReplyName } from "@/actions/replyName";
 
 const CommentSection = ({ session, postId, initialComments, getComments }) => {
   const pathname = usePathname();
@@ -47,6 +48,8 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
 
   const comments = data?.pages?.flatMap((page) => page) ?? initialComments;
 
+  console.log(comments);
+
   return (
     <>
       <div className="mt-2 pl-4 pr-1 overflow-auto">
@@ -55,14 +58,41 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
             <span className="px-2 cursor-pointer">Top comments</span>
           </p>
         </div>
-        {comments.map((comment, index) => (
-          <CommentSectionCard
-            key={index}
-            comment={comment}
-            session={session}
-            index={index}
-          />
-        ))}
+        {comments
+          .filter((comment) => !comment.replyToId)
+          .map((topLevelComment, index) => (
+            <div className="flex flex-col" key={index}>
+              <CommentSectionCard
+                comment={topLevelComment}
+                session={session}
+                index={index}
+                getComments={getComments}
+                refetch={refetch}
+                postId={postId}
+              />
+
+              {topLevelComment.replies.map((reply) => {
+                {
+                  console.log(reply);
+                }
+                return (
+                  <div
+                    key={reply.id}
+                    className="ml-4 mb-5  pl-4  border-l border-neutral-600"
+                  >
+                    <CommentSectionCard
+                      comment={reply}
+                      session={session}
+                      index={index}
+                      getComments={getComments}
+                      refetch={refetch}
+                      postId={postId}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          ))}
       </div>
 
       {hasNextPage && (

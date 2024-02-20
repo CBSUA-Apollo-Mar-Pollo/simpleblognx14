@@ -13,9 +13,15 @@ const PostCommentCard = async ({ post }) => {
   const comments = await db.comment.findMany({
     where: {
       postId: post.id,
+      replyToId: null,
     },
     include: {
       author: true,
+      replies: {
+        include: {
+          author: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",

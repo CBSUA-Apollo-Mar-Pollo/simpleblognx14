@@ -85,7 +85,8 @@ model Comment {
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  commentId          String?
+  commentId String?
+
   UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
   userPostedImagesId String?
 }

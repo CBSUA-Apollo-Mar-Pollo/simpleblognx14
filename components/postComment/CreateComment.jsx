@@ -16,16 +16,25 @@ const CreateComment = ({
   className,
   getComments,
   refetch,
+  replyToName,
+  commentId,
+  replyToId,
+  setIsReplying,
+  commentProps,
 }) => {
-  const [textareaValue, setTextareaValue] = useState("");
+  const [textareaValue, setTextareaValue] = useState(
+    replyToName ? replyToName + " " : ""
+  );
   const { toast } = useToast();
   const router = useRouter();
 
   const { mutate: comment, isLoading } = useMutation({
-    mutationFn: async ({ postId, text }) => {
+    mutationFn: async ({ postId, text, replyToId }) => {
       const payload = {
         postId,
         text,
+        replyToId,
+        commentId,
       };
 
       const { data } = await axios.patch("/api/posts/postComment", payload);
@@ -74,7 +83,14 @@ const CreateComment = ({
       event.preventDefault();
 
       // Call the comment function with the postId and textareaValue
-      comment({ postId, text: textareaValue });
+      comment({
+        postId,
+        text: textareaValue,
+        replyToId: replyToId ?? commentProps?.id,
+      });
+      if (typeof setIsReplying === "function") {
+        setIsReplying(false);
+      }
 
       // Clear the textarea after successful comment
       setTextareaValue("");
@@ -88,9 +104,9 @@ const CreateComment = ({
   }, [textareaValue]);
 
   return (
-    <div className={`flex gap-x-4 px-4 py-2 bg-neutral-800 ${className}`}>
+    <div className={`flex gap-x-3 px-4 py-2 bg-neutral-800 ${className}`}>
       <UserAvatar
-        className="h-10 w-10 "
+        className="h-9 w-9 "
         user={{
           name: session?.user?.name || null,
           image: session?.user?.image || null,
@@ -103,7 +119,7 @@ const CreateComment = ({
         <Textarea
           id="auto-resize-textarea"
           className="pt-3 pl-4 min-h-[2px] pb-10 overflow-hidden rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
-          placeholder="write an answer..."
+          placeholder={`${replyToName ? replyToName : "Write an answer..."}`}
           value={textareaValue}
           onChange={handleTextareaChange}
           onKeyDown={handleEnterPress} // Add event handler for key presses
@@ -119,7 +135,17 @@ const CreateComment = ({
             variant="ghost"
             disabled={textareaValue.length === 0}
             className="hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0"
-            onClick={() => comment({ postId, text: textareaValue })}
+            onClick={() => {
+              comment({
+                postId,
+                text: textareaValue,
+                replyToId: replyToId ?? commentProps.id,
+              });
+
+              if (typeof setIsReplying === "function") {
+                setIsReplying(false);
+              }
+            }}
           >
             <SendHorizonal className=" text-neutral-300" />
           </Button>

@@ -22,9 +22,15 @@ export async function GET(req) {
       skip: (parseInt(page) - 1) * parseInt(limit),
       where: {
         postId: postId,
+        replyToId: null,
       },
       include: {
         author: true,
+        replies: {
+          include: {
+            author: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

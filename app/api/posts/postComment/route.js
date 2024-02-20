@@ -7,7 +7,7 @@ export async function PATCH(req) {
   try {
     const body = await req.json();
 
-    const { postId, text } = commentValidator.parse(body);
+    const { postId, text, replyToId, commentId } = commentValidator.parse(body);
 
     const session = await getAuthSession();
 
@@ -20,6 +20,8 @@ export async function PATCH(req) {
         text,
         postId,
         authorId: session.user.id,
+        replyToId,
+        commentId,
       },
     });
 
