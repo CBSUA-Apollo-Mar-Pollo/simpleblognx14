@@ -78,7 +78,7 @@ const CreateComment = ({
   };
 
   const handleEnterPress = (event) => {
-    if (event.key === "Enter" && textareaValue.trim()) {
+    if (event.key === "Enter") {
       // Prevent default form submission behavior
       event.preventDefault();
 

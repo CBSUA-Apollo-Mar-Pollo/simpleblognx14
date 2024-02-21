@@ -1,4 +1,4 @@
-import Blogs from "@/components/Blogs";
+import Blogs from "@/components/Posts";
 import { db } from "@/lib/db";
 import React from "react";
 

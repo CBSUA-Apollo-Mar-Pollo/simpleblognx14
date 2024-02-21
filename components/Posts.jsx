@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import BlogsCard from "./BlogsCard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
+import PostCard from "./PostCard";
 
-export default function Blogs({ initialPosts, session }) {
+export default function Posts({ initialPosts, session }) {
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
     root: null,
@@ -47,11 +47,11 @@ export default function Blogs({ initialPosts, session }) {
           if (index === posts.length - 1) {
             return (
               <li key={blog.id} className="list-none" ref={ref}>
-                <BlogsCard blog={blog} session={session} />
+                <PostCard blog={blog} session={session} />
               </li>
             );
           } else {
-            return <BlogsCard blog={blog} key={blog.id} session={session} />;
+            return <PostCard blog={blog} key={blog.id} session={session} />;
           }
         })}
 

@@ -19,6 +19,7 @@ import {
   Search,
 } from "lucide-react";
 import { Icons } from "./Icons";
+import NotificationMenu from "./Notification/NotificationMenu";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -56,19 +57,11 @@ const Navbar = async () => {
               <div className=" bg-gray-100 p-2 rounded-full cursor-pointer hover:bg-gray-200">
                 <Grip className="text-gray-500 " />
               </div>
-              <div className="bg-gray-100 p-2 rounded-full cursor-pointer hover:bg-gray-200">
-                <Icons.bell className="text-gray-500 " />
-              </div>
+              <NotificationMenu />
+              {/* user profile */}
               <UserAccountNav user={session.user} />
             </div>
           ) : (
-            // <Avatar>
-            //   <div className="h-10 w-10">
-            //     <div className="relative aspect-square h-full w-full ">
-            //       <Image fill src={session.user.image} alt="profile image" />
-            //     </div>
-            //   </div>
-            // </Avatar>
             <Link
               className={cn(buttonVariants({ variant: "secondary" }))}
               href="/sign-in"

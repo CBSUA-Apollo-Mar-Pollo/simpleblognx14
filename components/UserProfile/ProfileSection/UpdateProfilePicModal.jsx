@@ -1,4 +1,3 @@
-import UpdatingProfilePicLoader from "@/components/Loaders/BackgroundLoader";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,

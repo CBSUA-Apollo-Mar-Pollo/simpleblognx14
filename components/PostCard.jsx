@@ -9,6 +9,8 @@ import {
   Globe,
   MessageCircle,
   MoreHorizontal,
+  PenSquare,
+  PlusCircle,
 } from "lucide-react";
 import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
@@ -16,9 +18,15 @@ import HeartVote from "./post-vote/HeartVote";
 import Link from "next/link";
 import PostDescriptionCard from "./PostDescriptionCard";
 import PostOption from "./PostOption";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/Dropdown-menu";
+import { Button } from "./ui/Button";
 // import { Button } from "./ui/Button";
 
-const BlogsCard = ({ blog, session }) => {
+const PostCard = ({ blog, session }) => {
   // console.log(blog);
   // const pRef = useRef(null);
   return (
@@ -105,7 +113,7 @@ const BlogsCard = ({ blog, session }) => {
         <Separator className="" />
 
         {/* home post vote comment and share */}
-        <div className="flex justify-between my-1 gap-x-2 mx-12">
+        <div className="flex justify-between my-1 gap-x-2 mx-6">
           {/* vote */}
           <div className="flex items-center gap-2 px-10 py-1 rounded cursor-pointer">
             <HeartVote />
@@ -124,14 +132,33 @@ const BlogsCard = ({ blog, session }) => {
           )}
 
           {/* share */}
-          <div className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer">
-            <Forward className="h-6 w-6" />
-            <span className=" font-medium text-sm">Share</span>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer focus-visible:outline-none">
+              <Forward className="h-6 w-6" />
+              <span className=" font-medium text-sm">Share</span>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="min-w-[18vw]">
+              <div className="flex flex-col">
+                <Button variant="ghost" className="flex justify-start gap-x-3">
+                  <Forward className="h-6 w-6" />
+                  <span>Share now</span>
+                </Button>
+                <Button variant="ghost" className="flex justify-start gap-x-3">
+                  <PenSquare className="h-5 w-5" />
+                  <span>Share to Feed</span>
+                </Button>
+                <Button variant="ghost" className="flex justify-start gap-x-3">
+                  <PlusCircle className="h-5 w-5" />
+                  <span> Share to your story</span>
+                </Button>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default BlogsCard;
+export default PostCard;
