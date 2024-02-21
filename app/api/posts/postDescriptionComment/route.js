@@ -11,9 +11,15 @@ export async function POST(req) {
     const comments = await db.comment.findMany({
       where: {
         postId: body.postId,
+        replyToId: null,
       },
       include: {
         author: true,
+        replies: {
+          include: {
+            author: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

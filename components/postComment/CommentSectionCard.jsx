@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import UserAvatar from "../UserAvatar";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
 import { cn, formatTimeToNow } from "@/lib/utils";
 import { Button } from "../ui/Button";
 import CreateComment from "./CreateComment";
 import { getReplyName } from "@/actions/replyName";
+import { useRouter } from "next/navigation";
+import CommentVote from "../post-vote/CommentVote";
 
 const CommentSectionCard = ({
   comment,
@@ -14,83 +16,102 @@ const CommentSectionCard = ({
   className,
   getComments,
   refetch,
+  classNameForUserAvatarReplies,
 }) => {
-  const [isHovered, setIsHovered] = useState(null);
+  const commentRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
+  const router = useRouter();
+  const [replyName, setReplyName] = useState(null);
 
-  console.log(comment);
+  useEffect(() => {
+    async function fetchData() {
+      const res = await getReplyName(comment.commentId);
+      setReplyName(res);
+    }
+    fetchData();
+  }, []);
+
+  const handleMouseEnter = (e) => {
+    if (e === index) {
+      commentRef.current.style.display = "block"; // Change element style on hover
+    }
+    // Other actions if needed
+  };
+
+  const handleMouseLeave = () => {
+    commentRef.current.style.display = "none"; // Revert element style
+    // Other actions if needed
+  };
+
   return (
     <div
       className=" gap-x-2"
-      onMouseEnter={() => setIsHovered(index)}
-      onMouseLeave={() => setIsHovered(null)}
+      onMouseEnter={() => handleMouseEnter(index)}
+      onMouseLeave={() => handleMouseLeave(null)}
     >
       <div className="flex gap-x-2">
         <UserAvatar
-          className="h-9 w-9 "
+          className={`${
+            classNameForUserAvatarReplies
+              ? classNameForUserAvatarReplies
+              : "h-9 w-9"
+          }`}
           user={{
             image: comment?.author?.image || null,
           }}
         />
         <div>
           <div className="flex items-center gap-x-1">
-            <div className="bg-neutral-500 rounded-xl px-4 py-2">
-              <p className="text-white text-sm font-medium">
+            <div className="bg-neutral-600 rounded-xl px-4 py-2">
+              <p className="text-white text-xs font-semibold">
                 {comment?.author?.name}
               </p>
-              <p className="text-white text-sm font-light">{comment?.text}</p>
+              {replyName ? (
+                <p className="text-neutral-100 text-sm">
+                  <span className="text-blue-400">
+                    <a
+                      href={`/user/${replyName.id}`}
+                      className="font-medium hover:underline"
+                    >
+                      @{replyName.name}
+                    </a>
+                  </span>{" "}
+                  {comment.text.startsWith("@") &&
+                    comment.text.substring(comment.text.indexOf(" ") + 1)}
+                </p>
+              ) : (
+                <p className="text-neutral-100 text-sm">{comment?.text}</p>
+              )}
             </div>
 
             {session?.user && (
               <div
-                className={`hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer ${
-                  isHovered === index ? "block" : "opacity-0"
-                }`}
+                ref={commentRef}
+                className="hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer hidden"
               >
                 <MoreHorizontal className="text-white" />
               </div>
             )}
           </div>
 
-          <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2 py-2">
+          <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2">
             <span className="font-extralight">
               {" "}
               {formatTimeToNow(new Date(comment.createdAt))}
             </span>
 
-            <div className="flex items-center">
-              {/* upvote button */}
-              <button
-                //   onClick={() => vote("UP")}
-                className="hover:bg-neutral-800  rounded-full p-1"
-              >
-                <ArrowBigUp
-                  className={cn("h-6 w-6 text-zinc-700 hover:text-white")}
-                />
-              </button>
+            {/* for voting comment */}
+            <CommentVote />
 
-              {/* currentvote */}
-              <p className="text-center font-medium text-xs text-zinc-300 px-2">
-                0
-              </p>
-
-              {/* downvote button */}
-              <button
-                //   onClick={() => vote("DOWN")}
-                className="hover:bg-neutral-800 rounded-full p-1"
-              >
-                <ArrowBigDown
-                  className={cn("h-6 w-6 text-zinc-700 hover:text-white")}
-                />
-              </button>
-            </div>
-
+            {/* reply button */}
             <Button
-              onClick={() => setIsReplying(true)}
+              onClick={() => {
+                session?.user ? setIsReplying(true) : router.push("/sign-in");
+              }}
               variant="ghost"
               className="bg-neutral-800 hover:bg-neutral-800 p-0"
             >
-              <span className="hover:underline cursor-pointer text-neutral-200 ">
+              <span className="hover:underline cursor-pointer text-neutral-200 text-xs">
                 Reply
               </span>
             </Button>

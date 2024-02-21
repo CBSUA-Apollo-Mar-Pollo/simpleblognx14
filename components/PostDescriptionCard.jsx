@@ -11,7 +11,7 @@ import {
 import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
 import UserAvatar from "./UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import PostVote from "./post-vote/PostVote";
+import PostVote from "./post-vote/HeartVote";
 import { useSession } from "next-auth/react";
 import CommentSection from "./postComment/CommentSection";
 import { useMutation, useQuery } from "@tanstack/react-query";

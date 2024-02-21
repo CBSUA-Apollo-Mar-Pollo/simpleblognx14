@@ -48,8 +48,6 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
 
   const comments = data?.pages?.flatMap((page) => page) ?? initialComments;
 
-  console.log(comments);
-
   return (
     <>
       <div className="mt-2 pl-4 pr-1 overflow-auto">
@@ -58,6 +56,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
             <span className="px-2 cursor-pointer">Top comments</span>
           </p>
         </div>
+        {/* comments */}
         {comments
           .filter((comment) => !comment.replyToId)
           .map((topLevelComment, index) => (
@@ -71,14 +70,12 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
                 postId={postId}
               />
 
-              {topLevelComment.replies.map((reply) => {
-                {
-                  console.log(reply);
-                }
+              {/* replies */}
+              {topLevelComment.replies.map((reply, index) => {
                 return (
                   <div
                     key={reply.id}
-                    className="ml-4 mb-5  pl-4  border-l border-neutral-600"
+                    className="ml-8  pl-4  border-l border-neutral-600"
                   >
                     <CommentSectionCard
                       comment={reply}
@@ -87,6 +84,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
                       getComments={getComments}
                       refetch={refetch}
                       postId={postId}
+                      classNameForUserAvatarReplies="h-7 w-7"
                     />
                   </div>
                 );

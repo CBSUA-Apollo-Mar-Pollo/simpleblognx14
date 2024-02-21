@@ -1,12 +1,12 @@
 import { Forward, MessageCircle } from "lucide-react";
 import React from "react";
-import PostVote from "../post-vote/PostVote";
+import HeartVote from "../post-vote/HeartVote";
 
 const VoteCommentAndShare = () => {
   return (
-    <div className="flex justify-center text-neutral-300  gap-x-2">
+    <div className="flex justify-center text-neutral-300  gap-x-4">
       <div className="flex items-center gap-2 px-3 rounded cursor-pointer py-1">
-        <PostVote />
+        <HeartVote />
       </div>
       <div className="flex items-center gap-2 px-3 hover:bg-gray-600   rounded cursor-pointer py-1">
         <MessageCircle className="h-6 w-6" />

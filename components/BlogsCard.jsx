@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import CommentSection from "./postComment/CommentSection";
-import PostVote from "./post-vote/PostVote";
+import HeartVote from "./post-vote/HeartVote";
 import Link from "next/link";
 import PostDescriptionCard from "./PostDescriptionCard";
 import PostOption from "./PostOption";
@@ -105,10 +105,10 @@ const BlogsCard = ({ blog, session }) => {
         <Separator className="" />
 
         {/* home post vote comment and share */}
-        <div className="flex justify-between my-1 gap-x-2 mx-5">
+        <div className="flex justify-between my-1 gap-x-2 mx-12">
           {/* vote */}
           <div className="flex items-center gap-2 px-10 py-1 rounded cursor-pointer">
-            <PostVote />
+            <HeartVote />
           </div>
           {/* comment button */}
           {blog?.image ? (

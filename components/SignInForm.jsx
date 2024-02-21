@@ -50,6 +50,7 @@ const SignInForm = () => {
   // login credentials
   const loginInCredential = async (data) => {
     const { email, password } = data;
+    // check if email has been verified
     loginCheck(email)
       .then((res) => {
         if (res?.success) {

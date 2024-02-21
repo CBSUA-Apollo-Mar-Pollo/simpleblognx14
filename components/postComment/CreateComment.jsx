@@ -23,7 +23,7 @@ const CreateComment = ({
   commentProps,
 }) => {
   const [textareaValue, setTextareaValue] = useState(
-    replyToName ? replyToName + " " : ""
+    replyToName ? "@" + replyToName + " " : ""
   );
   const { toast } = useToast();
   const router = useRouter();
@@ -119,7 +119,9 @@ const CreateComment = ({
         <Textarea
           id="auto-resize-textarea"
           className="pt-3 pl-4 min-h-[2px] pb-10 overflow-hidden rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
-          placeholder={`${replyToName ? replyToName : "Write an answer..."}`}
+          placeholder={`${
+            replyToName ? "@" + replyToName : "Write an answer..."
+          }`}
           value={textareaValue}
           onChange={handleTextareaChange}
           onKeyDown={handleEnterPress} // Add event handler for key presses

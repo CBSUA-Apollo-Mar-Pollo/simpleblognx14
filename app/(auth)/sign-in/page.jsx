@@ -2,7 +2,7 @@ import { getAuthSession } from "@/lib/auth";
 import SignInForm from "@/components/SignInForm";
 import { redirect } from "next/navigation";
 
-const SignIn = async () => {
+const SignInPage = async () => {
   const session = await getAuthSession();
 
   if (session?.user) {
@@ -16,4 +16,4 @@ const SignIn = async () => {
   );
 };
 
-export default SignIn;
+export default SignInPage;
