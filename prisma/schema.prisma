@@ -56,6 +56,8 @@ model Blog {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
+  sharedPostId String?
+
   comments Comment[]
 }
 

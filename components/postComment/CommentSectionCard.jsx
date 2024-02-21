@@ -33,13 +33,13 @@ const CommentSectionCard = ({
 
   const handleMouseEnter = (e) => {
     if (e === index) {
-      commentRef.current.style.display = "block"; // Change element style on hover
+      commentRef.current.style = "opacity: 1"; // Change element style on hover
     }
     // Other actions if needed
   };
 
   const handleMouseLeave = () => {
-    commentRef.current.style.display = "none"; // Revert element style
+    commentRef.current.style = "opacity: 0"; // Revert element style
     // Other actions if needed
   };
 
@@ -87,7 +87,7 @@ const CommentSectionCard = ({
             {session?.user && (
               <div
                 ref={commentRef}
-                className="hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer hidden"
+                className="hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer opacity-0"
               >
                 <MoreHorizontal className="text-white" />
               </div>
