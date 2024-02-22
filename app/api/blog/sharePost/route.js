@@ -17,6 +17,7 @@ export async function POST(req) {
       data: {
         sharedPostId: body.postId,
         authorId: session.user.id,
+        description: body.description,
       },
     });
 

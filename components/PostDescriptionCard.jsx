@@ -16,8 +16,10 @@ import { useSession } from "next-auth/react";
 import CommentSection from "./postComment/CommentSection";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
+import Image from "next/image";
 
-const PostDescriptionCard = ({ blog }) => {
+const PostDescriptionCard = ({ blog, sharedPost }) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const { mutate: getComments } = useMutation({
@@ -74,9 +76,66 @@ const PostDescriptionCard = ({ blog }) => {
           </div>
 
           {/* post description */}
-          <p className="px-6 py-2 text-justify leading-relaxed mb-1 font-medium">
+
+          <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal">
             {blog.description}
           </p>
+
+          {sharedPost && (
+            <div className=" mx-5 mb-2">
+              <div className="rounded-2xl border border-neutral-600">
+                {sharedPost.image && (
+                  <Link
+                    href={`/postComment/${sharedPost.id}`}
+                    className="relative overflow-clip w-full "
+                    // ref={pRef}
+                  >
+                    <Image
+                      sizes="100vw"
+                      width={0}
+                      height={0}
+                      src={sharedPost.image}
+                      alt="profile image"
+                      referrerPolicy="no-referrer"
+                      className="object-contain w-full transition max-h-[30rem] bg-black rounded-t-2xl "
+                    />
+                  </Link>
+                )}
+                {/* shared post description */}
+                <div className=" gap-1 my-2 mx-4">
+                  {/* profile image  */}
+                  <Link href={`/user/${sharedPost?.author.id}`}>
+                    <div className="flex items-center gap-1">
+                      <UserAvatar
+                        className="h-9 w-9 "
+                        user={{
+                          name: sharedPost.author?.name || null,
+                          image: sharedPost.author?.image || null,
+                        }}
+                      />
+
+                      <div className="px-2 pt-1">
+                        <p className="font-semibold text-sm">
+                          {sharedPost?.author?.name}
+                        </p>
+                        <div className="flex items-center">
+                          <p className=" text-xs text-gray-600 ">
+                            {formatTimeToNow(new Date(sharedPost?.createdAt))}
+                          </p>
+                          <Dot className="-mx-1 text-gray-600" />
+                          <Globe className="h-3 w-3 text-gray-600" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <p className=" text-justify py-2 text-sm leading-relaxed mb-1 font-medium">
+                    {sharedPost.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {blog.comments.length !== 0 && (
             <div className="py-3 flex items-center justify-end mr-4 text-sm hover:underline">

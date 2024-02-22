@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import PopularCard from "@/components/PopularCard";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import AddBlogModal from "@/components/AddBlogModal";
+import AddPostModal from "@/components/AddPostModal";
 import Posts from "@/components/Posts";
 
 export default async function HomePage() {
@@ -25,7 +25,7 @@ export default async function HomePage() {
         <Sidebar session={session} />
       </div>
       <div className="mt-5 space-y-3 col-span-2 mx-[5rem] ">
-        {session?.user && <AddBlogModal session={session} />}
+        {session?.user && <AddPostModal session={session} />}
         <Posts initialPosts={posts} session={session} />
       </div>
       <div className=" col-span-1 relative">

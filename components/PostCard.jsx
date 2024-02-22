@@ -31,6 +31,7 @@ import { useToast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import axios, { AxiosError } from "axios";
 import { getSharedPost } from "@/actions/getSharedPost";
+import SharePostModal from "./SharePostModal";
 // import { Button } from "./ui/Button";
 
 const PostCard = ({ blog, session }) => {
@@ -39,12 +40,12 @@ const PostCard = ({ blog, session }) => {
   const { toast } = useToast();
   const { signinToast } = useCustomHooks();
 
+  // share post function using useMutation from tanstack query
   const { mutate: sharePost, isLoading } = useMutation({
     mutationFn: async (id) => {
       const payload = {
         postId: id,
       };
-
       const { data } = await axios.post("/api/blog/sharePost", payload);
       return data;
     },
@@ -73,20 +74,12 @@ const PostCard = ({ blog, session }) => {
 
   const { data: sharedPost, error } = useQuery({
     // Query key (unique identifier)
-    queryKey: ["sharedPost", blog.sharedPostId], // Adjust based on your data structure
-
+    queryKey: ["sharedPost", blog.sharedPostId],
     // Query function
     queryFn: async () => {
       const res = await getSharedPost(blog.sharedPostId);
-      console.log(res); // Remove if not needed
       return res;
     },
-
-    // Optional configuration options
-    // - staleTime: How long to keep data in cache before refetching (default: 0)
-    // - refetchInterval: Automatically refetch at a specific interval (default: none)
-    // - refetchOnWindowFocus: Refetch data when the window gains focus (default: false)
-    // - ...and more based on your library and requirements
   });
 
   return (
@@ -148,13 +141,6 @@ const PostCard = ({ blog, session }) => {
                     referrerPolicy="no-referrer"
                     className="object-contain w-full transition max-h-[30rem] bg-black rounded-t-2xl "
                   />
-                  {/* {pRef.current?.clientHeight >= 600 ? (
-                <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
-                  <Button className="px-36 text-xs bg-opacity-90">
-                    SEE FULL IMAGE
-                  </Button>
-                </div>
-              ) : null} */}
                 </Link>
               )}
               {/* shared post description */}
@@ -256,7 +242,7 @@ const PostCard = ({ blog, session }) => {
               <span className=" font-medium text-sm">Comment</span>
             </Link>
           ) : (
-            <PostDescriptionCard blog={blog} />
+            <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
           )}
 
           {/* share */}
@@ -276,10 +262,13 @@ const PostCard = ({ blog, session }) => {
                   <Forward className="h-6 w-6" />
                   <span>Share now</span>
                 </Button>
-                <Button variant="ghost" className="flex justify-start gap-x-3">
-                  <PenSquare className="h-5 w-5" />
-                  <span>Share to Feed</span>
-                </Button>
+
+                <SharePostModal
+                  session={session}
+                  sharedPost={sharedPost}
+                  blog={blog}
+                />
+
                 <Button variant="ghost" className="flex justify-start gap-x-3">
                   <PlusCircle className="h-5 w-5" />
                   <span> Share to your story</span>

@@ -1,4 +1,4 @@
-import AddBlogModal from "@/components/AddBlogModal";
+import AddBlogModal from "@/components/AddPostModal";
 import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
