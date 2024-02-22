@@ -2,6 +2,7 @@ import React from "react";
 import { toast } from "./use-toast";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 const useCustomHooks = () => {
   const signinToast = () => {
@@ -12,10 +13,10 @@ const useCustomHooks = () => {
       action: (
         <Link
           href="/sign-in"
-          className={buttonVariants({ variant: "secondary" })}
+          className={cn(buttonVariants({ variant: "default" }))}
           onClick={() => dismiss()}
         >
-          Sign in
+          <span className="text-white">Sign in</span>
         </Link>
       ),
     });

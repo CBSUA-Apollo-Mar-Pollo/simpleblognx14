@@ -4,7 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/Button";
 
 const useCustomHooks = () => {
-  const shareToast = () => {
+  const sharingPostToast = () => {
     const { dismiss } = toast({
       title: "Sign in required",
       description: "You need to Sign in first",
@@ -23,7 +23,7 @@ const useCustomHooks = () => {
       ),
     });
   };
-  return { shareToast };
+  return { sharingPostToast };
 };
 
 export default useCustomHooks;

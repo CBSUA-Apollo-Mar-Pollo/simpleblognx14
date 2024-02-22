@@ -15,7 +15,8 @@ export async function POST(req) {
 
     await db.blog.create({
       data: {
-        sharedPostId: postId,
+        sharedPostId: body.postId,
+        authorId: session.user.id,
       },
     });
 

@@ -7,6 +7,7 @@ import CreateComment from "./CreateComment";
 import { getReplyName } from "@/actions/replyName";
 import { useRouter } from "next/navigation";
 import CommentVote from "../post-vote/CommentVote";
+import { useQuery } from "@tanstack/react-query";
 
 const CommentSectionCard = ({
   comment,
@@ -21,15 +22,14 @@ const CommentSectionCard = ({
   const commentRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
   const router = useRouter();
-  const [replyName, setReplyName] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
+  const { data: replyName, error } = useQuery({
+    queryKey: ["replyName", comment.commentId],
+    queryFn: async () => {
       const res = await getReplyName(comment.commentId);
-      setReplyName(res);
-    }
-    fetchData();
-  }, []);
+      return res;
+    },
+  });
 
   const handleMouseEnter = (e) => {
     if (e === index) {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader } from "./ui/Card";
 import { formatTimeToNow } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
@@ -26,10 +26,11 @@ import {
   DropdownMenuTrigger,
 } from "./ui/Dropdown-menu";
 import { Button } from "./ui/Button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import axios, { AxiosError } from "axios";
+import { getSharedPost } from "@/actions/getSharedPost";
 // import { Button } from "./ui/Button";
 
 const PostCard = ({ blog, session }) => {
@@ -49,19 +50,16 @@ const PostCard = ({ blog, session }) => {
     },
     onError: (err) => {
       //  if there are any other errors beside the server error
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 401) {
-          setOpen(false);
-          return signinToast();
-        }
 
-        if (err.response?.status === 500) {
-          return toast({
-            title: "Error",
-            description: "Couldn't create the blog",
-            variant: "destructive",
-          });
-        }
+      if (err.response?.status === 401) {
+        return signinToast();
+      }
+
+      if (err.response?.status === 500) {
+        return toast({
+          description: "Couldn't share post",
+          variant: "destructive",
+        });
       }
 
       return toast({
@@ -72,6 +70,25 @@ const PostCard = ({ blog, session }) => {
     },
     onSuccess: async () => {},
   });
+
+  const { data: sharedPost, error } = useQuery({
+    // Query key (unique identifier)
+    queryKey: ["sharedPost", blog.sharedPostId], // Adjust based on your data structure
+
+    // Query function
+    queryFn: async () => {
+      const res = await getSharedPost(blog.sharedPostId);
+      console.log(res); // Remove if not needed
+      return res;
+    },
+
+    // Optional configuration options
+    // - staleTime: How long to keep data in cache before refetching (default: 0)
+    // - refetchInterval: Automatically refetch at a specific interval (default: none)
+    // - refetchOnWindowFocus: Refetch data when the window gains focus (default: false)
+    // - ...and more based on your library and requirements
+  });
+
   return (
     <Card>
       <CardHeader className="py-3">
@@ -110,32 +127,100 @@ const PostCard = ({ blog, session }) => {
       </CardHeader>
       <CardContent className="p-0">
         {/* post content */}
-        <p className="px-7 text-justify leading-relaxed mb-1 font-medium">
-          {blog.description}
-        </p>
-        {blog.image && (
-          <Link
-            href={`/postComment/${blog.id}`}
-            className="relative overflow-clip w-full"
-            // ref={pRef}
-          >
-            <Image
-              sizes="100vw"
-              width={0}
-              height={0}
-              src={blog.image}
-              alt="profile image"
-              referrerPolicy="no-referrer"
-              className="object-contain w-full transition max-h-[30rem] bg-black"
-            />
-            {/* {pRef.current?.clientHeight >= 600 ? (
-              <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
-                <Button className="px-36 text-xs bg-opacity-90">
-                  SEE FULL IMAGE
-                </Button>
+        {sharedPost ? (
+          <div className=" mx-5 mb-2">
+            <p className="px-1 text-justify text-base leading-relaxed mb-1 font-medium">
+              {blog.description}
+            </p>
+            <div className="rounded-2xl border border-neutral-200">
+              {sharedPost.image && (
+                <Link
+                  href={`/postComment/${sharedPost.id}`}
+                  className="relative overflow-clip w-full "
+                  // ref={pRef}
+                >
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
+                    src={sharedPost.image}
+                    alt="profile image"
+                    referrerPolicy="no-referrer"
+                    className="object-contain w-full transition max-h-[30rem] bg-black rounded-t-2xl "
+                  />
+                  {/* {pRef.current?.clientHeight >= 600 ? (
+                <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
+                  <Button className="px-36 text-xs bg-opacity-90">
+                    SEE FULL IMAGE
+                  </Button>
+                </div>
+              ) : null} */}
+                </Link>
+              )}
+              {/* shared post description */}
+              <div className=" gap-1 my-2 mx-4">
+                {/* profile image  */}
+                <Link href={`/user/${sharedPost?.author.id}`}>
+                  <div className="flex items-center gap-1">
+                    <UserAvatar
+                      className="h-9 w-9 "
+                      user={{
+                        name: sharedPost.author?.name || null,
+                        image: sharedPost.author?.image || null,
+                      }}
+                    />
+
+                    <div className="px-2 pt-1">
+                      <p className="font-semibold text-sm">
+                        {sharedPost?.author?.name}
+                      </p>
+                      <div className="flex items-center">
+                        <p className=" text-xs text-gray-600 ">
+                          {formatTimeToNow(new Date(sharedPost?.createdAt))}
+                        </p>
+                        <Dot className="-mx-1 text-gray-600" />
+                        <Globe className="h-3 w-3 text-gray-600" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                <p className=" text-justify py-2 text-sm leading-relaxed mb-1 font-medium">
+                  {sharedPost.description}
+                </p>
               </div>
-            ) : null} */}
-          </Link>
+            </div>
+          </div>
+        ) : (
+          <>
+            <p className="px-7 text-justify leading-relaxed mb-1 font-medium">
+              {blog.description}
+            </p>
+            {blog.image && (
+              <Link
+                href={`/postComment/${blog.id}`}
+                className="relative overflow-clip w-full"
+                // ref={pRef}
+              >
+                <Image
+                  sizes="100vw"
+                  width={0}
+                  height={0}
+                  src={blog.image}
+                  alt="profile image"
+                  referrerPolicy="no-referrer"
+                  className="object-contain w-full transition max-h-[30rem] bg-black"
+                />
+                {/* {pRef.current?.clientHeight >= 600 ? (
+                <div className="absolute bottom-0 left-0 h-16 w-full flex items-center justify-center">
+                  <Button className="px-36 text-xs bg-opacity-90">
+                    SEE FULL IMAGE
+                  </Button>
+                </div>
+              ) : null} */}
+              </Link>
+            )}
+          </>
         )}
 
         {blog.comments.length !== 0 &&
