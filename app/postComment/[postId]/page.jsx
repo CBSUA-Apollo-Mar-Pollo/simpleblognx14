@@ -1,4 +1,4 @@
-import PostCommentCard from "@/components/postComment/PostCommentCard";
+import PostCommentCard from "@/components/PostComment/PostCommentCard";
 import { db } from "@/lib/db";
 import React from "react";
 

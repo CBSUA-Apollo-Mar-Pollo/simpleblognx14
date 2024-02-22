@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "./ui/Button";
+import { buttonVariants } from "../ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
-import { Input } from "./ui/Input";
+import { Input } from "../ui/Input";
 import {
   Album,
   Bell,
@@ -19,7 +19,7 @@ import {
   Search,
 } from "lucide-react";
 import { Icons } from "./Icons";
-import NotificationMenu from "./Notification/NotificationMenu";
+import NotificationMenu from "../Notification/NotificationMenu";
 
 const Navbar = async () => {
   const session = await getAuthSession();

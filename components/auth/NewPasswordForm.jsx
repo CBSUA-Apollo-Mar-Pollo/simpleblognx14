@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { Dot } from "lucide-react";
 import { NewPasswordFormValidator } from "@/lib/validators/newPassword";
-import { PasswordInput } from "./ui/PasswordInput";
+import { PasswordInput } from "../ui/PasswordInput";
 import { newPassword } from "@/actions/new-password";
 
 const NewPasswordForm = () => {

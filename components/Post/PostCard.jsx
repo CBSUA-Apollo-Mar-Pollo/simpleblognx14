@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardContent, CardHeader } from "./ui/Card";
-import { formatTimeToNow } from "@/lib/utils";
-import UserAvatar from "./UserAvatar";
-import { Separator } from "./ui/Separator";
+import { Card, CardContent, CardHeader } from "../ui/Card";
+import { cn, formatTimeToNow } from "@/lib/utils";
+import UserAvatar from "../utils/UserAvatar";
+import { Separator } from "../ui/Separator";
 import {
   Dot,
   Forward,
@@ -15,17 +15,17 @@ import {
   PlusCircle,
 } from "lucide-react";
 import Image from "next/image";
-import CommentSection from "./postComment/CommentSection";
-import HeartVote from "./post-vote/HeartVote";
+import CommentSection from "../PostComment/CommentSection";
+import HeartVote from "../PostVote/HeartVote";
 import Link from "next/link";
-import PostDescriptionCard from "./PostDescriptionCard";
+import PostDescriptionCard from "../PostComment/PostDescriptionCard";
 import PostOption from "./PostOption";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "./ui/Dropdown-menu";
-import { Button } from "./ui/Button";
+} from "../ui/Dropdown-menu";
+import { Button, buttonVariants } from "../ui/Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
@@ -50,6 +50,7 @@ const PostCard = ({ blog, session }) => {
       return data;
     },
     onError: (err) => {
+      console.log(err);
       //  if there are any other errors beside the server error
 
       if (err.response?.status === 401) {
@@ -69,7 +70,20 @@ const PostCard = ({ blog, session }) => {
         variant: "destructive",
       });
     },
-    onSuccess: async () => {},
+    onSuccess: async (data) => {
+      return toast({
+        description: "Shared to your profile",
+        action: (
+          <Link
+            href={`/sharedPost/${data}`}
+            className={cn(buttonVariants({ variant: "default" }), "bg-white")}
+            onClick={() => dismiss()}
+          >
+            <span className="text-white">View post</span>
+          </Link>
+        ),
+      });
+    },
   });
 
   const { data: sharedPost, error } = useQuery({
@@ -257,7 +271,12 @@ const PostCard = ({ blog, session }) => {
                 <Button
                   variant="ghost"
                   className="flex justify-start gap-x-3"
-                  onClick={() => sharePost(blog.id)}
+                  onClick={() => {
+                    sharePost(blog.id);
+                    toast({
+                      description: "Posting...",
+                    });
+                  }}
                 >
                   <Forward className="h-6 w-6" />
                   <span>Share now</span>

@@ -1,5 +1,5 @@
 import PopularCard from "@/components/PopularCard";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/utils/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
 

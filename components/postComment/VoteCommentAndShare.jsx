@@ -1,6 +1,6 @@
 import { Forward, MessageCircle } from "lucide-react";
 import React from "react";
-import HeartVote from "../post-vote/HeartVote";
+import HeartVote from "../PostVote/HeartVote";
 
 const VoteCommentAndShare = () => {
   return (

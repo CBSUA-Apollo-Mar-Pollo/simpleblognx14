@@ -13,8 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/Dropdown-menu";
-import { Separator } from "./ui/Separator";
+} from "../ui/Dropdown-menu";
+import { Separator } from "../ui/Separator";
 import { useSession } from "next-auth/react";
 
 const PostOption = ({ authorId, authorName }) => {

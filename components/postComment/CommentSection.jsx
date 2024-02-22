@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../utils/UserAvatar";
 import CreateComment from "./CreateComment";
 import { cn, formatTimeToNow } from "@/lib/utils";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
@@ -10,7 +10,6 @@ import { COMMENT_PAGE } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
 import CommentSectionCard from "./CommentSectionCard";
-import { getReplyName } from "@/actions/replyName";
 
 const CommentSection = ({ session, postId, initialComments, getComments }) => {
   const pathname = usePathname();

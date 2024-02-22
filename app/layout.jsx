@@ -3,7 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/Toaster";
-import Providers from "@/components/Provider";
+import Providers from "@/components/utils/Provider";
 
 const poppins = Poppins({
   subsets: ["latin"],

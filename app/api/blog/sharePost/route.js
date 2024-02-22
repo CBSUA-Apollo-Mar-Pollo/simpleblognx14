@@ -13,7 +13,7 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    await db.blog.create({
+    const returnData = await db.blog.create({
       data: {
         sharedPostId: body.postId,
         authorId: session.user.id,
@@ -21,7 +21,7 @@ export async function POST(req) {
       },
     });
 
-    return new Response("OK");
+    return new Response(returnData.id);
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

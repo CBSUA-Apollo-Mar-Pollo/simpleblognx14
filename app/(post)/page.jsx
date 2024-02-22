@@ -1,11 +1,11 @@
 import { db } from "@/lib/db";
 
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/utils/Sidebar";
 import { getAuthSession } from "@/lib/auth";
 import PopularCard from "@/components/PopularCard";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import AddPostModal from "@/components/AddPostModal";
-import Posts from "@/components/Posts";
+import AddPostModal from "@/components/Post/AddPostModal";
+import Posts from "@/components/Post/Posts";
 
 export default async function HomePage() {
   const session = await getAuthSession();

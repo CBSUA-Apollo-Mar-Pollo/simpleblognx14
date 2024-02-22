@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../utils/UserAvatar";
 import { Textarea } from "../ui/Textarea";
 import { Camera, SendHorizonal } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";

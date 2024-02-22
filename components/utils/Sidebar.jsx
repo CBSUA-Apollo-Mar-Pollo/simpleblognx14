@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, buttonVariants } from "./ui/Button";
-import { Separator } from "./ui/Separator";
+import { Button, buttonVariants } from "../ui/Button";
+import { Separator } from "../ui/Separator";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {

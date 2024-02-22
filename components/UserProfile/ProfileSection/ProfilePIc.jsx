@@ -1,4 +1,4 @@
-import UserAvatar from "@/components/UserAvatar";
+import UserAvatar from "@/components/utils/UserAvatar";
 import React from "react";
 import UpdateProfilePicModal from "./UpdateProfilePicModal";
 

@@ -7,7 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { buttonVariants } from "./ui/Button";
+import { buttonVariants } from "../ui/Button";
 import { BeatLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";

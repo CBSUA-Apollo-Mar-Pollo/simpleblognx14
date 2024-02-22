@@ -1,5 +1,5 @@
 import { getAuthSession } from "@/lib/auth";
-import SignInForm from "@/components/SignInForm";
+import SignInForm from "@/components/auth/SignInForm";
 import { redirect } from "next/navigation";
 
 const SignInPage = async () => {

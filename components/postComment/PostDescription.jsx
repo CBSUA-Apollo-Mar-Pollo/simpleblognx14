@@ -1,5 +1,5 @@
 import React from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
 import {
   Dot,

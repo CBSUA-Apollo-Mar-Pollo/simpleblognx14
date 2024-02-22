@@ -1,4 +1,4 @@
-import UserAvatar from "@/components/UserAvatar";
+import UserAvatar from "@/components/utils/UserAvatar";
 import { UploadButton } from "@uploadthing/react";
 import { Camera, Loader2 } from "lucide-react";
 import React from "react";

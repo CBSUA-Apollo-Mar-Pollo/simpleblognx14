@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../utils/UserAvatar";
 import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
 import { cn, formatTimeToNow } from "@/lib/utils";
 import { Button } from "../ui/Button";
 import CreateComment from "./CreateComment";
 import { getReplyName } from "@/actions/replyName";
 import { useRouter } from "next/navigation";
-import CommentVote from "../post-vote/CommentVote";
+import CommentVote from "../PostVote/CommentVote";
 import { useQuery } from "@tanstack/react-query";
 
 const CommentSectionCard = ({
@@ -32,14 +32,16 @@ const CommentSectionCard = ({
   });
 
   const handleMouseEnter = (e) => {
-    if (e === index) {
+    if (e === index && session?.user) {
       commentRef.current.style = "opacity: 1"; // Change element style on hover
     }
     // Other actions if needed
   };
 
   const handleMouseLeave = () => {
-    commentRef.current.style = "opacity: 0"; // Revert element style
+    if (session?.user) {
+      commentRef.current.style = "opacity: 0"; // Revert element style
+    }
     // Other actions if needed
   };
 

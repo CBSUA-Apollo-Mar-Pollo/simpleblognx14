@@ -7,13 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/Dialog";
+} from "../ui/Dialog";
 import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import PostVote from "./post-vote/HeartVote";
+import PostVote from "../PostVote/HeartVote";
 import { useSession } from "next-auth/react";
-import CommentSection from "./postComment/CommentSection";
+import CommentSection from "./CommentSection";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";

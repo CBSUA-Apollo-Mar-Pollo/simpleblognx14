@@ -1,4 +1,4 @@
-import NewVerificationForm from "@/components/NewVerificationForm";
+import NewVerificationForm from "@/components/auth/NewVerificationForm";
 import React from "react";
 
 const NewVerificationPage = () => {
