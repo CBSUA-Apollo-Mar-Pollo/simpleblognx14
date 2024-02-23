@@ -97,7 +97,7 @@ const PostCard = ({ blog, session }) => {
   });
 
   return (
-    <Card>
+    <Card className="dark:bg-neutral-800 dark:border-0 dark:text-neutral-200">
       <CardHeader className="py-3">
         <div className="flex items-center justify-between gap-1">
           {/* profile image  */}
@@ -113,12 +113,12 @@ const PostCard = ({ blog, session }) => {
 
               <div className="px-2 pt-1">
                 <p className="font-semibold text-sm">{blog?.author?.name}</p>
-                <div className="flex items-center">
-                  <p className=" text-xs text-gray-600 ">
+                <div className="flex items-center ">
+                  <p className=" text-xs text-gray-600 dark:text-neutral-200">
                     {formatTimeToNow(new Date(blog?.createdAt))}
                   </p>
-                  <Dot className="-mx-1 text-gray-600" />
-                  <Globe className="h-3 w-3 text-gray-600" />
+                  <Dot className="-mx-1 text-gray-600 dark:text-neutral-200" />
+                  <Globe className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
                 </div>
               </div>
             </div>
@@ -139,7 +139,7 @@ const PostCard = ({ blog, session }) => {
             <p className="px-1 text-justify text-base leading-relaxed mb-1 font-medium">
               {blog.description}
             </p>
-            <div className="rounded-2xl border border-neutral-200">
+            <div className="rounded-2xl border border-neutral-200 dark:border-neutral-700">
               {sharedPost.image && (
                 <Link
                   href={`/postComment/${sharedPost.id}`}
@@ -238,7 +238,7 @@ const PostCard = ({ blog, session }) => {
               {blog.comments.length === 1 ? "Comment" : "Comments"}
             </div>
           ))}
-        <Separator className="" />
+        <Separator className="dark:bg-neutral-700" />
 
         {/* home post vote comment and share */}
         <div className="flex justify-between my-1 gap-x-2 mx-6">

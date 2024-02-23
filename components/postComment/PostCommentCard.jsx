@@ -41,7 +41,7 @@ const PostCommentCard = async ({ post }) => {
         <Separator className="bg-gray-700" />
 
         <div
-          className={`overflow-auto max-h-[100vh] ${
+          className={` overflow-auto max-h-[100vh] ${
             session?.user ? "pb-[22vh]" : "pb-[10vh]"
           }`}
         >

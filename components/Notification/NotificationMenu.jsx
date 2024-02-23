@@ -13,8 +13,8 @@ const NotificationMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:outline-none">
-        <div className="bg-gray-100 p-2 rounded-full cursor-pointer hover:bg-gray-200">
-          <Icons.bell className="text-gray-500 " />
+        <div className="bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
+          <Icons.bell className="text-gray-500 dark:text-neutral-100" />
         </div>
       </DropdownMenuTrigger>
 

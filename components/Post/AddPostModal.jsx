@@ -77,7 +77,7 @@ const AddPostModal = ({ session, user }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">
-        <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white">
+        <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
           <Link href={`/user/${session?.user.id}`}>
             <UserAvatar
               className="h-10 w-10 "
@@ -88,18 +88,20 @@ const AddPostModal = ({ session, user }) => {
             />
           </Link>
           <Input
-            className="rounded-full "
+            className="rounded-full dark:border-0 dark:bg-neutral-700"
             placeholder={`What's on your mind, ${
               session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
             }`}
           />
         </div>
       </DialogTrigger>
-      <DialogContent className="p-2">
-        <DialogHeader className="py-2 px-4">
-          <DialogTitle className="text-2xl font-bold">Create post</DialogTitle>
+      <DialogContent className=" min-w-[39vw] dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+        <DialogHeader className="pt-4 px-4">
+          <DialogTitle className="text-2xl font-bold text-center">
+            Create post
+          </DialogTitle>
         </DialogHeader>
-        <Separator />
+        <Separator className="dark:bg-neutral-700 border-1" />
         <div className="grid gap-3 py-1">
           <div className="flex items-center gap-2 px-4">
             <UserAvatar
@@ -110,17 +112,17 @@ const AddPostModal = ({ session, user }) => {
               }}
             />
             <div className="space-y-1">
-              <p className="font-semibold text-gray-700 text-base pl-1">
+              <p className="font-semibold text-gray-700 text-base pl-1 dark:text-neutral-200">
                 {session?.user.name || user?.name}
               </p>
               <Select>
-                <SelectTrigger className="h-6 w-24 font-medium text-sm focus:ring-0">
+                <SelectTrigger className="h-6 w-24 font-medium text-sm focus:ring-0 dark:bg-neutral-600 dark:border-0">
                   <SelectValue
                     placeholder="Public"
                     className="font-semibold "
                   />
                 </SelectTrigger>
-                <SelectContent className="bg-white border w-[110px] rounded">
+                <SelectContent className="bg-white dark:bg-neutral-800 dark:border-0 border w-[110px] rounded">
                   <SelectItem
                     value="Private"
                     className="cursor-pointer font-medium "
@@ -140,12 +142,12 @@ const AddPostModal = ({ session, user }) => {
               placeholder={`What's on your mind, ${
                 session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
               }?`}
-              className="focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-24 text-base border-none resize-none"
+              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-24 text-lg border-none resize-none px-4"
             />
 
             {/* Image upload UI */}
             {toggleImageUpload && (
-              <div className="flex items-center justify-center w-full border border-gray-300 rounded-md p-2 relative">
+              <div className="flex items-center justify-center w-auto border border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
                 {imageUrl.length ? (
                   <div className="">
                     <Image
@@ -162,19 +164,14 @@ const AddPostModal = ({ session, user }) => {
                   <>
                     <Button
                       variant="ghost"
-                      className="absolute right-4 top-6 py-1 px-2 rounded-full bg-gray-100"
+                      className="absolute right-2 top-2 py-0 px-3 rounded-full bg-gray-100 dark:bg-neutral-400"
                       onClick={() =>
                         setToggleImageUpload((prevState) => !prevState)
                       }
                     >
-                      <X className="w-5 h-5 font-bold" />
+                      <X className="w-4 h-4 font-bold" />
                     </Button>
                     <UploadDropzone
-                      appearance={{
-                        container: {
-                          width: "100%",
-                        },
-                      }}
                       endpoint="imageUploader"
                       onClientUploadComplete={(res) => {
                         setImageUrl(res[0].url);
@@ -186,8 +183,10 @@ const AddPostModal = ({ session, user }) => {
             )}
           </div>
 
-          <div className=" border border-gray-300 rounded-md px-4 flex justify-between items-center py-1">
-            <h1 className="font-semibold text-gray-600">Add to your post</h1>
+          <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-4 flex justify-between items-center py-1 ">
+            <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
+              Add to your post
+            </h1>
             <div>
               <Button
                 variant="ghost"
@@ -199,12 +198,12 @@ const AddPostModal = ({ session, user }) => {
             </div>
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="py-2 mx-4">
           <Button
             className="w-full"
             type="submit"
             isLoading={isLoading}
-            disabled={description.length === 0}
+            disabled={description.length === 0 && imageUrl.length === 0}
             onClick={() => {
               createBlog();
               setIsLoading(true);

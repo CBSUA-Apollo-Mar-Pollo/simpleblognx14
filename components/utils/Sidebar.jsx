@@ -25,7 +25,7 @@ const Sidebar = ({ session }) => {
     <div
       className={`sticky top-16 w-[22vw] h-screen z-10 shadow-sm px-4 max-h-[90vh] ${
         toggleScrollBar ? "overflow-auto" : "overflow-hidden"
-      } bg-white`}
+      } bg-white dark:bg-neutral-900 dark:text-neutral-100`}
       onMouseEnter={handleScrollBar}
       onMouseLeave={handleMouseLeave}
     >
@@ -38,12 +38,16 @@ const Sidebar = ({ session }) => {
                 href={item.link}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  pathname === item.link ? "bg-gray-200" : "",
-                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-5"
+                  pathname === item.link
+                    ? "bg-gray-200 dark:bg-neutral-700"
+                    : "",
+                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-5"
                 )}
               >
-                {item.Icon} {/* icon */}
-                <span className="text-sm text-gray-600 font-semibold">
+                <div className="text-gray-500 dark:text-neutral-300">
+                  {item.Icon}
+                </div>
+                <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
                   {item.label}
                 </span>
               </Link>
@@ -54,18 +58,22 @@ const Sidebar = ({ session }) => {
                 href={item.link}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  pathname === item.link ? "bg-gray-200" : "",
-                  "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-5"
+                  pathname === item.link
+                    ? "bg-gray-200 dark:bg-neutral-700"
+                    : "",
+                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-5"
                 )}
               >
-                {item.Icon} {/* icon */}
-                <span className="text-sm text-gray-600 font-semibold">
+                <div className="text-gray-500 dark:text-neutral-300">
+                  {item.Icon}
+                </div>
+                <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
                   {item.label}
                 </span>
               </Link>
             ))}
       </div>
-      <Separator className="my-3 bg-gray-300" />
+      <Separator className="my-3 bg-gray-300 dark:bg-neutral-600" />
 
       {/* Explore */}
       <h1 className="font-bold text-2xl ml-2">Explore</h1>
@@ -77,12 +85,14 @@ const Sidebar = ({ session }) => {
             href={item.link}
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              pathname === item.link ? "bg-gray-200" : "",
-              "flex justify-start hover:bg-gray-200 py-2 w-full focus:ring-transparent gap-5"
+              pathname === item.link ? "bg-gray-200 dark:bg-neutral-700" : "",
+              "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-5"
             )}
           >
-            {item.Icon}
-            <span className="text-sm text-gray-600 font-semibold">
+            <div className="text-gray-500 dark:text-neutral-300">
+              {item.Icon}
+            </div>
+            <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
               {item.label}
             </span>
           </Link>
@@ -90,7 +100,7 @@ const Sidebar = ({ session }) => {
       </div>
 
       <span
-        className="text-xs font-medium mt-7 text-slate-600
+        className="text-xs font-medium mt-7 text-slate-600 dark:text-neutral-400
       "
       >
         EStoryamo, Inc,&#169; 2024, All rights reserved.
