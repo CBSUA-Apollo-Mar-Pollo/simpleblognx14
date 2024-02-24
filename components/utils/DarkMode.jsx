@@ -15,34 +15,38 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
             setSubMenu(null);
           }}
           variant="ghost"
-          className="p-2 hover:bg-neutral-100 rounded-full cursor-pointer"
+          className="p-2 hover:bg-neutral-100 rounded-full cursor-pointer dark:hover:bg-neutral-600"
         >
-          <Icons.BackIcon className="h-5 w-5  " />
+          <Icons.BackIcon className="h-5 w-5  dark:fill-neutral-200" />
         </Button>
 
-        <h1 className="text-2xl font-bold">Display</h1>
+        <h1 className="text-2xl font-bold dark:text-neutral-200">Display</h1>
       </div>
 
       <div className="mt-3">
         <div className="flex items-center gap-x-4">
-          <span className="p-1.5 bg-neutral-200 rounded-full">
+          <span className="p-1.5 bg-neutral-200 rounded-full dark:bg-neutral-600">
             <Icons.DarkModeIcon
               fill="#424242"
-              className="h-6 w-6 border-neutral-800"
+              className="h-6 w-6 border-neutral-800 dark:fill-neutral-200"
             />
           </span>
-          <span className="font-semibold text-neutral-600">Dark Mode</span>
+          <span className="font-semibold text-neutral-600 dark:text-neutral-200">
+            Dark Mode
+          </span>
         </div>
 
         <div className="flex flex-col ml-10 mt-1">
           <Button
             onClick={() => setTheme("light")}
             variant="ghost"
-            className="flex justify-start gap-x-2"
+            className="flex justify-start gap-x-2 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
             <span
-              className={`${
-                resolvedTheme === "light" ? "opacity-1" : "opacity-0"
+              className={` ${
+                resolvedTheme === "light"
+                  ? "opacity-1 dark:text-neutral-200"
+                  : "opacity-0 dark:text-neutral-200,"
               }`}
             >
               <Check />
@@ -53,11 +57,13 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
           <Button
             onClick={() => setTheme("dark")}
             variant="ghost"
-            className="flex justify-start gap-x-2"
+            className="flex justify-start gap-x-2 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
             <span
               className={`${
-                resolvedTheme === "dark" ? "opacity-1" : "opacity-0"
+                resolvedTheme === "dark"
+                  ? "opacity-1 dark:text-neutral-200"
+                  : "opacity-0 dark:text-neutral-200,"
               }`}
             >
               <Check />

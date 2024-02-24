@@ -59,7 +59,10 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
         {comments
           .filter((comment) => !comment.replyToId)
           .map((topLevelComment, index) => (
-            <div className="flex flex-col" key={index}>
+            <div className="flex flex-col relative" key={index}>
+              {topLevelComment.replies.length !== 0 && (
+                <div className="absolute left-4 border-l-2 border-neutral-600 h-full " />
+              )}
               <CommentSectionCard
                 comment={topLevelComment}
                 session={session}
@@ -72,19 +75,19 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
               {/* replies */}
               {topLevelComment.replies.map((reply, index) => {
                 return (
-                  <div
-                    key={reply.id}
-                    className="ml-8  pl-4  border-l border-neutral-600"
-                  >
-                    <CommentSectionCard
-                      comment={reply}
-                      session={session}
-                      index={index}
-                      getComments={getComments}
-                      refetch={refetch}
-                      postId={postId}
-                      classNameForUserAvatarReplies="h-7 w-7"
-                    />
+                  <div key={reply.id} className="pl-4 relative">
+                    <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                    <div className="ml-8 mt-2">
+                      <CommentSectionCard
+                        comment={reply}
+                        session={session}
+                        index={index}
+                        getComments={getComments}
+                        refetch={refetch}
+                        postId={postId}
+                        classNameForUserAvatarReplies="h-7 w-7"
+                      />
+                    </div>
                   </div>
                 );
               })}

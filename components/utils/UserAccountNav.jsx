@@ -25,7 +25,7 @@ const UserAccountNav = ({ user }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white px-2 py-2 min-w-[20vw] shadow-2xl"
+        className="bg-white dark:bg-neutral-800 dark:border-0 px-2 py-2 min-w-[22vw] shadow-2xl"
         align="end"
       >
         {!activeSubMenu && (

@@ -16,7 +16,7 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
   return (
     <DropdownMenuGroup>
       <Link href={`/user/${user.id}`}>
-        <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer">
+        <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer dark:hover:bg-neutral-700">
           <UserAvatar
             className="h-10 w-10 "
             user={{ name: user.name || null, image: user?.image || null }}
@@ -24,10 +24,12 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
 
           <div className="flex flex-col leading-none">
             {user?.name && (
-              <p className="font-bold text-lg text-neutral-600">{user?.name}</p>
+              <p className="font-bold text-lg text-neutral-600 dark:text-neutral-100">
+                {user?.name}
+              </p>
             )}
             {user?.email && (
-              <p className="w-[200px] truncate text-sm text-neutral-600">
+              <p className="w-[200px] truncate text-sm text-neutral-600 dark:text-neutral-100">
                 {user?.email}
               </p>
             )}
@@ -35,17 +37,19 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
         </DropdownMenuItem>
       </Link>
 
-      <DropdownMenuSeparator className="my-2" />
+      <DropdownMenuSeparator className="my-2 dark:bg-neutral-500" />
 
       <div className="space-y-1">
         <DropdownMenuItem
           onClick={() => router.push("/settings")}
-          className="cursor-pointer gap-x-3"
+          className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700"
         >
-          <span className="p-2 bg-neutral-200 rounded-full">
-            <Icons.SettingIcon className="h-5 w-5 fill-neutral-800 text-white border-neutral-800" />
+          <span className="p-2 bg-neutral-200  rounded-full dark:bg-neutral-700">
+            <Icons.SettingIcon className="h-5 w-5 fill-neutral-800  border-neutral-800 dark:fill-neutral-200" />
           </span>
-          <span className="font-medium text-neutral-600">Settings</span>
+          <span className="font-medium text-neutral-600 dark:text-neutral-100">
+            Settings
+          </span>
         </DropdownMenuItem>
 
         {/* dark mode */}
@@ -55,26 +59,32 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
             setActiveSubMenu(true);
             setSubMenu(2);
           }}
-          className="cursor-pointer gap-x-3"
+          className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700"
         >
-          <span className="p-1.5 bg-neutral-200 rounded-full">
-            <Icons.DarkModeIcon className="h-6 w-6 fill-neutral-800 text-white border-neutral-800" />
+          <span className="p-1.5 bg-neutral-200 rounded-full dark:bg-neutral-600">
+            <Icons.DarkModeIcon className="h-6 w-6 fill-neutral-800 text-white border-neutral-800 dark:fill-neutral-200" />
           </span>
-          <span className="font-medium text-neutral-600">Display</span>
+          <span className="font-medium text-neutral-600 dark:text-neutral-100">
+            Display
+          </span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="cursor-pointer gap-x-3">
-          <span className=" p-1 bg-neutral-200 rounded-full">
-            <HelpCircle className="h-7 w-7 fill-neutral-800 text-white border-0" />
+        <DropdownMenuItem className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700">
+          <span className=" p-1 bg-neutral-200 rounded-full dark:bg-neutral-700">
+            <HelpCircle className="h-7 w-7 fill-neutral-800 text-white border-0 dark:fill-neutral-600 dark:text-neutral-200" />
           </span>
-          <span className="font-medium text-neutral-700">Help & Support</span>
+          <span className="font-medium text-neutral-700 dark:text-neutral-200">
+            Help & Support
+          </span>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="cursor-pointer gap-x-3">
-          <span className="p-1 bg-neutral-200 rounded-full">
-            <MessageSquareWarning className="h-7 w-7 fill-neutral-800 text-white " />
+        <DropdownMenuItem className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700">
+          <span className="p-1 bg-neutral-200 rounded-full dark:bg-neutral-700">
+            <MessageSquareWarning className="h-7 w-7 fill-neutral-800 text-white dark:fill-neutral-600 dark:text-neutral-200" />
           </span>
-          <span className="font-medium text-neutral-600">Give feedback</span>
+          <span className="font-medium text-neutral-600 dark:text-neutral-200">
+            Give feedback
+          </span>
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -84,13 +94,15 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
               callbackUrl: `${window.location.origin}/sign-in`,
             });
           }}
-          className="cursor-pointer gap-x-3"
+          className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700"
         >
-          <span className="p-2 bg-neutral-200 rounded-full">
+          <span className="p-2 bg-neutral-200 rounded-full dark:bg-neutral-700">
             {/* <LogOut className="text-neutral-600 h-7 w-7" /> */}
-            <Icons.signOut className="h-6 w-6 fill-neutral-800 text-white " />
+            <Icons.signOut className="h-6 w-6 fill-neutral-800 text-white dark:fill-neutral-200 dark:text-neutral-200" />
           </span>
-          <span className="font-medium text-neutral-600">Sign out</span>
+          <span className="font-medium text-neutral-600 dark:text-neutral-200">
+            Sign out
+          </span>
         </DropdownMenuItem>
       </div>
     </DropdownMenuGroup>
