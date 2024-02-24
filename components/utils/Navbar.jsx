@@ -24,10 +24,10 @@ import NotificationMenu from "../Notification/NotificationMenu";
 const Navbar = async () => {
   const session = await getAuthSession();
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-zinc-800 shadow-sm ">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-zinc-800 shadow-sm">
       <div className="container max-w-full h-full mx-auto px-[30px] flex items-center justify-between gap-2">
         {/* logo and search bar  */}
-        <div className="my-2.5 flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 my-2">
           <Link href="/" className="font-bold">
             <span className=" px-3.5 rounded-full bg-yellow-400 text-3xl ">
               E
@@ -42,12 +42,22 @@ const Navbar = async () => {
           </div>
         </div>
 
-        <div className="flex space-x-28 mr-[12rem] text-neutral-600 dark:text-neutral-300">
-          <Home />
-          <PlayCircle />
-          <Gamepad2 />
-          <Newspaper />
-          <History />
+        <div className="flex space-x-16 mr-[12rem] text-neutral-600 dark:text-neutral-300">
+          <span className="px-5 border-b-4 border-blue-500">
+            <Home className=" h-10 w-10 py-2 fill-blue-600 stroke-blue-600" />
+          </span>
+          <span className="px-5">
+            <PlayCircle className="h-10 w-10 py-2" />
+          </span>
+          <span className="px-5">
+            <Gamepad2 className="h-10 w-10 py-2" />
+          </span>
+          <span className="px-5">
+            <Newspaper className="h-10 w-10 py-2" />
+          </span>
+          <span className="px-5">
+            <History className="h-10 w-10 py-2" />
+          </span>
         </div>
 
         {/* notification and profile pic */}

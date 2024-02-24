@@ -19,11 +19,6 @@ import {
 
 export const SideBarFirstLinks = [
   {
-    Icon: <HomeIcon className="mr-4  h-6" />,
-    label: "Home",
-    link: "/",
-  },
-  {
     Icon: <Album className="mr-4  h-6" />,
     label: "Post",
     link: "post",

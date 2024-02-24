@@ -18,12 +18,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
-          <div className="mx-auto  dark:bg-neutral-900">{children}</div>
+          <div className="mx-auto dark:bg-neutral-900">{children}</div>
           <Toaster />
         </Providers>
       </body>

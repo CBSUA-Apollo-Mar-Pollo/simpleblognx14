@@ -35,6 +35,7 @@
     "lucide-react": "^0.303.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
+    "next-themes": "^0.2.1",
     "prisma": "^5.7.1",
     "react": "^18",
     "react-avatar-edit": "^1.2.0",

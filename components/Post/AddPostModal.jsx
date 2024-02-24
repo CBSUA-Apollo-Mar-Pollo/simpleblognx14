@@ -95,7 +95,7 @@ const AddPostModal = ({ session, user }) => {
           />
         </div>
       </DialogTrigger>
-      <DialogContent className=" min-w-[39vw] dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className=" min-w-[39vw] max-h-[80vh] dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-2xl font-bold text-center">
             Create post
@@ -133,7 +133,7 @@ const AddPostModal = ({ session, user }) => {
               </Select>
             </div>
           </div>
-          <div className="grid items-center max-h-64 overflow-auto">
+          <div className="grid items-center max-h-72 overflow-auto">
             <Textarea
               id="desc"
               value={description}
@@ -147,7 +147,7 @@ const AddPostModal = ({ session, user }) => {
 
             {/* Image upload UI */}
             {toggleImageUpload && (
-              <div className="flex items-center justify-center w-auto border border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
+              <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
                 {imageUrl.length ? (
                   <div className="">
                     <Image
