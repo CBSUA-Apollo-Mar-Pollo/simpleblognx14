@@ -6,11 +6,12 @@ import { Separator } from "../../ui/Separator";
 import { useSession } from "next-auth/react";
 import BackgroundImage from "./BackgroundImage";
 import axios from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import ProfileButtons from "./ProfileButtons";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
+import { getDominantColor } from "@/actions/getDominantColor";
 
 const ProfileSection = ({ user, deleteImage }) => {
   const { data: session } = useSession();
@@ -61,8 +62,21 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
   });
 
+  const { data: dominantColor, error } = useQuery({
+    queryKey: ["dominantColor", user.backgroundImage],
+    queryFn: async () => {
+      const res = await getDominantColor(user.backgroundImage);
+      return res;
+    },
+  });
+
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      style={{
+        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.5) 50%, rgba(255, 255, 255, 1) 100%)`,
+      }}
+    >
       {/* display when this buttons when the user is changing his/her cover photo */}
       {imageUrl.length !== 0 && (
         <div className="bg-neutral-700 absolute top-0 z-10 opacity-80 text-white w-full">

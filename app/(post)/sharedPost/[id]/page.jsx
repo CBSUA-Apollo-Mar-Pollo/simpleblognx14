@@ -1,4 +1,4 @@
-import PostCard from "@/components/Post/PostCard";
+import PostCard from "@/components/Post/PostCard/PostCard";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";

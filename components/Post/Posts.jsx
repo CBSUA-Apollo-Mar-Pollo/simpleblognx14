@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
-import PostCard from "./PostCard";
+import PostCard from "./PostCard/PostCard";
 
 export default function Posts({ initialPosts, session }) {
   const lastPostRef = useRef(null);

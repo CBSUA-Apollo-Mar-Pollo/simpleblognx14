@@ -16,6 +16,7 @@ const UserBio = async ({ userId }) => {
     },
     take: 6,
   });
+
   return (
     <div className="space-y-3">
       <Card>
@@ -29,51 +30,53 @@ const UserBio = async ({ userId }) => {
       </Card>
 
       <Card>
-        <CardContent className=" py-0.5">
-          <div className="flex items-center justify-between p-0.5 w-full">
-            <h2 className="text-xl font-bold py-4">Photos</h2>
-            <Link
-              href={`/user/${userId}/photos`}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "font-medium text-md text-blue-500"
-              )}
-            >
-              See all photos
-            </Link>
-          </div>
+        {userImages.length !== 0 && (
+          <CardContent className=" py-0.5">
+            <div className="flex items-center justify-between p-0.5 w-full">
+              <h2 className="text-xl font-bold py-4">Photos</h2>
+              <Link
+                href={`/user/${userId}/photos`}
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "font-medium text-md text-blue-500"
+                )}
+              >
+                See all photos
+              </Link>
+            </div>
 
-          {/* photos */}
-          <div className="grid grid-cols-3 gap-2 py-2">
-            {await Promise.all(
-              userImages.map(async (img) => {
-                const postId = await db.blog.findFirst({
-                  where: {
-                    authorId: img.authorId,
-                    image: img.image,
-                  },
-                });
-                return (
-                  <Link
-                    href={`/postComment/${postId?.id}`}
-                    className="relative overflow-clip "
-                    key={img.id}
-                  >
-                    <Image
-                      sizes="100vw"
-                      width={0}
-                      height={0}
-                      src={img.image}
-                      alt="profile image"
-                      referrerPolicy="no-referrer"
-                      className="w-[10rem] transition h-32 bg-black rounded-md object-cover"
-                    />
-                  </Link>
-                );
-              })
-            )}
-          </div>
-        </CardContent>
+            {/* photos */}
+            <div className="grid grid-cols-3 gap-2 py-2">
+              {await Promise.all(
+                userImages.map(async (img) => {
+                  const postId = await db.blog.findFirst({
+                    where: {
+                      authorId: img.authorId,
+                      image: img.image,
+                    },
+                  });
+                  return (
+                    <Link
+                      href={`/postComment/${postId?.id}`}
+                      className="relative overflow-clip "
+                      key={img.id}
+                    >
+                      <Image
+                        sizes="100vw"
+                        width={0}
+                        height={0}
+                        src={img.image}
+                        alt="profile image"
+                        referrerPolicy="no-referrer"
+                        className="w-[10rem] transition h-32 bg-black rounded-md object-cover"
+                      />
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          </CardContent>
+        )}
       </Card>
     </div>
   );

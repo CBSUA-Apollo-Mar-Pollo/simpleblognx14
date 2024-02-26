@@ -4,6 +4,8 @@ import React, { useRef, useState } from "react";
 import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
 import ProfilePIc from "./ProfilePIc";
 import { Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getDominantColor } from "@/actions/getDominantColor";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);
@@ -48,7 +50,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
       {imageUrl.length ? (
         <div className="relative">
           <div
-            className="overflow-y-auto h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move"
+            className="overflow-y-auto h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -91,7 +93,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
         <div>
           {/* if the user has uploaded a cover photo display it */}
           {user.backgroundImage ? (
-            <div className="overflow-y-clip h-[60vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
+            <div className="overflow-hidden h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
               <Link
                 href={`/postComment/${user.coverPhotoId}`}
                 className="scroll-container"
@@ -110,8 +112,8 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           ) : (
             // show a blank cover photo
-            <div className=" rounded-b-3xl scroll-container bg-neutral-900">
-              <div className="w-[70vw] max-h-screen" />
+            <div className=" rounded-b-3xl scroll-container bg-neutral-400 dark:bg-neutral-900 h-[55vh]">
+              <div className="w-[70vw]" />
             </div>
           )}
 

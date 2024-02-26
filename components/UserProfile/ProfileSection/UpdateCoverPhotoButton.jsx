@@ -1,16 +1,13 @@
-import UserAvatar from "@/components/utils/UserAvatar";
 import { UploadButton } from "@uploadthing/react";
 import { Camera, Loader2 } from "lucide-react";
 import React from "react";
-import UpdateProfilePic from "./UpdateProfilePicModal";
-import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
 const UpdateCoverPhotoButton = ({ setImageUrl, session, user }) => {
   return (
     <>
       {session?.user.id === user.id && (
         <UploadButton
-          className="absolute bottom-1 right-10 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
+          className="absolute bottom-1 right-14 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
           endpoint="imageUploader"
           onClientUploadComplete={(res) => {
             setImageUrl(res[0].url);

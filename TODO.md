@@ -7,4 +7,3 @@
 - group or personal page system
 
 - make it pages responsive
-- add a dark mode theme

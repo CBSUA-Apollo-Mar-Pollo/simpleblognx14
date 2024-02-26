@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { useIntersection } from "@mantine/hooks";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import BlogsCard from "../Post/PostCard";
+import BlogsCard from "../Post/PostCard/PostCard";
 
 const UserAllPosts = ({ initialPosts, userId, session }) => {
   const lastPostRef = useRef(null);

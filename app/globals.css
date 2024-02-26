@@ -34,10 +34,6 @@
 
     --radius: 0.5rem;
   }
-
-  .dark {
-    color-scheme: dark;
-  }
 }
 
 @layer base {
@@ -50,19 +46,10 @@
 }
 
 ::-webkit-scrollbar {
-  background-color: #f2f1f0;
+  background-color: #dbdbdb;
   width: 6px;
 }
 
-.dark::-webkit-scrollbar {
-  background-color: #383736;
-  width: 6px;
-}
-
-.dark::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 2px;
-}
 ::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 2px;
