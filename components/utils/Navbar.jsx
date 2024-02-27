@@ -6,19 +6,14 @@ import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
 import { Input } from "../ui/Input";
 import {
-  Album,
-  Bell,
+  Bookmark,
   Gamepad2,
   Grip,
-  Headphones,
   History,
   Home,
-  Newspaper,
-  Play,
   PlayCircle,
   Search,
 } from "lucide-react";
-import { Icons } from "./Icons";
 import NotificationMenu from "../Notification/NotificationMenu";
 
 const Navbar = async () => {
@@ -53,7 +48,7 @@ const Navbar = async () => {
             <Gamepad2 className="h-10 w-10 py-2" />
           </span>
           <span className="px-5">
-            <Newspaper className="h-10 w-10 py-2" />
+            <Bookmark className="h-10 w-10 py-2" />
           </span>
           <span className="px-5">
             <History className="h-10 w-10 py-2" />

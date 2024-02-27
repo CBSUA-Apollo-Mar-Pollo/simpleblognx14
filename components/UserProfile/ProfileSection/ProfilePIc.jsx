@@ -4,10 +4,10 @@ import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
 const ProfilePIc = ({ user, session }) => {
   return (
-    <div className="absolute bottom-0 top-[22vw] left-[4vw]">
+    <div className="absolute bottom-0 top-[20vw] left-[4vw]">
       <div className="relative">
         <UserAvatar
-          className="h-44 w-44 border-4 border-neutral-50"
+          className="h-44 w-44 border-4 border-neutral-50 dark:border-neutral-800"
           user={{
             name: user?.name || null,
             image: user?.image || null,
@@ -15,7 +15,7 @@ const ProfilePIc = ({ user, session }) => {
         />
         {session?.user.id === user.id &&
         !user.image?.includes("googleusercontent.com") ? (
-          <div className="bg-neutral-300 absolute bottom-4 hover:bg-neutral-400 right-0 rounded-full py-1 px-1 h-10">
+          <div className="bg-neutral-300 absolute bottom-4 hover:bg-neutral-400 right-0 rounded-full py-1 px-1 h-10 dark:bg-neutral-700 dark:hover:bg-neutral-600">
             <UpdateProfilePicModal userId={user.id} />
           </div>
         ) : null}

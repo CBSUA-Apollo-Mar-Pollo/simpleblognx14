@@ -7,15 +7,15 @@ import React from "react";
 const ProfileButtons = ({ userId }) => {
   const pathname = usePathname();
   return (
-    <ul className="flex justify-end text-neutral-800 pt-2">
+    <ul className="flex justify-end text-neutral-800 dark:text-neutral-100 pt-2 gap-x-2">
       <Link
         href={`/user/${userId}`}
         className={cn(
           buttonVariants({ variant: "ghost" }),
 
-          `px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold  py-5 ${
+          `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100  py-5 dark:hover:bg-neutral-700 ${
             pathname === `/user/${userId}` &&
-            "border-b-4 rounded-none border-blue-600 text-blue-600"
+            "border-b-4 rounded-none border-blue-600 text-blue-600 dark:text-blue-600 dark:hover:bg-inherit"
           }`
         )}
       >
@@ -23,7 +23,7 @@ const ProfileButtons = ({ userId }) => {
       </Link>
       <Button
         variant="ghost"
-        className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold py-5"
+        className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700"
       >
         About
       </Button>
@@ -31,9 +31,9 @@ const ProfileButtons = ({ userId }) => {
         href={`/user/${userId}/photos`}
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          `px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold  py-5 ${
+          `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 ${
             pathname === `/user/${userId}/photos` &&
-            "border-b-4 rounded-none border-blue-600 text-blue-600"
+            "border-b-4 rounded-none border-blue-600 text-blue-600 dark:hover:bg-inherit"
           }`
         )}
       >
@@ -41,7 +41,7 @@ const ProfileButtons = ({ userId }) => {
       </Link>
       <Button
         variant="ghost"
-        className="px-6 hover:bg-neutral-200 cursor-pointer text-base font-semibold py-5"
+        className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700"
       >
         More
       </Button>

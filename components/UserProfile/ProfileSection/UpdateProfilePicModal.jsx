@@ -113,8 +113,8 @@ const UpdateProfilePicModal = ({ userId }) => {
       }}
     >
       <DialogTrigger>
-        <div className="flex items-center">
-          <Camera className="text-neutral-200 h-8 w-8" fill="black" />
+        <div className="flex items-center ">
+          <Camera className="text-neutral-200 h-8 w-8 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
         </div>
       </DialogTrigger>
       <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none z-50">

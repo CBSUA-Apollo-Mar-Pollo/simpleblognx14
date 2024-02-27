@@ -19,26 +19,30 @@ const UserBio = async ({ userId }) => {
 
   return (
     <div className="space-y-3">
-      <Card>
+      <Card className="dark:bg-neutral-800 dark:border-0">
         <CardContent>
-          <h2 className="text-xl font-bold py-4">Intro</h2>
+          <h2 className="text-xl font-bold py-4 dark:text-white">Intro</h2>
           <div className="flex flex-col space-y-4">
-            <Button>Add Bio</Button>
-            <Button>Edit details</Button>
+            <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+              Add Bio
+            </Button>
+            <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+              Edit details
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="dark:bg-neutral-800 dark:border-0">
         {userImages.length !== 0 && (
           <CardContent className=" py-0.5">
             <div className="flex items-center justify-between p-0.5 w-full">
-              <h2 className="text-xl font-bold py-4">Photos</h2>
+              <h2 className="text-xl font-bold py-4 dark:text-white">Photos</h2>
               <Link
                 href={`/user/${userId}/photos`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "font-medium text-md text-blue-500"
+                  "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400"
                 )}
               >
                 See all photos

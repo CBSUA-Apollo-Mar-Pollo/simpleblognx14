@@ -12,13 +12,11 @@ import SharedPostCard from "./SharedPostCard";
 import StandardPostCard from "./StandardPostCard";
 import PostCardHeader from "./PostCardHeader";
 import PostCardShareButton from "./PostCardShareButton";
-// import { Button } from "./ui/Button";
+import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 
 const PostCard = ({ blog, session }) => {
-  // console.log(blog);
-  // const pRef = useRef(null);
-
-  const { data: sharedPost, error } = useQuery({
+  // get shared post data
+  const { data: sharedPost } = useQuery({
     // Query key (unique identifier)
     queryKey: ["sharedPost", blog.sharedPostId],
     // Query function
@@ -39,9 +37,11 @@ const PostCard = ({ blog, session }) => {
         {sharedPost ? (
           // shared post card component
           <SharedPostCard sharedPost={sharedPost} blog={blog} />
-        ) : (
-          // normal post card component
+        ) : !blog.sharedPostId ? (
+          //  /* normal post card component */
           <StandardPostCard blog={blog} />
+        ) : (
+          <SharedPostCardLoader />
         )}
 
         {blog.comments.length !== 0 &&

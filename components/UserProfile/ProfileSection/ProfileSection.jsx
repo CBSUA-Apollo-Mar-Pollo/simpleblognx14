@@ -12,6 +12,7 @@ import ProfileButtons from "./ProfileButtons";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
 import { getDominantColor } from "@/actions/getDominantColor";
+import { useTheme } from "next-themes";
 
 const ProfileSection = ({ user, deleteImage }) => {
   const { data: session } = useSession();
@@ -19,6 +20,7 @@ const ProfileSection = ({ user, deleteImage }) => {
   const router = useRouter();
   const { toast } = useToast();
   const { setIsLoading } = useContext(LoaderContext);
+  const { resolvedTheme } = useTheme();
 
   const { mutate: saveCoverImage, isLoading } = useMutation({
     mutationFn: async () => {
@@ -72,9 +74,12 @@ const ProfileSection = ({ user, deleteImage }) => {
 
   return (
     <div
-      className="relative"
+      className="relative "
       style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.5) 50%, rgba(255, 255, 255, 1) 100%)`,
+        backgroundImage:
+          resolvedTheme === "light"
+            ? `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.5) 50%, rgba(255, 255, 255, 1) 100%)`
+            : `linear-gradient(to bottom, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
       }}
     >
       {/* display when this buttons when the user is changing his/her cover photo */}
@@ -112,12 +117,12 @@ const ProfileSection = ({ user, deleteImage }) => {
 
         <div className="mt-3 w-full">
           <div className="ml-[16rem]">
-            <h1 className="font-bold text-4xl">{user?.name}</h1>
-            <span className="text-sm">{user.email}</span>
+            <h1 className="font-bold text-4xl dark:text-white">{user?.name}</h1>
+            <span className="text-sm dark:text-white">{user.email}</span>
           </div>
         </div>
 
-        <Separator className="mt-10 bg-neutral-300" />
+        <Separator className="mt-10 bg-neutral-300 dark:bg-neutral-600" />
 
         <div className="mr-10">
           <ProfileButtons userId={user.id} />

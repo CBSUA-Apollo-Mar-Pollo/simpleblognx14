@@ -21,7 +21,7 @@ const UserProfilePage = async ({ params }) => {
   const initialPosts = await db.blog.findMany({
     // get all posts by user
     where: {
-      authorId: user.id,
+      authorId: user?.id,
     },
     include: {
       comments: true,
@@ -35,7 +35,7 @@ const UserProfilePage = async ({ params }) => {
 
   const getCoverPhoto = await db.blog.findFirst({
     where: {
-      image: user.backgroundImage,
+      image: user?.backgroundImage,
     },
   });
 
@@ -53,7 +53,7 @@ const UserProfilePage = async ({ params }) => {
       <ProfileSection user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2">
+      <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[4.5rem]">
             <UserBio userId={user.id} />
