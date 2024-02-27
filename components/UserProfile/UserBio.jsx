@@ -5,11 +5,13 @@ import { db } from "@/lib/db";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Icons } from "../utils/Icons";
+import { Pencil } from "lucide-react";
 
-const UserBio = async ({ userId }) => {
+const UserBio = async ({ user }) => {
   const userImages = await db.userPostedImages.findMany({
     where: {
-      authorId: userId,
+      authorId: user.id,
     },
     orderBy: {
       createdAt: "desc",
@@ -22,10 +24,22 @@ const UserBio = async ({ userId }) => {
       <Card className="dark:bg-neutral-800 dark:border-0">
         <CardContent>
           <h2 className="text-xl font-bold py-4 dark:text-white">Intro</h2>
-          <div className="flex flex-col space-y-4">
-            <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
-              Add Bio
-            </Button>
+          <div className="flex flex-col space-y-4 w-full">
+            {user.bio ? (
+              <div className="flex justify-between items-center mx-2">
+                <div className="flex gap-x-2">
+                  <Icons.BioIcon className="h-6 w-6" />
+                  <span className="font-medium">{user.bio}</span>
+                </div>
+                <Link href="/settings" className="rounded-full px-3">
+                  <Pencil className="h-5 w-5" />
+                </Link>
+              </div>
+            ) : (
+              <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+                Add Bio
+              </Button>
+            )}
             <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
               Edit details
             </Button>
@@ -39,7 +53,7 @@ const UserBio = async ({ userId }) => {
             <div className="flex items-center justify-between p-0.5 w-full">
               <h2 className="text-xl font-bold py-4 dark:text-white">Photos</h2>
               <Link
-                href={`/user/${userId}/photos`}
+                href={`/user/${user.id}/photos`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400"

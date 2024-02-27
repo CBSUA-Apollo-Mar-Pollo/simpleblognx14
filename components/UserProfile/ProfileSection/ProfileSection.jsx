@@ -118,7 +118,9 @@ const ProfileSection = ({ user, deleteImage }) => {
         <div className="mt-3 w-full">
           <div className="ml-[16rem]">
             <h1 className="font-bold text-4xl dark:text-white">{user?.name}</h1>
-            <span className="text-sm dark:text-white">{user.email}</span>
+            <span className="text-base font-medium dark:text-white">
+              {user.handleName}
+            </span>
           </div>
         </div>
 

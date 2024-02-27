@@ -15,6 +15,7 @@ import {
   Search,
 } from "lucide-react";
 import NotificationMenu from "../Notification/NotificationMenu";
+import ToolTipComp from "./ToolTipComp";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -38,20 +39,30 @@ const Navbar = async () => {
         </div>
 
         <div className="flex space-x-16 mr-[12rem] text-neutral-600 dark:text-neutral-300">
-          <span className="px-5 border-b-4 border-blue-500">
-            <Home className=" h-10 w-10 py-2 fill-blue-600 stroke-blue-600" />
+          <span className="px-4 border-b-4 border-blue-500">
+            <ToolTipComp content="Home">
+              <Home className=" h-10 w-10 py-2 fill-blue-600 stroke-blue-600 cursor-pointer" />
+            </ToolTipComp>
           </span>
-          <span className="px-5">
-            <PlayCircle className="h-10 w-10 py-2" />
+          <span className="px-4">
+            <ToolTipComp content="Videos">
+              <PlayCircle className="h-10 w-10 py-2 cursor-pointer" />
+            </ToolTipComp>
           </span>
-          <span className="px-5">
-            <Gamepad2 className="h-10 w-10 py-2" />
+          <span className="px-4">
+            <ToolTipComp content="Gaming">
+              <Gamepad2 className="h-10 w-10 py-2 cursor-pointer" />
+            </ToolTipComp>
           </span>
-          <span className="px-5">
-            <Bookmark className="h-10 w-10 py-2" />
+          <span className="px-4">
+            <ToolTipComp content="Saved">
+              <Bookmark className="h-10 w-10 py-2 cursor-pointer" />
+            </ToolTipComp>
           </span>
-          <span className="px-5">
-            <History className="h-10 w-10 py-2" />
+          <span className="px-4">
+            <ToolTipComp content="History">
+              <History className="h-10 w-10 py-2 cursor-pointer" />
+            </ToolTipComp>
           </span>
         </div>
 
@@ -59,11 +70,16 @@ const Navbar = async () => {
         <div>
           {session ? (
             <div className="flex items-center gap-x-3">
-              <div className=" bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-                <Grip className="text-gray-500 dark:text-neutral-100" />
-              </div>
+              <ToolTipComp content="Menu">
+                <div className=" bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
+                  <Grip className="text-gray-500 dark:text-neutral-100" />
+                </div>
+              </ToolTipComp>
+
               <NotificationMenu />
+
               {/* user profile */}
+
               <UserAccountNav user={session.user} />
             </div>
           ) : (

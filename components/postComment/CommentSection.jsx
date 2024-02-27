@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import UserAvatar from "../utils/UserAvatar";
 import CreateComment from "./CreateComment";
 import { cn, formatTimeToNow } from "@/lib/utils";
@@ -58,41 +58,55 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
         {/* comments */}
         {comments
           .filter((comment) => !comment.replyToId)
-          .map((topLevelComment, index) => (
-            <div className="flex flex-col relative" key={index}>
-              {topLevelComment.replies.length !== 0 && (
-                <div className="absolute left-4 border-l-2 border-neutral-600 h-full " />
-              )}
-              <CommentSectionCard
-                comment={topLevelComment}
-                session={session}
-                index={index}
-                getComments={getComments}
-                refetch={refetch}
-                postId={postId}
-              />
+          .map((topLevelComment, index) => {
+            // const divRefs = Array(topLevelComment.replies.length)
+            //   .fill(null)
+            //   .map(() => useRef(null));
+            return (
+              <div className="flex flex-col relative" key={index}>
+                {topLevelComment.replies.length !== 0 && (
+                  <div
+                    // className={`absolute left-4 border-l-2 border-neutral-600 h-[calc(100%-${
+                    //   divRefs[divRefs.length - 1].current?.offsetHeight
+                    // }px)] `}
+                    className={`absolute left-4 border-l-2 border-neutral-600 h-[90%]`}
+                  />
+                )}
+                <CommentSectionCard
+                  comment={topLevelComment}
+                  session={session}
+                  index={index}
+                  getComments={getComments}
+                  refetch={refetch}
+                  postId={postId}
+                />
 
-              {/* replies */}
-              {topLevelComment.replies.map((reply, index) => {
-                return (
-                  <div key={reply.id} className="pl-4 relative">
-                    <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
-                    <div className="ml-8 mt-2">
-                      <CommentSectionCard
-                        comment={reply}
-                        session={session}
-                        index={index}
-                        getComments={getComments}
-                        refetch={refetch}
-                        postId={postId}
-                        classNameForUserAvatarReplies="h-7 w-7"
-                      />
+                {/* replies */}
+                {topLevelComment.replies.map((reply, index) => {
+                  return (
+                    <div
+                      key={reply.id}
+                      className="pl-4 relative"
+                      // ref={divRefs[index]}
+                    >
+                      <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                      <div className="ml-8 mt-2">
+                        <CommentSectionCard
+                          comment={reply}
+                          session={session}
+                          index={index}
+                          getComments={getComments}
+                          refetch={refetch}
+                          postId={postId}
+                          classNameForUserAvatarReplies="h-7 w-7"
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+                  );
+                })}
+              </div>
+            );
+          })}
       </div>
 
       {hasNextPage && (

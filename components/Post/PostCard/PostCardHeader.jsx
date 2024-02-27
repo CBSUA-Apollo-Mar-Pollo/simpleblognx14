@@ -14,8 +14,12 @@ const PostCardHeader = ({ blog, session }) => {
       <Link href={`/user/${blog?.author.id}`}>
         <div className="flex items-center gap-1">
           <UserAvatar
+            post="post"
             className="h-10 w-10 "
             user={{
+              handleName: blog.author?.handleName,
+              bio: blog.author?.bio,
+              birthdate: blog.author?.birthdate,
               name: blog.author?.name || null,
               image: blog.author?.image || null,
             }}

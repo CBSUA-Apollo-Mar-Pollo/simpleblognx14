@@ -56,10 +56,15 @@ const CommentSectionCard = ({
           className={`${
             classNameForUserAvatarReplies
               ? classNameForUserAvatarReplies
-              : "h-9 w-9"
+              : "h-9 w-9 cursor-pointer"
           }`}
+          post="post"
           user={{
-            image: comment?.author?.image || null,
+            handleName: comment.author?.handleName,
+            bio: comment.author?.bio,
+            birthdate: comment.author?.birthdate,
+            name: comment.author?.name || null,
+            image: comment.author?.image || null,
           }}
         />
         <div>

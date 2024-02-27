@@ -49,8 +49,12 @@ const SharedPostCard = ({ sharedPost, blog }) => {
           <Link href={`/user/${sharedPost?.author.id}`}>
             <div className="flex items-center gap-1">
               <UserAvatar
+                post="post"
                 className="h-9 w-9 "
                 user={{
+                  handleName: sharedPost.author?.handleName,
+                  bio: sharedPost.author?.bio,
+                  birthdate: sharedPost.author?.birthdate,
                   name: sharedPost.author?.name || null,
                   image: sharedPost.author?.image || null,
                 }}
