@@ -46,7 +46,9 @@ const Navbar = async () => {
           </span>
           <span className="px-4">
             <ToolTipComp content="Videos">
-              <PlayCircle className="h-10 w-10 py-2 cursor-pointer" />
+              <Link href="/shortsv" className="">
+                <PlayCircle className="h-10 w-10 py-2 cursor-pointer" />
+              </Link>
             </ToolTipComp>
           </span>
           <span className="px-4">

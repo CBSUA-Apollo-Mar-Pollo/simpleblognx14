@@ -4,8 +4,6 @@ import React, { useRef, useState } from "react";
 import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
 import ProfilePIc from "./ProfilePIc";
 import { Loader2 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { getDominantColor } from "@/actions/getDominantColor";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const [dragging, setDragging] = useState(false);

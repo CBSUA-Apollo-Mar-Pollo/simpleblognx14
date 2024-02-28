@@ -24,6 +24,7 @@ import { SelectContent } from "@radix-ui/react-select";
 import { ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
+import ToolTipComp from "../utils/ToolTipComp";
 
 const AddPostModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
@@ -172,6 +173,7 @@ const AddPostModal = ({ session, user }) => {
                       <X className="w-4 h-4 font-bold" />
                     </Button>
                     <UploadDropzone
+                      className="border-none w-full cursor-pointer"
                       endpoint="imageUploader"
                       onClientUploadComplete={(res) => {
                         setImageUrl(res[0].url);
@@ -188,13 +190,17 @@ const AddPostModal = ({ session, user }) => {
               Add to your post
             </h1>
             <div>
-              <Button
-                variant="ghost"
-                className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                onClick={() => setToggleImageUpload((prevState) => !prevState)}
-              >
-                <ImagePlus className="text-green-600 " />
-              </Button>
+              <ToolTipComp content="Add Photo/Video">
+                <Button
+                  variant="ghost"
+                  className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                  onClick={() =>
+                    setToggleImageUpload((prevState) => !prevState)
+                  }
+                >
+                  <ImagePlus className="text-green-600 " />
+                </Button>
+              </ToolTipComp>
             </div>
           </div>
         </div>
