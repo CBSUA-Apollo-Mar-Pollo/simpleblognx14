@@ -3,6 +3,7 @@
 import {
   ChevronLeft,
   ChevronRight,
+  Clapperboard,
   Heart,
   MessageCircle,
   MoreVertical,
@@ -20,9 +21,10 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import UserAvatar from "../utils/UserAvatar";
-import { Button } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
+import { cn } from "@/lib/utils";
 
-const LogoVideoAndIcon = ({ image }) => {
+const LogoVideoAndIcon = ({ videoData }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const videoRef = useRef(null);
@@ -69,28 +71,28 @@ const LogoVideoAndIcon = ({ image }) => {
         <div className="z-20 flex items-center mr-20 ">
           <ChevronLeft className="text-white dark:text-neutral-800 bg-neutral-500 p-3 h-14 w-14 rounded-full cursor-pointer" />
         </div>
-        <div className="relative">
+        <div className="relative border border-neutral-800 rounded-xl mt-12">
           {isPlaying ? (
             <Play
               onClick={handlePlayClick}
-              className="fill-white stroke-none absolute top-14 left-5 flex items-start justify-start z-20 cursor-pointer"
+              className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
           ) : (
             <Pause
               onClick={handlePlayClick}
-              className="fill-white stroke-none absolute top-14 left-5 flex items-start justify-start z-20 cursor-pointer"
+              className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
           )}
 
           {isMuted ? (
             <Volume2
               onClick={() => setIsMuted(false)}
-              className="stroke-white absolute top-14 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+              className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
             />
           ) : (
             <VolumeX
               onClick={() => setIsMuted(true)}
-              className="stroke-white absolute top-14 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+              className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
             />
           )}
 
@@ -102,18 +104,24 @@ const LogoVideoAndIcon = ({ image }) => {
             autoPlay
             preload="metadata"
             muted={!isMuted}
-            className="h-[90vh] mt-10 rounded-2xl z-10 cursor-pointer"
+            className="h-[85vh] w-[22vw] rounded-2xl z-10 cursor-pointer"
           >
-            <source
-              src="https://utfs.io/f/702acebc-dd8d-4691-9ac0-75cd9b2bdea7-k0n0zn.mp4"
-              type="video/mp4"
-            />
+            <source src={videoData.videoUrl} type="video/mp4" />
           </video>
 
           <div className="absolute bottom-2 left-4">
             <div className="flex items-center gap-x-2">
-              <UserAvatar className="h-9 w-9" />
-              <span className="text-white">@John doe</span>
+              <UserAvatar
+                className="h-8 w-8"
+                user={{
+                  handleName: videoData.author?.handleName,
+                  bio: videoData.author?.bio,
+                  birthdate: videoData.author?.birthdate,
+                  name: videoData.author?.name || null,
+                  image: videoData.author?.image || null,
+                }}
+              />
+              <span className="text-white">{videoData.author.handleName}</span>
               {/* <Button
                 variant="ghost"
                 className="px-5 py-2 bg-neutral-600 text-white"
@@ -122,7 +130,7 @@ const LogoVideoAndIcon = ({ image }) => {
               </Button> */}
             </div>
             <div className="my-2">
-              <p className="text-white">sample text</p>
+              <p className="text-white">{videoData.description}</p>
             </div>
           </div>
         </div>
@@ -143,6 +151,21 @@ const LogoVideoAndIcon = ({ image }) => {
         <div className="z-20 flex items-center">
           <ChevronRight className="text-white dark:text-neutral-800 bg-neutral-500 p-3 h-14 w-14 rounded-full cursor-pointer" />
         </div>
+      </div>
+
+      <div className="absolute right-7 top-16 mt-1">
+        <Link
+          href="/shortsv/create"
+          className={cn(
+            buttonVariants({ variant: "default" }),
+            "bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-600"
+          )}
+        >
+          <span className="pr-2">
+            <Clapperboard className="w-5.5 h-5.5" />
+          </span>
+          Create shortsv
+        </Link>
       </div>
     </>
   );

@@ -46,6 +46,7 @@ model User {
   blogs            Blog[]
   Comment          Comment[]
   UserPostedImages UserPostedImages[]
+  Shortsv          Shortsv[]
 }
 
 model Blog {
@@ -54,12 +55,26 @@ model Blog {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   image       String?
-  video       String?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
   sharedPostId String?
+
+  comments Comment[]
+}
+
+model Shortsv {
+  id          String   @id @default(cuid())
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  videoUrl    String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  sharedVideoId String?
 
   comments Comment[]
 }
@@ -94,6 +109,8 @@ model Comment {
 
   UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
   userPostedImagesId String?
+  Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
+  shortsvId          String?
 }
 
 model verificationToken {
