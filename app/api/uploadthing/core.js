@@ -25,7 +25,7 @@ export const ourFileRouter = {
 
       console.log("file url", file.url);
     }),
-  videoUploader: f({ video: { maxFileSize: "20MB" } })
+  videoUploader: f({ video: { maxFileSize: "30MB" } })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload

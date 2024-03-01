@@ -120,11 +120,19 @@ const CreateShortsv = ({ session }) => {
                   }}
                   className=" border border-gray-300 dark:border-neutral-700 rounded-md mt-4 py-5"
                 >
+                  {/* video upload button */}
                   <UploadDropzone
                     className="border-none w-full cursor-pointer"
                     endpoint="videoUploader"
                     onClientUploadComplete={(res) => {
                       setVideoUrl(res[0].url);
+                    }}
+                    onUploadError={(error) => {
+                      return toast({
+                        title: "Error uploading video",
+                        description: "video file size exceeds limit of 20mb",
+                        variant: "destructive",
+                      });
                     }}
                     content={{
                       uploadIcon() {
@@ -156,6 +164,7 @@ const CreateShortsv = ({ session }) => {
             )}
           </div>
 
+          {/* button next and previous */}
           <div className="absolute bottom-0 w-full px-4 py-4">
             <div className="flex gap-x-2 my-4">
               <div
@@ -202,6 +211,7 @@ const CreateShortsv = ({ session }) => {
           </div>
         </div>
 
+        {/* video preview */}
         <div className="col-span-3 bg-neutral-900 relative">
           <div className=" bg-neutral-800 mt-[4rem] mx-20 h-[90vh] rounded-xl relative">
             <h1 className="text-white py-4 px-5">Preview</h1>

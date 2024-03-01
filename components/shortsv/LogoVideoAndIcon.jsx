@@ -24,7 +24,11 @@ import UserAvatar from "../utils/UserAvatar";
 import { Button, buttonVariants } from "../ui/Button";
 import { cn } from "@/lib/utils";
 
-const LogoVideoAndIcon = ({ videoData }) => {
+const LogoVideoAndIcon = ({
+  videoData,
+  setToggleCommentSection,
+  toggleCommentSection,
+}) => {
   const { data: session } = useSession();
   const router = useRouter();
   const videoRef = useRef(null);
@@ -55,30 +59,33 @@ const LogoVideoAndIcon = ({ videoData }) => {
           >
             <X className=" text-white" />
           </div>
-          <Link href="/" className="font-bold">
-            <span className="py-[2px] px-4 rounded-full bg-yellow-400 text-3xl">
+          <Link href="/" className="font-bold flex items-center gap-x-3">
+            <span className="py-[6px] px-4 rounded-full bg-yellow-400 text-4xl">
               E
             </span>
+            <h1 className="text-white font-bold text-2xl">Shortsv</h1>
           </Link>
         </div>
         {/* enter fullscreen */}
-        <div className="z-20">
-          <ProfileImageAndIcons session={session} />
-        </div>
+        {!toggleCommentSection && (
+          <div className="z-20">
+            <ProfileImageAndIcons session={session} />
+          </div>
+        )}
       </div>
 
       <div className="flex justify-center">
         <div className="z-20 flex items-center mr-20 ">
-          <ChevronLeft className="text-white dark:text-neutral-800 bg-neutral-500 p-3 h-14 w-14 rounded-full cursor-pointer" />
+          <ChevronLeft className="text-white dark:text-neutral-100 bg-neutral-800 p-3 h-14 w-14 rounded-full cursor-pointer" />
         </div>
-        <div className="relative border border-neutral-800 rounded-xl mt-12">
+        <div className="relative border dark:border-neutral-800 border-neutral-300 rounded-2xl mt-8">
           {isPlaying ? (
-            <Play
+            <Pause
               onClick={handlePlayClick}
               className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
           ) : (
-            <Pause
+            <Play
               onClick={handlePlayClick}
               className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
@@ -97,6 +104,7 @@ const LogoVideoAndIcon = ({ videoData }) => {
           )}
 
           <video
+            key={videoData.videoUrl}
             onClick={handlePlayClick}
             ref={videoRef}
             loop
@@ -104,7 +112,7 @@ const LogoVideoAndIcon = ({ videoData }) => {
             autoPlay
             preload="metadata"
             muted={!isMuted}
-            className="h-[85vh] w-[22vw] rounded-2xl z-10 cursor-pointer"
+            className="h-[90vh] w-[22vw] rounded-2xl z-10 cursor-pointer bg-black"
           >
             <source src={videoData.videoUrl} type="video/mp4" />
           </video>
@@ -121,7 +129,17 @@ const LogoVideoAndIcon = ({ videoData }) => {
                   image: videoData.author?.image || null,
                 }}
               />
-              <span className="text-white">{videoData.author.handleName}</span>
+              <div className="gap-x-3 flex items-center">
+                <span className="text-white">
+                  {videoData.author?.handleName}
+                </span>
+                <Button
+                  size="xs"
+                  className="px-4 rounded-3xl dark:bg-neutral-100 dark:text-neutral-700 text-xs dark:hover:bg-neutral-300 "
+                >
+                  follow
+                </Button>
+              </div>
               {/* <Button
                 variant="ghost"
                 className="px-5 py-2 bg-neutral-600 text-white"
@@ -130,43 +148,51 @@ const LogoVideoAndIcon = ({ videoData }) => {
               </Button> */}
             </div>
             <div className="my-2">
-              <p className="text-white">{videoData.description}</p>
+              <p className="text-white text-sm">{videoData.description}</p>
             </div>
           </div>
         </div>
-        <div className="space-y-4 flex flex-col justify-end mx-2 mb-5 z-30">
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-700">
+        <div className="space-y-5 flex flex-col justify-end mx-2 mb-5 z-30">
+          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
             <Heart className="dark:stroke-white fill-white" />
           </div>
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-700">
+          <Button
+            onClick={() => setToggleCommentSection((prevState) => !prevState)}
+            className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800"
+          >
             <MessageCircle className="dark:stroke-white fill-white" />
-          </div>
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-700">
+          </Button>
+          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
             <Redo2 className="dark:stroke-white" />
           </div>
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-700">
+          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
             <MoreVertical className="dark:stroke-white" />
           </div>
         </div>
         <div className="z-20 flex items-center">
-          <ChevronRight className="text-white dark:text-neutral-800 bg-neutral-500 p-3 h-14 w-14 rounded-full cursor-pointer" />
+          <ChevronRight
+            onClick={() => router.refresh()}
+            className="text-white dark:text-neutral-100 bg-neutral-800  p-3 h-14 w-14 rounded-full cursor-pointer"
+          />
         </div>
       </div>
 
-      <div className="absolute right-7 top-16 mt-1">
-        <Link
-          href="/shortsv/create"
-          className={cn(
-            buttonVariants({ variant: "default" }),
-            "bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-600"
-          )}
-        >
-          <span className="pr-2">
-            <Clapperboard className="w-5.5 h-5.5" />
-          </span>
-          Create shortsv
-        </Link>
-      </div>
+      {!toggleCommentSection && (
+        <div className="absolute right-7 top-16 mt-1">
+          <Link
+            href="/shortsv/create"
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-600"
+            )}
+          >
+            <span className="pr-2">
+              <Clapperboard className="w-5.5 h-5.5" />
+            </span>
+            Create shortsv
+          </Link>
+        </div>
+      )}
     </>
   );
 };
