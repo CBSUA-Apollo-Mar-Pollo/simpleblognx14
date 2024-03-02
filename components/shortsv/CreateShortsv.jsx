@@ -1,9 +1,9 @@
 "use client";
 
-import { Video, X } from "lucide-react";
+import { Pause, Play, Video, Volume2, VolumeX, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import { UploadDropzone } from "@uploadthing/react";
 import { Icons } from "../utils/Icons";
@@ -19,6 +19,9 @@ const CreateShortsv = ({ session }) => {
   const [videoUrl, setVideoUrl] = useState("");
   const [toggleNext, setToggleNext] = useState(false);
   const [textareaValue, setTextareaValue] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const videoRef = useRef(null);
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const { toast } = useToast();
   const close = () => {
@@ -68,6 +71,16 @@ const CreateShortsv = ({ session }) => {
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [textareaValue]);
+
+  const handlePlayClick = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
     <>
@@ -217,14 +230,39 @@ const CreateShortsv = ({ session }) => {
             <h1 className="text-white py-4 px-5">Preview</h1>
             <div className="bg-neutral-900 mx-4 h-[87%] rounded-xl border border-neutral-700 flex items-center justify-center">
               {videoUrl.length ? (
-                <div className="border border-neutral-700 rounded-xl my-10">
+                <div className="border border-neutral-700 rounded-xl my-10 relative">
+                  {isPlaying ? (
+                    <Pause
+                      onClick={handlePlayClick}
+                      className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
+                    />
+                  ) : (
+                    <Play
+                      onClick={handlePlayClick}
+                      className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
+                    />
+                  )}
+
+                  {isMuted ? (
+                    <Volume2
+                      onClick={() => setIsMuted(false)}
+                      className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+                    />
+                  ) : (
+                    <VolumeX
+                      onClick={() => setIsMuted(true)}
+                      className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+                    />
+                  )}
                   <video
+                    key={videoUrl}
+                    ref={videoRef}
                     loop
                     playsInline
                     autoPlay
                     preload="metadata"
-                    muted
-                    className="h-[70vh] w-[18vw] mt-5 rounded-2xl z-10"
+                    muted={!isMuted}
+                    className="h-[70vh] w-[18vw] rounded-2xl z-10 bg-black"
                   >
                     <source src={videoUrl} type="video/mp4" />
                   </video>

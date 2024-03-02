@@ -206,7 +206,7 @@ const AddPostModal = ({ session, user }) => {
         </div>
         <DialogFooter className="py-2 mx-4">
           <Button
-            className="w-full"
+            className="w-full bg-blue-600 hover:bg-blue-500"
             type="submit"
             isLoading={isLoading}
             disabled={description.length === 0 && imageUrl.length === 0}

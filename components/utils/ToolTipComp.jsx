@@ -62,15 +62,19 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
             {user?.bio && (
               <div className="mx-5 my-2">
                 <div className="flex items-center gap-x-2">
-                  <Icons.BioIcon className="h-4 w-4" />
-                  <span className="font-medium">{user.bio}</span>
+                  <Icons.BioIcon className="h-4 w-4 dark:fill-white" />
+                  <span className="font-medium dark:text-white">
+                    {user.bio}
+                  </span>
                 </div>
               </div>
             )}
             <div className="w-full flex gap-x-2 mt-2">
               <Button className="w-full bg-blue-500">Follow</Button>
-              <Button className="w-full bg-neutral-800">Chat</Button>
-              <Button className=" bg-neutral-800">
+              <Button className="w-full bg-neutral-800 dark:bg-neutral-600">
+                Chat
+              </Button>
+              <Button className=" bg-neutral-800 dark:bg-neutral-600">
                 <MoreHorizontal />
               </Button>
             </div>

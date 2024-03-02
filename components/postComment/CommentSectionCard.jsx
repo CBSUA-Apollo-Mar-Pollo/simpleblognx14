@@ -8,6 +8,7 @@ import { getReplyName } from "@/actions/replyName";
 import { useRouter } from "next/navigation";
 import CommentVote from "../PostVote/CommentVote";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
 const CommentSectionCard = ({
   comment,
@@ -18,6 +19,7 @@ const CommentSectionCard = ({
   getComments,
   refetch,
   classNameForUserAvatarReplies,
+  shortsvId,
 }) => {
   const commentRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
@@ -44,6 +46,8 @@ const CommentSectionCard = ({
     }
     // Other actions if needed
   };
+
+  console.log(comment);
 
   return (
     <div
@@ -73,6 +77,7 @@ const CommentSectionCard = ({
               <p className="text-white text-xs font-semibold">
                 {comment?.author?.name}
               </p>
+              {/* comment text */}
               {replyName ? (
                 <p className="text-neutral-100 text-sm">
                   <span className="text-blue-400">
@@ -100,6 +105,20 @@ const CommentSectionCard = ({
               </div>
             )}
           </div>
+
+          {comment.commentImageUrl && (
+            <div className="mt-1">
+              <Image
+                sizes="100vw"
+                width={0}
+                height={0}
+                src={comment.commentImageUrl}
+                alt="profile image"
+                referrerPolicy="no-referrer"
+                className="object-contain w-auto transition rounded-xl"
+              />
+            </div>
+          )}
 
           <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2">
             <span className="font-extralight">
@@ -139,6 +158,7 @@ const CommentSectionCard = ({
             replyToId={comment.replyToId}
             setIsReplying={setIsReplying}
             commentProps={comment}
+            shortsvId={shortsvId}
           />
           <Button
             onClick={() => setIsReplying(false)}

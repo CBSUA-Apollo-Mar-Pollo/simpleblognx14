@@ -105,12 +105,13 @@ model Comment {
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  commentId String?
+  commentId       String?
+  commentImageUrl String?
 
-  UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
-  userPostedImagesId String?
   Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
   shortsvId          String?
+  UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
+  userPostedImagesId String?
 }
 
 model verificationToken {

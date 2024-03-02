@@ -7,7 +7,10 @@ export async function PATCH(req) {
   try {
     const body = await req.json();
 
-    const { postId, text, replyToId, commentId } = commentValidator.parse(body);
+    console.log(body);
+
+    const { postId, shortsvId, text, replyToId, commentId, commentImageUrl } =
+      commentValidator.parse(body);
 
     const session = await getAuthSession();
 
@@ -19,14 +22,17 @@ export async function PATCH(req) {
       data: {
         text,
         postId,
+        shortsvId,
         authorId: session.user.id,
         replyToId,
         commentId,
+        commentImageUrl,
       },
     });
 
     return new Response("OK", { status: 200 });
   } catch (error) {
+    console.log(error);
     if (error instanceof z.ZodError) {
       return new Response("Invalid request data passed", { status: 422 });
     }

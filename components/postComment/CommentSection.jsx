@@ -1,17 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import UserAvatar from "../utils/UserAvatar";
+import { useEffect } from "react";
 import CreateComment from "./CreateComment";
-import { cn, formatTimeToNow } from "@/lib/utils";
-import { ArrowBigDown, ArrowBigUp, MoreHorizontal } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { COMMENT_PAGE } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
 import CommentSectionCard from "./CommentSectionCard";
 
-const CommentSection = ({ session, postId, initialComments, getComments }) => {
+const CommentSection = ({
+  session,
+  postId,
+  shortsvId,
+  initialComments,
+  getComments,
+}) => {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -79,6 +82,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
                   getComments={getComments}
                   refetch={refetch}
                   postId={postId}
+                  shortsvId={shortsvId}
                 />
 
                 {/* replies */}
@@ -98,6 +102,7 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
                           getComments={getComments}
                           refetch={refetch}
                           postId={postId}
+                          shortsvId={shortsvId}
                           classNameForUserAvatarReplies="h-7 w-7"
                         />
                       </div>
@@ -122,12 +127,16 @@ const CommentSection = ({ session, postId, initialComments, getComments }) => {
       {session?.user && (
         <div
           className={`fixed bottom-0 ${
-            pathname.startsWith("/postComment") ? "w-[25vw]" : "w-full"
+            pathname.startsWith("/postComment") ||
+            pathname.startsWith("/shortsv")
+              ? "w-[25vw]"
+              : "w-full"
           }`}
         >
           <CreateComment
             session={session}
             postId={postId}
+            shortsvId={shortsvId}
             getComments={getComments}
             refetch={refetch}
           />

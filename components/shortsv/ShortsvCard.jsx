@@ -8,6 +8,7 @@ import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 
 const ShortsvCard = ({ video, comments, session }) => {
+  console.log(comments);
   const [toggleCommentSection, setToggleCommentSection] = useState(false);
   return (
     <div className="grid grid-cols-4 relative">
@@ -18,13 +19,14 @@ const ShortsvCard = ({ video, comments, session }) => {
       >
         <LogoVideoAndIcon
           videoData={video}
+          commentAmt={video.comments.length}
           setToggleCommentSection={setToggleCommentSection}
           toggleCommentSection={toggleCommentSection}
         />
       </div>
 
       {toggleCommentSection && (
-        <div className="col-span-1 border-l border-neutral-800">
+        <div className="col-span-1 bg-neutral-800 border-l border-neutral-700 max-h-full relative">
           <ProfileImageAndIcons session={session} />
 
           <Separator className="bg-gray-700" />
@@ -35,7 +37,7 @@ const ShortsvCard = ({ video, comments, session }) => {
           >
             <VideoDescription
               video={video}
-              commentAmt={video?.comments.length}
+              commentAmt={video.comments.length}
               session={session}
             />
 
@@ -44,6 +46,7 @@ const ShortsvCard = ({ video, comments, session }) => {
             <CommentSection
               session={session}
               postId={video.id}
+              shortsvId={video.id}
               initialComments={comments}
             />
           </div>

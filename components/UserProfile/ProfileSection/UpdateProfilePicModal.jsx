@@ -31,9 +31,7 @@ const UpdateProfilePicModal = ({ userId }) => {
     type: "",
   });
   const [open, setOpen] = useState(false);
-
   const [newfile, setNewfile] = useState();
-
   const { mutate: fetchUserImages, isLoading } = useMutation({
     mutationFn: async () => {
       const payload = {

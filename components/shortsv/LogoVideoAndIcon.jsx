@@ -28,6 +28,7 @@ const LogoVideoAndIcon = ({
   videoData,
   setToggleCommentSection,
   toggleCommentSection,
+  commentAmt,
 }) => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -120,7 +121,8 @@ const LogoVideoAndIcon = ({
           <div className="absolute bottom-2 left-4">
             <div className="flex items-center gap-x-2">
               <UserAvatar
-                className="h-8 w-8"
+                className="h-8 w-8 cursor-pointer"
+                post="post"
                 user={{
                   handleName: videoData.author?.handleName,
                   bio: videoData.author?.bio,
@@ -147,7 +149,7 @@ const LogoVideoAndIcon = ({
                 Follow
               </Button> */}
             </div>
-            <div className="my-2">
+            <div className="my-5">
               <p className="text-white text-sm">{videoData.description}</p>
             </div>
           </div>
@@ -156,14 +158,28 @@ const LogoVideoAndIcon = ({
           <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
             <Heart className="dark:stroke-white fill-white" />
           </div>
-          <Button
-            onClick={() => setToggleCommentSection((prevState) => !prevState)}
-            className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800"
-          >
-            <MessageCircle className="dark:stroke-white fill-white" />
-          </Button>
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
-            <Redo2 className="dark:stroke-white" />
+          {/* comment button and comment amount */}
+          <div className="flex flex-col space-y-1">
+            <Button
+              onClick={() => setToggleCommentSection((prevState) => !prevState)}
+              className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800"
+            >
+              <MessageCircle
+                className={`dark:stroke-white fill-white ${
+                  toggleCommentSection
+                    ? "dark:stroke-blue-500 fill-blue-500"
+                    : "dark:stroke-white fill-white"
+                }`}
+              />
+            </Button>
+            <span className="text-center text-white text-sm">{commentAmt}</span>
+          </div>
+          {/* share button */}
+          <div className="flex flex-col space-y-1">
+            <Button className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800">
+              <Redo2 className="dark:stroke-white" />
+            </Button>
+            <span className="text-center text-white text-sm">Share</span>
           </div>
           <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
             <MoreVertical className="dark:stroke-white" />

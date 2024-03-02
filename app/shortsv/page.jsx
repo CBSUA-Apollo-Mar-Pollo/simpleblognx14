@@ -4,8 +4,8 @@ import { db } from "@/lib/db";
 import React from "react";
 
 const shortsVPage = async () => {
+  // get videos
   const shortsVideo = await db.shortsv.findMany({
-    take: 1,
     include: {
       author: true,
       comments: true,
@@ -13,9 +13,11 @@ const shortsVPage = async () => {
   });
 
   const session = await getAuthSession();
+  // get comments
   const comments = await db.comment.findMany({
     where: {
-      postId: shortsVideo[0].id,
+      postId: shortsVideo[7].id,
+      shortsvId: shortsVideo[7].id,
       replyToId: null,
     },
     include: {
@@ -31,7 +33,7 @@ const shortsVPage = async () => {
     },
   });
   return (
-    <ShortsvCard video={shortsVideo[0]} comments={comments} session={session} />
+    <ShortsvCard video={shortsVideo[7]} comments={comments} session={session} />
   );
 };
 
