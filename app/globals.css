@@ -44,6 +44,10 @@
     @apply bg-background text-foreground;
   }
 }
+.relative.overflow-clip.w-full {
+  /* Apply blur to the parent element */
+  backdrop-filter: blur(50px);
+}
 
 ::-webkit-scrollbar {
   background-color: #dbdbdb;

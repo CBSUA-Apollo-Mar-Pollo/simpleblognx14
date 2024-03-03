@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 
 import Sidebar from "@/components/utils/Sidebar";
 import { getAuthSession } from "@/lib/auth";
-import PopularCard from "@/components/PopularCard";
+import RecentPosts from "@/components/RecentPosts";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import AddPostModal from "@/components/Post/AddPostModal";
 import Posts from "@/components/Post/Posts";
@@ -29,7 +29,7 @@ export default async function HomePage() {
         <Posts initialPosts={posts} session={session} />
       </div>
       <div className=" col-span-1 relative">
-        <PopularCard />
+        <RecentPosts />
       </div>
     </div>
   );

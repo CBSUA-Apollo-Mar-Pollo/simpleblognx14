@@ -4,25 +4,27 @@ import React from "react";
 
 const CommentVote = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center my-2">
       {/* upvote button */}
       <button
         //   onClick={() => vote("UP")}
-        className="hover:bg-neutral-800  rounded-full px-0.5"
+        className="hover:bg-neutral-800 dark:hover:bg-neutral-700 rounded-full px-1 py-1"
       >
-        <ArrowBigUp className={cn("h-5 w-6 text-zinc-700 hover:text-white")} />
+        <ArrowBigUp
+          className={cn("h-6 w-6 text-zinc-700 hover:text-orange-600")}
+        />
       </button>
 
       {/* currentvote */}
-      <p className="text-center font-medium text-xs text-zinc-300 ">0</p>
+      <p className="text-center font-medium text-xs text-zinc-300 px-1">0</p>
 
       {/* downvote button */}
       <button
         //   onClick={() => vote("DOWN")}
-        className="hover:bg-neutral-800 rounded-full px-0.5"
+        className="hover:bg-neutral-800 dark:hover:bg-neutral-700 rounded-full px-1 py-1"
       >
         <ArrowBigDown
-          className={cn("h-5 w-6 text-zinc-700 hover:text-white")}
+          className={cn("h-6 w-6 text-zinc-700 hover:text-violet-300")}
         />
       </button>
     </div>

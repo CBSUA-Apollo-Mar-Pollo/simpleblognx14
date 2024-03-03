@@ -38,7 +38,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
               referrerPolicy="no-referrer"
               className="object-contain w-full transition max-h-[30rem] rounded-t-2xl "
               style={{
-                backgroundColor: `rgb(${dominantColorSharedPost?.[0]}, ${dominantColorSharedPost?.[1]}, ${dominantColorSharedPost?.[2]})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorSharedPost?.[0]}, ${dominantColorSharedPost?.[1]}, ${dominantColorSharedPost?.[2]}, 0.5) 0%, rgba(${dominantColorSharedPost?.[0]}, ${dominantColorSharedPost?.[1]}, ${dominantColorSharedPost?.[2]}, 0.8) 100%)`,
               }}
             />
           </Link>
@@ -65,11 +65,11 @@ const SharedPostCard = ({ sharedPost, blog }) => {
                   {sharedPost?.author?.name}
                 </p>
                 <div className="flex items-center">
-                  <p className=" text-xs text-gray-600 ">
+                  <p className=" text-xs text-gray-600 dark:text-neutral-200 ">
                     {formatTimeToNow(new Date(sharedPost?.createdAt))}
                   </p>
-                  <Dot className="-mx-1 text-gray-600" />
-                  <Globe className="h-3 w-3 text-gray-600" />
+                  <Dot className="-mx-1 text-gray-600 dark:text-neutral-200" />
+                  <Globe className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
                 </div>
               </div>
             </div>

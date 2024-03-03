@@ -61,7 +61,8 @@ model Blog {
 
   sharedPostId String?
 
-  comments Comment[]
+  comments    Comment[]
+  RecentPosts RecentPosts[]
 }
 
 model Shortsv {
@@ -90,8 +91,8 @@ model UserPostedImages {
 }
 
 model Comment {
-  id   String @id @default(cuid())
-  text String
+  id   String  @id @default(cuid())
+  text String?
 
   createdAt DateTime @default(now())
 
@@ -112,6 +113,15 @@ model Comment {
   shortsvId          String?
   UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
   userPostedImagesId String?
+}
+
+model RecentPosts {
+  id        String   @id @default(cuid())
+  blog      Blog     @relation(fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
+
+  authorId String?
 }
 
 model verificationToken {

@@ -177,7 +177,7 @@ const CreateComment = ({
             <Button
               type="submit"
               variant="ghost"
-              disabled={textareaValue.length === 0}
+              disabled={textareaValue.length === 0 && imageUrl === null}
               className="hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0"
               onClick={() => {
                 comment({

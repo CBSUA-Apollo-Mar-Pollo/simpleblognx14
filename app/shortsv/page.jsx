@@ -16,8 +16,8 @@ const shortsVPage = async () => {
   // get comments
   const comments = await db.comment.findMany({
     where: {
-      postId: shortsVideo[7].id,
-      shortsvId: shortsVideo[7].id,
+      postId: shortsVideo[8].id,
+      shortsvId: shortsVideo[8].id,
       replyToId: null,
     },
     include: {
@@ -33,7 +33,7 @@ const shortsVPage = async () => {
     },
   });
   return (
-    <ShortsvCard video={shortsVideo[7]} comments={comments} session={session} />
+    <ShortsvCard video={shortsVideo[8]} comments={comments} session={session} />
   );
 };
 

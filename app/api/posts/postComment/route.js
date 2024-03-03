@@ -12,10 +12,33 @@ export async function PATCH(req) {
     const { postId, shortsvId, text, replyToId, commentId, commentImageUrl } =
       commentValidator.parse(body);
 
+    console.log(postId);
+
     const session = await getAuthSession();
 
     if (!session?.user) {
       return new Response("Unauthorized", { status: 401 });
+    }
+
+    if (text.length === 0) {
+      // if user commented an image without text
+      if (commentImageUrl) {
+        await db.comment.create({
+          data: {
+            text,
+            postId,
+            shortsvId,
+            authorId: session.user.id,
+            replyToId,
+            commentId,
+            commentImageUrl,
+          },
+        });
+
+        return new Response("OK", { status: 200 });
+      } else {
+        return new Response("Invalid request data passed", { status: 422 });
+      }
     }
 
     await db.comment.create({

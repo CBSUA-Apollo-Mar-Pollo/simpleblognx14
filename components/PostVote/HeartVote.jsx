@@ -21,12 +21,16 @@ const HeartVote = () => {
 
       <Button
         //   onClick={() => vote("UP")}
-        size="sm"
+        size="md"
         variant="ghost"
         aria-label="upvote"
-        className="px-1 hover:bg-white"
+        className="px-2 py-2 hover:bg-white dark:hover:bg-neutral-500 rounded-full"
       >
-        <Heart className={cn("h-5.5 w-5.5 text-zinc-700 ")} />
+        <Heart
+          className={cn(
+            "h-6 w-6 text-zinc-700 dark:text-neutral-300 dark:hover:bg-neutral-500 "
+          )}
+        />
       </Button>
       <p className="text-center font-medium text-base tetx-zinc-900 px-2">0</p>
 

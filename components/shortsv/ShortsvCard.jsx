@@ -8,7 +8,6 @@ import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 
 const ShortsvCard = ({ video, comments, session }) => {
-  console.log(comments);
   const [toggleCommentSection, setToggleCommentSection] = useState(false);
   return (
     <div className="grid grid-cols-4 relative">

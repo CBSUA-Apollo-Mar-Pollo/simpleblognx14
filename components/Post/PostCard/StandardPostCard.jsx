@@ -1,6 +1,7 @@
 "use client";
 
 import { getDominantColor } from "@/actions/getDominantColor";
+import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostCardLoader from "@/components/Loaders/PostCardLoader";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -15,9 +16,14 @@ const StandardPostCard = ({ blog }) => {
       return res;
     },
   });
+
+  const storePostInRecentPosts = () => {
+    storeToRecentPosts(blog.id);
+  };
+
   return (
     <>
-      <p className="px-7 text-justify leading-relaxed mb-1 font-medium">
+      <p className="px-7 text-justify leading-relaxed mb-1 font-medium  ">
         {blog.description}
       </p>
       {blog.image &&
@@ -25,8 +31,9 @@ const StandardPostCard = ({ blog }) => {
           <PostCardLoader />
         ) : (
           <Link
+            onClick={() => storePostInRecentPosts()}
             href={`/postComment/${blog.id}`}
-            className="relative overflow-clip w-full "
+            className="relative overflow-clip w-full"
 
             // ref={pRef}
           >
@@ -39,7 +46,7 @@ const StandardPostCard = ({ blog }) => {
               referrerPolicy="no-referrer"
               className="object-contain w-full transition max-h-[30rem]"
               style={{
-                backgroundColor: `rgb(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]})`,
+                backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.5) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.8) 100%)`,
               }}
             />
           </Link>

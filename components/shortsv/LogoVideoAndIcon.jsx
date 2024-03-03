@@ -49,6 +49,8 @@ const LogoVideoAndIcon = ({
     }
   };
 
+  console.log(toggleCommentSection);
+
   return (
     <>
       <div className="absolute top-0 flex justify-between w-full items-center px-5 py-2">
@@ -165,9 +167,9 @@ const LogoVideoAndIcon = ({
               className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800"
             >
               <MessageCircle
-                className={`dark:stroke-white fill-white ${
+                className={`${
                   toggleCommentSection
-                    ? "dark:stroke-blue-500 fill-blue-500"
+                    ? "dark:stroke-blue-500 fill-blue-500 stroke-blue-500"
                     : "dark:stroke-white fill-white"
                 }`}
               />
