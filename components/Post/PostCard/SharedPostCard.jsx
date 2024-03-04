@@ -1,6 +1,7 @@
 "use client";
 
 import { getDominantColor } from "@/actions/getDominantColor";
+import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -25,6 +26,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
       <div className="rounded-2xl border border-neutral-200 dark:border-neutral-700">
         {sharedPost.image && (
           <Link
+            onClick={() => storeToRecentPosts(sharedPost.id)}
             href={`/postComment/${sharedPost.id}`}
             className="relative overflow-clip w-full "
             // ref={pRef}

@@ -13,6 +13,7 @@ import StandardPostCard from "./StandardPostCard";
 import PostCardHeader from "./PostCardHeader";
 import PostCardShareButton from "./PostCardShareButton";
 import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
+import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 
 const PostCard = ({ blog, session }) => {
   // get shared post data
@@ -70,6 +71,7 @@ const PostCard = ({ blog, session }) => {
           {/* comment button */}
           {blog?.image ? (
             <Link
+              onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}`}
               className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
             >
@@ -77,7 +79,9 @@ const PostCard = ({ blog, session }) => {
               <span className=" font-medium text-sm">Comment</span>
             </Link>
           ) : (
-            <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
+            <div onClick={() => storeToRecentPosts(blog.id)}>
+              <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
+            </div>
           )}
 
           {/* share button*/}

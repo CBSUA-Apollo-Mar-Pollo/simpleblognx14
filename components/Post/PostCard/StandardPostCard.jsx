@@ -17,10 +17,6 @@ const StandardPostCard = ({ blog }) => {
     },
   });
 
-  const storePostInRecentPosts = () => {
-    storeToRecentPosts(blog.id);
-  };
-
   return (
     <>
       <p className="px-7 text-justify leading-relaxed mb-1 font-medium  ">
@@ -31,7 +27,7 @@ const StandardPostCard = ({ blog }) => {
           <PostCardLoader />
         ) : (
           <Link
-            onClick={() => storePostInRecentPosts()}
+            onClick={() => storeToRecentPosts(blog.id)}
             href={`/postComment/${blog.id}`}
             className="relative overflow-clip w-full"
 

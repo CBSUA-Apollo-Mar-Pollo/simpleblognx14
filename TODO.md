@@ -1,7 +1,7 @@
 - change sidebar UI
 - add more settings
 - search functionality
-- video like tiktok functionality
+- video like tiktok functionality(incomplete)
 - add a chat system
 - friend or follower system
 - group or personal page system

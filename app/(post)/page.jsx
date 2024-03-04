@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 
 import Sidebar from "@/components/utils/Sidebar";
 import { getAuthSession } from "@/lib/auth";
-import RecentPosts from "@/components/RecentPosts";
+import RecentPosts from "@/components/RecentPosts/RecentPosts";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import AddPostModal from "@/components/Post/AddPostModal";
 import Posts from "@/components/Post/Posts";
