@@ -16,38 +16,61 @@ import {
   Tv,
   User,
 } from "lucide-react";
+import Image from "next/image";
 
 export const SideBarFirstLinks = [
   {
-    Icon: <Album className="mr-4  h-6" />,
-    label: "Post",
-    link: "post",
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/trend.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "Popular",
+    link: "/e/popular",
   },
   {
-    Icon: <ThumbsUp className="mr-4  h-6" />,
-    label: "Liked Posts",
-    link: "/liked-posts",
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/history.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "History",
+    link: "/e/popular",
   },
   {
-    Icon: <Save className="mr-4  h-6" />,
-    label: "Saved Posts",
-    link: "/saved-posts",
-  },
-  {
-    Icon: <MessageSquareMore className="mr-4  h-6" />,
-    label: "Comments",
-    link: "/comments",
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/bookmark.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "Saved",
+    link: "/e/popular",
   },
 ];
 
 export const SideBarSecondLinks = [
   {
-    Icon: <HomeIcon className="mr-4  h-6" />,
-    label: "Home",
-    link: "/",
-  },
-  {
-    Icon: <TrendingUp className="mr-4  h-6" />,
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/trend.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
     label: "Popular",
     link: "/e/popular",
   },

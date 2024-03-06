@@ -33,7 +33,13 @@ const shortsVPage = async () => {
     },
   });
   return (
-    <ShortsvCard video={shortsVideo[8]} comments={comments} session={session} />
+    <div className="bg-neutral-950">
+      <ShortsvCard
+        video={shortsVideo[8]}
+        comments={comments}
+        session={session}
+      />
+    </div>
   );
 };
 

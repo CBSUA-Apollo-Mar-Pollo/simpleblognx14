@@ -15,8 +15,8 @@ const NotificationMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger className="focus-visible:outline-none">
         <ToolTipComp content="Notification">
-          <div className="bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-            <Icons.bell className="text-gray-500 dark:text-neutral-100" />
+          <div className="bg-neutral-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-500">
+            <Icons.bell className="text-neutral-800 dark:text-neutral-100" />
           </div>
         </ToolTipComp>
       </DropdownMenuTrigger>

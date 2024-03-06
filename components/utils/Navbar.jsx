@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
+import Image from "next/image";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -44,26 +45,50 @@ const Navbar = async () => {
               <Home className=" h-10 w-10 py-2 fill-blue-600 stroke-blue-600 cursor-pointer" />
             </ToolTipComp>
           </span>
-          <span className="px-4">
+          <span className="px-4 flex items-center">
             <ToolTipComp content="Videos">
               <Link href="/shortsv" className="">
-                <PlayCircle className="h-10 w-10 py-2 cursor-pointer" />
+                <Image
+                  sizes="100vw"
+                  src={"/ImageIcons/play.png"}
+                  width="0"
+                  height="0"
+                  className="w-7 h-7"
+                />
               </Link>
             </ToolTipComp>
           </span>
-          <span className="px-4">
+          <span className="px-4 flex items-center">
             <ToolTipComp content="Gaming">
-              <Gamepad2 className="h-10 w-10 py-2 cursor-pointer" />
+              <Image
+                sizes="100vw"
+                src={"/ImageIcons/console.png"}
+                width="0"
+                height="0"
+                className="w-8 h-8"
+              />
             </ToolTipComp>
           </span>
-          <span className="px-4">
-            <ToolTipComp content="Saved">
-              <Bookmark className="h-10 w-10 py-2 cursor-pointer" />
+          <span className="px-4 flex items-center">
+            <ToolTipComp content="Following Pages/People">
+              <Image
+                sizes="100vw"
+                src={"/ImageIcons/followColored.png"}
+                width="0"
+                height="0"
+                className="w-8 h-8"
+              />
             </ToolTipComp>
           </span>
-          <span className="px-4">
-            <ToolTipComp content="History">
-              <History className="h-10 w-10 py-2 cursor-pointer" />
+          <span className="px-4 flex items-center">
+            <ToolTipComp content="Groups">
+              <Image
+                sizes="100vw"
+                src={"/ImageIcons/group.png"}
+                width="0"
+                height="0"
+                className="w-8 h-8"
+              />
             </ToolTipComp>
           </span>
         </div>
@@ -74,12 +99,10 @@ const Navbar = async () => {
             <div className="flex items-center gap-x-3">
               <ToolTipComp content="Menu">
                 <div className=" bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-                  <Grip className="text-gray-500 dark:text-neutral-100" />
+                  <Grip className="text-neutral-800 dark:text-neutral-100" />
                 </div>
               </ToolTipComp>
-
               <NotificationMenu />
-
               {/* user profile */}
 
               <UserAccountNav user={session.user} />

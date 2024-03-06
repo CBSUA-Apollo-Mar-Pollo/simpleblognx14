@@ -8,12 +8,12 @@ import { Button } from "../ui/Button";
 import Link from "next/link";
 import ClearButton from "./ClearButton";
 
-const RecentPosts = async () => {
+const RecentPostsCard = async () => {
   const session = await getAuthSession();
 
   const recentPosts = await db.RecentPosts.findMany({
     where: {
-      authorId: session.user.id,
+      authorId: session?.user.id,
     },
     include: {
       blog: {
@@ -102,4 +102,4 @@ const RecentPosts = async () => {
   );
 };
 
-export default RecentPosts;
+export default RecentPostsCard;

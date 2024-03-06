@@ -1,13 +1,7 @@
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import {
-  Dot,
-  Globe,
-  MessageCircle,
-  MessageSquare,
-  MoreHorizontal,
-} from "lucide-react";
+import { Dot, Globe, MessageCircle, MoreHorizontal } from "lucide-react";
 
 const VideoDescription = ({ video, commentAmt, session }) => {
   return (

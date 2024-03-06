@@ -24,15 +24,15 @@ const HeartVote = () => {
         size="md"
         variant="ghost"
         aria-label="upvote"
-        className="px-2 py-2 hover:bg-white dark:hover:bg-neutral-500 rounded-full"
+        className=" hover:bg-white dark:hover:bg-neutral-500 rounded-full "
       >
         <Heart
           className={cn(
-            "h-6 w-6 text-zinc-700 dark:text-neutral-300 dark:hover:bg-neutral-500 "
+            "h-9 w-9 px-2 py-2 text-zinc-700 dark:text-neutral-300  hover:text-blue-300"
           )}
         />
       </Button>
-      <p className="text-center font-medium text-base tetx-zinc-900 px-2">0</p>
+      <p className="text-center font-medium text-sm tetx-zinc-900 px-2">0</p>
 
       {/* downvote button */}
       {/* <Button

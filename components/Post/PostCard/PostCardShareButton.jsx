@@ -66,16 +66,19 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
   });
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer focus-visible:outline-none">
+      <DropdownMenuTrigger className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-10 py-1 rounded cursor-pointer focus-visible:outline-none">
         <Forward className="h-6 w-6" />
         <span className=" font-medium text-sm">Share</span>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="min-w-[18vw]">
-        <div className="flex flex-col">
+      <DropdownMenuContent
+        align="end"
+        className="min-w-[18vw] dark:bg-neutral-700 dark:border-0"
+      >
+        <div className="flex flex-col dark:bg-neutral-700">
           <Button
             variant="ghost"
-            className="flex justify-start gap-x-3"
+            className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:bg-neutral-600"
             onClick={() => {
               sharePost(blog.id);
               toast({
@@ -93,7 +96,10 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
             blog={blog}
           />
 
-          <Button variant="ghost" className="flex justify-start gap-x-3">
+          <Button
+            variant="ghost"
+            className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:bg-neutral-600"
+          >
             <PlusCircle className="h-5 w-5" />
             <span> Share to your story</span>
           </Button>

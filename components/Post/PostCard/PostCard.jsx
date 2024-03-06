@@ -14,6 +14,7 @@ import PostCardHeader from "./PostCardHeader";
 import PostCardShareButton from "./PostCardShareButton";
 import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
+import PostVote from "@/components/PostVote/PostVote";
 
 const PostCard = ({ blog, session }) => {
   // get shared post data
@@ -63,9 +64,10 @@ const PostCard = ({ blog, session }) => {
         <Separator className="dark:bg-neutral-700" />
 
         {/* home post vote comment and share */}
-        <div className="flex justify-between my-1 gap-x-2 mx-6">
+        <div className="flex justify-center my-1 space-x-10">
           {/* vote */}
-          <div className="flex items-center gap-2 px-10 py-1 rounded cursor-pointer">
+          <div className="flex items-center justify-between gap-2 pl-2  rounded cursor-pointer">
+            <PostVote />
             <HeartVote />
           </div>
           {/* comment button */}
@@ -73,13 +75,16 @@ const PostCard = ({ blog, session }) => {
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}`}
-              className="flex items-center gap-2 hover:bg-gray-200 px-10 py-1 rounded cursor-pointer"
+              className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-10 rounded cursor-pointer"
             >
               <MessageCircle className="h-6 w-6" />
               <span className=" font-medium text-sm">Comment</span>
             </Link>
           ) : (
-            <div onClick={() => storeToRecentPosts(blog.id)}>
+            <div
+              className="flex items-center gap-2 hover:bg-gray-200 rounded cursor-pointer"
+              onClick={() => storeToRecentPosts(blog.id)}
+            >
               <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
             </div>
           )}

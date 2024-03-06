@@ -79,9 +79,15 @@ const LogoVideoAndIcon = ({
 
       <div className="flex justify-center">
         <div className="z-20 flex items-center mr-20 ">
-          <ChevronLeft className="text-white dark:text-neutral-100 bg-neutral-800 p-3 h-14 w-14 rounded-full cursor-pointer" />
+          <Button
+            size="md"
+            variant="ghost"
+            className="hover:bg-neutral-700 rounded-full bg-neutral-800"
+          >
+            <ChevronLeft className="text-white dark:text-neutral-100  p-3 h-14 w-14 rounded-full cursor-pointer" />
+          </Button>
         </div>
-        <div className="relative border dark:border-neutral-800 border-neutral-300 rounded-2xl mt-8">
+        <div className="relative border dark:border-neutral-800 border-neutral-950 rounded-2xl mt-8">
           {isPlaying ? (
             <Pause
               onClick={handlePlayClick}
@@ -157,14 +163,14 @@ const LogoVideoAndIcon = ({
           </div>
         </div>
         <div className="space-y-5 flex flex-col justify-end mx-2 mb-5 z-30">
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
-            <Heart className="dark:stroke-white fill-white" />
+          <div className="p-3  rounded-full bg-neutral-800">
+            <Heart className="stroke-white fill-white" />
           </div>
           {/* comment button and comment amount */}
           <div className="flex flex-col space-y-1">
             <Button
               onClick={() => setToggleCommentSection((prevState) => !prevState)}
-              className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800"
+              className="px-3 py-6  rounded-full bg-neutral-800"
             >
               <MessageCircle
                 className={`${
@@ -178,20 +184,24 @@ const LogoVideoAndIcon = ({
           </div>
           {/* share button */}
           <div className="flex flex-col space-y-1">
-            <Button className="px-3 py-6 bg-neutral-200 rounded-full dark:bg-neutral-800">
+            <Button className="px-3 py-6  rounded-full bg-neutral-800">
               <Redo2 className="dark:stroke-white" />
             </Button>
             <span className="text-center text-white text-sm">Share</span>
           </div>
-          <div className="p-3 bg-neutral-200 rounded-full dark:bg-neutral-800">
-            <MoreVertical className="dark:stroke-white" />
+          <div className="p-3  rounded-full bg-neutral-800">
+            <MoreVertical className="stroke-white" />
           </div>
         </div>
         <div className="z-20 flex items-center">
-          <ChevronRight
+          <Button
             onClick={() => router.refresh()}
-            className="text-white dark:text-neutral-100 bg-neutral-800  p-3 h-14 w-14 rounded-full cursor-pointer"
-          />
+            size="md"
+            variant="ghost"
+            className="hover:bg-neutral-700 rounded-full bg-neutral-800"
+          >
+            <ChevronRight className="text-white dark:text-neutral-100   p-3 h-14 w-14 rounded-full cursor-pointer" />
+          </Button>
         </div>
       </div>
 
@@ -201,11 +211,11 @@ const LogoVideoAndIcon = ({
             href="/shortsv/create"
             className={cn(
               buttonVariants({ variant: "default" }),
-              "bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-600"
+              "bg-neutral-100 text-black dark:text-white dark:bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-500"
             )}
           >
             <span className="pr-2">
-              <Clapperboard className="w-5.5 h-5.5" />
+              <Clapperboard className="w-5.5 h-5.5 stroke-neutral-800 dark:text-neutral-200" />
             </span>
             Create shortsv
           </Link>

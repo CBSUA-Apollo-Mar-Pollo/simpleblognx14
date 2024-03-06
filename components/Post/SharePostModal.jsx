@@ -73,7 +73,7 @@ const SharePostModal = ({ session, user, blog }) => {
   });
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="w-full hover:bg-neutral-100 py-2">
+      <DialogTrigger className="w-full hover:bg-neutral-100 py-3 dark:text-neutral-200 dark:hover:bg-neutral-600 rounded">
         <div className="flex justify-start text-sm font-medium gap-x-3 ml-[1.2rem]">
           <PenSquare className="h-5 w-5" />
           <span>Share to Feed</span>
