@@ -5,10 +5,14 @@ import { db } from "@/lib/db";
 
 export const storeToRecentPosts = async (postId) => {
   const session = await getAuthSession();
-  await db.RecentPosts.create({
-    data: {
-      postId,
-      authorId: session?.user.id,
-    },
-  });
+  if (session) {
+    await db.RecentPosts.create({
+      data: {
+        postId,
+        authorId: session?.user.id,
+      },
+    });
+  } else {
+    return null;
+  }
 };

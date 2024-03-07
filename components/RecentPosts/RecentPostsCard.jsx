@@ -28,14 +28,14 @@ const RecentPostsCard = async () => {
   return (
     <>
       {session?.user && recentPosts.length !== 0 && (
-        <div className="bg-white dark:bg-neutral-800 dark:border-0 border sticky top-20 rounded-xl mr-4">
+        <div className="bg-white dark:bg-neutral-800 dark:border-0 border rounded-xl mr-4">
           <div className="flex items-center justify-between">
             <h1 className="text-md font-bold px-5 py-3 dark:text-neutral-200">
               RECENT POSTS
             </h1>
             <ClearButton />
           </div>
-          <div className="overflow-auto max-h-[35rem] mr-2">
+          <div className="overflow-auto max-h-[20rem] mr-2">
             {recentPosts
               .filter((recPosts) => {
                 const recPostDate = new Date(recPosts.createdAt);
