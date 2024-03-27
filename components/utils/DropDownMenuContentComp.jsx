@@ -28,9 +28,9 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
                 {user?.name}
               </p>
             )}
-            {user?.email && (
+            {user?.handleName && (
               <p className="w-[200px] truncate text-sm text-neutral-600 dark:text-neutral-100">
-                {user?.email}
+                {user?.handleName}
               </p>
             )}
           </div>

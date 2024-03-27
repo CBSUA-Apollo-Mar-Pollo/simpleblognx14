@@ -47,6 +47,7 @@ model User {
   Comment          Comment[]
   UserPostedImages UserPostedImages[]
   Shortsv          Shortsv[]
+  SearchHistory    SearchHistory[]
 }
 
 model Blog {
@@ -140,4 +141,12 @@ model passwordResetToken {
   expires DateTime
 
   @@unique([email, token])
+}
+
+model SearchHistory {
+  id   String @id @default(cuid())
+  text String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 }

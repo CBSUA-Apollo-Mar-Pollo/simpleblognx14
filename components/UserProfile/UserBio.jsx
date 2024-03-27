@@ -36,9 +36,15 @@ const UserBio = async ({ user }) => {
                 </Link>
               </div>
             ) : (
-              <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+              <Link
+                href="/settings"
+                className={cn(
+                  buttonVariants("secondary"),
+                  "dark:bg-neutral-700 dark:hover:bg-neutral-500"
+                )}
+              >
                 Add Bio
-              </Button>
+              </Link>
             )}
             <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
               Edit details

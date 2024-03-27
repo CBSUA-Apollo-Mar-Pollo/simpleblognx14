@@ -17,6 +17,7 @@ import {
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
 import Image from "next/image";
+import SearchInput from "./SearchInput";
 
 const Navbar = async () => {
   const session = await getAuthSession();
@@ -30,13 +31,8 @@ const Navbar = async () => {
               E
             </span>
           </Link>
-          <div className="relative flex items-center">
-            <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
-            <Input
-              placeholder="Search Posts"
-              className="pl-12 focus-visible:ring-transparent  border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-[250px] text-sm "
-            />
-          </div>
+          {/* search input */}
+          <SearchInput />
         </div>
 
         <div className="flex space-x-16 mr-[12rem] text-neutral-600 dark:text-neutral-300">
