@@ -47,6 +47,7 @@ const SearchInput = () => {
       handleSearch();
     }, 3000); // Adjust this value to set the delay
   };
+
   return (
     <DropdownMenu open={active} onOpenChange={setActive}>
       <DropdownMenuTrigger className="">

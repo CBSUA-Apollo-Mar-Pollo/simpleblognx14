@@ -29,8 +29,8 @@ const PostCard = ({ blog, session }) => {
   });
 
   return (
-    <Card className="dark:bg-neutral-800 dark:border-0 dark:text-neutral-200">
-      <CardHeader className="py-3">
+    <Card className="dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 border border-neutral-200 rounded-xl">
+      <CardHeader className="py-2 px-0">
         <PostCardHeader blog={blog} session={session} />
       </CardHeader>
 
@@ -66,16 +66,16 @@ const PostCard = ({ blog, session }) => {
         {/* home post vote comment and share */}
         <div className="flex justify-center my-1 space-x-10">
           {/* vote */}
-          <div className="flex items-center justify-between gap-2 pl-2  rounded cursor-pointer">
-            <PostVote />
-            <HeartVote />
-          </div>
+
+          <PostVote />
+          <HeartVote />
+
           {/* comment button */}
           {blog?.image ? (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}`}
-              className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-10 rounded cursor-pointer"
+              className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-4 rounded cursor-pointer"
             >
               <MessageCircle className="h-6 w-6" />
               <span className=" font-medium text-sm">Comment</span>

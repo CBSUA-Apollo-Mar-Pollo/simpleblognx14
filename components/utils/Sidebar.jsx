@@ -25,7 +25,7 @@ const Sidebar = ({ session }) => {
     <div
       className={`sticky top-16 w-[22vw] h-screen z-10 shadow-sm px-4 max-h-[90vh] sidebarContainer ${
         toggleScrollBar ? "overflow-auto" : "overflow-hidden"
-      } bg-white dark:bg-neutral-900 dark:text-neutral-100`}
+      }  dark:bg-neutral-900 dark:text-neutral-100`}
       onMouseEnter={handleScrollBar}
       onMouseLeave={handleMouseLeave}
     >

@@ -66,7 +66,7 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
   });
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-10 py-1 rounded cursor-pointer focus-visible:outline-none">
+      <DropdownMenuTrigger className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-4 py-1 rounded cursor-pointer focus-visible:outline-none">
         <Forward className="h-6 w-6" />
         <span className=" font-medium text-sm">Share</span>
       </DropdownMenuTrigger>

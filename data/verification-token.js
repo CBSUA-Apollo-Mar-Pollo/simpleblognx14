@@ -13,6 +13,7 @@ export const getVerificationTokenByToken = async (token) => {
     return null;
   }
 };
+
 export const getVerificationTokenByEmail = async (email) => {
   try {
     const verificationToken = await db.verificationToken.findFirst({

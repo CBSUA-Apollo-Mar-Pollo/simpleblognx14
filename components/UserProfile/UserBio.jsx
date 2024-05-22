@@ -28,11 +28,13 @@ const UserBio = async ({ user }) => {
             {user.bio ? (
               <div className="flex justify-between items-center mx-2">
                 <div className="flex gap-x-2">
-                  <Icons.BioIcon className="h-6 w-6" />
-                  <span className="font-medium">{user.bio}</span>
+                  <Icons.BioIcon className="h-6 w-6 dark:fill-neutral-200" />
+                  <span className="font-medium dark:text-neutral-200">
+                    {user.bio}
+                  </span>
                 </div>
                 <Link href="/settings" className="rounded-full px-3">
-                  <Pencil className="h-5 w-5" />
+                  <Pencil className="h-4 w-4 dark:fill-neutral-200 dark:stroke-neutral-200" />
                 </Link>
               </div>
             ) : (

@@ -16,7 +16,7 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
   return (
     <DropdownMenuGroup>
       <Link href={`/user/${user.id}`}>
-        <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer dark:hover:bg-neutral-700">
+        <DropdownMenuItem className="flex items-center py-2 justify-start gap-x-4 cursor-pointer dark:hover:bg-neutral-700 shadow-xl shadow-neutral-900/50 border border-neutral-800 rounded-md">
           <UserAvatar
             className="h-10 w-10 "
             user={{ name: user.name || null, image: user?.image || null }}

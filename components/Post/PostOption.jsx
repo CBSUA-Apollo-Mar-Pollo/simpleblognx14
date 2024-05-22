@@ -6,6 +6,7 @@ import {
   Pen,
   Pin,
   Trash2,
+  X,
 } from "lucide-react";
 import React from "react";
 import {
@@ -22,13 +23,13 @@ const PostOption = ({ authorId, authorName }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <div className="hover:bg-neutral-100 py-2 px-2 rounded-full cursor-pointer">
+        <div className="hover:bg-neutral-100 dark:hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
           <MoreHorizontal />
         </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className=" rounded-md min-w-[15rem] text-neutral-700 p-2"
+        className=" rounded-md min-w-[15rem] text-neutral-700 dark:text-neutral-200 bg-neutral-800 p-2 border-0"
         align="end"
       >
         <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start">

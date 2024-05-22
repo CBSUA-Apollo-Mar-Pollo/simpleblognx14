@@ -4,16 +4,7 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/Button";
 import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
-import { Input } from "../ui/Input";
-import {
-  Bookmark,
-  Gamepad2,
-  Grip,
-  History,
-  Home,
-  PlayCircle,
-  Search,
-} from "lucide-react";
+import { Grip, Home } from "lucide-react";
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
 import Image from "next/image";

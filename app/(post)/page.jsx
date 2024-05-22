@@ -25,7 +25,7 @@ export default async function HomePage() {
     take: 3,
   });
   return (
-    <div className="grid grid-cols-4 ">
+    <div className="grid grid-cols-4 bg-neutral-100 dark:bg-neutral-900">
       <div className=" col-span-1 relative">
         <Sidebar session={session} />
       </div>
