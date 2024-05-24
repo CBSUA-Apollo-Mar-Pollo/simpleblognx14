@@ -4,6 +4,15 @@
 - video like tiktok functionality(incomplete)
 - add a chat system
 - friend or follower system
-- group or personal page system
+- user can create a group or personal page system
 - make it pages responsive
 - post multiple photos
+- Live streaming: Enable live streaming for events, discussions, or just hanging out with followers.
+- Live chat: Facilitate live chat features within groups, video comments, or streams for real-time interaction.
+- Q&A sessions: Allow users to host Q&A sessions within groups or live streams for a more interactive experience.
+- Interest-based feeds: Curate user feeds based on their interests, similar to Facebook's newsfeed algorithm. This personalizes the content experience and surfaces relevant content.
+- Following topics and creators: Allow users to follow specific topics and creators to stay updated on their content.
+- Recommendation engine: Develop a recommendation engine that suggests content users might enjoy based on their past activity and interests.
+- Events calendar: Allow users to create and share events, both online and offline.
+- Live polls and quizzes: Enable live polls and quizzes within live streams or groups to increase engagement.
+- Bookmarking system: Let users bookmark interesting content for later viewing.

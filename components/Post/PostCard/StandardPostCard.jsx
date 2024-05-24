@@ -37,6 +37,7 @@ const StandardPostCard = ({ blog }) => {
               sizes="100vw"
               width={0}
               height={0}
+              priority
               src={blog.image}
               alt="profile image"
               referrerPolicy="no-referrer"

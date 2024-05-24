@@ -56,7 +56,7 @@ const SearchInput = () => {
           <Input
             onClick={() => setActive(true)}
             placeholder="Search Posts"
-            className="pl-12 focus-visible:ring-transparent  border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-[250px] text-sm "
+            className="pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700  border-0 bg-gray-100 font-light rounded-full w-[250px] text-sm "
           />
         </div>
       </DropdownMenuTrigger>

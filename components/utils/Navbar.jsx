@@ -1,24 +1,29 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/Button";
-import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
 import { Grip, Home } from "lucide-react";
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
 import Image from "next/image";
 import SearchInput from "./SearchInput";
+import { Icons } from "./Icons";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const Navbar = async () => {
-  const session = await getAuthSession();
+const Navbar = () => {
+  const { data: session } = useSession();
+  const pathname = usePathname();
   return (
     <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-zinc-800 shadow-sm">
       <div className="container max-w-full h-full mx-auto px-[30px] flex items-center justify-between gap-2">
         {/* logo and search bar  */}
-        <div className="flex items-center gap-x-2 my-2">
+        <div className="flex items-center gap-x-2">
           <Link href="/" className="font-bold">
-            <span className=" px-3.5 rounded-full bg-yellow-400 text-3xl ">
+            <span className=" px-3.5 rounded-full bg-yellow-400 text-[30px] ">
               E
             </span>
           </Link>
@@ -27,57 +32,44 @@ const Navbar = async () => {
         </div>
 
         <div className="flex space-x-16 mr-[12rem] text-neutral-600 dark:text-neutral-300">
-          <span className="px-4 border-b-4 border-blue-500">
-            <ToolTipComp content="Home">
-              <Home className=" h-10 w-10 py-2 fill-blue-600 stroke-blue-600 cursor-pointer" />
-            </ToolTipComp>
-          </span>
-          <span className="px-4 flex items-center">
+          <ToolTipComp content="Home">
+            {pathname === "/" ? (
+              <div className="flex justify-center border-b-[3px] border-blue-600 w-28 py-2.5">
+                <Icons.HomeFilled className="fill-blue-500 h-8 w-8 " />
+              </div>
+            ) : (
+              <Icons.Home className="fill-neutral-400 dark:fill-neutral-300 h-8 w-8" />
+            )}
+          </ToolTipComp>
+
+          <div className="px-4 flex items-center">
             <ToolTipComp content="Videos">
               <Link href="/shortsv" className="">
-                <Image
-                  sizes="100vw"
-                  src={"/ImageIcons/play.png"}
-                  width="0"
-                  height="0"
-                  className="w-7 h-7"
-                />
+                <Icons.Play className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
               </Link>
             </ToolTipComp>
-          </span>
-          <span className="px-4 flex items-center">
+          </div>
+          <div className="px-4 flex items-center">
             <ToolTipComp content="Gaming">
-              <Image
-                sizes="100vw"
-                src={"/ImageIcons/console.png"}
-                width="0"
-                height="0"
-                className="w-8 h-8"
-              />
+              <Link href="/shortsv" className="">
+                <Icons.GamePad className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
+              </Link>
             </ToolTipComp>
-          </span>
-          <span className="px-4 flex items-center">
+          </div>
+          <div className="px-4 flex items-center">
             <ToolTipComp content="Following Pages/People">
-              <Image
-                sizes="100vw"
-                src={"/ImageIcons/followColored.png"}
-                width="0"
-                height="0"
-                className="w-8 h-8"
-              />
+              <Link href="/shortsv" className="">
+                <Icons.Group className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
+              </Link>
             </ToolTipComp>
-          </span>
-          <span className="px-4 flex items-center">
-            <ToolTipComp content="Groups">
-              <Image
-                sizes="100vw"
-                src={"/ImageIcons/group.png"}
-                width="0"
-                height="0"
-                className="w-8 h-8"
-              />
+          </div>
+          <div className="px-4 flex items-center">
+            <ToolTipComp content="Market">
+              <Link href="/shortsv" className="">
+                <Icons.Market className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
+              </Link>
             </ToolTipComp>
-          </span>
+          </div>
         </div>
 
         {/* notification and profile pic */}
