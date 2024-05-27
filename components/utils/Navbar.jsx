@@ -13,6 +13,7 @@ import SearchInput from "./SearchInput";
 import { Icons } from "./Icons";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Menu from "./Menu";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -76,11 +77,7 @@ const Navbar = () => {
         <div>
           {session ? (
             <div className="flex items-center gap-x-3">
-              <ToolTipComp content="Menu">
-                <div className=" bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-                  <Grip className="text-neutral-800 dark:text-neutral-100" />
-                </div>
-              </ToolTipComp>
+              <Menu />
               <NotificationMenu />
               {/* user profile */}
 

@@ -28,11 +28,11 @@ const HeartVote = () => {
       >
         <Heart
           className={cn(
-            "h-9 w-9 px-2 py-2 text-zinc-700 dark:text-neutral-300  hover:text-blue-300"
+            "h-10 w-10 px-2 py-2 text-zinc-700 dark:text-neutral-300  hover:text-blue-300"
           )}
         />
       </Button>
-      <p className="text-center font-medium text-sm tetx-zinc-900 px-2">0</p>
+      <p className="text-center font-medium text-base tetx-zinc-900 px-2">0</p>
 
       {/* downvote button */}
       {/* <Button

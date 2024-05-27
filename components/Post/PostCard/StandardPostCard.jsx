@@ -33,11 +33,11 @@ const StandardPostCard = ({ blog }) => {
 
             // ref={pRef}
           >
-            <Image
+            <img
               sizes="100vw"
               width={0}
               height={0}
-              priority
+              priority="true"
               src={blog.image}
               alt="profile image"
               referrerPolicy="no-referrer"
