@@ -34,9 +34,9 @@ export default async function HomePage() {
         <Posts initialPosts={posts} session={session} />
       </div>
       <div className=" col-span-1 relative flex flex-col ">
-        <div className="sticky top-20">
+        <div className="sticky top-16">
           <RecentPostsCard />
-          <div className="bg-neutral-50 dark:bg-neutral-800 rounded-xl mr-4 mt-3 px-5 pt-1">
+          <div className="bg-white dark:bg-neutral-800 rounded-lg mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
             <h1 className=" text-neutral-950 dark:text-neutral-200 font-bold text-xl mt-2">
               Who to follow
             </h1>

@@ -78,6 +78,9 @@ const Navbar = () => {
           {session ? (
             <div className="flex items-center gap-x-3">
               <Menu />
+              <div className=" bg-gray-100 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
+                <Icons.Messager className="h-5 w-5 fill-neutral-800" />
+              </div>
               <NotificationMenu />
               {/* user profile */}
 

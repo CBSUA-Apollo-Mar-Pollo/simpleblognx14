@@ -4,9 +4,21 @@ import {
   DropdownMenuLabel,
   DropdownMenu,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "../ui/Dropdown-menu";
 import { Icons } from "../utils/Icons";
-import { Grip, MoreHorizontal, Search } from "lucide-react";
+import {
+  BookOpen,
+  CalendarPlus,
+  Clapperboard,
+  Flag,
+  Grip,
+  MoreHorizontal,
+  PenSquare,
+  Search,
+  ShoppingBag,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 import { Input } from "../ui/Input";
@@ -22,17 +34,18 @@ const Menu = () => {
         </ToolTipComp>
       </DropdownMenuTrigger>
 
+      {/* drop down menu content */}
       <DropdownMenuContent
-        className="bg-neutral-50 drop-shadow-lg px-4 py-2 min-w-[39vw] max-w-[39vw] -mr-28 relative"
+        className="bg-neutral-50 drop-shadow-lg  min-w-[39vw] max-w-[39vw] -mr-44 relative"
         align="end"
       >
-        <DropdownMenuLabel className="text-2xl font-bold">
+        <DropdownMenuLabel className="text-2xl font-bold ml-2">
           Menu
         </DropdownMenuLabel>
 
-        <div className="grid grid-cols-3 gap-x-4 w-full mt-1">
+        <div className="relative grid grid-cols-3 gap-x-2 w-full max-h-[80vh] overflow-auto pb-2">
           {/* all menu */}
-          <div className="bg-white drop-shadow-md rounded-lg px-2 col-span-2  py-2">
+          <div className="bg-white drop-shadow-md rounded-lg px-2 col-span-2  py-2 ml-3 mr-2">
             {/* search input */}
             <div className="relative flex items-center justify-center mt-2 mx-2">
               <Search className="absolute left-3 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
@@ -42,6 +55,7 @@ const Menu = () => {
               />
             </div>
 
+            {/* social */}
             <div className="mt-4">
               <h1 className="font-semibold text-neutral-800 text-base ml-4">
                 Social
@@ -52,7 +66,7 @@ const Menu = () => {
                   <img src="/ImageIcons/event.png" className="h-7 w-7 mt-1" />
                   <div>
                     <h3 className="font-semibold">Events</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       Find events and other things to do online.
                     </p>
                   </div>
@@ -64,7 +78,7 @@ const Menu = () => {
                   />
                   <div>
                     <h3 className="font-semibold">Find Friends</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       Explore friends and discover potential connections.
                     </p>
                   </div>
@@ -76,7 +90,7 @@ const Menu = () => {
                   />
                   <div>
                     <h3 className="font-semibold">Groups</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       Engage with individuals who have similar interests.
                     </p>
                   </div>
@@ -85,7 +99,7 @@ const Menu = () => {
                   <img src="/ImageIcons/post.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">News Feeds</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       Discover relevant posts from the people and pages you're
                       connected with.
                     </p>
@@ -98,7 +112,7 @@ const Menu = () => {
                   />
                   <div>
                     <h3 className="font-semibold">Post Feeds</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       See the most recent posts from your friend, pages and
                       group.
                     </p>
@@ -108,17 +122,212 @@ const Menu = () => {
                   <img src="/ImageIcons/pages.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">Pages</h3>
-                    <p className="text-sm font-light">
+                    <p className="text-[13px] font-light">
                       Discover and connect with businesses.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
+
+            <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
+
+            {/* entertainment */}
+            <div className="mt-2">
+              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+                Entertainment
+              </h1>
+
+              <div className="mt-2">
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img
+                    src="/ImageIcons/Streamer.png"
+                    className="h-9 w-9 mt-1"
+                  />
+                  <div>
+                    <h3 className="font-semibold">Gaming Videos</h3>
+                    <p className="text-[13px] font-light">
+                      Explore and engage with your favorite games and streamers.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img
+                    src="/ImageIcons/game-console.png"
+                    className="h-9 w-9 mt-1"
+                  />
+                  <div>
+                    <h3 className="font-semibold">Play Games</h3>
+                    <p className="text-[13px] font-light">
+                      Play your favourite games
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img src="/ImageIcons/play.png" className="h-9 w-9 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Video</h3>
+                    <p className="text-[13px] font-light">
+                      Discover videos based on your interests and preferences.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
+
+            {/* Shopping */}
+            <div className="mt-2">
+              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+                Shopping
+              </h1>
+
+              <div className="mt-2">
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img
+                    src="/ImageIcons/business.png"
+                    className="h-7 w-7 mt-1"
+                  />
+                  <div>
+                    <h3 className="font-semibold">Orders and Payments</h3>
+                    <p className="text-[13px] font-light">
+                      An effortless and secure payment solution integrated into
+                      your favorite app.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img src="/ImageIcons/shop.png" className="h-7 w-7 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Marketplace</h3>
+                    <p className="text-[13px] font-light">
+                      Buy and sell in your community
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
+
+            {/* Personal */}
+            <div className="mt-2">
+              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+                Personal
+              </h1>
+
+              <div className="mt-2">
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img src="/ImageIcons/refresh.png" className="h-8 w-8 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Memories</h3>
+                    <p className="text-[13px] font-light">
+                      Browse old photos,videos and posts.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img
+                    src="/ImageIcons/bookmark.png"
+                    className="h-7 w-7 mt-1"
+                  />
+                  <div>
+                    <h3 className="font-semibold">Saved</h3>
+                    <p className="text-[13px] font-light">
+                      Find posts, photos and videos that you saved for later.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
+
+            {/* More */}
+            <div className="mt-2">
+              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+                More from our app
+              </h1>
+
+              <div className="mt-2">
+                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                  <img src="/ImageIcons/message.png" className="h-8 w-8 mt-1" />
+                  <div>
+                    <h3 className="font-semibold">Message</h3>
+                    <p className="text-[13px] font-light">
+                      Privately message and call people from your computer or
+                      mobile device.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           {/* create menu */}
-          <div className="col-span-1 bg-white shadow-md rounded-md border-t border-neutral-100">
-            <h1 className="font-bold text-xl px-4 py-2">Create</h1>
+          <div className="col-span-1 sticky top-0 h-[70vh] max-h-[70vh]  mr-2">
+            <div className="bg-white shadow-md rounded-md border-t border-neutral-100 pb-2">
+              <h1 className="font-bold text-xl px-4 py-3">Create</h1>
+
+              <div className="px-1">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <PenSquare className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Post</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <BookOpen className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Story</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <Clapperboard className="h-5 w-5 text-neutral-800" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Reel</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <Sparkles className="h-5 w-5 text-neutral-800" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Life event</h3>
+                </div>
+              </div>
+
+              <DropdownMenuSeparator className="my-2 mx-2 bg-neutral-400 dark:bg-neutral-600" />
+
+              <div className="px-1">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <Flag className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Page</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <Icons.Group className="h-5 w-5 fill-neutral-800 dark:fill-neutral-300" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Group</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <CalendarPlus className="h-5 w-5 text-neutral-800" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">Event</h3>
+                </div>
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
+                    <ShoppingBag className="h-5 w-5 text-neutral-800" />
+                  </div>
+                  <h3 className="font-semibold text-[15px]">
+                    Marketplace listing
+                  </h3>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </DropdownMenuContent>
