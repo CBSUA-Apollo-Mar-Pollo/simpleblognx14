@@ -17,7 +17,7 @@ const UserAccountNav = ({ user }) => {
   const [subMenu, setSubMenu] = useState(null);
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger>
         <UserAvatar
           className="h-10 w-10 "

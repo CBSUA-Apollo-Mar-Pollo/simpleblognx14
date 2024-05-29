@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -24,12 +24,23 @@ import ToolTipComp from "../utils/ToolTipComp";
 import { Input } from "../ui/Input";
 
 const Menu = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="focus-visible:outline-none">
         <ToolTipComp content="Menu">
-          <div className=" bg-gray-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-            <Grip className="text-neutral-800 dark:text-neutral-100" />
+          <div
+            className={`  ${
+              open
+                ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-300"
+                : "bg-gray-100 hover:bg-gray-200 dark:hover:bg-neutral-500"
+            } dark:bg-neutral-600 p-2 rounded-full cursor-pointer `}
+          >
+            <Grip
+              className={` ${
+                open ? "text-blue-600" : "text-neutral-800"
+              } dark:text-neutral-100`}
+            />
           </div>
         </ToolTipComp>
       </DropdownMenuTrigger>

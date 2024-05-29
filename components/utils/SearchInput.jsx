@@ -49,7 +49,7 @@ const SearchInput = () => {
   };
 
   return (
-    <DropdownMenu open={active} onOpenChange={setActive}>
+    <DropdownMenu modal={false} open={active} onOpenChange={setActive}>
       <DropdownMenuTrigger className="">
         <div className="relative flex items-center">
           <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />

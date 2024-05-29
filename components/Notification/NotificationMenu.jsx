@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -11,18 +11,29 @@ import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 
 const NotificationMenu = () => {
+  const [open, setOpen] = useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="focus-visible:outline-none">
         <ToolTipComp content="Notification">
-          <div className="bg-neutral-100 dark:bg-neutral-600 p-2 rounded-full cursor-pointer hover:bg-neutral-300 dark:hover:bg-neutral-500">
-            <Icons.bell className="text-neutral-800 dark:text-neutral-100" />
+          <div
+            className={`  ${
+              open
+                ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-300"
+                : "bg-gray-100 hover:bg-gray-200 dark:hover:bg-neutral-500"
+            } dark:bg-neutral-600 p-2 rounded-full cursor-pointer `}
+          >
+            <Icons.bell
+              className={` ${
+                open ? "text-blue-600" : "text-neutral-800"
+              } dark:text-neutral-100`}
+            />
           </div>
         </ToolTipComp>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white px-2 py-2 min-w-[22vw] -mr-10"
+        className="bg-white px-2 py-2 min-w-[22vw] -mr-14"
         align="end"
       >
         <div className="flex items-center justify-between mx-2">

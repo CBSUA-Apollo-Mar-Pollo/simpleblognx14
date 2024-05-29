@@ -5,15 +5,14 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/Button";
 import UserAccountNav from "./UserAccountNav";
-import { Grip, Home } from "lucide-react";
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
-import Image from "next/image";
 import SearchInput from "./SearchInput";
 import { Icons } from "./Icons";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Menu from "./Menu";
+import ChatBoxMenu from "./ChatBoxMenu";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -39,7 +38,9 @@ const Navbar = () => {
                 <Icons.HomeFilled className="fill-blue-500 h-8 w-8 " />
               </div>
             ) : (
-              <Icons.Home className="fill-neutral-400 dark:fill-neutral-300 h-8 w-8" />
+              <div className="flex justify-center w-28 py-3">
+                <Icons.Home className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </div>
             )}
           </ToolTipComp>
 
@@ -78,9 +79,7 @@ const Navbar = () => {
           {session ? (
             <div className="flex items-center gap-x-3">
               <Menu />
-              <div className=" bg-gray-100 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-500">
-                <Icons.Messager className="h-5 w-5 fill-neutral-800" />
-              </div>
+              <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
 

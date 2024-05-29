@@ -80,7 +80,7 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
             </div>
           </TooltipContent>
         ) : (
-          <TooltipContent>{content}</TooltipContent>
+          <TooltipContent side="bottom">{content}</TooltipContent>
         )}
       </Tooltip>
     </TooltipProvider>
