@@ -91,7 +91,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
         <div>
           {/* if the user has uploaded a cover photo display it */}
           {user.backgroundImage ? (
-            <div className="overflow-hidden h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
+            <div className="overflow-hidden h-[55vh] rounded-b-lg scroll-container bg-neutral-900 z-20">
               <Link
                 href={`/postComment/${user.coverPhotoId}`}
                 className="scroll-container"

@@ -12,12 +12,22 @@ const shortsVPage = async () => {
     },
   });
 
+  let shortsvLength = shortsVideo.length;
+
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  let num = getRandomInt(1, shortsvLength);
+
   const session = await getAuthSession();
   // get comments
   const comments = await db.comment.findMany({
     where: {
-      postId: shortsVideo[8].id,
-      shortsvId: shortsVideo[8].id,
+      postId: shortsVideo[num].id,
+      shortsvId: shortsVideo[num].id,
       replyToId: null,
     },
     include: {
@@ -35,7 +45,7 @@ const shortsVPage = async () => {
   return (
     <div className="bg-neutral-950">
       <ShortsvCard
-        video={shortsVideo[8]}
+        video={shortsVideo[num]}
         comments={comments}
         session={session}
       />
