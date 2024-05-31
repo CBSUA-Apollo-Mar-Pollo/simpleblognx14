@@ -23,7 +23,7 @@ const ProfileSection = ({ user, deleteImage }) => {
   const { setIsLoading } = useContext(LoaderContext);
   const { resolvedTheme } = useTheme();
 
-  const { mutate: saveCoverImage, isLoading } = useMutation({
+  const { mutate: saveCoverImage } = useMutation({
     mutationFn: async () => {
       const payload = {
         image: imageUrl,
@@ -64,6 +64,22 @@ const ProfileSection = ({ user, deleteImage }) => {
         });
     },
   });
+
+  const { mutate: handleAddFriend, isLoading: friendRequestLoader } =
+    useMutation({
+      mutationFn: async () => {
+        const payload = {
+          userId: user.id,
+        };
+        await axios.post("/api/friendRequest", payload);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+      onSuccess: () => {
+        console.log("success");
+      },
+    });
 
   const { data: dominantColor, error } = useQuery({
     queryKey: ["dominantColor", user.backgroundImage],
@@ -135,7 +151,10 @@ const ProfileSection = ({ user, deleteImage }) => {
             </div>
           ) : (
             <div className="mr-10 mt-4 flex gap-x-2">
-              <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
+              <Button
+                onClick={handleAddFriend}
+                className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+              >
                 <span className="pr-2">
                   <UserPlus className="fill-white  h-5 w-5" />
                 </span>
