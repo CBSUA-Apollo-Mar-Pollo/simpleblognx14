@@ -13,7 +13,15 @@ import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
 import { getDominantColor } from "@/actions/getDominantColor";
 import { useTheme } from "next-themes";
-import { MessageCircleMore, Pencil, UserPlus } from "lucide-react";
+import {
+  Loader2,
+  MessageCircleMore,
+  Pencil,
+  UserCheck,
+  UserPlus,
+  UserX,
+} from "lucide-react";
+import { checkIfIsAFriend } from "@/actions/checkIfIsAFriend";
 
 const ProfileSection = ({ user, deleteImage }) => {
   const { data: session } = useSession();
@@ -22,6 +30,7 @@ const ProfileSection = ({ user, deleteImage }) => {
   const { toast } = useToast();
   const { setIsLoading } = useContext(LoaderContext);
   const { resolvedTheme } = useTheme();
+  const [isRequestLoading, setIsRequestLoading] = useState(false);
 
   const { mutate: saveCoverImage } = useMutation({
     mutationFn: async () => {
@@ -65,21 +74,24 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
   });
 
-  const { mutate: handleAddFriend, isLoading: friendRequestLoader } =
-    useMutation({
-      mutationFn: async () => {
-        const payload = {
-          userId: user.id,
-        };
-        await axios.post("/api/friendRequest", payload);
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-      onSuccess: () => {
-        console.log("success");
-      },
-    });
+  const { mutate: handleCancelAndFriendRequest } = useMutation({
+    mutationFn: async (request) => {
+      const payload = {
+        userId: user.id,
+        request,
+      };
+      setIsRequestLoading(true);
+      await axios.post("/api/friendRequest", payload);
+    },
+    onError: (err) => {
+      refetch();
+      setIsRequestLoading(false);
+    },
+    onSuccess: () => {
+      refetch();
+      setIsRequestLoading(false);
+    },
+  });
 
   const { data: dominantColor, error } = useQuery({
     queryKey: ["dominantColor", user.backgroundImage],
@@ -88,6 +100,19 @@ const ProfileSection = ({ user, deleteImage }) => {
       return res;
     },
   });
+
+  const { data: isAFriend, refetch } = useQuery({
+    queryKey: ["isAFriend"],
+    queryFn: async () => {
+      const res = await checkIfIsAFriend(user.id);
+      return res;
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  console.log(isAFriend, "isAFriend");
 
   return (
     <div
@@ -151,15 +176,43 @@ const ProfileSection = ({ user, deleteImage }) => {
             </div>
           ) : (
             <div className="mr-10 mt-4 flex gap-x-2">
-              <Button
-                onClick={handleAddFriend}
-                className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-              >
-                <span className="pr-2">
-                  <UserPlus className="fill-white  h-5 w-5" />
-                </span>
-                Add friend
-              </Button>
+              {isAFriend === "onhold" ? (
+                <Button
+                  onClick={() => handleCancelAndFriendRequest("false")}
+                  className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                >
+                  <span className="pr-2">
+                    {isRequestLoading ? (
+                      <Loader2 className="w-6 h-6  animate-spin text-white" />
+                    ) : (
+                      <UserX className="fill-white  h-5 w-5" />
+                    )}
+                  </span>
+                  Cancel Request
+                </Button>
+              ) : isAFriend === true ? (
+                <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
+                  <span className="pr-2">
+                    <UserCheck className="fill-white  h-5 w-5" />
+                  </span>
+                  Friends
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => handleCancelAndFriendRequest("onhold")}
+                  className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                >
+                  <span className="pr-2">
+                    {isRequestLoading ? (
+                      <Loader2 className="w-6 h-6  animate-spin text-white" />
+                    ) : (
+                      <UserPlus className="fill-white  h-5 w-5" />
+                    )}
+                  </span>
+                  Add friend
+                </Button>
+              )}
+
               <Button className="bg-neutral-200 hover:bg-neutral-300 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
                 <span className="pr-2">
                   <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />

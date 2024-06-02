@@ -156,7 +156,7 @@ model Friend {
 
   userId            String
   requesterUserId   String
-  isRequestAccepted String
+  isRequestAccepted String   @default("false")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
 }
@@ -167,4 +167,12 @@ model Notification {
   userId    String
   text      String
   createdAt DateTime @default(now())
+}
+
+model FriendRequestNotification {
+  id String @id @default(cuid())
+
+  userId          String
+  requesterUserId String
+  createdAt       DateTime @default(now())
 }
