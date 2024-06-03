@@ -7,17 +7,20 @@ export async function POST(req) {
 
     const { userId, request } = body;
 
-    console.log(userId, request);
-
     const session = await getAuthSession();
 
     const requestExist = await db.friend.findFirst({
       where: {
         userId: userId,
       },
+      include: {
+        user: true,
+        requesterUser: true,
+      },
     });
 
-    if (requestExist && requestExist.id !== session.user.id) {
+    // if the user is not the requester
+    if (requestExist && requestExist?.userId !== session.user.id) {
       await db.friend.update({
         where: {
           id: requestExist.id,
@@ -30,7 +33,8 @@ export async function POST(req) {
       return new Response("Success");
     }
 
-    if (requestExist.userId === session.user.id) {
+    // if the user is the one being requested
+    if (requestExist && requestExist?.userId === session.user.id) {
       await db.friend.update({
         where: {
           id: requestExist.id,
@@ -39,6 +43,29 @@ export async function POST(req) {
           isRequestAccepted: request,
         },
       });
+
+      const getFriendRequestNotificationData =
+        await db.friendRequestNotification.findFirst({
+          where: {
+            userId: session.user.id,
+          },
+        });
+
+      await db.friendRequestNotification.delete({
+        where: {
+          id: getFriendRequestNotificationData.id,
+        },
+      });
+
+      await db.notification.create({
+        data: {
+          text: `${requestExist.user.name} has accepted your friend request`,
+          userId: requestExist.requesterUserId,
+          fromUserId: requestExist.userId,
+        },
+      });
+
+      return new Response("Success");
     }
 
     await db.friend.create({

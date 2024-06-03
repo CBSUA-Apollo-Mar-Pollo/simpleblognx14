@@ -18,7 +18,7 @@ const ShortsvCard = ({ video, comments, session }) => {
       >
         <LogoVideoAndIcon
           videoData={video}
-          commentAmt={video.comments.length}
+          commentAmt={video?.comments?.length}
           setToggleCommentSection={setToggleCommentSection}
           toggleCommentSection={toggleCommentSection}
         />

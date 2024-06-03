@@ -2,6 +2,11 @@ import SignUpForm from "@/components/auth/SignUpForm";
 import { getAuthSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
+export const metadata = {
+  title: `Estorya | Sign up`,
+  description: "All in one social media app",
+};
+
 const SignUp = async () => {
   const session = await getAuthSession();
 

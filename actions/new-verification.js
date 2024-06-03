@@ -31,9 +31,9 @@ export const newVerification = async (token) => {
     },
   });
 
-  await db.verificationToken.delete({
-    where: { id: existingToken.id },
-  });
+  // await db.verificationToken.delete({
+  //   where: { id: existingToken.id },
+  // });
 
   return { success: "Email verified" };
 };

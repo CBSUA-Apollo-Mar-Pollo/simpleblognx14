@@ -5,7 +5,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from "@/components/ui/Card";
 import Link from "next/link";
 import { buttonVariants } from "../ui/Button";
 import { BeatLoader } from "react-spinners";
@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/new-verification";
 import { useToast } from "@/hooks/use-toast";
+import { UserCheck2 } from "lucide-react";
 
 const NewVerificationForm = () => {
   const [error, setError] = useState();
@@ -56,7 +57,8 @@ const NewVerificationForm = () => {
         <CardContent>
           {!success && !error && <BeatLoader />}
           {success && (
-            <p className="text-sm text-red-700 bg-red-200 py-3 px-4 rounded flex items-center">
+            <p className="text-sm text-white bg-green-500 py-3 px-6 rounded flex items-center">
+              <UserCheck2 className="mr-4" />
               {success}
             </p>
           )}

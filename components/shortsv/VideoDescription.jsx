@@ -20,7 +20,9 @@ const VideoDescription = ({ video, commentAmt, session }) => {
           />
 
           <div className="px-2 pt-1 text-white">
-            <p className="font-semibold text-sm">{video.author?.name}</p>
+            <p className="font-semibold text-sm text-white">
+              {video?.author?.name}
+            </p>
             <div className="flex items-center">
               <p className=" text-xs text-gray-200 ">
                 {formatTimeToNow(new Date(video?.createdAt))}

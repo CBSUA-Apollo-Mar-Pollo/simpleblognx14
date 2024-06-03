@@ -3,6 +3,11 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
 
+export const metadata = {
+  title: `Estorya | Shortsv`,
+  description: "All in one social media app",
+};
+
 const shortsVPage = async () => {
   // get videos
   const shortsVideo = await db.shortsv.findMany({
@@ -20,14 +25,14 @@ const shortsVPage = async () => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  let num = getRandomInt(1, shortsvLength);
+  let num = getRandomInt(0, shortsvLength);
 
   const session = await getAuthSession();
   // get comments
   const comments = await db.comment.findMany({
     where: {
-      postId: shortsVideo[num].id,
-      shortsvId: shortsVideo[num].id,
+      postId: shortsVideo[num]?.id,
+      shortsvId: shortsVideo[num]?.id,
       replyToId: null,
     },
     include: {

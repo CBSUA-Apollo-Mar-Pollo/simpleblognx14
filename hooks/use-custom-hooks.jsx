@@ -1,8 +1,6 @@
 import React from "react";
 import { toast } from "./use-toast";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/Button";
-import { cn } from "@/lib/utils";
 
 const useCustomHooks = () => {
   const signinToast = () => {
@@ -13,10 +11,12 @@ const useCustomHooks = () => {
       action: (
         <Link
           href="/sign-in"
-          className={cn(buttonVariants({ variant: "default" }))}
+          className="bg-neutral-200 px-4 py-2 rounded-md hover:bg-neutral-300"
           onClick={() => dismiss()}
         >
-          <span className="text-white">Sign in</span>
+          <span className="text-neutral-800 text-sm font-semibold">
+            Sign in
+          </span>
         </Link>
       ),
     });

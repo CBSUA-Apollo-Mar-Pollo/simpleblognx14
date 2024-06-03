@@ -23,6 +23,7 @@ import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import UserAvatar from "../utils/UserAvatar";
 import { Button, buttonVariants } from "../ui/Button";
 import { cn } from "@/lib/utils";
+import useCustomHooks from "@/hooks/use-custom-hooks";
 
 const LogoVideoAndIcon = ({
   videoData,
@@ -31,6 +32,7 @@ const LogoVideoAndIcon = ({
   commentAmt,
 }) => {
   const { data: session } = useSession();
+  const { signinToast } = useCustomHooks();
   const router = useRouter();
   const videoRef = useRef(null);
   const close = () => {
@@ -49,7 +51,13 @@ const LogoVideoAndIcon = ({
     }
   };
 
-  console.log(toggleCommentSection);
+  const CheckSession = () => {
+    if (!session && !session?.user) {
+      return signinToast();
+    } else {
+      router.push("/shortsv/create");
+    }
+  };
 
   return (
     <>
@@ -113,7 +121,7 @@ const LogoVideoAndIcon = ({
           )}
 
           <video
-            key={videoData.videoUrl}
+            key={videoData?.videoUrl}
             onClick={handlePlayClick}
             ref={videoRef}
             loop
@@ -123,33 +131,33 @@ const LogoVideoAndIcon = ({
             muted={!isMuted}
             className="h-[90vh] w-[22vw] rounded-2xl z-10 cursor-pointer bg-black"
           >
-            <source src={videoData.videoUrl} type="video/mp4" />
+            <source src={videoData?.videoUrl} type="video/mp4" />
           </video>
 
-          <div className="absolute bottom-2 left-4">
-            <div className="flex items-center gap-x-2">
-              <UserAvatar
-                className="h-8 w-8 cursor-pointer"
-                post="post"
-                user={{
-                  handleName: videoData.author?.handleName,
-                  bio: videoData.author?.bio,
-                  birthdate: videoData.author?.birthdate,
-                  name: videoData.author?.name || null,
-                  image: videoData.author?.image || null,
-                }}
-              />
+          <div className="absolute bottom-2 left-4 w-full">
+            <div className="flex items-center justify-between gap-x-2">
               <div className="gap-x-3 flex items-center">
+                <UserAvatar
+                  className="h-8 w-8 cursor-pointer"
+                  post="post"
+                  user={{
+                    handleName: videoData?.author?.handleName,
+                    bio: videoData?.author?.bio,
+                    birthdate: videoData?.author?.birthdate,
+                    name: videoData?.author?.name || null,
+                    image: videoData?.author?.image || null,
+                  }}
+                />
                 <span className="text-white">
-                  {videoData.author?.handleName}
+                  {videoData?.author?.name || videoData?.author?.handleName}
                 </span>
-                <Button
-                  size="xs"
-                  className="px-4 rounded-3xl dark:bg-neutral-100 dark:text-neutral-700 text-xs dark:hover:bg-neutral-300 "
-                >
-                  follow
-                </Button>
               </div>
+              <Button
+                size="sm"
+                className="mr-6 px-5 rounded-3xl bg-neutral-50 hover:bg-neutral-200 text-neutral-800 text-[13px] font-medium  "
+              >
+                Follow
+              </Button>
               {/* <Button
                 variant="ghost"
                 className="px-5 py-2 bg-neutral-600 text-white"
@@ -157,8 +165,8 @@ const LogoVideoAndIcon = ({
                 Follow
               </Button> */}
             </div>
-            <div className="my-5">
-              <p className="text-white text-sm">{videoData.description}</p>
+            <div className="mb-4 mt-3">
+              <p className="text-white text-sm">{videoData?.description}</p>
             </div>
           </div>
         </div>
@@ -207,18 +215,15 @@ const LogoVideoAndIcon = ({
 
       {!toggleCommentSection && (
         <div className="absolute right-7 top-16 mt-1">
-          <Link
-            href="/shortsv/create"
-            className={cn(
-              buttonVariants({ variant: "default" }),
-              "bg-neutral-100 text-black dark:text-white dark:bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-500"
-            )}
+          <Button
+            onClick={CheckSession}
+            className="bg-neutral-100 text-black dark:text-white dark:bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-500"
           >
             <span className="pr-2">
               <Clapperboard className="w-5.5 h-5.5 stroke-neutral-800 dark:text-neutral-200" />
             </span>
             Create shortsv
-          </Link>
+          </Button>
         </div>
       )}
     </>

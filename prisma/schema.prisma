@@ -48,6 +48,10 @@ model User {
   UserPostedImages UserPostedImages[]
   Shortsv          Shortsv[]
   SearchHistory    SearchHistory[]
+
+  UserBeingRequested Friend[]       @relation("UserBeingRequested")
+  FriendRequester    Friend[]       @relation("FriendRequester")
+  Notification       Notification[]
 }
 
 model Blog {
@@ -154,7 +158,9 @@ model SearchHistory {
 model Friend {
   id String @id @default(cuid())
 
+  user              User     @relation("UserBeingRequested", fields: [userId], references: [id])
   userId            String
+  requesterUser     User     @relation("FriendRequester", fields: [requesterUserId], references: [id])
   requesterUserId   String
   isRequestAccepted String   @default("false")
   createdAt         DateTime @default(now())
@@ -164,15 +170,21 @@ model Friend {
 model Notification {
   id String @id @default(cuid())
 
-  userId    String
-  text      String
-  createdAt DateTime @default(now())
+  userId String
+  text   String
+
+  fromUser   User   @relation(fields: [fromUserId], references: [id])
+  fromUserId String
+
+  isMarkAsRead String   @default("false")
+  createdAt    DateTime @default(now())
 }
 
 model FriendRequestNotification {
-  id String @id @default(cuid())
-
+  id              String   @id @default(cuid())
   userId          String
   requesterUserId String
   createdAt       DateTime @default(now())
+
+  @@index([userId, requesterUserId], name: "unique_user_requester")
 }

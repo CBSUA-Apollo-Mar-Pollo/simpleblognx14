@@ -8,6 +8,11 @@ import { db } from "@/lib/db";
 import React from "react";
 import { UTApi } from "uploadthing/server";
 
+export const metadata = {
+  title: `Estorya | User profile`,
+  description: "All in one social media app",
+};
+
 const UserProfilePage = async ({ params }) => {
   const session = await getAuthSession();
   const user = await db.user.findFirst({

@@ -23,6 +23,7 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
   };
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    cacheTime: 0,
     queryKey: ["allUsersPosts"],
     queryFn: fetchAllUserPosts,
     initialPageParam: 1,

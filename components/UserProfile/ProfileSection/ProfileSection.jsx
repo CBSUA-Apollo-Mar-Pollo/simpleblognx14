@@ -175,51 +175,54 @@ const ProfileSection = ({ user, deleteImage }) => {
               </Button>
             </div>
           ) : (
-            <div className="mr-10 mt-4 flex gap-x-2">
-              {isAFriend === "onhold" ? (
-                <Button
-                  onClick={() => handleCancelAndFriendRequest("false")}
-                  className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                >
-                  <span className="pr-2">
-                    {isRequestLoading ? (
-                      <Loader2 className="w-6 h-6  animate-spin text-white" />
-                    ) : (
-                      <UserX className="fill-white  h-5 w-5" />
-                    )}
-                  </span>
-                  Cancel Request
-                </Button>
-              ) : isAFriend === true ? (
-                <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
-                  <span className="pr-2">
-                    <UserCheck className="fill-white  h-5 w-5" />
-                  </span>
-                  Friends
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => handleCancelAndFriendRequest("onhold")}
-                  className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                >
-                  <span className="pr-2">
-                    {isRequestLoading ? (
-                      <Loader2 className="w-6 h-6  animate-spin text-white" />
-                    ) : (
-                      <UserPlus className="fill-white  h-5 w-5" />
-                    )}
-                  </span>
-                  Add friend
-                </Button>
-              )}
+            // if there is a logged in user show this ui
+            session?.user && (
+              <div className="mr-10 mt-4 flex gap-x-2">
+                {isAFriend === "onhold" ? (
+                  <Button
+                    onClick={() => handleCancelAndFriendRequest("false")}
+                    className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                  >
+                    <span className="pr-2">
+                      {isRequestLoading ? (
+                        <Loader2 className="w-6 h-6  animate-spin text-white" />
+                      ) : (
+                        <UserX className="fill-white  h-5 w-5" />
+                      )}
+                    </span>
+                    Cancel Request
+                  </Button>
+                ) : isAFriend === true ? (
+                  <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
+                    <span className="pr-2">
+                      <UserCheck className="fill-white  h-5 w-5" />
+                    </span>
+                    Friends
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleCancelAndFriendRequest("onhold")}
+                    className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                  >
+                    <span className="pr-2">
+                      {isRequestLoading ? (
+                        <Loader2 className="w-6 h-6  animate-spin text-white" />
+                      ) : (
+                        <UserPlus className="fill-white  h-5 w-5" />
+                      )}
+                    </span>
+                    Add friend
+                  </Button>
+                )}
 
-              <Button className="bg-neutral-200 hover:bg-neutral-300 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
-                <span className="pr-2">
-                  <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
-                </span>
-                Message
-              </Button>
-            </div>
+                <Button className="bg-neutral-200 hover:bg-neutral-300 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+                  <span className="pr-2">
+                    <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
+                  </span>
+                  Message
+                </Button>
+              </div>
+            )
           )}
         </div>
 
