@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
   return (
     <div className="h-full ">
       <Navbar />
-      <div>{children}</div>
+      {children}
     </div>
   );
 };

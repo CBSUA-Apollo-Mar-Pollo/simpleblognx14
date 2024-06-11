@@ -18,7 +18,7 @@ const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-zinc-800 shadow-sm">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 shadow-sm">
       <div className="container max-w-full h-full mx-auto px-[30px] flex items-center justify-between gap-2">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2">
@@ -31,10 +31,10 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="flex space-x-16 mr-[12rem] text-neutral-600 dark:text-neutral-300">
+        <div className="flex space-x-14 mr-[7rem] text-neutral-600 dark:text-neutral-300">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
-              <div className="flex justify-center border-b-[3px] border-blue-600 w-28 py-2.5">
+              <div className="flex justify-center border-b-[4px] border-blue-600 rounded w-28 py-2.5">
                 <Icons.HomeFilled className="fill-blue-500 h-8 w-8 " />
               </div>
             ) : (
@@ -43,7 +43,6 @@ const Navbar = () => {
               </div>
             )}
           </ToolTipComp>
-
           <div className="px-4 flex items-center">
             <ToolTipComp content="Videos">
               <Link href="/shortsv" className="">
