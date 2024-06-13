@@ -31,11 +31,11 @@ const UserAccountNav = ({ user }) => {
       >
         {/* profile image and name */}
         {!subMenu && (
-          <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] bg-white rounded-md">
+          <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] dark:drop-shadow-[0px_0px_8px_rgba(0,0,0,0.20)] bg-white dark:bg-neutral-800 dark:hover:bg-neutral-700 rounded-xl">
             <Link href={`/user/${user.id}`}>
-              <div className="px-2.5 flex items-center py-3 justify-start gap-x-4 cursor-pointer dark:hover:bg-neutral-700">
+              <div className="px-2.5 flex items-center py-3 justify-start gap-x-3  ">
                 <UserAvatar
-                  className="h-10 w-10 "
+                  className="h-14 w-14 "
                   user={{ name: user.name || null, image: user?.image || null }}
                 />
 
@@ -45,9 +45,13 @@ const UserAccountNav = ({ user }) => {
                       {user?.name}
                     </p>
                   )}
-                  {user?.handleName && (
+                  {user?.handleName ? (
                     <p className="w-[200px] truncate text-sm text-neutral-600 dark:text-neutral-100">
                       {user?.handleName}
+                    </p>
+                  ) : (
+                    <p className="w-[200px] truncate text-sm text-neutral-600 dark:text-neutral-100">
+                      {user?.email}
                     </p>
                   )}
                 </div>

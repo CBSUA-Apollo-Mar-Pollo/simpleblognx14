@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
+  CreditCard,
   FileText,
   Search,
   Shield,
@@ -20,7 +21,9 @@ const NavBarSettings = () => {
   return (
     <div className="overflow-auto sticky top-16 max-h-[90vh]">
       <div className="pt-2 pl-2">
-        <h1 className="font-bold text-2xl dark:text-white">Settings</h1>
+        <h1 className="font-bold text-2xl dark:text-white">
+          Settings & Privacy
+        </h1>
       </div>
 
       <div className="relative flex items-center my-4">
@@ -38,10 +41,10 @@ const NavBarSettings = () => {
             pathname === "/settings/profile"
               ? "bg-gray-100 dark:bg-neutral-700"
               : "hover:bg-gray-100  hover:dark:bg-neutral-700",
-            "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center"
+            "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-s6"
           )}
         >
-          <UserCircle className="h-7 w-7 mr-3" />
+          <UserCircle className="h-6 w-6 mr-3" />
           Profile details
         </Link>
 
@@ -58,33 +61,59 @@ const NavBarSettings = () => {
           </p>
         </div>
 
-        <Link
-          href="/settings/account"
-          className={cn(
-            pathname === "/settings/account"
-              ? "bg-gray-100 dark:bg-neutral-700"
-              : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-            "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center"
-          )}
-        >
-          <Shield className="h-7 w-7 mr-3" />
-          Password & Security
-        </Link>
-        <Link
-          href="/settings/account"
-          className={cn(
-            pathname === "/settings/account"
-              ? "bg-gray-100 dark:bg-neutral-700"
-              : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-            "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center"
-          )}
-        >
-          <div className="relative mr-3">
-            <FileText className="h-7 w-7" />
-            <User className="h-4 w-4 absolute bottom-0 right-0 bg-neutral-800 rounded-full" />
-          </div>
-          Personal details
-        </Link>
+        <div className="pt-2">
+          <Link
+            href="/settings/account/pass&sec"
+            className={cn(
+              pathname === "/settings/account/pass&sec"
+                ? "bg-gray-100 dark:bg-neutral-700"
+                : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+            )}
+          >
+            <Shield className="h-6 w-6 mr-3" />
+            Password & Security
+          </Link>
+          <Link
+            href="/settings/account/details"
+            className={cn(
+              pathname === "/settings/account/details"
+                ? "bg-gray-100 dark:bg-neutral-700"
+                : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+            )}
+          >
+            <SquareUserRound className="h-6 w-6 mr-3" />
+            Personal details
+          </Link>
+          <Link
+            href="/settings/account/info&permissions"
+            className={cn(
+              pathname === "/settings/account/info&permissions"
+                ? "bg-gray-100 dark:bg-neutral-700"
+                : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+            )}
+          >
+            <div className="relative mr-3">
+              <FileText className="h-6 w-6" />
+              <User className="h-4 w-4 absolute bottom-0 right-0 bg-neutral-800 rounded-full" />
+            </div>
+            Information and Permission
+          </Link>
+          <Link
+            href="/settings/account/paymentinfo"
+            className={cn(
+              pathname === "/settings/account/paymentinfo"
+                ? "bg-gray-100 dark:bg-neutral-700"
+                : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+            )}
+          >
+            <CreditCard className="h-6 w-6 mr-3" />
+            Payment details & methods
+          </Link>
+        </div>
 
         <div className="py-2">
           <Separator className="bg-neutral-600" />

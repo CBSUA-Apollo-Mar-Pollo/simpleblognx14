@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Tooltip,
   TooltipContent,
@@ -6,11 +8,19 @@ import {
 } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "../ui/Avatar";
 import Image from "next/image";
-import { CalendarDays, MoreHorizontal } from "lucide-react";
+import {
+  CalendarDays,
+  MessageSquareMore,
+  MoreHorizontal,
+  Pencil,
+  UserPlus,
+} from "lucide-react";
 import { formatBirthdate } from "@/lib/utils";
 import { Button } from "../ui/Button";
 import { Icons } from "./Icons";
+import { useSession } from "next-auth/react";
 const ToolTipComp = ({ children, className, content, user, post }) => {
+  const { data: session } = useSession();
   return (
     <TooltipProvider>
       <Tooltip>
@@ -18,7 +28,10 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
           {children}
         </TooltipTrigger>
         {user && post ? (
-          <TooltipContent className="dark:bg-neutral-800 dark:border-0 rounded-xl pb-3">
+          <TooltipContent
+            side="bottom"
+            className="dark:bg-neutral-800 dark:border-0 rounded-xl pb-3 min-w-[25vw]"
+          >
             <div className=" flex gap-x-2 px-4 mt-2">
               <Avatar className="h-20 w-20">
                 {user?.image ? (
@@ -69,14 +82,41 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
                 </div>
               </div>
             )}
-            <div className="w-full flex gap-x-2 mt-2">
-              <Button className="w-full bg-blue-500">Follow</Button>
-              <Button className="w-full bg-neutral-800 dark:bg-neutral-600">
-                Chat
-              </Button>
-              <Button className=" bg-neutral-800 dark:bg-neutral-600">
-                <MoreHorizontal />
-              </Button>
+            <div className="w-full flex gap-x-2 mt-2 px-2">
+              {session?.user.id !== user?.id ? (
+                <>
+                  <Button
+                    size="sm"
+                    className="flex-auto bg-blue-500 hover:bg-blue-400"
+                  >
+                    <UserPlus className="w-5 h-5 mr-2" />
+                    Add friend
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-auto bg-neutral-800 dark:bg-neutral-600 dark:hover:bg-neutral-500"
+                  >
+                    <MessageSquareMore className="w-5 h-5 mr-2" />
+                    Chat
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-auto bg-neutral-800 dark:bg-neutral-600 dark:hover:bg-neutral-500"
+                  >
+                    <MoreHorizontal className="w-5 h-5" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button className="w-full bg-neutral-800 dark:bg-neutral-600 dark:hover:bg-neutral-500">
+                    <Pencil className="w-4 h-4 mr-3" />
+                    Edit profile
+                  </Button>
+                  <Button className=" bg-neutral-800 dark:bg-neutral-600 dark:hover:bg-neutral-500">
+                    <MoreHorizontal />
+                  </Button>
+                </>
+              )}
             </div>
           </TooltipContent>
         ) : (

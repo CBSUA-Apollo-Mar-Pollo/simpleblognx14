@@ -6,7 +6,12 @@ import ToolTipComp from "./ToolTipComp";
 
 const UserAvatar = ({ post, user, ...props }) => {
   return (
-    <ToolTipComp content="Account" user={user} post={post}>
+    <ToolTipComp
+      content="Account"
+      user={user}
+      post={post}
+      className={"cursor-pointer"}
+    >
       <Avatar {...props}>
         {user?.image ? (
           <div className="relative aspect-square h-full w-full outline-none">
