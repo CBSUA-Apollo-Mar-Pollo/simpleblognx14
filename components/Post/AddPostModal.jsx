@@ -92,7 +92,7 @@ const AddPostModal = ({ session, user }) => {
             className="rounded-full dark:border-0 dark:bg-neutral-700"
             placeholder={`What's on your mind, ${
               session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
-            }`}
+            } ?`}
           />
         </div>
       </DialogTrigger>

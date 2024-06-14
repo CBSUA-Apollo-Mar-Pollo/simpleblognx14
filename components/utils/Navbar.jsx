@@ -19,9 +19,9 @@ const Navbar = () => {
   const pathname = usePathname();
   return (
     <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 shadow-sm">
-      <div className="container max-w-full h-full mx-auto px-[30px] flex items-center justify-between gap-2">
+      <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
         {/* logo and search bar  */}
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 col-span-1">
           <Link href="/" className="font-bold">
             <span className=" px-3.5 rounded-full bg-yellow-400 text-[30px] ">
               E
@@ -31,59 +31,94 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="flex space-x-14 mr-[7rem] text-neutral-600 dark:text-neutral-300">
+        <div className="grid grid-cols-5 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
-              <div className="flex justify-center border-b-[4px] border-blue-600 rounded w-28 py-2.5">
+              <Link
+                href="/"
+                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
+              >
                 <Icons.HomeFilled className="fill-blue-500 h-8 w-8 " />
-              </div>
+              </Link>
             ) : (
-              <div className="flex justify-center w-28 py-3">
+              <div className="flex justify-center py-3">
                 <Icons.Home className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
               </div>
             )}
           </ToolTipComp>
-          <div className="px-4 flex items-center">
-            <ToolTipComp content="Videos">
-              <Link href="/shortsv" className="">
-                <Icons.Play className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
+
+          <ToolTipComp content="Videos" className="cursor-pointer">
+            {pathname === "/shortsv" ? (
+              <Link
+                href="/shortsv"
+                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
+              >
+                <Icons.Play className="fill-blue-500 h-8 w-8 " />
               </Link>
-            </ToolTipComp>
-          </div>
-          <div className="px-4 flex items-center">
-            <ToolTipComp content="Gaming">
-              <Link href="/shortsv" className="">
+            ) : (
+              <div className="flex justify-center py-3">
+                <Icons.Play className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </div>
+            )}
+          </ToolTipComp>
+
+          <ToolTipComp content="Gaming">
+            {pathname === "/Gaming" ? (
+              <Link
+                href="/shortsv"
+                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
+              >
                 <Icons.GamePad className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
               </Link>
-            </ToolTipComp>
-          </div>
-          <div className="px-4 flex items-center">
-            <ToolTipComp content="Following Pages/People">
-              <Link href="/shortsv" className="">
+            ) : (
+              <div className="flex justify-center  py-3">
+                <Icons.GamePad className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </div>
+            )}
+          </ToolTipComp>
+
+          <ToolTipComp content="Following Pages/People">
+            {pathname === "/shortsv" ? (
+              <Link
+                href="/shortsv"
+                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
+              >
                 <Icons.Group className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
               </Link>
-            </ToolTipComp>
-          </div>
-          <div className="px-4 flex items-center">
-            <ToolTipComp content="Market">
-              <Link href="/shortsv" className="">
+            ) : (
+              <div className="flex justify-center  py-3">
+                <Icons.Group className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </div>
+            )}
+          </ToolTipComp>
+
+          <ToolTipComp content="Market">
+            {pathname === "/shortsv" ? (
+              <Link
+                href="/shortsv"
+                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
+              >
                 <Icons.Market className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
               </Link>
-            </ToolTipComp>
-          </div>
+            ) : (
+              <div className="flex justify-center  py-3">
+                <Icons.Market className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </div>
+            )}
+          </ToolTipComp>
         </div>
 
         {/* notification and profile pic */}
-        <div>
+        <div className=" flex items-center justify-end  gap-x-2 col-span-1">
           {session ? (
-            <div className="flex items-center gap-x-3">
+            <>
               <Menu />
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
 
               <UserAccountNav user={session.user} />
-            </div>
+            </>
           ) : (
             <Link
               className={cn(buttonVariants({ variant: "secondary" }))}

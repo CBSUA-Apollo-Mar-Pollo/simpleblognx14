@@ -18,8 +18,8 @@ const StandardPostCard = ({ blog }) => {
   });
 
   return (
-    <>
-      <p className="pl-5 text-justify leading-relaxed mb-3 font-medium  ">
+    <div>
+      <p className="px-5 text-justify leading-snug text-[15px] mb-3 font-[12px]">
         {blog.description}
       </p>
       {blog.image &&
@@ -48,7 +48,7 @@ const StandardPostCard = ({ blog }) => {
             />
           </Link>
         ))}
-    </>
+    </div>
   );
 };
 

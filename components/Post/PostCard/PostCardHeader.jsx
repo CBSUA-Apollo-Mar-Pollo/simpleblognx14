@@ -27,7 +27,7 @@ const PostCardHeader = ({ blog, session }) => {
         <Link href={`/user/${blog?.author.id}`}>
           <div className="flex items-center gap-1">
             <div className="px-2 pt-1">
-              <p className="font-semibold text-sm hover:underline">
+              <p className="font-semibold text-sm hover:underline text-[12px]">
                 {blog?.author?.name}
               </p>
               <div className="flex items-center ">

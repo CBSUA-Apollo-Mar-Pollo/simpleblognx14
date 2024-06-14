@@ -11,6 +11,7 @@ import {
   SideBarSecondLinks,
 } from "@/constants";
 import Link from "next/link";
+import UserAvatar from "./UserAvatar";
 
 const Sidebar = ({ session }) => {
   const pathname = usePathname();
@@ -31,6 +32,21 @@ const Sidebar = ({ session }) => {
     >
       <div className="space-y-2 pt-5">
         {/* different side bar depends if the user is log in or not */}
+        {session?.user && (
+          <div className="flex items-center gap-x-3 ml-[15px]">
+            <UserAvatar
+              className="h-9 w-9 "
+              user={{
+                name: session?.user.name || null,
+                image: session?.user?.image || null,
+              }}
+            />
+            <span className="text-neutral-900 dark:text-neutral-300 text-sm font-semibold">
+              {session?.user.name}
+            </span>
+          </div>
+        )}
+
         {session?.user
           ? SideBarFirstLinks.map((item, index) => (
               <Link
