@@ -32,13 +32,13 @@ const Menu = () => {
           <div
             className={`  ${
               open
-                ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-300"
+                ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-300 dark:bg-blue-300"
                 : "bg-gray-100 hover:bg-gray-200 dark:hover:bg-neutral-500"
             } dark:bg-neutral-600 p-2 rounded-full cursor-pointer `}
           >
             <Grip
               className={` ${
-                open ? "text-blue-600" : "text-neutral-800"
+                open ? "fill-blue-600 dark:fill-blue-600" : "fill-neutral-800"
               } dark:text-neutral-100`}
             />
           </div>
@@ -47,16 +47,16 @@ const Menu = () => {
 
       {/* drop down menu content */}
       <DropdownMenuContent
-        className="bg-neutral-50 drop-shadow-lg  min-w-[39vw] max-w-[39vw] -mr-44 relative"
+        className="bg-neutral-50 dark:bg-[#363636] dark:border-0 drop-shadow-lg dark:drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)]  min-w-[39vw] max-w-[39vw] -mr-32 relative"
         align="end"
       >
-        <DropdownMenuLabel className="text-2xl font-bold ml-2">
+        <DropdownMenuLabel className="text-2xl font-bold ml-2 dark:text-neutral-100 py-2">
           Menu
         </DropdownMenuLabel>
 
-        <div className="relative grid grid-cols-3 gap-x-2 w-full max-h-[80vh] overflow-auto pb-2">
+        <div className=" relative grid grid-cols-3 gap-x-2 w-full max-h-[80vh] overflow-auto pb-2">
           {/* all menu */}
-          <div className="bg-white drop-shadow-md rounded-lg px-2 col-span-2  py-2 ml-3 mr-2">
+          <div className="bg-white dark:bg-[#212121] dark:text-neutral-100 drop-shadow-md rounded-lg px-2 col-span-2  py-2 ml-3 mr-2">
             {/* search input */}
             <div className="relative flex items-center justify-center mt-2 mx-2">
               <Search className="absolute left-3 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
@@ -68,12 +68,12 @@ const Menu = () => {
 
             {/* social */}
             <div className="mt-4">
-              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
                 Social
               </h1>
 
               <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/event.png" className="h-7 w-7 mt-1" />
                   <div>
                     <h3 className="font-semibold">Events</h3>
@@ -82,7 +82,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700  px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/FindFriends.png"
                     className="h-8 w-8 mt-1"
@@ -94,7 +94,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/FindGroup.png"
                     className="h-8 w-8 mt-1"
@@ -106,7 +106,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/post.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">News Feeds</h3>
@@ -116,7 +116,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/postFeeds.png"
                     className="h-8 w-8 mt-1"
@@ -129,7 +129,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/pages.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">Pages</h3>
@@ -145,12 +145,12 @@ const Menu = () => {
 
             {/* entertainment */}
             <div className="mt-2">
-              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
                 Entertainment
               </h1>
 
               <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/Streamer.png"
                     className="h-9 w-9 mt-1"
@@ -162,7 +162,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/game-console.png"
                     className="h-9 w-9 mt-1"
@@ -174,7 +174,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/play.png" className="h-9 w-9 mt-1" />
                   <div>
                     <h3 className="font-semibold">Video</h3>
@@ -190,12 +190,12 @@ const Menu = () => {
 
             {/* Shopping */}
             <div className="mt-2">
-              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
                 Shopping
               </h1>
 
               <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/business.png"
                     className="h-7 w-7 mt-1"
@@ -208,7 +208,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/shop.png" className="h-7 w-7 mt-1" />
                   <div>
                     <h3 className="font-semibold">Marketplace</h3>
@@ -224,12 +224,12 @@ const Menu = () => {
 
             {/* Personal */}
             <div className="mt-2">
-              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
                 Personal
               </h1>
 
               <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/refresh.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">Memories</h3>
@@ -238,7 +238,7 @@ const Menu = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img
                     src="/ImageIcons/bookmark.png"
                     className="h-7 w-7 mt-1"
@@ -257,12 +257,12 @@ const Menu = () => {
 
             {/* More */}
             <div className="mt-2">
-              <h1 className="font-semibold text-neutral-800 text-base ml-4">
+              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
                 More from our app
               </h1>
 
               <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 px-4 py-2 cursor-pointer rounded-md">
+                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
                   <img src="/ImageIcons/message.png" className="h-8 w-8 mt-1" />
                   <div>
                     <h3 className="font-semibold">Message</h3>
@@ -278,31 +278,31 @@ const Menu = () => {
 
           {/* create menu */}
           <div className="col-span-1 sticky top-0 h-[70vh] max-h-[70vh]  mr-2">
-            <div className="bg-white shadow-md rounded-md border-t border-neutral-100 pb-2">
+            <div className="bg-white dark:bg-[#212121] dark:text-neutral-100 dark:drop-shadow-[0px_0px_10px_rgba(0,0,0,0.20)] rounded-md border-t border-neutral-100 dark:border-neutral-700 pb-2">
               <h1 className="font-bold text-xl px-4 py-3">Create</h1>
 
               <div className="px-1">
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <PenSquare className="h-5 w-5" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Post</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <BookOpen className="h-5 w-5" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Story</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
-                    <Clapperboard className="h-5 w-5 text-neutral-800" />
+                    <Clapperboard className="h-5 w-5 text-neutral-800 dark:text-neutral-100" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Reel</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
-                    <Sparkles className="h-5 w-5 text-neutral-800" />
+                    <Sparkles className="h-5 w-5 text-neutral-800  dark:text-neutral-100" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Life event</h3>
                 </div>
@@ -311,27 +311,27 @@ const Menu = () => {
               <DropdownMenuSeparator className="my-2 mx-2 bg-neutral-400 dark:bg-neutral-600" />
 
               <div className="px-1">
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <Flag className="h-5 w-5" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Page</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <Icons.Group className="h-5 w-5 fill-neutral-800 dark:fill-neutral-300" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Group</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
-                    <CalendarPlus className="h-5 w-5 text-neutral-800" />
+                    <CalendarPlus className="h-5 w-5 text-neutral-800  dark:text-neutral-100" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Event</h3>
                 </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 px-2 py-2 cursor-pointer rounded-md">
+                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
-                    <ShoppingBag className="h-5 w-5 text-neutral-800" />
+                    <ShoppingBag className="h-5 w-5 text-neutral-800  dark:text-neutral-100" />
                   </div>
                   <h3 className="font-semibold text-[15px]">
                     Marketplace listing

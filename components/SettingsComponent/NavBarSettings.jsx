@@ -41,7 +41,7 @@ const NavBarSettings = () => {
             pathname === "/settings/profile"
               ? "bg-gray-100 dark:bg-neutral-700"
               : "hover:bg-gray-100  hover:dark:bg-neutral-700",
-            "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-s6"
+            " pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-200 flex items-center"
           )}
         >
           <UserCircle className="h-6 w-6 mr-3" />
@@ -49,14 +49,14 @@ const NavBarSettings = () => {
         </Link>
 
         <div className="pt-2">
-          <Separator className="bg-neutral-600" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-600" />
         </div>
 
         <div>
-          <h1 className="font-bold text-lg dark:text-neutral-200 p-1">
+          <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
             Account settings
           </h1>
-          <p className="dark:text-neutral-200 text-xs pl-1">
+          <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
             Manage your password and personal info.
           </p>
         </div>
@@ -68,7 +68,7 @@ const NavBarSettings = () => {
               pathname === "/settings/account/pass&sec"
                 ? "bg-gray-100 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+              "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
           >
             <Shield className="h-6 w-6 mr-3" />
@@ -80,7 +80,7 @@ const NavBarSettings = () => {
               pathname === "/settings/account/details"
                 ? "bg-gray-100 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+              "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
           >
             <SquareUserRound className="h-6 w-6 mr-3" />
@@ -92,12 +92,12 @@ const NavBarSettings = () => {
               pathname === "/settings/account/info&permissions"
                 ? "bg-gray-100 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+              "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
           >
             <div className="relative mr-3">
               <FileText className="h-6 w-6" />
-              <User className="h-4 w-4 absolute bottom-0 right-0 bg-neutral-800 rounded-full" />
+              <User className="h-3 w-3 absolute bottom-0 right-0 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
             </div>
             Information and Permission
           </Link>
@@ -107,7 +107,7 @@ const NavBarSettings = () => {
               pathname === "/settings/account/paymentinfo"
                 ? "bg-gray-100 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-              "pl-3 rounded-md py-3 font-semibold dark:text-neutral-100 flex items-center text-sm"
+              "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
           >
             <CreditCard className="h-6 w-6 mr-3" />

@@ -65,20 +65,26 @@ const ProfileForm = ({ user }) => {
     },
   });
   return (
-    <div className="bg-white dark:bg-neutral-800 px-10 mt-4 py-5 rounded-md mx-32">
+    <div className="bg-white dark:bg-neutral-800 drop-shadow-lg px-10 mt-4 py-5 rounded-md mx-32">
       <div>
-        <h1 className="text-2xl font-bold text-neutral-200">Profile</h1>
-        <p className="text-sm text-neutral-200">Manage your profile info.</p>
+        <h1 className="text-2xl font-bold text-neutral-700 dark:text-neutral-200">
+          Profile
+        </h1>
+        <p className="text-sm text-neutral-700 dark:text-neutral-200">
+          Manage your profile info.
+        </p>
       </div>
 
       <div className="px-10">
         {/* profile picture */}
         <div className="my-2">
           <div className="flex flex-col justify-center items-center space-y-4">
-            <UserAvatar
-              className="h-[20vh] w-[10vw]"
-              user={{ name: user.name || null, image: user.image || null }}
-            />
+            <div className="border-4 border-neutral-200 dark:border-neutral-700 rounded-full">
+              <UserAvatar
+                className="h-[20vh] w-[10vw]"
+                user={{ name: user.name || null, image: user.image || null }}
+              />
+            </div>
             <Button className="rounded-b-none flex gap-x-4 px-10 hover:bg-neutral-700">
               <Plus className="h-5 w-5" />
               Upload new photo
@@ -87,7 +93,7 @@ const ProfileForm = ({ user }) => {
         </div>
         {/* username */}
         <div className="my-4">
-          <h3 className=" text-lg font-bold  dark:text-neutral-100 my-2">
+          <h3 className=" text-lg font-bold text-neutral-700  dark:text-neutral-100 my-2">
             Name
           </h3>
           <div className="relative grid grid-cols-3">
@@ -98,7 +104,7 @@ const ProfileForm = ({ user }) => {
               <Input
                 value={user.name}
                 placeholder={user.handleName ? user.handleName : ``}
-                className="dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none rounded-tl-xl border border-r-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium"
+                className="bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none rounded-tl-xl border border-r-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium"
               />
             </div>
             <div className="relative">
@@ -107,7 +113,7 @@ const ProfileForm = ({ user }) => {
               </h3>
               <Input
                 placeholder={user.handleName ? user.handleName : ``}
-                className={`dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none  border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+                className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none  border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               />
             </div>
             <div className="relative">
@@ -116,7 +122,7 @@ const ProfileForm = ({ user }) => {
               </h3>
               <Input
                 placeholder={user.handleName ? user.handleName : ``}
-                className={`dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  rounded-none rounded-tr-xl  border border-l-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+                className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  rounded-none rounded-tr-xl  border border-l-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               />
             </div>
           </div>
@@ -126,11 +132,11 @@ const ProfileForm = ({ user }) => {
             </h3>
             <Input
               placeholder={user.handleName ? user.handleName : ``}
-              className={`dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-t-none rounded-b-xl   border-t-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+              className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-t-none rounded-b-xl   border-t-0 border-neutral-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               value={handleName}
               onChange={(e) => setHandleName(e.target.value)}
             />
-            <p className="text-xs text-neutral-200 font-medium mt-2 ml-2">
+            <p className="text-xs text-neutral-700 dark:text-neutral-200 font-medium mt-2 ml-2">
               This is your public display name. It can be your real name or a
               pseudonym. You can only change this once every 30 days.
             </p>
@@ -144,7 +150,7 @@ const ProfileForm = ({ user }) => {
           <div className="relative">
             <Input
               placeholder={user.bio ? user.bio : ``}
-              className="dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  border border-gray-300 dark:border-neutral-700  py-5 font-normal"
+              className="bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  border border-gray-300 dark:border-neutral-700  py-5 font-normal"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
@@ -157,7 +163,7 @@ const ProfileForm = ({ user }) => {
             Email
           </h3>
           <Select>
-            <SelectTrigger className="focus-visible:ring-transparent dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 focus:border-gray-400 focus:border-2 py-5 text-sm text-gray-600 dark:text-neutral-50 font-medium">
+            <SelectTrigger className="focus-visible:ring-transparent bg-neutral-200 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 focus:border-gray-400 focus:border-2 py-5 text-sm text-gray-600 dark:text-neutral-50 font-medium">
               <SelectValue placeholder="Select a verified email to display" />
             </SelectTrigger>
             <SelectContent>
@@ -166,7 +172,7 @@ const ProfileForm = ({ user }) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <p className="text-xs text-neutral-200 font-medium mt-2 ml-2">
+          <p className="text-xs text-neutral-700 dark:text-neutral-200 font-medium mt-2 ml-2">
             You can manage verified email addresses in your email settings.
           </p>
         </div>

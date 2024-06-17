@@ -78,23 +78,12 @@ const AddPostModal = ({ session, user }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">
-        <div className="flex flex-row items-center space-x-4 border py-3 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
-          <Link href={`/user/${session?.user.id}`}>
-            <UserAvatar
-              className="h-10 w-10 "
-              user={{
-                name: session?.user.name || null || user?.name,
-                image: session?.user.image || null || user?.image,
-              }}
-            />
-          </Link>
-          <Input
-            className="rounded-full dark:border-0 dark:bg-neutral-700"
-            placeholder={`What's on your mind, ${
-              session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
-            } ?`}
-          />
-        </div>
+        <Input
+          className="rounded-full dark:border-0 dark:bg-neutral-700"
+          placeholder={`What's on your mind, ${
+            session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
+          } ?`}
+        />
       </DialogTrigger>
       <DialogContent className=" min-w-[39vw] max-h-[80vh] dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
@@ -143,7 +132,7 @@ const AddPostModal = ({ session, user }) => {
               placeholder={`What's on your mind, ${
                 session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
               }?`}
-              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-24 text-lg border-none resize-none px-4"
+              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
             />
 
             {/* Image upload UI */}

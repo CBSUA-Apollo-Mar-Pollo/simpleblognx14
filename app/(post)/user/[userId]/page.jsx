@@ -1,7 +1,10 @@
-import AddBlogModal from "@/components/Post/AddPostModal";
+import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
+import AddPostModal from "@/components/Post/AddPostModal";
 import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
+import { Separator } from "@/components/ui/Separator";
+import UserAvatar from "@/components/utils/UserAvatar";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -65,7 +68,41 @@ const UserProfilePage = async ({ params }) => {
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">
-          {session?.user.id === user.id && <AddBlogModal user={user} />}
+          {session?.user.id === user.id && (
+            <div className=" border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
+              <div className="flex flex-row items-center space-x-4">
+                <UserAvatar
+                  className="h-10 w-10 "
+                  user={{
+                    name: session?.user.name || null || user?.name,
+                    image: session?.user.image || null || user?.image,
+                  }}
+                />
+
+                <AddPostModal session={session} />
+              </div>
+
+              <Separator className="mt-3 dark:bg-neutral-700" />
+
+              <div className="flex items-center justify-center my-1 ">
+                <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
+                  <img src="/ImageIcons/live.png" className="h-8 w-8" />
+                  <span className="dark:text-neutral-100 text-sm">
+                    Live video
+                  </span>
+                </div>
+                <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
+                  <AddGalleryPostModal session={session} />
+                </div>
+                <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
+                  <img src="/ImageIcons/smile.png" className="h-7 w-7" />
+                  <span className="dark:text-neutral-100 text-sm">
+                    Feeling/Activity
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
           <UserAllPosts
             initialPosts={initialPosts}
             userId={user.id}

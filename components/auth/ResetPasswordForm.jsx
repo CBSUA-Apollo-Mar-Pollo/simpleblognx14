@@ -84,6 +84,9 @@ const ResetPasswordForm = () => {
             onSubmit(e);
           })}
         >
+          <span className="text-xs">
+            Enter your email so that we can send a reset password token.
+          </span>
           <Input
             type="email"
             placeholder="Email"

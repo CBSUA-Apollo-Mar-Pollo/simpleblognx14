@@ -21,13 +21,13 @@ const ChatBoxMenu = () => {
           <div
             className={`  ${
               open
-                ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-400"
+                ? "bg-blue-200 hover:bg-blue-200 dark:hover:bg-blue-400 dark:bg-blue-300"
                 : "bg-gray-100 hover:bg-gray-200 dark:hover:bg-neutral-500"
             } dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer `}
           >
             <Icons.Messager
               className={` h-5 w-5 ${
-                open ? "fill-blue-400" : "fill-neutral-800 dark:fill-neutral-50"
+                open ? "fill-blue-500" : "fill-neutral-800 dark:fill-neutral-50"
               }`}
             />
           </div>
@@ -35,7 +35,7 @@ const ChatBoxMenu = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white p-0 min-w-[22vw]  shadow-md -mr-28 dark:bg-neutral-800 dark:border-0"
+        className="bg-white p-0 min-w-[22vw]  shadow-md -mr-24 dark:bg-neutral-800 dark:border-0"
         align="end"
       >
         <div className="flex items-center justify-between mx-2 ">
