@@ -37,7 +37,7 @@ export default async function HomePage() {
       {/* middle section all posts and adding posts */}
       <div className="mt-5 space-y-3 col-span-2 mx-[5rem] ">
         {session?.user && (
-          <div className=" border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
+          <div className=" pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 drop-shadow dark:border-0">
             <div className="flex flex-row items-center space-x-4">
               <Link href={`/user/${session?.user.id}`}>
                 <UserAvatar

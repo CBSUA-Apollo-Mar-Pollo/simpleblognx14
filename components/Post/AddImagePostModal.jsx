@@ -23,6 +23,7 @@ import { ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
+import { uploadFiles } from "@/lib/uploadThing";
 
 const AddGalleryPostModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
@@ -33,16 +34,38 @@ const AddGalleryPostModal = ({ session, user }) => {
   const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+
   const { mutate: createBlog, isLoading } = useMutation({
     mutationFn: async () => {
+      let images = [];
+      const file = selectedFiles;
+      await uploadFiles("imageUploader", {
+        files: file,
+      })
+        .then(async (response) => {
+          console.log(response, "response from image uploader");
+          images = response;
+        })
+        .catch((error) => {
+          return toast({
+            title: "Error",
+            description: "Error uploading file",
+            variant: "destructive",
+          });
+        });
+
       const payload = {
         description,
-        imageUrl,
+        images,
       };
+
       const { data } = await axios.post("/api/blog", payload);
       return data;
     },
     onError: (err) => {
+      console.log(err);
       setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
@@ -73,9 +96,6 @@ const AddGalleryPostModal = ({ session, user }) => {
       window.location.reload();
     },
   });
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
 
   // Function to handle file selection from input
   const handleFileSelect = (event) => {
@@ -248,7 +268,7 @@ const AddGalleryPostModal = ({ session, user }) => {
                   {imagePreviews.length === 3 && (
                     <div
                       className={`${
-                        imagePreviews.length >= 3 && "grid grid-cols-8 gap-x-1"
+                        imagePreviews.length === 3 && "grid grid-cols-8 gap-x-1"
                       }`}
                     >
                       <div className="relative col-span-6">
@@ -453,7 +473,7 @@ const AddGalleryPostModal = ({ session, user }) => {
                     }}
                   /> */}
                   <div
-                    className="py-16 dark:hover:bg-neutral-600 w-full cursor-pointer"
+                    className="py-16 hover:bg-neutral-200 dark:hover:bg-neutral-600 w-full cursor-pointer"
                     onDrop={handleFileDrop}
                     onDragOver={handleDragOver}
                     onClick={() => document.getElementById("fileInput").click()}
@@ -476,6 +496,7 @@ const AddGalleryPostModal = ({ session, user }) => {
                     <input
                       id="fileInput"
                       type="file"
+                      multiple
                       className="hidden"
                       accept="image/*, video/*"
                       onChange={handleFileSelect}

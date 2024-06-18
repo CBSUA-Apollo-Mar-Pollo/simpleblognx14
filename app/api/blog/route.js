@@ -12,24 +12,24 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description, imageUrl } = BlogValidator.parse(body);
+    const { description, images } = body;
 
     await db.blog.create({
       data: {
         description,
-        image: imageUrl,
+        image: images,
         authorId: session.user.id,
       },
     });
 
-    if (imageUrl) {
-      await db.userPostedImages.create({
-        data: {
-          image: imageUrl,
-          authorId: session.user.id,
-        },
-      });
-    }
+    // if (images) {
+    //   await db.userPostedImages.create({
+    //     data: {
+    //       image: imageUrl,
+    //       authorId: session.user.id,
+    //     },
+    //   });
+    // }
 
     return new Response("OK");
   } catch (error) {

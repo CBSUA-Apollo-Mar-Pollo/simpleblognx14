@@ -21,7 +21,7 @@ const postComment = async ({ params }) => {
     },
   });
 
-  return <PostCommentCard post={post} />;
+  return <PostCommentCard post={post} index={params?.index} />;
 };
 
 export default postComment;

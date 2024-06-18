@@ -7,8 +7,10 @@ import CommentSection from "./CommentSection";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 import { COMMENT_PAGE } from "@/config";
+import { Button } from "../ui/Button";
+import { ChevronLeft } from "lucide-react";
 
-const PostCommentCard = async ({ post }) => {
+const PostCommentCard = async ({ post, index }) => {
   const session = await getAuthSession();
   const comments = await db.comment.findMany({
     where: {
@@ -31,7 +33,7 @@ const PostCommentCard = async ({ post }) => {
     <div className="grid grid-cols-4 relative">
       {/* Image */}
       <div className="col-span-3 flex h-screen justify-center items-center relative bg-black">
-        <LogoImageAndIcon image={post.image} />
+        <LogoImageAndIcon image={post.image} index={index} postId={post.id} />
       </div>
 
       {/* comment side */}
