@@ -10,7 +10,7 @@ import CommentSectionCard from "./CommentSectionCard";
 
 const CommentSection = ({
   session,
-  postId,
+  post,
   shortsvId,
   initialComments,
   getComments,
@@ -28,7 +28,7 @@ const CommentSection = ({
   }, []);
 
   const fetchComments = async ({ pageParam }) => {
-    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${postId}`;
+    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${post.id}`;
 
     const res = await fetch(query, { cache: "no-store" });
 
@@ -81,7 +81,7 @@ const CommentSection = ({
                   index={index}
                   getComments={getComments}
                   refetch={refetch}
-                  postId={postId}
+                  post={post}
                   shortsvId={shortsvId}
                 />
 
@@ -101,7 +101,7 @@ const CommentSection = ({
                           index={index}
                           getComments={getComments}
                           refetch={refetch}
-                          postId={postId}
+                          post={post}
                           shortsvId={shortsvId}
                           classNameForUserAvatarReplies="h-7 w-7"
                         />
@@ -135,7 +135,7 @@ const CommentSection = ({
         >
           <CreateComment
             session={session}
-            postId={postId}
+            postId={post.id}
             shortsvId={shortsvId}
             getComments={getComments}
             refetch={refetch}

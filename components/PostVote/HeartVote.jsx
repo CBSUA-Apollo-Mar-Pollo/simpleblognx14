@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 const HeartVote = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       {/* upvote button */}
       {/* <Button
         //   onClick={() => vote("UP")}

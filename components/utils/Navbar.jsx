@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/Button";
@@ -13,10 +13,17 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
+import { Skeleton } from "../ui/Skeleton";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const [isLoader, setIsloader] = useState(true);
+  useEffect(() => {
+    if (!session?.user) {
+      setIsloader(false);
+    }
+  }, []);
   return (
     <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 shadow-sm">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
@@ -116,9 +123,15 @@ const Navbar = () => {
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
-
               <UserAccountNav user={session.user} />
             </>
+          ) : isLoader ? (
+            <div className="flex items-center gap-x-2">
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+            </div>
           ) : (
             <Link
               className={cn(buttonVariants({ variant: "secondary" }))}

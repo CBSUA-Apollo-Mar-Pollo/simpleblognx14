@@ -31,7 +31,7 @@ const StandardPostCard = ({ blog }) => {
               <Link
                 onClick={() => storeToRecentPosts(blog.id)}
                 href={`/postComment/${blog.id}/${0}`}
-                className="relative overflow-clip w-full flex flex-col hover:opacity-80"
+                className="relative overflow-clip w-full flex flex-col"
               >
                 <img
                   sizes="100vw"

@@ -4,7 +4,7 @@ import React from "react";
 
 const PostVote = () => {
   return (
-    <div className="flex items-center my-2 gap-x-2">
+    <div className="flex items-center justify-center my-2 gap-x-2">
       {/* upvote button */}
       <button
         //   onClick={() => vote("UP")}

@@ -66,7 +66,7 @@ const NavBarSettings = () => {
             href="/settings/account/pass&sec"
             className={cn(
               pathname === "/settings/account/pass&sec"
-                ? "bg-gray-100 dark:bg-neutral-700"
+                ? "bg-gray-200 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
               "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
@@ -78,7 +78,7 @@ const NavBarSettings = () => {
             href="/settings/account/details"
             className={cn(
               pathname === "/settings/account/details"
-                ? "bg-gray-100 dark:bg-neutral-700"
+                ? "bg-gray-200 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
               "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
@@ -90,7 +90,7 @@ const NavBarSettings = () => {
             href="/settings/account/info&permissions"
             className={cn(
               pathname === "/settings/account/info&permissions"
-                ? "bg-gray-100 dark:bg-neutral-700"
+                ? "bg-gray-200 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
               "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
@@ -105,7 +105,7 @@ const NavBarSettings = () => {
             href="/settings/account/paymentinfo"
             className={cn(
               pathname === "/settings/account/paymentinfo"
-                ? "bg-gray-100 dark:bg-neutral-700"
+                ? "bg-gray-200 dark:bg-neutral-700"
                 : "hover:bg-gray-100 hover:dark:bg-neutral-700",
               "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
             )}
@@ -116,7 +116,7 @@ const NavBarSettings = () => {
         </div>
 
         <div className="py-2">
-          <Separator className="bg-neutral-600" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-600" />
         </div>
       </div>
     </div>

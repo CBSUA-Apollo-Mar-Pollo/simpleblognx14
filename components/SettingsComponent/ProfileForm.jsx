@@ -81,7 +81,7 @@ const ProfileForm = ({ user }) => {
           <div className="flex flex-col justify-center items-center space-y-4">
             <div className="border-4 border-neutral-200 dark:border-neutral-700 rounded-full">
               <UserAvatar
-                className="h-[20vh] w-[10vw]"
+                className="h-[20vh] w-[10vw] hover:opacity-85"
                 user={{ name: user.name || null, image: user.image || null }}
               />
             </div>

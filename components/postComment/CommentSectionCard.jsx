@@ -14,7 +14,7 @@ const CommentSectionCard = ({
   comment,
   index,
   session,
-  postId,
+  post,
   className,
   getComments,
   refetch,
@@ -47,8 +47,6 @@ const CommentSectionCard = ({
     // Other actions if needed
   };
 
-  console.log(comment);
-
   return (
     <div
       className=" gap-x-2"
@@ -74,9 +72,16 @@ const CommentSectionCard = ({
         <div>
           <div className="flex items-center gap-x-1">
             <div className="bg-neutral-600 rounded-xl px-4 py-2">
-              <p className="text-white text-xs font-semibold">
-                {comment?.author?.name}
-              </p>
+              <div className="flex items-center gap-x-1">
+                <p className="text-white text-xs font-semibold">
+                  {comment?.author?.name}
+                </p>
+                {post?.author.id === comment?.author?.id && (
+                  <span className="text-xs text-blue-400 bg-blue-500 bg-opacity-35 px-2 rounded">
+                    Author
+                  </span>
+                )}
+              </div>
               {/* comment text */}
               {replyName ? (
                 <p className="text-neutral-100 text-sm">
@@ -149,7 +154,7 @@ const CommentSectionCard = ({
         <>
           <CreateComment
             session={session}
-            postId={postId}
+            postId={post.id}
             getComments={getComments}
             refetch={refetch}
             className="ml-7"

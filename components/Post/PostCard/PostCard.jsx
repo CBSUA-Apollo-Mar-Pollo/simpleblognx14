@@ -64,7 +64,7 @@ const PostCard = ({ blog, session }) => {
         <Separator className="dark:bg-neutral-700" />
 
         {/* home post vote comment and share */}
-        <div className="flex justify-center my-1 space-x-10">
+        <div className="grid grid-cols-4">
           {/* vote */}
 
           <PostVote />
@@ -74,15 +74,15 @@ const PostCard = ({ blog, session }) => {
           {blog?.image ? (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
-              href={`/postComment/${blog.id}`}
-              className="flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-4 rounded cursor-pointer"
+              href={`/postComment/${blog.id}/${0}`}
+              className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
             >
-              <MessageCircle className="h-6 w-6" />
+              <MessageCircle className="h-6 w-6 text-neutral-700" />
               <span className=" font-medium text-sm">Comment</span>
             </Link>
           ) : (
             <div
-              className="flex items-center gap-2 hover:bg-gray-200 rounded cursor-pointer"
+              className="flex items-center justify-center gap-2 hover:bg-gray-200 rounded cursor-pointer"
               onClick={() => storeToRecentPosts(blog.id)}
             >
               <PostDescriptionCard blog={blog} sharedPost={sharedPost} />

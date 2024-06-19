@@ -7,12 +7,8 @@ export async function PATCH(req) {
   try {
     const body = await req.json();
 
-    console.log(body);
-
     const { postId, shortsvId, text, replyToId, commentId, commentImageUrl } =
       commentValidator.parse(body);
-
-    console.log(postId);
 
     const session = await getAuthSession();
 

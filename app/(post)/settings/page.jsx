@@ -2,11 +2,15 @@ import ProfileForm from "@/components/SettingsComponent/ProfileForm";
 import { Input } from "@/components/ui/Input";
 import { getAuthSession } from "@/lib/auth";
 import { Search } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import React from "react";
 
 const settings = async () => {
   const session = await getAuthSession();
+  if (!session?.user) {
+    redirect("/");
+  }
   return (
     <div className="px-[6vw] pt-5">
       <div className="bg-white dark:bg-neutral-800 py-2 px-10 rounded-lg shadow-md">

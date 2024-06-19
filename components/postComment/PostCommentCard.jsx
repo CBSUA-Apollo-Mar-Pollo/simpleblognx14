@@ -61,7 +61,7 @@ const PostCommentCard = async ({ post, index }) => {
 
           <CommentSection
             session={session}
-            postId={post.id}
+            post={post}
             initialComments={comments}
           />
         </div>

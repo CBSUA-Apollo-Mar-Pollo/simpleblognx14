@@ -39,8 +39,8 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
   return (
     <Dialog onOpenChange={() => getComments()}>
       <DialogTrigger>
-        <div className="flex items-center gap-2 hover:bg-gray-200 px-10  py-3 rounded cursor-pointer">
-          <MessageCircle className="h-6 w-6" />
+        <div className="flex items-center gap-2  px-10  py-3 rounded cursor-pointer">
+          <MessageCircle className="h-6 w-6 text-neutral-700" />
           <span className=" font-medium text-sm">Comment</span>
         </div>
       </DialogTrigger>
