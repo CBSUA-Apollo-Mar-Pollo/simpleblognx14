@@ -22,31 +22,31 @@ const PostDescription = ({ post, commentAmt, session }) => {
             }}
           />
 
-          <div className="px-2 pt-1 text-white">
+          <div className="px-2 pt-1 text-neutral-700 dark:text-white">
             <p className="font-semibold text-sm">{post.author?.name}</p>
             <div className="flex items-center">
-              <p className=" text-xs text-gray-200 ">
+              <p className=" text-xs text-neutral-700 dark:text-neutral-200 ">
                 {formatTimeToNow(new Date(post?.createdAt))}
               </p>
-              <Dot className="-mx-1 text-gray-200" />
-              <Globe className="h-3 w-3 text-gray-200" />
+              <Dot className="-mx-1 text-neutral-700 dark:text-gray-200" />
+              <Globe className="h-3 w-3 text-neutral-500 dark:text-gray-200" />
             </div>
           </div>
         </div>
 
         {session?.user && (
-          <div className="hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
-            <MoreHorizontal className="text-white" />
+          <div className="hover:bg-neutral-100 dark:bg-neutral-600 dark:hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
+            <MoreHorizontal className="text-neutral-700 dark:text-white" />
           </div>
         )}
       </div>
 
-      <div className="text-white my-2 mb-5">
+      <div className="text-neutral-700 dark:text-neutral-200 my-2 mb-5">
         <p className="text-sm">{post.description}</p>
       </div>
 
       {commentAmt !== 0 && (
-        <div className="flex items-center justify-end gap-x-1 text-neutral-400">
+        <div className="flex items-center justify-end gap-x-1 text-neutral-700 dark:text-neutral-400">
           {commentAmt}
           <MessageCircle className="h-4 w-4" />
         </div>

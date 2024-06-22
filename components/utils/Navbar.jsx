@@ -119,7 +119,7 @@ const Navbar = () => {
         <div className=" flex items-center justify-end  gap-x-2 col-span-1">
           {session ? (
             <>
-              <Menu />
+              <Menu contentClassName="-mr-32" />
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}

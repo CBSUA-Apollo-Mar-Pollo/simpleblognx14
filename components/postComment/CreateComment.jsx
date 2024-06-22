@@ -135,7 +135,7 @@ const CreateComment = ({
 
   return (
     <div
-      className={`flex gap-x-3 px-4 py-2 bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.25)] ${className}`}
+      className={`flex gap-x-3 px-4 py-2 bg-neutral-50 dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-b-xl ${className}`}
     >
       <UserAvatar
         className="h-9 w-9 "
@@ -145,13 +145,11 @@ const CreateComment = ({
         }}
       />
 
-      {/* TODO: create a component for comment section */}
-
       <div className="flex-1">
         <div className="relative">
           <Textarea
             id="auto-resize-textarea"
-            className="pt-3 pl-4 min-h-[2px] pb-10 overflow-hidden rounded-2xl focus:outline-none border-0 bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-300 text-white  focus-visible:border-neutral-600 resize-none"
+            className="pt-3 pl-4 min-h-[2px] pb-10 overflow-hidden rounded-2xl focus:outline-none border-0 bg-neutral-200 dark:bg-neutral-600 border-transparent focus:border-transparent placeholder:text-neutral-700  dark:placeholder:text-neutral-300 text-neutral-700 dark:text-white  focus-visible:border-neutral-600 resize-none"
             placeholder={`${
               replyToName ? "@" + replyToName : "Write an answer..."
             }`}
@@ -161,13 +159,10 @@ const CreateComment = ({
           />
           {/* icons */}
 
-          <div className="absolute bottom-0 flex items-center justify-between w-full space-y-1 px-2">
-            <div className="hover:bg-neutral-700 rounded-full cursor-pointer mt-1">
-              <label
-                htmlFor="fileInput"
-                className="bg-neutral-600 cursor-pointer rounded-md py-2 px-2 text-center text-neutral-300 text-sm"
-              >
-                <Camera className="inline-block mx-2" />
+          <div className="absolute bottom-0 flex items-center justify-between w-full pb-1 px-2">
+            <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full py-2 cursor-pointer mt-1 p-2">
+              <label htmlFor="fileInput">
+                <Camera className=" text-neutral-700 dark:text-neutral-200 cursor-pointer" />
               </label>
               <input
                 type="file"
@@ -175,25 +170,25 @@ const CreateComment = ({
                 className="hidden"
                 onChange={(e) => handleFileChange(e)}
               />
-            </div>
+            </Button>
             <Button
               type="submit"
               variant="ghost"
               disabled={textareaValue.length === 0 && imageUrl === null}
-              className="hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0"
-              onClick={() => {
-                comment({
-                  postId,
-                  text: textareaValue,
-                  replyToId: replyToId ?? commentProps?.id,
-                });
+              className=" bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0 p-2"
+              // onClick={() => {
+              //   comment({
+              //     postId,
+              //     text: textareaValue,
+              //     replyToId: replyToId ?? commentProps?.id,
+              //   });
 
-                if (typeof setIsReplying === "function") {
-                  setIsReplying(false);
-                }
-              }}
+              //   if (typeof setIsReplying === "function") {
+              //     setIsReplying(false);
+              //   }
+              // }}
             >
-              <SendHorizonal className="text-neutral-300" />
+              <SendHorizonal className="text-neutral-700 dark:text-neutral-300" />
             </Button>
           </div>
         </div>

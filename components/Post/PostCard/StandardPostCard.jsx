@@ -4,7 +4,6 @@ import { getDominantColor } from "@/actions/getDominantColor";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostCardLoader from "@/components/Loaders/PostCardLoader";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -19,7 +18,7 @@ const StandardPostCard = ({ blog }) => {
 
   return (
     <div>
-      <p className="px-5 text-justify leading-snug text-[15px] mb-3 font-[12px]">
+      <p className="px-5 text-justify leading-snug text-[15px] mb-1 font-[12px]">
         {blog.description}
       </p>
       {blog.image &&

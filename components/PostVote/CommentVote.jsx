@@ -16,7 +16,9 @@ const CommentVote = () => {
       </button>
 
       {/* currentvote */}
-      <p className="text-center font-medium text-xs text-zinc-300 px-1">0</p>
+      <p className="text-center font-medium text-xs text-neutral-700 dark:text-neutral-300 px-1">
+        0
+      </p>
 
       {/* downvote button */}
       <button

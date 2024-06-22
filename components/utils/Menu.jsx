@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import {
   DropdownMenuContent,
@@ -23,7 +25,7 @@ import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 import { Input } from "../ui/Input";
 
-const Menu = () => {
+const Menu = ({ contentClassName }) => {
   const [open, setOpen] = useState(false);
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
@@ -47,7 +49,7 @@ const Menu = () => {
 
       {/* drop down menu content */}
       <DropdownMenuContent
-        className="bg-neutral-50 dark:bg-[#363636] dark:border-0 drop-shadow-lg dark:drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)]  min-w-[39vw] max-w-[39vw] -mr-32 relative"
+        className={`bg-neutral-50 dark:bg-[#363636] dark:border-0 drop-shadow-lg dark:drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)]  min-w-[39vw] max-w-[39vw]  relative ${contentClassName}`}
         align="end"
       >
         <DropdownMenuLabel className="text-2xl font-bold ml-2 dark:text-neutral-100 py-2">
@@ -278,7 +280,7 @@ const Menu = () => {
 
           {/* create menu */}
           <div className="col-span-1 sticky top-0 h-[70vh] max-h-[70vh]  mr-2">
-            <div className="bg-white dark:bg-[#212121] dark:text-neutral-100 dark:drop-shadow-[0px_0px_10px_rgba(0,0,0,0.20)] rounded-md border-t border-neutral-100 dark:border-neutral-700 pb-2">
+            <div className="bg-white dark:bg-[#212121] dark:text-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.15)]  dark:drop-shadow-[0px_0px_10px_rgba(0,0,0,0.25)] rounded-md  pb-2">
               <h1 className="font-bold text-xl px-4 py-3">Create</h1>
 
               <div className="px-1">

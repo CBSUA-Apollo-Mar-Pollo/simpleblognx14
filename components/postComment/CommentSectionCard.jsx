@@ -71,13 +71,13 @@ const CommentSectionCard = ({
         />
         <div>
           <div className="flex items-center gap-x-1">
-            <div className="bg-neutral-600 rounded-xl px-4 py-2">
+            <div className="bg-neutral-200 dark:bg-neutral-600 rounded-xl px-4 py-2">
               <div className="flex items-center gap-x-1">
-                <p className="text-white text-xs font-semibold">
+                <p className="text-neutral-700 dark:text-white text-xs font-semibold">
                   {comment?.author?.name}
                 </p>
                 {post?.author.id === comment?.author?.id && (
-                  <span className="text-xs text-blue-400 bg-blue-500 bg-opacity-35 px-2 rounded">
+                  <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-500 bg-opacity-35 px-2 rounded">
                     Author
                   </span>
                 )}
@@ -97,16 +97,18 @@ const CommentSectionCard = ({
                     comment.text.substring(comment.text.indexOf(" ") + 1)}
                 </p>
               ) : (
-                <p className="text-neutral-100 text-sm">{comment?.text}</p>
+                <p className="text-neutral-700 dark:text-neutral-100 text-sm">
+                  {comment?.text}
+                </p>
               )}
             </div>
 
             {session?.user && (
               <div
                 ref={commentRef}
-                className="hover:bg-neutral-700 py-1 px-1 rounded-full cursor-pointer opacity-0"
+                className="hover:bg-neutral-300 dark:hover:bg-neutral-700 bg-neutral-200 py-1 px-1 rounded-full cursor-pointer opacity-0"
               >
-                <MoreHorizontal className="text-white" />
+                <MoreHorizontal className=" text-neutral-700 dark:text-white" />
               </div>
             )}
           </div>
@@ -125,8 +127,8 @@ const CommentSectionCard = ({
             </div>
           )}
 
-          <div className=" mx-2 text-slate-200 text-xs flex items-center gap-x-2">
-            <span className="font-extralight">
+          <div className=" mx-2 text-neutral-900 dark:text-slate-200 text-xs flex items-center gap-x-2">
+            <span className="font-normal">
               {" "}
               {formatTimeToNow(new Date(comment.createdAt))}
             </span>
@@ -140,9 +142,9 @@ const CommentSectionCard = ({
                 session?.user ? setIsReplying(true) : router.push("/sign-in");
               }}
               variant="ghost"
-              className="bg-neutral-800 hover:bg-neutral-800 p-0"
+              className="hover:bg-none p-0"
             >
-              <span className="hover:underline cursor-pointer text-neutral-200 text-xs">
+              <span className="hover:underline cursor-pointer text-neutral-700 dark:text-neutral-200 text-xs">
                 Reply
               </span>
             </Button>

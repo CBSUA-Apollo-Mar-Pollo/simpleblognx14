@@ -50,13 +50,13 @@ const PostCard = ({ blog, session }) => {
           (blog?.image ? (
             <Link
               href={`/postComment/${blog.id}`}
-              className="py-3 flex items-center justify-end mr-4 text-sm hover:underline"
+              className="py-1 flex items-center justify-end mr-4 text-sm hover:underline"
             >
               {blog.comments.length}{" "}
               {blog.comments.length === 1 ? "Comment" : "Comments"}
             </Link>
           ) : (
-            <div className="py-3 flex items-center justify-end mr-4 text-sm hover:underline">
+            <div className="pb-2 flex items-center justify-end mr-4 text-sm hover:underline">
               {blog.comments.length}{" "}
               {blog.comments.length === 1 ? "Comment" : "Comments"}
             </div>

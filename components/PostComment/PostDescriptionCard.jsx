@@ -11,13 +11,14 @@ import {
 import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import PostVote from "../PostVote/HeartVote";
+import PostVote from "../PostVote/PostVote";
 import { useSession } from "next-auth/react";
 import CommentSection from "./CommentSection";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import HeartVote from "../PostVote/HeartVote";
 
 const PostDescriptionCard = ({ blog, sharedPost }) => {
   const { data: session } = useSession();
@@ -45,9 +46,9 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none">
-        <DialogHeader className="px-4 py-4 border-b-[1px] border-neutral-600">
-          <DialogTitle className="text-xl text-center font-semibold text-white">
+      <DialogContent className="p-0 min-w-[45rem] bg-neutral-50 dark:bg-neutral-800  border-none">
+        <DialogHeader className="px-4 py-4 border-b-[1px]">
+          <DialogTitle className="text-xl text-center font-semibold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
           </DialogTitle>
         </DialogHeader>
@@ -64,20 +65,22 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
             />
 
             <div className="px-2 pt-1 ">
-              <p className="font-semibold text-sm">{blog.author?.name}</p>
+              <p className="font-semibold text-sm text-neutral-800 dark:text-neutral-100">
+                {blog.author?.name}
+              </p>
               <div className="flex items-center">
-                <p className=" text-xs  ">
+                <p className=" text-xs  text-neutral-800 dark:text-neutral-50">
                   {formatTimeToNow(new Date(blog?.createdAt))}
                 </p>
-                <Dot className="-mx-1 " />
-                <Globe className="h-3 w-3 " />
+                <Dot className="-mx-1 text-neutral-800 dark:text-neutral-50" />
+                <Globe className="h-3 w-3 text-neutral-800 dark:text-neutral-50 " />
               </div>
             </div>
           </div>
 
           {/* post description */}
 
-          <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal">
+          <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal text-neutral-800 dark:text-neutral-50">
             {blog.description}
           </p>
 
@@ -145,21 +148,18 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
           )}
 
           {/* home post vote comment and share */}
-          <div className="flex justify-between my-1 gap-x-2 px-10 border-y-[1px]  py-2 border-neutral-600">
+          <div className="grid grid-cols-4 my-1 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">
             {/* vote */}
-            <div className="flex items-center gap-2  rounded cursor-pointer">
-              <PostVote />
-            </div>
-
+            <PostVote />
+            <HeartVote />
             {/* comment button */}
-            <div className="flex items-center gap-2 hover:bg-neutral-500 px-5 rounded cursor-pointer">
-              <MessageCircle className="h-6 w-6" />
+            <div className="flex items-center justify-center gap-2 hover:bg-neutral-200 dark:hover:bg-neutral-500 px-5 rounded cursor-pointer">
+              <MessageCircle className="h-6 w-6 text-neutral-700" />
               <span className=" font-medium text-sm">Comment</span>
             </div>
-
             {/* share */}
-            <div className="flex items-center gap-2 hover:bg-neutral-500 px-5  rounded cursor-pointer">
-              <Forward className="h-6 w-6" />
+            <div className="flex items-center justify-center gap-2 hover:bg-neutral-200 dark:hover:bg-neutral-500 px-5  rounded cursor-pointer">
+              <Forward className="h-6 w-6 text-neutral-700" />
               <span className=" font-medium text-sm">Share</span>
             </div>
           </div>
@@ -168,7 +168,7 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
           <div className={`w-full ${session?.user ? "mb-[15vh]" : "mb-5"} `}>
             <CommentSection
               session={session}
-              postId={blog.id}
+              post={blog}
               initialComments={comments}
               getComments={getComments}
             />

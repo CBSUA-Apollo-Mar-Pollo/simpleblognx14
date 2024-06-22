@@ -37,10 +37,10 @@ const PostCommentCard = async ({ post, index }) => {
       </div>
 
       {/* comment side */}
-      <div className="col-span-1 bg-neutral-800 max-h-full relative">
+      <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">
         <ProfileImageAndIcons session={session} />
 
-        <Separator className="bg-gray-700" />
+        <Separator className="bg-neutral-200 dark:bg-neutral-700" />
 
         <div
           className={` overflow-auto max-h-[100vh] ${
@@ -53,11 +53,11 @@ const PostCommentCard = async ({ post, index }) => {
             session={session}
           />
 
-          <Separator className="bg-gray-700" />
+          <Separator className="bg-neutral-200 dark:bg-neutral-700" />
 
           <VoteCommentAndShare />
 
-          <Separator className="bg-gray-700" />
+          <Separator className="bg-neutral-200 dark:bg-neutral-700" />
 
           <CommentSection
             session={session}

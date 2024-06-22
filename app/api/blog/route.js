@@ -14,10 +14,12 @@ export async function POST(req) {
     const body = await req.json();
     const { description, images } = body;
 
+    let imageExist = images.length !== 0 ? images : null;
+
     await db.blog.create({
       data: {
         description,
-        image: images,
+        image: imageExist,
         authorId: session.user.id,
       },
     });

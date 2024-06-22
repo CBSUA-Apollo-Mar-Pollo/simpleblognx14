@@ -54,7 +54,7 @@ const CommentSection = ({
     <>
       <div className="mt-2 pl-4 pr-1 overflow-auto">
         <div className="text-end py-2">
-          <p className="text-neutral-300 text-sm font-medium">
+          <p className="text-neutral-800 dark:text-neutral-300 text-sm font-medium">
             <span className="px-2 cursor-pointer">Top comments</span>
           </p>
         </div>

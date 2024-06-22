@@ -12,7 +12,7 @@ const PostVote = () => {
       >
         <ArrowBigUp
           className={cn(
-            " text-neutral-600 hover:text-orange-600 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full h-10 w-10 p-1.5"
+            "h-10 w-10 text-neutral-600 hover:text-orange-600 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full p-1.5"
           )}
         />
       </button>
