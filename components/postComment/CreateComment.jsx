@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { uploadFiles } from "@/lib/uploadThing";
 import Image from "next/image";
+import EmojiPicker from "./EmojiPicker";
 
 const CreateComment = ({
   session,
@@ -105,6 +106,8 @@ const CreateComment = ({
     }
   };
 
+  console.log(textareaValue);
+
   useEffect(() => {
     const textarea = document.getElementById("auto-resize-textarea");
     textarea.style.height = "auto";
@@ -160,17 +163,22 @@ const CreateComment = ({
           {/* icons */}
 
           <div className="absolute bottom-0 flex items-center justify-between w-full pb-1 px-2">
-            <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full py-2 cursor-pointer mt-1 p-2">
-              <label htmlFor="fileInput">
-                <Camera className=" text-neutral-700 dark:text-neutral-200 cursor-pointer" />
-              </label>
-              <input
-                type="file"
-                id="fileInput"
-                className="hidden"
-                onChange={(e) => handleFileChange(e)}
+            <div className="">
+              <EmojiPicker
+                onChange={(emoji) => setTextareaValue(textareaValue + emoji)}
               />
-            </Button>
+              <Button className="bg-neutral-200 dark:bg-neutral-600 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full py-2 cursor-pointer mt-1 p-2">
+                <label htmlFor="fileInput">
+                  <Camera className=" text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition cursor-pointer" />
+                </label>
+                <input
+                  type="file"
+                  id="fileInput"
+                  className="hidden"
+                  onChange={(e) => handleFileChange(e)}
+                />
+              </Button>
+            </div>
             <Button
               type="submit"
               variant="ghost"

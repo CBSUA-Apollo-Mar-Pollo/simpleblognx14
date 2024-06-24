@@ -78,7 +78,6 @@ const UserBio = async ({ user }) => {
                   const postId = await db.blog.findFirst({
                     where: {
                       authorId: img.authorId,
-                      image: img.image,
                     },
                   });
                   return (

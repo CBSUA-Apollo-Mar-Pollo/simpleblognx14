@@ -28,7 +28,7 @@ const ProfileSection = ({ user, deleteImage }) => {
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
   const { toast } = useToast();
-  const { setIsLoading } = useContext(LoaderContext);
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const { resolvedTheme } = useTheme();
   const [isRequestLoading, setIsRequestLoading] = useState(false);
 
@@ -53,7 +53,7 @@ const ProfileSection = ({ user, deleteImage }) => {
     onSuccess: async () => {
       const payload = {
         description: `${user.name} updated his cover photo`,
-        imageUrl: imageUrl,
+        images: imageUrl,
       };
       axios
         .post("/api/blog", payload)
@@ -112,8 +112,6 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
   });
 
-  console.log(isAFriend, "isAFriend");
-
   return (
     <div
       className="relative "
@@ -141,6 +139,7 @@ const ProfileSection = ({ user, deleteImage }) => {
               onClick={() => {
                 saveCoverImage();
                 setIsLoading(true);
+                setLoaderDescription("Updating");
               }}
             >
               Save Changes

@@ -24,7 +24,7 @@ const Sidebar = ({ session }) => {
   };
   return (
     <div
-      className={`sticky top-16 w-[22vw] h-screen z-0 shadow-sm px-4 max-h-[90vh] sidebarContainer ${
+      className={`sticky top-[7vh] w-[22vw] h-screen z-0 px-4 max-h-[93vh] sidebarContainer ${
         toggleScrollBar ? "overflow-auto" : "overflow-hidden"
       }  dark:bg-neutral-900 dark:text-neutral-100`}
       onMouseEnter={handleScrollBar}

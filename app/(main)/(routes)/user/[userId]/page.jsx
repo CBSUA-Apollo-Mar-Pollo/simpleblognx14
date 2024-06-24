@@ -41,11 +41,16 @@ const UserProfilePage = async ({ params }) => {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
-  const getCoverPhoto = await db.blog.findFirst({
+  const getCoverPhoto = await db.blog.findMany({
     where: {
-      image: user?.backgroundImage,
+      image: {
+        path: "$.url",
+        equals: user.backgroundImage,
+      },
     },
   });
+
+  console.log(getCoverPhoto, "cover photo");
 
   user.coverPhotoId = getCoverPhoto?.id;
 

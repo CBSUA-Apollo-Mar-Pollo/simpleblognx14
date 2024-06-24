@@ -16,31 +16,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const handleImageLoad = () => setImageLoading(false);
   const handleImageError = () => setImageLoading(false);
 
-  const handleMouseDown = (e) => {
-    setDragging(true);
-    setDragStartY(e.clientY);
-  };
-
-  const handleMouseMove = (e) => {
-    if (dragging) {
-      const deltaY = e.clientY - dragStartY;
-      containerRef.current.scrollTop -= deltaY;
-      setDragStartY(e.clientY);
-      // console.log(containerRef.current.scrollTop, "scrollTop");
-      // console.log(imageRef.current.getBoundingClientRect(), "height ");
-    }
-  };
-
-  const handleMouseUp = () => {
-    setDragging(false);
-  };
-
-  const getImagePosition = () => {
-    if (imageRef.current) {
-      const imageRect = imageRef.current.getBoundingClientRect();
-      //   console.log("Image position:", imageRect);
-    }
-  };
+  console.log(user, "user");
 
   return (
     <div className="relative flex justify-center">
@@ -49,10 +25,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
         <div className="relative">
           <div
             className="overflow-y-auto h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move"
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={() => setDragging(false)}
             ref={containerRef}
           >
             {imageLoading && (
@@ -66,7 +38,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
                 sizes="100vw"
                 width={0}
                 height={0}
-                src={imageUrl}
+                src={imageUrl[0].url}
                 alt="profile image"
                 referrerPolicy="no-referrer"
                 className="w-[80vw] max-h-fit"
@@ -93,7 +65,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
           {user.backgroundImage ? (
             <div className="overflow-hidden h-[55vh] rounded-b-lg scroll-container bg-neutral-900 z-20">
               <Link
-                href={`/postComment/${user.coverPhotoId}`}
+                href={`/postComment/${user.coverPhotoId}/0`}
                 className="scroll-container"
               >
                 <Image

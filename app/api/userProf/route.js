@@ -17,7 +17,7 @@ export async function POST(req) {
         id: session?.user.id,
       },
       data: {
-        backgroundImage: image,
+        backgroundImage: image[0].url,
       },
     });
 

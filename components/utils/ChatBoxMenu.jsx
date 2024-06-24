@@ -11,9 +11,26 @@ import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 import { Input } from "../ui/Input";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { getFriendsList } from "@/actions/getFriendsList";
+import UserAvatar from "./UserAvatar";
 
 const ChatBoxMenu = () => {
   const [open, setOpen] = useState(false);
+  const { data: session, isLoading } = useSession();
+  // get shared post data
+  const { data: friends } = useQuery({
+    // Query key (unique identifier)
+    queryKey: ["getFriends"],
+    // Query function
+    queryFn: async () => {
+      const res = await getFriendsList(session.user.id);
+      return res;
+    },
+  });
+
+  console.log(friends, "friends");
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="focus-visible:outline-none">
@@ -71,7 +88,59 @@ const ChatBoxMenu = () => {
           />
         </div>
 
-        <div className="min-h-[70vh]"></div>
+        <div className="min-h-[70vh] mx-3 py-2">
+          <div>
+            <Button
+              variant="secondary"
+              className="hover:bg-neutral-200 rounded-full"
+            >
+              Inbox
+            </Button>
+            <Button
+              variant="secondary"
+              className="hover:bg-neutral-200 rounded-full"
+            >
+              Channels
+            </Button>
+          </div>
+          {isLoading ? (
+            <span>loading</span>
+          ) : (
+            friends?.map((friend) =>
+              friend.requesterUser.id !== session?.user.id ? (
+                <div className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer">
+                  <UserAvatar
+                    className="h-12 w-12 "
+                    user={{
+                      image: friend?.requesterUser.image || null,
+                    }}
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-neutral-700">
+                      {friend?.requesterUser.name}
+                    </span>
+                    <span className="text-xs">message example</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer">
+                  <UserAvatar
+                    className="h-12 w-12 "
+                    user={{
+                      image: friend?.user.image || null,
+                    }}
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-neutral-700">
+                      {friend?.user.name}
+                    </span>
+                    <span className="text-xs">message example</span>
+                  </div>
+                </div>
+              )
+            )
+          )}
+        </div>
 
         <div className="border-t dark:border-neutral-700 py-2 text-center text-sm mt-2">
           <Link href="/chatbox" className="text-blue-600 hover:underline ">

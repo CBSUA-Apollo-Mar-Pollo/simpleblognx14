@@ -23,7 +23,7 @@ export const SideBarFirstLinks = [
     Icon: (
       <Image
         sizes="100vw"
-        src={"/ImageIcons/trend.png"}
+        src={"/ImageIcons/fire.png"}
         width="0"
         height="0"
         className="w-7 h-7"
@@ -57,6 +57,45 @@ export const SideBarFirstLinks = [
     ),
     label: "Saved",
     link: "/e/popular",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/FindGroup.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "Group",
+    link: "/e/groups/feed",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/Streamerlive.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "Streams",
+    link: "/e/streams/feed",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/pageIcon.png"}
+        width="0"
+        height="0"
+        className="w-7 h-7"
+      />
+    ),
+    label: "Pages",
+    link: "/e/pages/feed",
   },
 ];
 
