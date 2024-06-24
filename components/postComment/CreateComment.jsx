@@ -183,7 +183,7 @@ const CreateComment = ({
               type="submit"
               variant="ghost"
               disabled={textareaValue.length === 0 && imageUrl === null}
-              className=" bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full cursor-pointer flex items-center focus:ring-0 p-2"
+              className=" bg-neutral-200 dark:bg-neutral-600 hover:bg-neutral-300 dark:hover:bg-neutral-700/80 rounded-full cursor-pointer flex items-center focus:ring-0 p-2"
               // onClick={() => {
               //   comment({
               //     postId,

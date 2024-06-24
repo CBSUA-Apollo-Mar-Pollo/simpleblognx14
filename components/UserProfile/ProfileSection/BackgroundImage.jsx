@@ -16,8 +16,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const handleImageLoad = () => setImageLoading(false);
   const handleImageError = () => setImageLoading(false);
 
-  console.log(user, "user");
-
   return (
     <div className="relative flex justify-center">
       {/* div if user is not yet to upload background image */}

@@ -106,7 +106,7 @@ const CommentSectionCard = ({
             {session?.user && (
               <div
                 ref={commentRef}
-                className="hover:bg-neutral-300 dark:hover:bg-neutral-700 bg-neutral-200 py-1 px-1 rounded-full cursor-pointer opacity-0"
+                className="hover:bg-neutral-300/40 dark:hover:bg-neutral-700/80 bg-neutral-50 dark:bg-neutral-800 py-1 px-1 rounded-full cursor-pointer opacity-0"
               >
                 <MoreHorizontal className=" text-neutral-700 dark:text-white" />
               </div>

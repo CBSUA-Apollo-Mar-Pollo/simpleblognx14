@@ -27,9 +27,16 @@ const PostCardHeader = ({ blog, session }) => {
         <Link href={`/user/${blog?.author.id}`}>
           <div className="flex items-center gap-1">
             <div className="px-2 pt-1">
-              <p className="font-semibold text-sm hover:underline text-[12px]">
-                {blog?.author?.name}
-              </p>
+              <div className="flex items-center gap-x-1">
+                <p className="font-semibold text-sm hover:underline text-[12px]">
+                  {blog?.author?.name}
+                </p>
+                {blog.userStatus && (
+                  <span className="text-[13px] font-light">
+                    {blog.userStatus}
+                  </span>
+                )}
+              </div>
               <div className="flex items-center ">
                 <p className=" text-xs text-gray-600 dark:text-neutral-200">
                   {formatTimeToNow(new Date(blog?.createdAt))}

@@ -12,17 +12,29 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description, images } = body;
+    const { description, userStatus, images } = body;
 
     let imageExist = images.length !== 0 ? images : null;
 
-    await db.blog.create({
-      data: {
-        description,
-        image: imageExist,
-        authorId: session.user.id,
-      },
-    });
+    if (userStatus) {
+      await db.blog.create({
+        data: {
+          description,
+          image: imageExist[0],
+          userStatus: userStatus,
+          authorId: session.user.id,
+        },
+      });
+    } else {
+      await db.blog.create({
+        data: {
+          description,
+          image: imageExist,
+          userStatus: userStatus,
+          authorId: session.user.id,
+        },
+      });
+    }
 
     // if (images) {
     //   await db.userPostedImages.create({

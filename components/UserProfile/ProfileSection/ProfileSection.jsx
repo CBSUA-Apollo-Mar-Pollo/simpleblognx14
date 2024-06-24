@@ -52,7 +52,7 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
     onSuccess: async () => {
       const payload = {
-        description: `${user.name} updated his cover photo`,
+        userStatus: "updated his cover photo",
         images: imageUrl,
       };
       axios

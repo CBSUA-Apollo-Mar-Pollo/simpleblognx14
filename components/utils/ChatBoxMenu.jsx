@@ -30,7 +30,6 @@ const ChatBoxMenu = () => {
     },
   });
 
-  console.log(friends, "friends");
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="focus-visible:outline-none">
@@ -106,9 +105,12 @@ const ChatBoxMenu = () => {
           {isLoading ? (
             <span>loading</span>
           ) : (
-            friends?.map((friend) =>
+            friends?.map((friend, index) =>
               friend.requesterUser.id !== session?.user.id ? (
-                <div className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer">
+                <div
+                  key={index}
+                  className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
+                >
                   <UserAvatar
                     className="h-12 w-12 "
                     user={{

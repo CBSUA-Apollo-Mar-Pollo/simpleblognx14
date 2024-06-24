@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const LogoImageAndIcon = ({ image, index }) => {
+const ImagePost = ({ image, index }) => {
   const router = useRouter();
   const close = () => {
     router.back();
@@ -89,4 +89,4 @@ const LogoImageAndIcon = ({ image, index }) => {
   );
 };
 
-export default LogoImageAndIcon;
+export default ImagePost;

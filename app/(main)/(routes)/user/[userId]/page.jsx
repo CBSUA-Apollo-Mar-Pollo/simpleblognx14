@@ -50,9 +50,7 @@ const UserProfilePage = async ({ params }) => {
     },
   });
 
-  console.log(getCoverPhoto, "cover photo");
-
-  user.coverPhotoId = getCoverPhoto?.id;
+  user.coverPhotoId = getCoverPhoto[0]?.id;
 
   // delete image in upload thing if the user click the cancel button
   const deleteImage = async (image) => {
