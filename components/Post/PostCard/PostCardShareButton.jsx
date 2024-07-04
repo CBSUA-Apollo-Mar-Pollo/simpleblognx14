@@ -58,7 +58,7 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
             className={cn(buttonVariants({ variant: "default" }), "bg-white")}
             onClick={() => dismiss()}
           >
-            <span className="text-white">View post</span>
+            <span className="text-neutral-800 dark:text-white">View post</span>
           </Link>
         ),
       });

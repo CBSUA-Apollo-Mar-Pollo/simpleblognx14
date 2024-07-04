@@ -38,8 +38,8 @@ const settings = async () => {
               <div className="pt-4 mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">Blocking</h1>
                 <p className="dark:text-neutral-300 text-sm text-justify">
-                  Review people you've previously blocked or add someone to your
-                  blocked list.
+                  Review people you&apos;ve previously blocked or add someone to
+                  your blocked list.
                 </p>
               </div>
             </div>

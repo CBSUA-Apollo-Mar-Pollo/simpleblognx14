@@ -24,8 +24,9 @@ const Navbar = () => {
       setIsloader(false);
     }
   }, []);
+
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 shadow-sm">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 drop-shadow-sm">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1">
@@ -63,9 +64,9 @@ const Navbar = () => {
                 <Icons.Play className="fill-blue-500 h-8 w-8 " />
               </Link>
             ) : (
-              <div className="flex justify-center py-3">
+              <Link href="/shortsv" className="flex justify-center py-3">
                 <Icons.Play className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </div>
+              </Link>
             )}
           </ToolTipComp>
 

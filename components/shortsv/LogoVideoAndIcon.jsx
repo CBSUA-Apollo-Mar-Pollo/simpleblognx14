@@ -95,7 +95,7 @@ const LogoVideoAndIcon = ({
             <ChevronLeft className="text-white dark:text-neutral-100  p-3 h-14 w-14 rounded-full cursor-pointer" />
           </Button>
         </div>
-        <div className="relative border dark:border-neutral-800 border-neutral-950 rounded-2xl mt-8">
+        <div className="relative border dark:border-neutral-800 border-neutral-950 rounded-2xl mt-4">
           {isPlaying ? (
             <Pause
               onClick={handlePlayClick}
@@ -129,7 +129,7 @@ const LogoVideoAndIcon = ({
             autoPlay
             preload="metadata"
             muted={!isMuted}
-            className="h-[90vh] w-[22vw] rounded-2xl z-10 cursor-pointer bg-black"
+            className="h-[95vh] w-[23vw] rounded-2xl z-10 cursor-pointer bg-black"
           >
             <source src={videoData?.videoUrl} type="video/mp4" />
           </video>
@@ -217,10 +217,10 @@ const LogoVideoAndIcon = ({
         <div className="absolute right-7 top-16 mt-1">
           <Button
             onClick={CheckSession}
-            className="bg-neutral-100 text-black dark:text-white dark:bg-neutral-800 rounded-full py-0 text-sm hover:bg-neutral-200 dark:hover:bg-neutral-500"
+            className="bg-neutral-100 text-neutral-700 font-semibold dark:text-white dark:bg-neutral-800 rounded-lg py-0 text-[13px] hover:bg-neutral-200 dark:hover:bg-neutral-500"
           >
-            <span className="pr-2">
-              <Clapperboard className="w-5.5 h-5.5 stroke-neutral-800 dark:text-neutral-200" />
+            <span className="pr-2.5">
+              <Clapperboard className="w-5.5 h-5.5 text-neutral-600 dark:text-neutral-200" />
             </span>
             Create shortsv
           </Button>

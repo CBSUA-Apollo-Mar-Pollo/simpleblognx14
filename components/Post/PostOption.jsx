@@ -29,7 +29,7 @@ const PostOption = ({ authorId, authorName }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className=" rounded-md min-w-[15rem] text-neutral-700 dark:text-neutral-200 dark:bg-neutral-800 drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)] p-2 border-0"
+        className=" relative rounded-md min-w-[15rem] text-neutral-700 dark:text-neutral-200 dark:bg-neutral-800 drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)] p-2 border-0"
         align="end"
       >
         <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start">

@@ -125,7 +125,10 @@ const ChatBoxMenu = () => {
                   </div>
                 </div>
               ) : (
-                <div className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer">
+                <div
+                  key={index}
+                  className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
+                >
                   <UserAvatar
                     className="h-12 w-12 "
                     user={{

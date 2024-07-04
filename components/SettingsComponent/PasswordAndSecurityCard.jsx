@@ -47,7 +47,7 @@ const PasswordAndSecurityCard = () => {
             variant="ghost"
             className="w-full bg-white border border-neutral-200 dark:border-0 px-6 flex rounded-none rounded-t-2xl justify-between dark:text-white py-7 dark:bg-neutral-900 dark:hover:bg-neutral-700"
           >
-            Where you're logged in
+            Where you are logged in
             <ChevronRight />
           </Button>
           <Button

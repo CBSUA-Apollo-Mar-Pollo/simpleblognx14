@@ -84,7 +84,7 @@ const CommentSectionCard = ({
               </div>
               {/* comment text */}
               {replyName ? (
-                <p className="text-neutral-100 text-sm">
+                <p className="text-neutral-700 dark:text-neutral-100 text-sm">
                   <span className="text-blue-400">
                     <a
                       href={`/user/${replyName.id}`}

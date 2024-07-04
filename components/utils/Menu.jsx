@@ -113,8 +113,8 @@ const Menu = ({ contentClassName }) => {
                   <div>
                     <h3 className="font-semibold">News Feeds</h3>
                     <p className="text-[13px] font-light">
-                      Discover relevant posts from the people and pages you're
-                      connected with.
+                      Discover relevant posts from the people and pages
+                      you&apos;re connected with.
                     </p>
                   </div>
                 </div>

@@ -29,7 +29,7 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="grid grid-cols-4 bg-neutral-100 dark:bg-neutral-900">
+    <div className="grid grid-cols-4 bg-neutral-200/30 dark:bg-neutral-900">
       {/* first column the side bar */}
       <div className=" col-span-1 relative">
         <Sidebar session={session} />
@@ -72,13 +72,14 @@ export default async function HomePage() {
             </div>
           </div>
         )}
+        {/* all post cards */}
         <Posts initialPosts={posts} session={session} />
       </div>
       {/* third section recent posts and who to follow */}
       <div className=" col-span-1 relative flex flex-col ">
         <div className="sticky top-16">
           <RecentPostsCard />
-          <div className="bg-white dark:bg-neutral-800 rounded-lg mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
+          <div className="bg-white dark:bg-neutral-800 rounded-2xl mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
             <h1 className=" text-neutral-950 dark:text-neutral-200 font-bold text-xl mt-2">
               Who to follow
             </h1>

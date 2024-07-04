@@ -4,6 +4,7 @@ import { getDominantColor } from "@/actions/getDominantColor";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostCardLoader from "@/components/Loaders/PostCardLoader";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -23,13 +24,14 @@ const StandardPostCard = ({ blog }) => {
       </p>
       {blog.image && (
         <div className="w-full">
+          {/* render the this post when the user change his/her cover photo */}
           {blog.userStatus && (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
             >
-              <img
+              <Image
                 sizes="100vw"
                 width={0}
                 height={0}
@@ -42,13 +44,16 @@ const StandardPostCard = ({ blog }) => {
             </Link>
           )}
 
+          {/* render any of this image that meet the requirement */}
+
+          {/* render if it has 1 image */}
           {blog.image.length === 1 && (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
             >
-              <img
+              <Image
                 sizes="100vw"
                 width={0}
                 height={0}
@@ -64,6 +69,7 @@ const StandardPostCard = ({ blog }) => {
             </Link>
           )}
 
+          {/* render if there are 2 image */}
           {blog.image.length === 2 && (
             <div
               onClick={() => storeToRecentPosts(blog.id)}
@@ -77,7 +83,10 @@ const StandardPostCard = ({ blog }) => {
                   key={index}
                   className="relative hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={imageUrl.url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -88,6 +97,7 @@ const StandardPostCard = ({ blog }) => {
             </div>
           )}
 
+          {/* render if there are 3 image */}
           {blog.image.length === 3 && (
             <div
               onClick={() => storeToRecentPosts(blog.id)}
@@ -99,7 +109,10 @@ const StandardPostCard = ({ blog }) => {
                 href={`/postComment/${blog.id}/${0}`}
                 className="relative col-span-5 hover:opacity-80"
               >
-                <img
+                <Image
+                  sizes="100vw"
+                  width={0}
+                  height={0}
                   src={blog.image[0].url}
                   alt="profile image"
                   className="w-full h-auto object-cover my-1"
@@ -118,8 +131,11 @@ const StandardPostCard = ({ blog }) => {
                       key={index}
                       className="relative mt-[4px] hover:opacity-80"
                     >
-                      <img
+                      <Image
                         src={imageUrl.url}
+                        sizes="100vw"
+                        width={0}
+                        height={0}
                         alt="profile image"
                         className="w-full h-auto object-cover mt-[1px]"
                         style={{ aspectRatio: "13/13" }} // Example aspect ratio (adjust as needed)
@@ -131,6 +147,7 @@ const StandardPostCard = ({ blog }) => {
             </div>
           )}
 
+          {/* render if there are 4 image */}
           {blog.image.length === 4 && (
             <div
               onClick={() => storeToRecentPosts(blog.id)}
@@ -141,7 +158,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${0}`}
                   className="hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[0].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -152,7 +172,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${1}`}
                   className="hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[1].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -176,7 +199,10 @@ const StandardPostCard = ({ blog }) => {
                       key={index}
                       className="relative hover:opacity-80"
                     >
-                      <img
+                      <Image
+                        sizes="100vw"
+                        width={0}
+                        height={0}
                         src={imageUrl.url}
                         alt="profile image"
                         className="w-full h-auto object-cover px-[1px]"
@@ -189,6 +215,7 @@ const StandardPostCard = ({ blog }) => {
             </div>
           )}
 
+          {/* render if there are 5 image */}
           {blog.image.length === 5 && (
             <div
               onClick={() => storeToRecentPosts(blog.id)}
@@ -199,7 +226,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${0}`}
                   className="relative hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[0].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -210,7 +240,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${1}`}
                   className="relative hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[1].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -234,7 +267,10 @@ const StandardPostCard = ({ blog }) => {
                       key={index}
                       className="relative hover:opacity-80"
                     >
-                      <img
+                      <Image
+                        sizes="100vw"
+                        width={0}
+                        height={0}
                         src={imageUrl.url}
                         alt="profile image"
                         className="w-full h-auto object-cover px-[1px]"
@@ -247,6 +283,7 @@ const StandardPostCard = ({ blog }) => {
             </div>
           )}
 
+          {/* render if there are 6 or more image */}
           {blog.image.length >= 6 && (
             <div
               onClick={() => storeToRecentPosts(blog.id)}
@@ -257,7 +294,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${0}`}
                   className="relative hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[0].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -268,7 +308,10 @@ const StandardPostCard = ({ blog }) => {
                   href={`/postComment/${blog.id}/${1}`}
                   className="relative hover:opacity-80"
                 >
-                  <img
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
                     src={blog.image[1].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -296,7 +339,10 @@ const StandardPostCard = ({ blog }) => {
                       key={index}
                       className="relative hover:opacity-80"
                     >
-                      <img
+                      <Image
+                        sizes="100vw"
+                        width={0}
+                        height={0}
                         src={imageUrl.url}
                         alt="profile image"
                         className={`w-full h-auto object-cover px-[1px] ${

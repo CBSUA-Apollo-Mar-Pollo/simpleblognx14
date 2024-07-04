@@ -30,7 +30,7 @@ const PostCommentCard = async ({ post, index }) => {
       createdAt: "desc",
     },
   });
-  console.log(post);
+
   return (
     <div className="grid grid-cols-4 relative">
       {/* Image */}

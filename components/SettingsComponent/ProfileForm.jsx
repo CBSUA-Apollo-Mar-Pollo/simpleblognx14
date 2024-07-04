@@ -65,7 +65,7 @@ const ProfileForm = ({ user }) => {
     },
   });
   return (
-    <div className="bg-white dark:bg-neutral-800 drop-shadow-lg px-10 mt-4 py-5 rounded-md mx-32">
+    <div className="bg-white dark:bg-neutral-800 drop-shadow-lg px-10 mt-4 py-6 rounded-3xl mx-32">
       <div>
         <h1 className="text-2xl font-bold text-neutral-700 dark:text-neutral-200">
           Profile
