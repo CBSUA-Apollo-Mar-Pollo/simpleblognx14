@@ -8,7 +8,7 @@ export const metadata = {
 
 const ChatLayout = ({ children }) => {
   return (
-    <div className="h-full ">
+    <div>
       <Navbar />
       {children}
     </div>

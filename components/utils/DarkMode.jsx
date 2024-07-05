@@ -3,7 +3,7 @@ import { Button } from "../ui/Button";
 import { Icons } from "./Icons";
 import { useTheme } from "next-themes";
 
-const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
+const DarkMode = ({ setActiveSubMenu, setSubMenu, setOpen }) => {
   const { setTheme, resolvedTheme } = useTheme();
 
   return (
@@ -13,6 +13,7 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
           onClick={() => {
             setActiveSubMenu(false);
             setSubMenu(null);
+            setOpen(false);
           }}
           variant="ghost"
           className="p-2 hover:bg-neutral-100 rounded-full cursor-pointer dark:hover:bg-neutral-600"
@@ -38,7 +39,12 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
 
         <div className="flex flex-col ml-10 mt-1">
           <Button
-            onClick={() => setTheme("light")}
+            onClick={() => {
+              setTheme("light");
+              setActiveSubMenu(false);
+              setSubMenu(null);
+              setOpen(false);
+            }}
             variant="ghost"
             className="flex justify-start gap-x-2 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >
@@ -55,7 +61,12 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu }) => {
           </Button>
 
           <Button
-            onClick={() => setTheme("dark")}
+            onClick={() => {
+              setTheme("dark");
+              setActiveSubMenu(false);
+              setSubMenu(null);
+              setOpen(false);
+            }}
             variant="ghost"
             className="flex justify-start gap-x-2 dark:text-neutral-200 dark:hover:bg-neutral-600"
           >

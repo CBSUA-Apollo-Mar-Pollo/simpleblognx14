@@ -26,7 +26,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 drop-shadow-sm">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 drop-shadow">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1">
@@ -135,7 +135,7 @@ const Navbar = () => {
             </div>
           ) : (
             <Link
-              className={cn(buttonVariants({ variant: "secondary" }))}
+              className={cn(buttonVariants({ variant: "ghost" }))}
               href="/sign-in"
             >
               Sign in

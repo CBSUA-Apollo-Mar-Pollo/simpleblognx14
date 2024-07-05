@@ -18,6 +18,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
       return res;
     },
   });
+
   return (
     <div className=" mx-5 mb-2">
       <p className="px-1 text-justify text-base leading-relaxed mb-1 font-medium">
@@ -41,7 +42,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
                   src={sharedPost.image.url}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
+                  className="object-contain w-full transition max-h-[30rem] bg-neutral-700 rounded-t-2xl"
                 />
               </Link>
             )}
@@ -63,7 +64,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
                   src={sharedPost.image[0].url}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
+                  className="object-contain w-full transition max-h-[30rem] bg-neutral-700 rounded-t-xl"
                   style={{
                     backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.5) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.8) 100%)`,
                   }}
@@ -389,9 +390,16 @@ const SharedPostCard = ({ sharedPost, blog }) => {
               />
 
               <div className="px-2 pt-1">
-                <p className="font-semibold text-sm">
-                  {sharedPost?.author?.name}
-                </p>
+                <div className="flex items-center gap-x-1">
+                  <p className="font-semibold text-sm">
+                    {sharedPost?.author?.name}
+                  </p>
+                  {sharedPost?.userStatus && (
+                    <span className="text-[13px] mt-[1px] font-light">
+                      {sharedPost?.userStatus}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center">
                   <p className=" text-xs text-gray-600 dark:text-neutral-200 ">
                     {formatTimeToNow(new Date(sharedPost?.createdAt))}

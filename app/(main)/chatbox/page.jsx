@@ -1,9 +1,24 @@
-import React from "react";
+import ChatSideBar from "@/components/chat/chat-sidebar";
+import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
 
-const ChatBoxPage = () => {
+const ChatBoxPage = async () => {
+  const session = await getAuthSession();
+  const friendLists = await db.friend.findMany({
+    where: {
+      OR: [{ userId: session.user.id }, { requesterUserId: session.user.id }],
+    },
+    include: {
+      user: true,
+      requesterUser: true,
+    },
+  });
   return (
-    <div className="">
-      <h1>Chat Box Page</h1>
+    <div className="grid grid-cols-8 h-screen">
+      <div className=" col-span-2 border-r border-neutral-300">
+        <ChatSideBar friendLists={friendLists} session={session} />
+      </div>
+      <div className="col-span-6 "></div>
     </div>
   );
 };

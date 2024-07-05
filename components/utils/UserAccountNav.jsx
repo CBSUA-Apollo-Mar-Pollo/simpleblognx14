@@ -72,6 +72,7 @@ const UserAccountNav = ({ user }) => {
           <DarkMode
             setActiveSubMenu={setActiveSubMenu}
             setSubMenu={setSubMenu}
+            setOpen={setOpen}
           />
         )}
       </DropdownMenuContent>

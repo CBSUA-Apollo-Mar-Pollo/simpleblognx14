@@ -3,10 +3,9 @@
 - search functionality
 - video like tiktok functionality(incomplete)
 - add a chat system
-- friend or follower system
+- friend or follower system (friend functionality done)
 - user can create a group or personal page system
 - make it pages responsive
-- post multiple photos
 - Live streaming: Enable live streaming for events, discussions, or just hanging out with followers.
 - Live chat: Facilitate live chat features within groups, video comments, or streams for real-time interaction.
 - Q&A sessions: Allow users to host Q&A sessions within groups or live streams for a more interactive experience.
@@ -16,3 +15,7 @@
 - Events calendar: Allow users to create and share events, both online and offline.
 - Live polls and quizzes: Enable live polls and quizzes within live streams or groups to increase engagement.
 - Bookmarking system: Let users bookmark interesting content for later viewing.
+
+ALREADY DONE
+
+- post multiple photos
