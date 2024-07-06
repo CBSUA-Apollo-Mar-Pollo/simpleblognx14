@@ -214,7 +214,7 @@ const ProfileSection = ({ user, deleteImage }) => {
                   </Button>
                 )}
 
-                <Button className="bg-neutral-200 hover:bg-neutral-300 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+                <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-300/90 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
                   <span className="pr-2">
                     <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
                   </span>

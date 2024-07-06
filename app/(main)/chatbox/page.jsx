@@ -15,7 +15,7 @@ const ChatBoxPage = async () => {
   });
   return (
     <div className="grid grid-cols-8 h-screen">
-      <div className=" col-span-2 border-r border-neutral-300">
+      <div className=" col-span-2 border-r border-neutral-300 dark:border-neutral-700">
         <ChatSideBar friendLists={friendLists} session={session} />
       </div>
       <div className="col-span-6 "></div>

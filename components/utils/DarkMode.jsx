@@ -13,7 +13,6 @@ const DarkMode = ({ setActiveSubMenu, setSubMenu, setOpen }) => {
           onClick={() => {
             setActiveSubMenu(false);
             setSubMenu(null);
-            setOpen(false);
           }}
           variant="ghost"
           className="p-2 hover:bg-neutral-100 rounded-full cursor-pointer dark:hover:bg-neutral-600"

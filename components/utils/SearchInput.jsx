@@ -55,7 +55,7 @@ const SearchInput = () => {
           <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
           <Input
             onClick={() => setActive(true)}
-            placeholder="Search Posts"
+            placeholder="Search..."
             className="pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700  border-0 bg-gray-100 font-light rounded-full w-[250px] text-sm "
           />
         </div>
@@ -68,7 +68,7 @@ const SearchInput = () => {
             size="sm"
             className="text-white text-base dark:hover:bg-neutral-700 hover:rounded-full py-5 mr-2"
           >
-            <MoveLeft />
+            <MoveLeft className="text-neutral-800 dark:text-neutral-200" />
           </Button>
           <div className="relative flex items-center w-full">
             <Input
@@ -78,7 +78,7 @@ const SearchInput = () => {
                 handleTyping();
               }}
               placeholder="Search"
-              className="p-4 focus-visible:ring-transparent  border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base"
+              className="pl-5 focus-visible:ring-transparent  border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base"
             />
           </div>
         </DropdownMenuLabel>
@@ -108,7 +108,7 @@ const SearchInput = () => {
                   className="h-10 w-10"
                   user={{ name: rd.name || null, image: rd?.image || null }}
                 />
-                <span className="text-white text-base font-medium">
+                <span className="text-neutral-800 dark:text-white text-base font-medium">
                   {rd.name}
                 </span>
               </DropdownMenuItem>

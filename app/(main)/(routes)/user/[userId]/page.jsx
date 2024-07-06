@@ -45,7 +45,7 @@ const UserProfilePage = async ({ params }) => {
     where: {
       image: {
         path: "$.url",
-        equals: user.backgroundImage,
+        equals: user?.backgroundImage,
       },
     },
   });

@@ -6,6 +6,8 @@ import React, { useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
 import { ChevronRight, Film, Play, X } from "lucide-react";
 import { Button } from "../ui/Button";
+import { Icons } from "../utils/Icons";
+import ToolTipComp from "../utils/ToolTipComp";
 
 const ReelsHomeCard = () => {
   const videoRefs = useRef([]);
@@ -39,19 +41,18 @@ const ReelsHomeCard = () => {
       <CardHeader className="px-4 pt-4">
         <CardTitle className="text-[16px] font-bold flex justify-between dark:text-neutral-100">
           <div className="flex items-center gap-x-2">
-            <span className="text-neutral-800 relative">
-              <Film className="h-8 w-8 dark:fill-neutral-700 dark:text-neutral-50" />
-              <Play className="absolute top-[10px] left-[10px] bg-white h-3 w-3 fill-neutral-700" />
-            </span>
+            <Icons.reelsIcon className="h-8 w-8 dark:fill-neutral-100" />
             Reels and Short videos
           </div>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="mr-1 rounded-full dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
-          >
-            <X />
-          </Button>
+          <ToolTipComp content="Hide">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="mr-1 rounded-full dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
+            >
+              <X />
+            </Button>
+          </ToolTipComp>
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 pb-2 relative">

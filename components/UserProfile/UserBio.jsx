@@ -64,7 +64,7 @@ const UserBio = async ({ user }) => {
                 href={`/user/${user.id}/photos`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400"
+                  "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400 dark:hover:text-blue-300"
                 )}
               >
                 See all photos

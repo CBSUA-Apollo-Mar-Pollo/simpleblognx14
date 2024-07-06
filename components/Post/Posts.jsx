@@ -44,7 +44,7 @@ export default function Posts({ initialPosts, session }) {
   const [randNumber, setRandNumber] = useState(null);
 
   useEffect(() => {
-    const numbers = [0, 1, 2, 4, 5, 7, 8];
+    const numbers = [3, 4, 5, 7, 8];
     const randomIndex = Math.floor(Math.random() * numbers.length);
     setRandNumber(numbers[randomIndex]);
   }, []);
