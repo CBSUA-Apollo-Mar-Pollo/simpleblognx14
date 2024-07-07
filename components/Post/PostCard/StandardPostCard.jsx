@@ -25,7 +25,7 @@ const StandardPostCard = ({ blog }) => {
       {blog.image && (
         <div className="w-full">
           {/* render the this post when the user change his/her cover photo */}
-          {blog.userStatus && (
+          {blog.userStatus === "updated his cover photo" && (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}/${0}`}
@@ -44,10 +44,29 @@ const StandardPostCard = ({ blog }) => {
             </Link>
           )}
 
+          {blog.image.length === 1 && blog.userStatus === "edited" && (
+            <Link
+              onClick={() => storeToRecentPosts(blog.id)}
+              href={`/postComment/${blog.id}/${0}`}
+              className="relative overflow-clip w-full flex flex-col"
+            >
+              <Image
+                sizes="100vw"
+                width={0}
+                height={0}
+                priority="true"
+                src={blog.image[0].url}
+                alt="profile image"
+                referrerPolicy="no-referrer"
+                className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
+              />
+            </Link>
+          )}
+
           {/* render any of this image that meet the requirement */}
 
           {/* render if it has 1 image */}
-          {blog.image.length === 1 && (
+          {blog.image.length === 1 && blog.userStatus === null && (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}/${0}`}

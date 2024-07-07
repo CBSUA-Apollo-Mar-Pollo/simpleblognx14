@@ -43,7 +43,7 @@ const BackgroundImagePost = ({ image, index }) => {
         sizes="100vw"
         width={0}
         height={0}
-        src={image.url}
+        src={image.url || image[0].url}
         alt="profile image"
         referrerPolicy="no-referrer"
         className="object-contain w-auto transition max-h-screen"

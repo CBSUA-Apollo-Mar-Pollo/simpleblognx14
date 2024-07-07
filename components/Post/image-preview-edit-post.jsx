@@ -1,7 +1,7 @@
 import React from "react";
 
 const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
-  console.log(imagePreviews, "image preview");
+  console.log(blog, "blog Previews");
   return (
     <>
       {imagePreviews.length === 1 && (
@@ -20,18 +20,18 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
       )}
 
       {imagePreviews.length === 2 && (
-        <div
-          className={`${
-            imagePreviews.length === 2 && "grid grid-cols-2 gap-x-1"
-          }`}
-        >
-          {imagePreviews.map((imageUrl, index) => (
+        <div className="grid grid-cols-2 gap-x-1">
+          {imagePreviews.map((imageData, index) => (
             <div key={index} className="relative">
               <img
-                src={imageUrl && imagePreviews[index]}
-                alt="profile image"
+                src={typeof imageData === "string" ? imageData : imageData.url}
+                alt={
+                  typeof imageData === "string"
+                    ? "profile image"
+                    : imageData.name
+                }
                 className="w-full h-auto object-cover"
-                style={{ aspectRatio: "6  /10" }} // Example aspect ratio (adjust as needed)
+                style={{ aspectRatio: "6 / 10" }}
               />
             </div>
           ))}
@@ -53,7 +53,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
             />
           </div>
           <div className=" flex flex-col space-y-[4px] col-span-3">
-            {imagePreviews.map((imageUrl, index) => {
+            {imagePreviews.map((imageData, index) => {
               if (index === 0) {
                 return null;
               }
@@ -61,7 +61,9 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               return (
                 <div key={index} className="relative">
                   <img
-                    src={imageUrl.url}
+                    src={
+                      typeof imageData === "string" ? imageData : imageData.url
+                    }
                     alt="profile image"
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "11/13" }} // Example aspect ratio (adjust as needed)
@@ -77,13 +79,13 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
         <div className="flex flex-col">
           <div className="relative grid grid-cols-2">
             <img
-              src={imagePreviews[0].url && imagePreviews[0]}
+              src={imagePreviews[0].url || imagePreviews[0]}
               alt="profile image"
               className="w-full h-auto object-cover"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
             />
             <img
-              src={imagePreviews[1].url}
+              src={imagePreviews[1].url || imagePreviews[1]}
               alt="profile image"
               className="w-full h-auto object-cover"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
@@ -91,7 +93,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
           </div>
           <div className="mt-[2px] grid grid-cols-2">
             <img
-              src={imagePreviews[2].url}
+              src={imagePreviews[2].url || imagePreviews[2]}
               alt="profile image"
               className="w-full h-auto object-cover"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
@@ -111,8 +113,8 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               return (
                 <div key={index} className="relative">
                   <img
-                    src={imageUrl}
-                    alt="profile image"
+                    src={imageUrl && imageUrl.url}
+                    alt={imageUrl.name}
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
                   />

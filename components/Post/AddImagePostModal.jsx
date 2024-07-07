@@ -19,7 +19,7 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { ImagePlus, X } from "lucide-react";
+import { AlertCircle, ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
@@ -33,28 +33,35 @@ const AddGalleryPostModal = ({ session, user }) => {
   const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  class UploadError extends Error {
+    constructor(message, statusCode) {
+      super(message);
+      this.statusCode = statusCode;
+      this.isUploadError = true; // Optional property to differentiate upload errors
+    }
+  }
 
-  const { mutate: createBlog, isLoading } = useMutation({
+  const {
+    mutate: createBlog,
+    isLoading,
+    isError,
+  } = useMutation({
     mutationFn: async () => {
       let images = [];
       const file = selectedFiles;
-      await uploadFiles("imageUploader", {
-        files: file,
-      })
-        .then(async (response) => {
-          console.log(response, "response from image uploader");
-          images = response;
-        })
-        .catch((error) => {
-          return toast({
-            title: "Error",
-            description: "Error uploading file",
-            variant: "destructive",
-          });
-        });
+      try {
+        const response = await uploadFiles("imageUploader", { files: file });
+        images = response;
+      } catch (error) {
+        setErrorMessage(
+          "Error uploading image, please upload an image with the extension of the following: jpeg, png"
+        );
+        throw new UploadError("Failed to upload image: " + error.message, 400);
+      }
 
       const payload = {
         description,
@@ -71,6 +78,14 @@ const AddGalleryPostModal = ({ session, user }) => {
         if (err.response?.status === 401) {
           setOpen(false);
           return signinToast();
+        }
+
+        if (err.response?.status === 400) {
+          return toast({
+            title: "Error",
+            description: err.response.data,
+            variant: "destructive",
+          });
         }
 
         if (err.response?.status === 500) {
@@ -150,7 +165,7 @@ const AddGalleryPostModal = ({ session, user }) => {
         <img src="/ImageIcons/gallery.png" className="h-8 w-8" />
         <span className="dark:text-neutral-100 text-sm">Photo/Video</span>
       </DialogTrigger>
-      <DialogContent className=" min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className=" min-w-[39vw] min-h-auto  dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-2xl font-bold text-center">
             Create post
@@ -188,7 +203,7 @@ const AddGalleryPostModal = ({ session, user }) => {
               </Select>
             </div>
           </div>
-          <div className="grid items-center max-h-[60vh] overflow-auto">
+          <div className="grid items-center max-h-[50vh] overflow-auto">
             <Textarea
               id="desc"
               value={description}
@@ -237,7 +252,7 @@ const AddGalleryPostModal = ({ session, user }) => {
                         <div key={index} className="relative">
                           <img
                             src={imageUrl}
-                            alt="profile image"
+                            alt={imageUrl.name}
                             className="w-full h-auto object-cover"
                             style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
                           />
@@ -438,40 +453,6 @@ const AddGalleryPostModal = ({ session, user }) => {
                 </div>
               ) : (
                 <>
-                  {/* <UploadDropzone
-                    className="border-none w-full cursor-pointer dark:hover:bg-neutral-600 mt-0 py-16"
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      setImageUrl(res[0].url);
-                    }}
-                    content={{
-                      uploadIcon() {
-                        return (
-                          <div>
-                            <div className="dark:bg-neutral-700 py-2 px-2 rounded-full">
-                              <ImagePlus className="h-7 w-7" />
-                            </div>
-                          </div>
-                        );
-                      },
-                      label() {
-                        return (
-                          <div>
-                            <span className="text-[17px] dark:text-neutral-200">
-                              Add Photos/Videos
-                            </span>
-                          </div>
-                        );
-                      },
-                      allowedContent() {
-                        return (
-                          <p className="text-neutral-400 text-xs">
-                            or drag and drop
-                          </p>
-                        );
-                      },
-                    }}
-                  /> */}
                   <div
                     className="py-16 hover:bg-neutral-200 dark:hover:bg-neutral-600 w-full cursor-pointer"
                     onDrop={handleFileDrop}
@@ -526,12 +507,17 @@ const AddGalleryPostModal = ({ session, user }) => {
             </div>
           </div>
         </div>
+        {isError && (
+          <div className="flex items-start gap-x-2 mx-6 text-red-600">
+            <AlertCircle className="h-5 w-5" />
+            <span className="text-xs">{errorMessage}</span>
+          </div>
+        )}
         <DialogFooter className="py-2 mx-4">
           <Button
             className="w-full bg-blue-600 hover:bg-blue-500"
             type="submit"
-            isLoading={isLoading}
-            disabled={description.length === 0 && imageUrl.length === 0}
+            disabled={isLoading}
             onClick={() => {
               createBlog();
               setIsLoading(true);

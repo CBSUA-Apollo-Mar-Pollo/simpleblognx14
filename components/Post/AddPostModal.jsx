@@ -35,28 +35,28 @@ const AddPostModal = ({ session, user }) => {
   const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
-  const { mutate: createBlog, isLoading } = useMutation({
+  const {
+    mutate: createBlog,
+    isLoading,
+    isError,
+  } = useMutation({
     mutationFn: async () => {
       let images = [];
       const file = selectedFiles;
-      await uploadFiles("imageUploader", {
-        files: file,
-      })
-        .then(async (response) => {
-          console.log(response, "response from image uploader");
-          images = response;
-        })
-        .catch((error) => {
-          return toast({
-            title: "Error",
-            description: "Error uploading file",
-            variant: "destructive",
-          });
-        });
+      try {
+        const response = await uploadFiles("imageUploader", { files: file });
+        images = response;
+      } catch (error) {
+        setErrorMessage(
+          "Error uploading image, please upload an image with the extension of the following: jpeg, png"
+        );
+        throw new UploadError("Failed to upload image: " + error.message, 400);
+      }
 
       const payload = {
         description,
@@ -73,6 +73,14 @@ const AddPostModal = ({ session, user }) => {
         if (err.response?.status === 401) {
           setOpen(false);
           return signinToast();
+        }
+
+        if (err.response?.status === 400) {
+          return toast({
+            title: "Error",
+            description: err.response.data,
+            variant: "destructive",
+          });
         }
 
         if (err.response?.status === 500) {
@@ -515,12 +523,17 @@ const AddPostModal = ({ session, user }) => {
             </div>
           </div>
         </div>
+        {isError && (
+          <div className="flex items-start gap-x-2 mx-6 text-red-600">
+            <AlertCircle className="h-5 w-5" />
+            <span className="text-xs">{errorMessage}</span>
+          </div>
+        )}
         <DialogFooter className="py-2 mx-4">
           <Button
             className="w-full bg-blue-600 hover:bg-blue-500"
             type="submit"
-            isLoading={isLoading}
-            disabled={description.length === 0 && imageUrl.length === 0}
+            disabled={isLoading}
             onClick={() => {
               createBlog();
               setIsLoading(true);

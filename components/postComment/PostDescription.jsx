@@ -13,9 +13,9 @@ const PostDescription = ({ post, commentAmt, session }) => {
   return (
     <div className="my-2 mx-3">
       <div className="flex items-center justify-between gap-1">
-        <div className="flex items-center">
+        <div className="flex items-start">
           <UserAvatar
-            className="h-10 w-10 "
+            className="h-10 w-10 mt-2"
             user={{
               name: post.author?.name || null,
               image: post.author?.image || null,
@@ -23,7 +23,17 @@ const PostDescription = ({ post, commentAmt, session }) => {
           />
 
           <div className="px-2 pt-1 text-neutral-700 dark:text-white">
-            <p className="font-semibold text-sm">{post.author?.name}</p>
+            <div className="gap-x-1">
+              <p className="font-semibold text-sm hover:underline text-[12px]">
+                {post?.author?.name}
+              </p>
+              {post.userStatus && (
+                <span className="text-[13px] font-light">
+                  {post.userStatus}
+                </span>
+              )}
+            </div>
+
             <div className="flex items-center">
               <p className=" text-xs text-neutral-700 dark:text-neutral-200 ">
                 {formatTimeToNow(new Date(post?.createdAt))}

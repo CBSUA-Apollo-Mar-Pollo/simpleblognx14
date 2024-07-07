@@ -85,7 +85,7 @@ const ProfileForm = ({ user }) => {
                 user={{ name: user.name || null, image: user.image || null }}
               />
             </div>
-            <Button className="rounded-b-none flex gap-x-4 px-10 hover:bg-neutral-700">
+            <Button className="rounded-b-none flex gap-x-4 px-10 bg-neutral-800 hover:bg-neutral-700">
               <Plus className="h-5 w-5" />
               Upload new photo
             </Button>
@@ -104,7 +104,7 @@ const ProfileForm = ({ user }) => {
               <Input
                 value={user.name}
                 placeholder={user.handleName ? user.handleName : ``}
-                className="bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none rounded-tl-xl border border-r-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium"
+                className="bg-neutral-50 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none rounded-tl-xl border border-r-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium"
               />
             </div>
             <div className="relative">
@@ -113,7 +113,7 @@ const ProfileForm = ({ user }) => {
               </h3>
               <Input
                 placeholder={user.handleName ? user.handleName : ``}
-                className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none  border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+                className={`bg-neutral-50 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-none  border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               />
             </div>
             <div className="relative">
@@ -122,7 +122,7 @@ const ProfileForm = ({ user }) => {
               </h3>
               <Input
                 placeholder={user.handleName ? user.handleName : ``}
-                className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  rounded-none rounded-tr-xl  border border-l-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+                className={`bg-neutral-50 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  rounded-none rounded-tr-xl  border border-l-0 border-gray-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               />
             </div>
           </div>
@@ -132,7 +132,7 @@ const ProfileForm = ({ user }) => {
             </h3>
             <Input
               placeholder={user.handleName ? user.handleName : ``}
-              className={`bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-t-none rounded-b-xl   border-t-0 border-neutral-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
+              className={`bg-neutral-50 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0 rounded-t-none rounded-b-xl   border-t-0 border-neutral-300 dark:border-neutral-700  pt-10 pb-6  font-medium`}
               value={handleName}
               onChange={(e) => setHandleName(e.target.value)}
             />
@@ -150,7 +150,7 @@ const ProfileForm = ({ user }) => {
           <div className="relative">
             <Input
               placeholder={user.bio ? user.bio : ``}
-              className="bg-neutral-200 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  border border-gray-300 dark:border-neutral-700  py-5 font-normal"
+              className="bg-neutral-50 dark:bg-neutral-900 focus-visible:ring-transparent focus:outline-0  border border-gray-300 dark:border-neutral-700  py-5 font-normal"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
@@ -163,7 +163,7 @@ const ProfileForm = ({ user }) => {
             Email
           </h3>
           <Select>
-            <SelectTrigger className="focus-visible:ring-transparent bg-neutral-200 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 focus:border-gray-400 focus:border-2 py-5 text-sm text-gray-600 dark:text-neutral-50 font-medium">
+            <SelectTrigger className="focus-visible:ring-transparent bg-neutral-50 dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 focus:border-gray-400 focus:border-2 py-5 text-sm text-gray-600 dark:text-neutral-50 font-medium">
               <SelectValue placeholder="Select a verified email to display" />
             </SelectTrigger>
             <SelectContent>

@@ -24,20 +24,21 @@ import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useSession } from "next-auth/react";
+import qs from "query-string";
 import ImagePreviewEditPost from "./image-preview-edit-post";
+import EmojiPicker from "../PostComment/EmojiPicker";
 
 const EditPostModal = ({ blog }) => {
   const { data: session } = useSession();
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState(blog?.description || "");
   const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
-  const [toggleImageUpload, setToggleImageUpload] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([...blog?.image]);
+
+  console.log(selectedFiles, "selectedFiles");
 
   const { mutate: createBlog, isLoading } = useMutation({
     mutationFn: async () => {
@@ -60,10 +61,17 @@ const EditPostModal = ({ blog }) => {
 
       const payload = {
         description,
-        images,
+        images: [...blog.image, ...images],
       };
 
-      const { data } = await axios.post("/api/blog", payload);
+      const url = qs.stringifyUrl({
+        url: "/api/blog",
+        query: {
+          postId: blog.id,
+        },
+      });
+
+      const { data } = await axios.patch(url, payload);
       return data;
     },
     onError: (err) => {
@@ -91,7 +99,6 @@ const EditPostModal = ({ blog }) => {
       });
     },
     onSuccess: () => {
-      setImageUrl("");
       setDescription("");
       setOpen(false);
       setIsLoading(false);
@@ -146,8 +153,6 @@ const EditPostModal = ({ blog }) => {
       .catch((error) => console.error("Error loading images:", error));
   };
 
-  console.log(blog, "edit post modal");
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-3 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2">
@@ -156,7 +161,7 @@ const EditPostModal = ({ blog }) => {
       </DialogTrigger>
       <DialogContent className=" min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
-          <DialogTitle className="text-xs font-bold text-center">
+          <DialogTitle className="text-2xl font-bold text-center">
             Edit post
           </DialogTitle>
         </DialogHeader>
@@ -192,17 +197,24 @@ const EditPostModal = ({ blog }) => {
               </Select>
             </div>
           </div>
-          <div className="grid items-center max-h-[60vh] overflow-auto">
-            <Textarea
-              id="desc"
-              value={blog?.description || ""}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={1}
-              placeholder={`What's on your mind, ${
-                session?.user.name.split(" ")[0]
-              }?`}
-              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
-            />
+          <div className="grid items-center max-h-[50vh] overflow-auto">
+            <div className="flex items-center">
+              <Textarea
+                id="desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={1}
+                placeholder={`What's on your mind, ${
+                  session?.user.name.split(" ")[0]
+                }?`}
+                className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
+              />
+
+              <EmojiPicker
+                triggerClassName="mr-5 bg-transparent"
+                onChange={(emoji) => setDescription(description + emoji)}
+              />
+            </div>
 
             {/* Image upload UI */}
             <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
