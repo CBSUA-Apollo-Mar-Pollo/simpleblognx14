@@ -35,7 +35,7 @@ const PostCommentCard = async ({ post, index }) => {
     <div className="grid grid-cols-4 relative">
       {/* Image */}
       <div className="col-span-3 flex h-screen justify-center items-center relative bg-black">
-        {post.userStatus ? (
+        {post.userStatus === "updated his cover photo" ? (
           <BackgroundImagePost
             image={post.image}
             index={index}

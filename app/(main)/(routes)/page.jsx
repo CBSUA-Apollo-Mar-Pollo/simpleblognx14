@@ -24,7 +24,13 @@ export default async function HomePage() {
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
+
   const users = await db.user.findMany({
+    where: {
+      NOT: {
+        id: session?.user.id,
+      },
+    },
     take: 3,
   });
 

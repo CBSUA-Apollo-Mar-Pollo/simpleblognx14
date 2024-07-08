@@ -2,7 +2,6 @@
 
 import { getDominantColor } from "@/actions/getDominantColor";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
-import PostCardLoader from "@/components/Loaders/PostCardLoader";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,6 +24,8 @@ const StandardPostCard = ({ blog }) => {
       {blog.image && (
         <div className="w-full">
           {/* render the this post when the user change his/her cover photo */}
+
+          {/* render any of this image that meet the requirement */}
           {blog.userStatus === "updated his cover photo" && (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
@@ -62,8 +63,6 @@ const StandardPostCard = ({ blog }) => {
               />
             </Link>
           )}
-
-          {/* render any of this image that meet the requirement */}
 
           {/* render if it has 1 image */}
           {blog.image.length === 1 && blog.userStatus === null && (

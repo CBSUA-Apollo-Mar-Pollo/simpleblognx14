@@ -1,7 +1,7 @@
 import React from "react";
 
 const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
-  console.log(blog, "blog Previews");
+  console.log(imagePreviews, "Image Previews");
   return (
     <>
       {imagePreviews.length === 1 && (
@@ -77,7 +77,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
 
       {imagePreviews.length === 4 && (
         <div className="flex flex-col">
-          <div className="relative grid grid-cols-2">
+          <div className="relative grid grid-cols-2 gap-x-1">
             <img
               src={imagePreviews[0].url || imagePreviews[0]}
               alt="profile image"
@@ -91,7 +91,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
             />
           </div>
-          <div className="mt-[2px] grid grid-cols-2">
+          <div className="mt-[2px] grid grid-cols-2 gap-x-1">
             <img
               src={imagePreviews[2].url || imagePreviews[2]}
               alt="profile image"
@@ -164,7 +164,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               return (
                 <div key={index} className="relative">
                   <img
-                    src={imageUrl}
+                    src={(imageUrl && imageUrl.url) || imageUrl}
                     alt="profile image"
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)

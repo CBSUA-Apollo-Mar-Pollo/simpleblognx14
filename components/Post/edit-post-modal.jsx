@@ -19,7 +19,7 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { ImagePlus, Pen, X } from "lucide-react";
+import { ImageMinus, ImagePlus, Pen, Pencil, X } from "lucide-react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
@@ -27,6 +27,8 @@ import { useSession } from "next-auth/react";
 import qs from "query-string";
 import ImagePreviewEditPost from "./image-preview-edit-post";
 import EmojiPicker from "../PostComment/EmojiPicker";
+import { cn } from "@/lib/utils";
+import { Icons } from "../utils/Icons";
 
 const EditPostModal = ({ blog }) => {
   const { data: session } = useSession();
@@ -37,6 +39,8 @@ const EditPostModal = ({ blog }) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([...blog?.image]);
+
+  const [isHovered, setIsHovered] = useState(false);
 
   console.log(selectedFiles, "selectedFiles");
 
@@ -153,11 +157,21 @@ const EditPostModal = ({ blog }) => {
       .catch((error) => console.error("Error loading images:", error));
   };
 
+  const handleMouseHover = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="flex items-center gap-x-3 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2">
+      <DialogTrigger className="flex items-center gap-x-2 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2 hover:bg-gray-100">
         <Pen className="h-6 w-6 dark:text-neutral-300" />
-        <span className="font-bold dark:text-neutral-300">Edit post</span>
+        <span className="font-bold dark:text-neutral-300 text-[15px]">
+          Edit post
+        </span>
       </DialogTrigger>
       <DialogContent className=" min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
@@ -217,34 +231,62 @@ const EditPostModal = ({ blog }) => {
             </div>
 
             {/* Image upload UI */}
-            <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
+            <div
+              onMouseEnter={handleMouseHover}
+              onMouseLeave={handleMouseLeave}
+              className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4"
+            >
               {selectedFiles.length > 0 || blog?.image.length !== 0 ? (
                 <div
                   className="w-full"
                   onDrop={handleFileDrop}
                   onDragOver={handleDragOver}
                 >
-                  <div className="relative">
-                    <Button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
-                      variant="secondary"
-                      className="z-10 absolute top-2 right-4 bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
-                    >
-                      {" "}
-                      <img src="/ImageIcons/imageadd.png" className="h-6 w-6" />
-                      <span className="text-sm font-semibold">
-                        Add Photos/Videos
-                      </span>
-                    </Button>
-                    <input
-                      id="fileInput"
-                      type="file"
-                      className="hidden"
-                      accept="image/*, video/*"
-                      onChange={handleFileSelect}
-                    />
+                  <div
+                    className={cn("relative", isHovered ? "block" : "hidden")}
+                  >
+                    <div className="absolute top-2 left-4 z-10 flex items-center gap-x-2">
+                      <Button className="flex items-center gap-x-2 bg-neutral-50 hover:bg-neutral-200">
+                        <Pencil className="h-5 w-5 text-neutral-800" />
+                        <span className=" text-neutral-800 font-bold text-[15px]">
+                          Edit
+                        </span>
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                        variant="secondary"
+                        className="  bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
+                      >
+                        {" "}
+                        <img
+                          src="/ImageIcons/imageadd.png"
+                          className="h-6 w-6"
+                        />
+                        <span className="text-sm font-semibold">
+                          Add Photos/Videos
+                        </span>
+                      </Button>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        className="hidden"
+                        accept="image/*, video/*"
+                        onChange={handleFileSelect}
+                      />
+
+                      <Button
+                        className="rounded px-2 bg-neutral-100 hover:bg-neutral-300 gap-x-2"
+                        variant="ghost"
+                      >
+                        <Icons.RemoveImageIcon
+                          size="icon"
+                          className="h-[25px] w-[25px] text-neutral-800"
+                        />
+                        <span>Remove image</span>
+                      </Button>
+                    </div>
                   </div>
 
                   {/* preview the images */}
