@@ -21,7 +21,7 @@ import EditPostModal from "./edit-post-modal";
 import { getSharedPost } from "@/actions/getSharedPost";
 import { useQuery } from "@tanstack/react-query";
 
-const PostOption = ({ blog }) => {
+const PostOption = ({ blog, deleteImage }) => {
   const authorId = blog.author.id;
   const authorName = blog.author.name;
   const { data: session } = useSession();
@@ -68,7 +68,7 @@ const PostOption = ({ blog }) => {
         </DropdownMenuItem>
         {session?.user?.id === authorId && (
           <>
-            <EditPostModal blog={post} />
+            <EditPostModal blog={post} deleteImage={deleteImage} />
 
             <Separator className="my-2" />
 

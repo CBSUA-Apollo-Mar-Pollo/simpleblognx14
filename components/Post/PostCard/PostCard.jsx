@@ -16,7 +16,7 @@ import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
 
-const PostCard = ({ blog, session }) => {
+const PostCard = ({ blog, session, deleteImage }) => {
   // get shared post data
   const { data: sharedPost } = useQuery({
     // Query key (unique identifier)
@@ -28,10 +28,16 @@ const PostCard = ({ blog, session }) => {
     },
   });
 
+  console.log(blog);
+
   return (
     <Card className=" dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-xl">
       <CardHeader className="py-2 px-0">
-        <PostCardHeader blog={blog} session={session} />
+        <PostCardHeader
+          blog={blog}
+          session={session}
+          deleteImage={deleteImage}
+        />
       </CardHeader>
 
       <CardContent className="p-0">

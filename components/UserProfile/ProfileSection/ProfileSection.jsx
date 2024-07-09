@@ -128,8 +128,8 @@ const ProfileSection = ({ user, deleteImage }) => {
           <div className="flex justify-end py-2 gap-x-4 mx-5">
             <Button
               onClick={() => {
-                setImageUrl("");
                 deleteImage(imageUrl);
+                setImageUrl("");
               }}
             >
               Cancel

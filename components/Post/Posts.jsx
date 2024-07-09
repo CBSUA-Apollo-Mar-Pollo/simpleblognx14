@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 import PostCard from "./PostCard/PostCard";
 import ReelsHomeCard from "../reels/reels-home-card";
 
-export default function Posts({ initialPosts, session }) {
+export default function Posts({ initialPosts, session, deleteImage }) {
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
     root: null,
@@ -44,7 +44,7 @@ export default function Posts({ initialPosts, session }) {
   const [randNumber, setRandNumber] = useState(null);
 
   useEffect(() => {
-    const numbers = [3, 4, 5, 7, 8];
+    const numbers = [0, 1, 2, 3, 4, 5, 7, 8];
     const randomIndex = Math.floor(Math.random() * numbers.length);
     setRandNumber(numbers[randomIndex]);
   }, []);
@@ -56,7 +56,11 @@ export default function Posts({ initialPosts, session }) {
           if (index === posts.length - 1) {
             return (
               <li key={blog.id} className="list-none" ref={ref}>
-                <PostCard blog={blog} session={session} />
+                <PostCard
+                  blog={blog}
+                  session={session}
+                  deleteImage={deleteImage}
+                />
                 {index === randNumber && <ReelsHomeCard />}
               </li>
             );
@@ -64,7 +68,12 @@ export default function Posts({ initialPosts, session }) {
             return (
               <li key={index}>
                 {index === randNumber && <ReelsHomeCard />}
-                <PostCard blog={blog} key={blog.id} session={session} />
+                <PostCard
+                  blog={blog}
+                  key={blog.id}
+                  session={session}
+                  deleteImage={deleteImage}
+                />
               </li>
             );
           }

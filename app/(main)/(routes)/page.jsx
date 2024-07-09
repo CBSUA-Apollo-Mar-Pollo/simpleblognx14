@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/Separator";
 import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
+import { UTApi } from "uploadthing/server";
 
 export default async function HomePage() {
   const session = await getAuthSession();
@@ -33,6 +34,13 @@ export default async function HomePage() {
     },
     take: 3,
   });
+
+  const deleteImage = async (image) => {
+    "use server";
+    const utapi = new UTApi();
+    await utapi.deleteFiles(image.key);
+    console.log(image);
+  };
 
   return (
     <div className="grid grid-cols-4 bg-neutral-200/30 dark:bg-neutral-900">
@@ -79,7 +87,11 @@ export default async function HomePage() {
           </div>
         )}
         {/* all post cards */}
-        <Posts initialPosts={posts} session={session} />
+        <Posts
+          initialPosts={posts}
+          session={session}
+          deleteImage={deleteImage}
+        />
       </div>
       {/* third section recent posts and who to follow */}
       <div className=" col-span-1 relative flex flex-col ">

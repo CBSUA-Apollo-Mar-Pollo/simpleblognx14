@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "../ui/Dialog";
 import { Textarea } from "../ui/Textarea";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
@@ -29,8 +29,9 @@ import ImagePreviewEditPost from "./image-preview-edit-post";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
+import { handleRemoveImage } from "@/actions/handleRemovImage";
 
-const EditPostModal = ({ blog }) => {
+const EditPostModal = ({ blog, deleteImage }) => {
   const { data: session } = useSession();
   const [description, setDescription] = useState(blog?.description || "");
   const [open, setOpen] = useState(false);
@@ -42,26 +43,27 @@ const EditPostModal = ({ blog }) => {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  console.log(selectedFiles, "selectedFiles");
-
-  const { mutate: createBlog, isLoading } = useMutation({
+  const { mutate: updatePost, isLoading } = useMutation({
     mutationFn: async () => {
       let images = [];
       const file = selectedFiles;
-      await uploadFiles("imageUploader", {
-        files: file,
-      })
-        .then(async (response) => {
-          console.log(response, "response from image uploader");
-          images = response;
+
+      if (selectedFiles.length !== 0) {
+        await uploadFiles("imageUploader", {
+          files: file,
         })
-        .catch((error) => {
-          return toast({
-            title: "Error",
-            description: "Error uploading file",
-            variant: "destructive",
+          .then(async (response) => {
+            console.log(response, "response from image uploader");
+            images = response;
+          })
+          .catch((error) => {
+            return toast({
+              title: "Error",
+              description: "Error uploading file",
+              variant: "destructive",
+            });
           });
-        });
+      }
 
       const payload = {
         description,
@@ -165,6 +167,12 @@ const EditPostModal = ({ blog }) => {
     setIsHovered(false);
   };
 
+  function isBase64ImageDataURL(str) {
+    // Regular expression to check if the string starts with data:image/[file-type];base64,
+    const regex = /^data:image\/([a-zA-Z]*);base64,([^\"]*)$/;
+    return regex.test(str);
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-2 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2 hover:bg-gray-100">
@@ -245,47 +253,108 @@ const EditPostModal = ({ blog }) => {
                   <div
                     className={cn("relative", isHovered ? "block" : "hidden")}
                   >
-                    <div className="absolute top-2 left-4 z-10 flex items-center gap-x-2">
-                      <Button className="flex items-center gap-x-2 bg-neutral-50 hover:bg-neutral-200">
-                        <Pencil className="h-5 w-5 text-neutral-800" />
-                        <span className=" text-neutral-800 font-bold text-[15px]">
-                          Edit
-                        </span>
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          document.getElementById("fileInput").click()
-                        }
-                        variant="secondary"
-                        className="  bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
-                      >
-                        {" "}
-                        <img
-                          src="/ImageIcons/imageadd.png"
-                          className="h-6 w-6"
+                    <div
+                      className={cn(
+                        "absolute top-2 left-4 z-10 flex items-center w-full gap-x-2",
+                        imagePreviews.length === 1 && "justify-between"
+                      )}
+                    >
+                      <div className="flex items-center gap-x-2">
+                        <Button className="flex items-center gap-x-2 bg-neutral-50 hover:bg-neutral-200">
+                          <Pencil className="h-5 w-5 text-neutral-800" />
+                          <span className=" text-neutral-800 font-bold text-[15px]">
+                            Edit
+                          </span>
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            document.getElementById("fileInput").click()
+                          }
+                          variant="secondary"
+                          className="  bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
+                        >
+                          {" "}
+                          <img
+                            src="/ImageIcons/imageadd.png"
+                            className="h-6 w-6"
+                          />
+                          <span className="text-sm font-semibold">
+                            Add Photos/Videos
+                          </span>
+                        </Button>
+                        <input
+                          id="fileInput"
+                          type="file"
+                          className="hidden"
+                          accept="image/*, video/*"
+                          onChange={handleFileSelect}
                         />
-                        <span className="text-sm font-semibold">
-                          Add Photos/Videos
-                        </span>
-                      </Button>
-                      <input
-                        id="fileInput"
-                        type="file"
-                        className="hidden"
-                        accept="image/*, video/*"
-                        onChange={handleFileSelect}
-                      />
+                      </div>
 
-                      <Button
-                        className="rounded px-2 bg-neutral-100 hover:bg-neutral-300 gap-x-2"
-                        variant="ghost"
-                      >
-                        <Icons.RemoveImageIcon
-                          size="icon"
-                          className="h-[25px] w-[25px] text-neutral-800"
-                        />
-                        <span>Remove image</span>
-                      </Button>
+                      {imagePreviews.length === 1 ? (
+                        <Button
+                          onClick={() => handleRemoveImage(imagePreviews)}
+                          className="rounded-full px-2 bg-neutral-800/50  hover:bg-neutral-800 h-8 w-8 mr-7"
+                          variant="ghost"
+                        >
+                          <X
+                            size="icon"
+                            className="h-[20px] w-[20px] text-neutral-50 "
+                          />
+                        </Button>
+                      ) : (
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              className="rounded px-2 bg-neutral-100 hover:bg-neutral-300 gap-x-2"
+                              variant="ghost"
+                            >
+                              <Icons.RemoveImageIcon
+                                size="icon"
+                                className="h-[25px] w-[25px] text-neutral-800"
+                              />
+                              <span>Remove image</span>
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="bg-neutral-800 text-neutral-50 outline-none border-none min-w-[50vw]">
+                            <DialogHeader>
+                              <DialogTitle className="font-bold text-neutral-50">
+                                Select image to be removed
+                              </DialogTitle>
+                            </DialogHeader>
+
+                            <div
+                              className={cn(
+                                "grid  gap-2 max-h-[60vh] overflow-y-auto pr-2",
+                                imagePreviews.length === 2
+                                  ? "grid-cols-2"
+                                  : "grid-cols-3"
+                              )}
+                            >
+                              {imagePreviews.map((img, index) => (
+                                <div className="relative" key={img.key}>
+                                  <img
+                                    src={img.url || img}
+                                    alt={img.name || null}
+                                    className="w-full h-auto object-cover rounded-lg"
+                                    style={{ aspectRatio: "6/7" }}
+                                  />
+                                  <Button
+                                    onClick={() => deleteImage(img)}
+                                    className="absolute top-1 right-1 rounded-full px-2 bg-neutral-800/80  hover:bg-neutral-800 h-8 w-8"
+                                    variant="ghost"
+                                  >
+                                    <X
+                                      size="icon"
+                                      className="h-[20px] w-[20px] text-neutral-50 "
+                                    />
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
                     </div>
                   </div>
 
@@ -357,7 +426,7 @@ const EditPostModal = ({ blog }) => {
             type="submit"
             disabled={isLoading}
             onClick={() => {
-              createBlog();
+              updatePost();
               setIsLoading(true);
               setLoaderDescription("Posting");
             }}
