@@ -1,6 +1,8 @@
+"use client";
 import { ChevronRight } from "lucide-react";
-import React from "react";
-import { Button } from "../ui/Button";
+import { Button } from "../../ui/Button";
+import ContactInfoModal from "./contact-info-modal";
+import BirthdateInfoModal from "./birthdate-info-modal";
 
 const PersonalDetailsCard = () => {
   return (
@@ -17,20 +19,8 @@ const PersonalDetailsCard = () => {
       </div>
 
       <div className="mt-4  bg-white drop-shadow-md rounded-2xl">
-        <Button
-          variant="ghost"
-          className="w-full bg-white border border-neutral-200 dark:border-0 px-6 flex rounded-none rounded-t-2xl justify-between dark:text-white py-7 dark:bg-neutral-900 dark:hover:bg-neutral-700"
-        >
-          Contact info
-          <ChevronRight />
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-full bg-white border border-neutral-200 dark:border-0 px-6 rounded-none  flex justify-between dark:text-white py-7 dark:bg-neutral-900 dark:hover:bg-neutral-700"
-        >
-          Birthday
-          <ChevronRight />
-        </Button>
+        <ContactInfoModal />
+        <BirthdateInfoModal />
         <Button
           variant="ghost"
           className="w-full bg-white border border-neutral-200 dark:border-0 px-6 rounded-none  flex justify-between dark:text-white py-7 dark:bg-neutral-900 dark:hover:bg-neutral-700"

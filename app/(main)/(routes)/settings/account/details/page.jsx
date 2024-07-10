@@ -1,4 +1,4 @@
-import PersonalDetailsCard from "@/components/SettingsComponent/PersonalDetailsCard";
+import PersonalDetailsCard from "@/components/SettingsComponent/PersonalDetails/PersonalDetailsCard";
 import React from "react";
 
 export const metadata = {
