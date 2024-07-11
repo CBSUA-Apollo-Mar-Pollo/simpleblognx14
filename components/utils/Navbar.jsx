@@ -42,16 +42,13 @@ const Navbar = () => {
         <div className="grid grid-cols-5 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
-              <Link
-                href="/"
-                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
-              >
+              <div className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5">
                 <Icons.HomeFilled className="fill-blue-500 h-8 w-8 " />
-              </Link>
-            ) : (
-              <div className="flex justify-center py-3">
-                <Icons.Home className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
               </div>
+            ) : (
+              <Link href="/" className="flex justify-center py-3">
+                <Icons.Home className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
+              </Link>
             )}
           </ToolTipComp>
 

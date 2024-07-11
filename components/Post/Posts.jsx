@@ -44,7 +44,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
   const [randNumber, setRandNumber] = useState(null);
 
   useEffect(() => {
-    const numbers = [0, 1, 2, 3, 4, 5, 7, 8];
+    const numbers = [0];
     const randomIndex = Math.floor(Math.random() * numbers.length);
     setRandNumber(numbers[randomIndex]);
   }, []);
