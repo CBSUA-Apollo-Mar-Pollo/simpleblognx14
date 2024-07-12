@@ -97,39 +97,41 @@ export default async function HomePage() {
       <div className=" col-span-1 relative flex flex-col ">
         <div className="sticky top-16">
           <RecentPostsCard />
-          <div className="bg-white dark:bg-neutral-800 rounded-2xl mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
-            <h1 className=" text-neutral-950 dark:text-neutral-200 font-bold text-xl mt-2">
-              Who to follow
-            </h1>
-            {users.map((user, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center gap-x-2 my-3">
-                  <UserAvatar
-                    post="post"
-                    className="h-10 w-10 "
-                    user={{
-                      handleName: user.handleName,
-                      bio: user.bio,
-                      birthdate: user.birthdate,
-                      name: user.name || null,
-                      image: user.image || null,
-                    }}
-                  />
-                  <div className="flex flex-col">
-                    <h2 className="text-sm font-semibold dark:text-neutral-200">
-                      {user.name}
-                    </h2>
-                    <h3 className="text-sm text-neutral-500 dark:text-neutral-300">
-                      {user.handleName}
-                    </h3>
+          {session?.user && (
+            <div className="bg-white dark:bg-neutral-800 rounded-2xl mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
+              <h1 className=" text-neutral-950 dark:text-neutral-200 font-bold text-xl mt-2">
+                Who to follow
+              </h1>
+              {users.map((user, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-x-2 my-3">
+                    <UserAvatar
+                      post="post"
+                      className="h-10 w-10 "
+                      user={{
+                        handleName: user.handleName,
+                        bio: user.bio,
+                        birthdate: user.birthdate,
+                        name: user.name || null,
+                        image: user.image || null,
+                      }}
+                    />
+                    <div className="flex flex-col">
+                      <h2 className="text-sm font-semibold dark:text-neutral-200">
+                        {user.name}
+                      </h2>
+                      <h3 className="text-sm text-neutral-500 dark:text-neutral-300">
+                        {user.handleName}
+                      </h3>
+                    </div>
                   </div>
+                  <Button size="sm" className="px-5 rounded-full">
+                    Follow
+                  </Button>
                 </div>
-                <Button size="sm" className="px-5 rounded-full">
-                  Follow
-                </Button>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

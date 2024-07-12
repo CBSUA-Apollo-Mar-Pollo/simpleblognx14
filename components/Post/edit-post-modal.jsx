@@ -16,7 +16,6 @@ import useCustomHooks from "@/hooks/use-custom-hooks";
 import UserAvatar from "../utils/UserAvatar";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
-import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
 import { ImageMinus, ImagePlus, Pen, Pencil, X } from "lucide-react";
@@ -39,9 +38,15 @@ const EditPostModal = ({ blog, deleteImage }) => {
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([...blog?.image]);
+  const [imagePreviews, setImagePreviews] = useState(
+    blog.image !== null ? [...blog.image] : []
+  );
 
   const [isHovered, setIsHovered] = useState(false);
+
+  console.log(selectedFiles, "selectedFiles");
+
+  console.log(blog.image, "blog image");
 
   const { mutate: updatePost, isLoading } = useMutation({
     mutationFn: async () => {
@@ -65,9 +70,17 @@ const EditPostModal = ({ blog, deleteImage }) => {
           });
       }
 
+      const regex = /^data:image\/([a-zA-Z]*);base64,([^\"]*)$/;
+
+      imagePreviews.map((img, index) => {
+        if (regex.test(img)) {
+          imagePreviews.splice(index, 1);
+        }
+      });
+
       const payload = {
         description,
-        images: [...blog.image, ...images],
+        images: [...imagePreviews, ...images],
       };
 
       const url = qs.stringifyUrl({
@@ -244,7 +257,7 @@ const EditPostModal = ({ blog, deleteImage }) => {
               onMouseLeave={handleMouseLeave}
               className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4"
             >
-              {selectedFiles.length > 0 || blog?.image.length !== 0 ? (
+              {selectedFiles.length > 0 || imagePreviews.length !== 0 ? (
                 <div
                   className="w-full"
                   onDrop={handleFileDrop}
@@ -293,7 +306,15 @@ const EditPostModal = ({ blog, deleteImage }) => {
 
                       {imagePreviews.length === 1 ? (
                         <Button
-                          onClick={() => handleRemoveImage(imagePreviews)}
+                          onClick={() => {
+                            handleRemoveImage(imagePreviews[0].key)
+                              .then((res) => {
+                                imagePreviews.splice(0, 1);
+                              })
+                              .catch((err) => {
+                                console.log(err);
+                              });
+                          }}
                           className="rounded-full px-2 bg-neutral-800/50  hover:bg-neutral-800 h-8 w-8 mr-7"
                           variant="ghost"
                         >
@@ -340,7 +361,16 @@ const EditPostModal = ({ blog, deleteImage }) => {
                                     style={{ aspectRatio: "6/7" }}
                                   />
                                   <Button
-                                    onClick={() => deleteImage(img)}
+                                    onClick={() => {
+                                      handleRemoveImage(img.key)
+                                        .then((res) => {
+                                          imagePreviews.splice(index, 1);
+                                          blog.image.splice(index, 1);
+                                        })
+                                        .catch((err) => {
+                                          console.log(err);
+                                        });
+                                    }}
                                     className="absolute top-1 right-1 rounded-full px-2 bg-neutral-800/80  hover:bg-neutral-800 h-8 w-8"
                                     variant="ghost"
                                   >

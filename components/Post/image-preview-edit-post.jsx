@@ -6,16 +6,14 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
     <>
       {imagePreviews.length === 1 && (
         <div>
-          {imagePreviews.map((imageUrl, index) => (
-            <div key={index} className="relative">
-              <img
-                src={imageUrl && imagePreviews[index].url}
-                alt="profile image"
-                className="w-full h-auto object-cover"
-                style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
-              />
-            </div>
-          ))}
+          <div className="relative">
+            <img
+              src={imagePreviews[0] && imagePreviews[0].url}
+              alt="profile image"
+              className="w-full h-auto object-cover"
+              style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
+            />
+          </div>
         </div>
       )}
 

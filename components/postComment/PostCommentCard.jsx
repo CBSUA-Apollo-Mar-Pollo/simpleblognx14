@@ -1,35 +1,29 @@
+"use client";
+
 import { Separator } from "../ui/Separator";
 import ProfileImageAndIcons from "./ProfileImageAndIcons";
 import PostDescription from "./PostDescription";
 import VoteCommentAndShare from "./VoteCommentAndShare";
 import CommentSection from "./CommentSection";
-import { db } from "@/lib/db";
-import { getAuthSession } from "@/lib/auth";
-import { COMMENT_PAGE } from "@/config";
-import { Button } from "../ui/Button";
-import { ChevronLeft } from "lucide-react";
+
 import BackgroundImagePost from "./BackgroundImagePost";
 import ImagePost from "./ImagePost";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const PostCommentCard = async ({ post, index }) => {
-  const session = await getAuthSession();
-  const comments = await db.comment.findMany({
-    where: {
-      postId: post.id,
-      replyToId: null,
-    },
-    include: {
-      author: true,
-      replies: {
-        include: {
-          author: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+const PostCommentCard = ({ post, index, session, comments }) => {
+  const router = useRouter();
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" || e.keyCode === 27) {
+        router.back();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
     <div className="grid grid-cols-4 relative">
