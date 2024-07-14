@@ -181,10 +181,17 @@ const EditPostModal = ({ blog, deleteImage }) => {
   };
 
   function isBase64ImageDataURL(str) {
-    // Regular expression to check if the string starts with data:image/[file-type];base64,
-    const regex = /^data:image\/([a-zA-Z]*);base64,([^\"]*)$/;
-    return regex.test(str);
+    if (typeof str !== "string" || str.length < 50) return false; // Minimum length for Base64 data
+    return /^data:image\/([a-zA-Z]*);base64,/.test(str);
   }
+
+  const removeImage = async (index) => {
+    setImagePreviews((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.splice(index, 1);
+      return newImages;
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -307,6 +314,7 @@ const EditPostModal = ({ blog, deleteImage }) => {
                       {imagePreviews.length === 1 ? (
                         <Button
                           onClick={() => {
+                            // remove one image if there is only one image
                             handleRemoveImage(imagePreviews[0].key)
                               .then((res) => {
                                 imagePreviews.splice(0, 1);
@@ -362,14 +370,24 @@ const EditPostModal = ({ blog, deleteImage }) => {
                                   />
                                   <Button
                                     onClick={() => {
-                                      handleRemoveImage(img.key)
-                                        .then((res) => {
-                                          imagePreviews.splice(index, 1);
-                                          blog.image.splice(index, 1);
-                                        })
-                                        .catch((err) => {
-                                          console.log(err);
-                                        });
+                                      if (isBase64ImageDataURL(img)) {
+                                        removeImage(index, img);
+                                      } else {
+                                        setIsLoading(true);
+                                        setLoaderDescription(
+                                          `Removing ${img.name}`
+                                        );
+                                        handleRemoveImage(img.key)
+                                          .then((res) => {
+                                            imagePreviews.splice(index, 1);
+                                            blog.image.splice(index, 1);
+                                            setIsLoading(false);
+                                          })
+                                          .catch((err) => {
+                                            console.log(err);
+                                            setIsLoading(false);
+                                          });
+                                      }
                                     }}
                                     className="absolute top-1 right-1 rounded-full px-2 bg-neutral-800/80  hover:bg-neutral-800 h-8 w-8"
                                     variant="ghost"

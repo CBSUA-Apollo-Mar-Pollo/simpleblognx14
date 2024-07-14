@@ -1,8 +1,3 @@
-Edit post modal
-
-- able to remove a image,
-- fix emoji picker closing after clicking any emoji
-
 - change sidebar UI
 - add more settings
 - search functionality

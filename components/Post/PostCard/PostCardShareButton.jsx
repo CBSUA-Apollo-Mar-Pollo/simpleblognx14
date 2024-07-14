@@ -64,9 +64,17 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
       });
     },
   });
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-4 py-1 rounded cursor-pointer focus-visible:outline-none">
+      <DropdownMenuTrigger
+        onClick={() => {
+          if (session?.user === undefined) {
+            return signinToast();
+          }
+        }}
+        className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 px-4 py-1 rounded cursor-pointer focus-visible:outline-none"
+      >
         <Forward className="h-6 w-6 text-neutral-700" />
         <span className=" font-medium text-sm">Share</span>
       </DropdownMenuTrigger>
@@ -89,20 +97,23 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
             <Forward className="h-6 w-6" />
             <span>Share now</span>
           </Button>
+          {session?.user && (
+            <>
+              <SharePostModal
+                session={session}
+                sharedPost={sharedPost}
+                blog={blog}
+              />
 
-          <SharePostModal
-            session={session}
-            sharedPost={sharedPost}
-            blog={blog}
-          />
-
-          <Button
-            variant="ghost"
-            className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:bg-neutral-600"
-          >
-            <PlusCircle className="h-5 w-5" />
-            <span> Share to your story</span>
-          </Button>
+              <Button
+                variant="ghost"
+                className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:bg-neutral-600"
+              >
+                <PlusCircle className="h-5 w-5" />
+                <span> Share to your story</span>
+              </Button>
+            </>
+          )}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
