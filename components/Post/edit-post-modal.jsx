@@ -180,15 +180,28 @@ const EditPostModal = ({ blog, deleteImage }) => {
     setIsHovered(false);
   };
 
-  function isBase64ImageDataURL(str) {
+  const isBase64ImageDataURL = (str) => {
     if (typeof str !== "string" || str.length < 50) return false; // Minimum length for Base64 data
     return /^data:image\/([a-zA-Z]*);base64,/.test(str);
-  }
+  };
 
   const removeImage = async (index) => {
+    let indexSum = 0;
+    imagePreviews.map((img, index) => {
+      if (typeof img === "object") {
+        indexSum += index;
+      }
+    });
+
     setImagePreviews((prevImages) => {
       const newImages = [...prevImages];
       newImages.splice(index, 1);
+      return newImages;
+    });
+
+    setSelectedFiles((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.splice(indexSum - index, 1);
       return newImages;
     });
   };
