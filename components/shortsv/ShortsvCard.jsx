@@ -44,7 +44,7 @@ const ShortsvCard = ({ video, comments, session }) => {
 
             <CommentSection
               session={session}
-              postId={video.id}
+              post={video}
               shortsvId={video.id}
               initialComments={comments}
             />

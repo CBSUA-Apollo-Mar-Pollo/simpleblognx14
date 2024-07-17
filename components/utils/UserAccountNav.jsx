@@ -18,7 +18,7 @@ const UserAccountNav = ({ user }) => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="drop-shadow">
         <UserAvatar
           className="h-10 w-10 "
           user={{ name: user.name || null, image: user?.image || null }}

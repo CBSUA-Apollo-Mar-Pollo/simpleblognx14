@@ -1,8 +1,8 @@
+TODO
+
 - change sidebar UI
-- add more settings
 - search functionality
 - video like tiktok functionality(incomplete)
-- add a chat system
 - friend or follower system (friend functionality done)
 - user can create a group or personal page system
 - make it pages responsive
@@ -19,3 +19,8 @@
 ALREADY DONE
 
 - post multiple photos
+
+INCOMPLETE
+
+- add a chat system
+- add more settings

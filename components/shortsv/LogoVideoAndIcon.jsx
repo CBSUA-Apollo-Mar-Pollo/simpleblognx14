@@ -38,8 +38,14 @@ const LogoVideoAndIcon = ({
   const close = () => {
     router.back();
   };
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    if (videoRef?.current) {
+      videoRef.current.muted = false;
+    }
+  }, [videoData]);
 
   const handlePlayClick = () => {
     if (videoRef.current.paused) {
@@ -65,10 +71,10 @@ const LogoVideoAndIcon = ({
         {/* close button and logo */}
         <div className="flex items-center justify-center gap-2 z-20">
           <div
-            className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition"
+            className="p-4 cursor-pointer dark:hover:bg-gray-600 hover:bg-neutral-300 rounded-full transition"
             onClick={close}
           >
-            <X className=" text-white" />
+            <X className=" dark:text-white h-7 w-7" />
           </div>
           <Link href="/" className="font-bold flex items-center gap-x-3">
             <span className="py-[6px] px-4 rounded-full bg-yellow-400 text-4xl">
@@ -129,7 +135,7 @@ const LogoVideoAndIcon = ({
             autoPlay
             preload="metadata"
             muted={!isMuted}
-            className="h-[95vh] w-[23vw] rounded-2xl z-10 cursor-pointer bg-black"
+            className="h-[92vh] w-[23vw] rounded-2xl z-10 cursor-pointer bg-black"
           >
             <source src={videoData?.videoUrl} type="video/mp4" />
           </video>
@@ -217,7 +223,7 @@ const LogoVideoAndIcon = ({
         <div className="absolute right-7 top-16 mt-1">
           <Button
             onClick={CheckSession}
-            className="bg-neutral-100 text-neutral-700 font-semibold dark:text-white dark:bg-neutral-800 rounded-lg py-0 text-[13px] hover:bg-neutral-200 dark:hover:bg-neutral-500"
+            className="bg-neutral-100 drop-shadow-md text-neutral-700 font-semibold dark:text-white dark:bg-neutral-800 rounded-lg py-0 text-[13px] hover:bg-neutral-200 dark:hover:bg-neutral-500"
           >
             <span className="pr-2.5">
               <Clapperboard className="w-5.5 h-5.5 text-neutral-600 dark:text-neutral-200" />

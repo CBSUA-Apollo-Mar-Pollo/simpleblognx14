@@ -29,7 +29,7 @@ const Menu = ({ contentClassName }) => {
   const [open, setOpen] = useState(false);
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger className="focus-visible:outline-none">
+      <DropdownMenuTrigger className="focus-visible:outline-none drop-shadow">
         <ToolTipComp content="Menu">
           <div
             className={`  ${

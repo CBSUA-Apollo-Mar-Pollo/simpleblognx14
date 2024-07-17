@@ -48,7 +48,7 @@ const shortsVPage = async () => {
     },
   });
   return (
-    <div className="bg-neutral-950">
+    <div className="bg-neutral-50 dark:bg-neutral-950">
       <ShortsvCard
         video={shortsVideo[num]}
         comments={comments}
