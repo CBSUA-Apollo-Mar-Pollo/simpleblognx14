@@ -3,7 +3,7 @@ import ConversationCard from "@/components/chat/conversation-card";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-const ChatBoxPage = async () => {
+const ChatBoxPage = async ({ params }) => {
   const session = await getAuthSession();
   const friendLists = await db.friend.findMany({
     where: {
@@ -14,6 +14,7 @@ const ChatBoxPage = async () => {
       requesterUser: true,
     },
   });
+
   return (
     <div className="grid grid-cols-8 h-screen">
       <div className=" col-span-2 border-r border-neutral-300 dark:border-neutral-700">

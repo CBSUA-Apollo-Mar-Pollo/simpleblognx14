@@ -2,15 +2,18 @@
 
 import { getAllReels } from "@/actions/getAllReels";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
-import { ChevronRight, Film, Play, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Film, Play, X } from "lucide-react";
 import { Button } from "../ui/Button";
 import { Icons } from "../utils/Icons";
 import ToolTipComp from "../utils/ToolTipComp";
+import Link from "next/link";
 
 const ReelsHomeCard = () => {
+  const videoContainerRef = useRef(null);
   const videoRefs = useRef([]);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { data: reels } = useQuery({
     queryKey: ["getReels"],
     queryFn: async () => {
@@ -36,6 +39,64 @@ const ReelsHomeCard = () => {
     }
   }, [reels]);
 
+  const RightScroll = () => {
+    if (videoContainerRef.current) {
+      videoContainerRef.current.scrollBy({
+        left: 230,
+        behavior: "smooth",
+      });
+      setIsScrolled(true);
+    }
+  };
+
+  const LeftScroll = () => {
+    if (videoContainerRef.current) {
+      videoContainerRef.current.scrollBy({
+        left: -230,
+        behavior: "smooth",
+      });
+
+      const container = videoContainerRef.current;
+      const atBeginning = container.scrollLeft === 0;
+      const atEnd =
+        container.scrollLeft + container.clientWidth >= container.scrollWidth;
+      if (atBeginning) {
+        setIsScrolled(false);
+      }
+
+      if (atEnd) {
+        setIsScrolled(false);
+      }
+    }
+  };
+
+  const onMouseHoverVideoPlay = (index) => {
+    if (videoRefs.current.length > 0) {
+      const video = videoRefs.current[index];
+      const duration = 10000; // Set the duration in milliseconds (e.g., 10 seconds)
+
+      // Play the video
+      video.play();
+
+      // Stop the video after the specified duration
+      setTimeout(() => {
+        video.pause();
+        video.currentTime = 0; // Reset video to beginning
+      }, duration);
+    }
+  };
+
+  const onMouseHoverVideoStop = (index) => {
+    if (videoRefs.current.length > 0) {
+      const video = videoRefs.current[index];
+      // Set the duration in milliseconds (e.g., 10 seconds)
+
+      // Play the video
+      video.currentTime = 0;
+      video.pause();
+    }
+  };
+
   return (
     <Card className="dark:bg-neutral-800 dark:border-0 rounded-xl mb-3 mt-2">
       <CardHeader className="px-4 pt-4">
@@ -56,12 +117,25 @@ const ReelsHomeCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 pb-2 relative">
-        <div className="overflow-x-hidden ">
+        {isScrolled && (
+          <Button
+            onClick={() => LeftScroll()}
+            size="icon"
+            variant="ghost"
+            className="absolute top-[25vh] left-[2vw] z-50 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"
+          >
+            <ChevronLeft className="h-9 w-9 text-neutral-800 dark:text-neutral-300 stroke-[1.6px]" />
+          </Button>
+        )}
+        <div ref={videoContainerRef} className="overflow-x-hidden">
           <div className="flex space-x-2">
             {reels?.map((reel, index) => (
-              <div
+              <Link
+                onMouseEnter={() => onMouseHoverVideoPlay(index)}
+                onMouseLeave={() => onMouseHoverVideoStop(index)}
+                href={`/shortsv/${reel.id}`}
                 key={index}
-                className="flex-shrink-0 w-[17vw] h-[60vh] hover:opacity-60 cursor-pointer"
+                className="flex-shrink-0 w-[17vw] h-[60vh] hover:opacity-70 cursor-pointer"
               >
                 <video
                   ref={(el) => (videoRefs.current[index] = el)}
@@ -74,11 +148,12 @@ const ReelsHomeCard = () => {
                 >
                   <source src={reel.videoUrl} type="video/mp4" />
                 </video>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
         <Button
+          onClick={() => RightScroll()}
           size="icon"
           variant="ghost"
           className="absolute top-[25vh] right-[2vw] z-50 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"

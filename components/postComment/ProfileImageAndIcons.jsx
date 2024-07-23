@@ -19,7 +19,10 @@ const ProfileImageAndIcons = ({ session }) => {
         </div>
       ) : (
         <Link
-          className={cn(buttonVariants({ variant: "secondary" }), "text-white")}
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            "dark:text-white"
+          )}
           href="/sign-in"
         >
           Sign in

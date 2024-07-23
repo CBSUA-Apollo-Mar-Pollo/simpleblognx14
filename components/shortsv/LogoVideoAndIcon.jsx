@@ -80,7 +80,7 @@ const LogoVideoAndIcon = ({
             <span className="py-[6px] px-4 rounded-full bg-yellow-400 text-4xl">
               E
             </span>
-            <h1 className="text-white font-bold text-2xl">Shortsv</h1>
+            <h1 className="dark:text-white font-bold text-2xl">Shortsv</h1>
           </Link>
         </div>
         {/* enter fullscreen */}

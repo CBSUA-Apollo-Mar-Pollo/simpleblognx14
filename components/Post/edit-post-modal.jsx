@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "../ui/Dialog";
 import { Textarea } from "../ui/Textarea";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
@@ -18,7 +18,7 @@ import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { ImageMinus, ImagePlus, Pen, Pencil, X } from "lucide-react";
+import { ImagePlus, Pen, Pencil, X } from "lucide-react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";

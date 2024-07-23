@@ -7,7 +7,7 @@ export const getAllReels = async () => {
     include: {
       author: true,
     },
-    take: 3,
+    take: 4,
   });
 
   return getAllReels;
