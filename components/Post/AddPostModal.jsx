@@ -21,11 +21,12 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { ImagePlus, X } from "lucide-react";
+import { AlertCircle, ImagePlus, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
+import EmojiPicker from "../PostComment/EmojiPicker";
 
 const AddPostModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
@@ -48,14 +49,19 @@ const AddPostModal = ({ session, user }) => {
     mutationFn: async () => {
       let images = [];
       const file = selectedFiles;
-      try {
-        const response = await uploadFiles("imageUploader", { files: file });
-        images = response;
-      } catch (error) {
-        setErrorMessage(
-          "Error uploading image, please upload an image with the extension of the following: jpeg, png"
-        );
-        throw new UploadError("Failed to upload image: " + error.message, 400);
+      if (selectedFiles.length > 0) {
+        try {
+          const response = await uploadFiles("imageUploader", { files: file });
+          images = response;
+        } catch (error) {
+          setErrorMessage(
+            "Error uploading image, please upload an image with the extension of the following: jpeg, png"
+          );
+          throw new UploadError(
+            "Failed to upload image: " + error.message,
+            400
+          );
+        }
       }
 
       const payload = {
@@ -202,16 +208,22 @@ const AddPostModal = ({ session, user }) => {
             </div>
           </div>
           <div className="grid items-center  max-h-[60vh] overflow-auto">
-            <Textarea
-              id="desc"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={1}
-              placeholder={`What's on your mind, ${
-                session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
-              }?`}
-              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
-            />
+            <div className="flex items-center">
+              <Textarea
+                id="desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={1}
+                placeholder={`What's on your mind, ${
+                  session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
+                }?`}
+                className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
+              />
+              <EmojiPicker
+                triggerClassName="mr-5 bg-transparent"
+                onChange={(emoji) => setDescription(description + emoji)}
+              />
+            </div>
 
             {/* Image upload UI */}
             {toggleImageUpload && (

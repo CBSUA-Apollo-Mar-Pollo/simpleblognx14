@@ -24,6 +24,7 @@ import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
+import EmojiPicker from "../PostComment/EmojiPicker";
 
 const AddGalleryPostModal = ({ session, user }) => {
   const [title, setTitle] = useState("");
@@ -204,16 +205,22 @@ const AddGalleryPostModal = ({ session, user }) => {
             </div>
           </div>
           <div className="grid items-center max-h-[50vh] overflow-auto">
-            <Textarea
-              id="desc"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={1}
-              placeholder={`What's on your mind, ${
-                session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
-              }?`}
-              className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
-            />
+            <div className="flex items-center">
+              <Textarea
+                id="desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={1}
+                placeholder={`What's on your mind, ${
+                  session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
+                }?`}
+                className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
+              />
+              <EmojiPicker
+                triggerClassName="mr-5 bg-transparent"
+                onChange={(emoji) => setDescription(description + emoji)}
+              />
+            </div>
 
             {/* Image upload UI */}
             <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
