@@ -24,3 +24,5 @@ INCOMPLETE
 
 - add a chat system
 - add more settings
+- make the post who have multiple photos also have individual comments
+-

@@ -101,28 +101,35 @@ const LogoVideoAndIcon = ({
             <ChevronLeft className="text-white dark:text-neutral-100  p-3 h-14 w-14 rounded-full cursor-pointer" />
           </Button>
         </div>
-        <div className="relative border dark:border-neutral-800 border-neutral-950 rounded-2xl mt-4">
+        <div className="relative  rounded-2xl mt-4 h-[95vh] flex justify-center items-center">
           {isPlaying ? (
             <Pause
               onClick={handlePlayClick}
-              className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
+              className="fill-white stroke-none absolute top-8 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
           ) : (
             <Play
               onClick={handlePlayClick}
-              className="fill-white stroke-none absolute top-5 left-5 flex items-start justify-start z-20 cursor-pointer"
+              className="fill-white stroke-none absolute top-8 left-5 flex items-start justify-start z-20 cursor-pointer"
             />
           )}
 
           {isMuted ? (
             <Volume2
               onClick={() => setIsMuted(false)}
-              className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+              className="stroke-white absolute top-8 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
             />
           ) : (
             <VolumeX
               onClick={() => setIsMuted(true)}
-              className="stroke-white absolute top-5 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+              className="stroke-white absolute top-8 right-7 flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+            />
+          )}
+
+          {!isPlaying && (
+            <Play
+              onClick={handlePlayClick}
+              className="fill-white stroke-none absolute   z-20 cursor-pointer w-24 h-24 bg-neutral-800 p-4 rounded-full bg-opacity-90"
             />
           )}
 
@@ -140,7 +147,7 @@ const LogoVideoAndIcon = ({
             <source src={videoData?.videoUrl} type="video/mp4" />
           </video>
 
-          <div className="absolute bottom-2 left-4 w-full">
+          <div className="absolute bottom-4 left-4 w-full z-20">
             <div className="flex items-center justify-between gap-x-2">
               <div className="gap-x-3 flex items-center">
                 <UserAvatar
@@ -194,14 +201,16 @@ const LogoVideoAndIcon = ({
                 }`}
               />
             </Button>
-            <span className="text-center text-white text-sm">{commentAmt}</span>
+            <span className="text-center dark:text-white text-sm">
+              {commentAmt}
+            </span>
           </div>
           {/* share button */}
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-2">
             <Button className="px-3 py-6  rounded-full bg-neutral-800">
               <Redo2 className="dark:stroke-white" />
             </Button>
-            <span className="text-center text-white text-sm">Share</span>
+            <span className="text-center dark:text-white text-sm">Share</span>
           </div>
           <div className="p-3  rounded-full bg-neutral-800">
             <MoreVertical className="stroke-white" />

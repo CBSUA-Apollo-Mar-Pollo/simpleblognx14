@@ -66,7 +66,7 @@ const SharedPostCard = ({ sharedPost, blog }) => {
                   referrerPolicy="no-referrer"
                   className="object-contain w-full transition max-h-[30rem] bg-neutral-700 rounded-t-xl"
                   style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.5) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.8) 100%)`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorSharedPost?.[0]}, ${dominantColorSharedPost?.[1]}, ${dominantColorSharedPost?.[2]}, 0.5) 0%, rgba(${dominantColorSharedPost?.[0]}, ${dominantColorSharedPost?.[1]}, ${dominantColorSharedPost?.[2]}, 0.8) 100%)`,
                   }}
                 />
               </Link>

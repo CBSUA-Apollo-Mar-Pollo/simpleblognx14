@@ -74,3 +74,23 @@
   background-color: #ccc;
   border-radius: 8px;
 } */
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar {
+  overflow-y: scroll;
+  overflow-y: overlay;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 7px;
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  /* Transparent track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(207, 207, 207, 0.829); /* Customize the scrollbar color */
+  border-radius: 10px; /* Optional: Round the corners */
+}

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/Button";
+import { Button, buttonVariants } from "../ui/Button";
 import UserAccountNav from "./UserAccountNav";
 import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
@@ -14,8 +14,11 @@ import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
 import { Skeleton } from "../ui/Skeleton";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
+  const { setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
   const pathname = usePathname();
   const [isLoader, setIsloader] = useState(true);
@@ -131,12 +134,37 @@ const Navbar = () => {
               <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
             </div>
           ) : (
-            <Link
-              className={cn(buttonVariants({ variant: "ghost" }))}
-              href="/sign-in"
-            >
-              Sign in
-            </Link>
+            <div className="flex items-center gap-x-1">
+              {resolvedTheme === "light" ? (
+                <Button
+                  onClick={() => setTheme("dark")}
+                  size="icon"
+                  variant="ghost"
+                  className="dark:hover:bg-neutral-700"
+                >
+                  <Moon className="w-5 h-5 text-neutral-800" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => setTheme("light")}
+                  size="icon"
+                  variant="ghost"
+                  className="dark:hover:bg-neutral-700"
+                >
+                  <Sun className="w-5 h-5 text-neutral-100" />
+                </Button>
+              )}
+
+              <Link
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "dark:text-neutral-100"
+                )}
+                href="/sign-in"
+              >
+                Sign in
+              </Link>
+            </div>
           )}
         </div>
       </div>

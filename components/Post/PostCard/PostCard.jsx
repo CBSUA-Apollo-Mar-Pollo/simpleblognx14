@@ -77,7 +77,7 @@ const PostCard = ({ blog, session, deleteImage }) => {
           <HeartVote />
 
           {/* comment button */}
-          {blog?.image ? (
+          {/* {blog?.image ? (
             <Link
               onClick={() => storeToRecentPosts(blog.id)}
               href={`/postComment/${blog.id}/${0}`}
@@ -86,14 +86,14 @@ const PostCard = ({ blog, session, deleteImage }) => {
               <MessageCircle className="h-6 w-6 text-neutral-700" />
               <span className=" font-medium text-sm">Comment</span>
             </Link>
-          ) : (
-            <div
-              className="flex items-center justify-center gap-2 hover:bg-gray-200 rounded cursor-pointer"
-              onClick={() => storeToRecentPosts(blog.id)}
-            >
-              <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
-            </div>
-          )}
+          ) : ( */}
+          <div
+            className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
+            onClick={() => storeToRecentPosts(blog.id)}
+          >
+            <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
+          </div>
+          {/* )} */}
 
           {/* share button*/}
           <PostCardShareButton

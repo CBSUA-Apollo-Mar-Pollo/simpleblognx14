@@ -32,7 +32,9 @@ const HeartVote = () => {
           )}
         />
       </Button>
-      <p className="text-center font-medium text-base tetx-zinc-900 px-2">0</p>
+      <p className="text-center font-medium text-base tetx-neutral-900 px-2 dark:text-white">
+        0
+      </p>
 
       {/* downvote button */}
       {/* <Button

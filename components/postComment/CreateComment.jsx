@@ -138,7 +138,7 @@ const CreateComment = ({
 
   return (
     <div
-      className={`flex gap-x-3 px-4 py-2 bg-neutral-50 dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.25)] rounded-b-xl ${className}`}
+      className={`flex gap-x-3 px-4 py-2 bg-neutral-50 dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.25)] ${className}`}
     >
       <UserAvatar
         className="h-9 w-9 "
