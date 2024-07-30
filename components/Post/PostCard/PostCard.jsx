@@ -28,8 +28,6 @@ const PostCard = ({ blog, session, deleteImage }) => {
     },
   });
 
-  console.log(blog);
-
   return (
     <Card className=" dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-xl">
       <CardHeader className="py-2 px-0">
@@ -56,7 +54,7 @@ const PostCard = ({ blog, session, deleteImage }) => {
           (blog?.image ? (
             <Link
               href={`/postComment/${blog.id}`}
-              className="py-1 flex items-center justify-end mr-4 text-sm hover:underline"
+              className="py-1 flex items-center justify-end mr-4 text-xs hover:underline"
             >
               {blog.comments.length}{" "}
               {blog.comments.length === 1 ? "Comment" : "Comments"}
@@ -67,6 +65,7 @@ const PostCard = ({ blog, session, deleteImage }) => {
               {blog.comments.length === 1 ? "Comment" : "Comments"}
             </div>
           ))}
+
         <Separator className="dark:bg-neutral-700" />
 
         {/* home post vote comment and share */}

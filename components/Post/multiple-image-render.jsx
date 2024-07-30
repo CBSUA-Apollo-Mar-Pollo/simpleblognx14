@@ -62,7 +62,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 referrerPolicy="no-referrer"
                 className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
                 style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.5) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.8) 100%)`,
+                  backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.1) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.2) 100%)`,
                 }}
               />
             </Link>

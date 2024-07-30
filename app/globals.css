@@ -75,22 +75,17 @@
   border-radius: 8px;
 } */
 
-/* Custom Scrollbar Styles */
-.custom-scrollbar {
-  overflow-y: scroll;
-  overflow-y: overlay;
+.simplebar-content {
+  z-index: 10;
+}
+.simplebar-scrollbar {
+  /* background-color: rgba(240, 240, 240, 0.678); */
+  /* Customize the scrollbar color */
+  border-radius: 10px;
+  /* Optional: Round the corners */
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 7px;
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  /* Transparent track */
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(207, 207, 207, 0.829); /* Customize the scrollbar color */
-  border-radius: 10px; /* Optional: Round the corners */
+.simplebar-track {
+  margin-right: 3px;
+  background-color: transparent;
 }

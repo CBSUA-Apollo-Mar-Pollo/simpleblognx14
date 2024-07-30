@@ -117,7 +117,7 @@ const CommentSection = ({
       {hasNextPage && (
         <Button
           variant="ghost"
-          className="text-white hover:underline hover:bg-neutral-800 focus:ring-0 focus:outline-none"
+          className="text-white dark:text-neutral-800 hover:underline hover:bg-neutral-800 focus:ring-0 focus:outline-none"
           onClick={() => fetchNextPage()}
         >
           {comments.length < COMMENT_PAGE - 1 ? "" : "View more comments"}

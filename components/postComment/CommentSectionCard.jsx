@@ -73,7 +73,7 @@ const CommentSectionCard = ({
           <div className="flex items-center gap-x-1">
             <div className="bg-neutral-200 dark:bg-neutral-600 rounded-xl px-4 py-2">
               <div className="flex items-center gap-x-1">
-                <p className="text-neutral-700 dark:text-white text-xs font-semibold">
+                <p className="text-neutral-700 dark:text-neutral-300 text-xs font-semibold">
                   {comment?.author?.name}
                 </p>
                 {post?.author.id === comment?.author?.id && (
@@ -142,9 +142,9 @@ const CommentSectionCard = ({
                 session?.user ? setIsReplying(true) : router.push("/sign-in");
               }}
               variant="ghost"
-              className="hover:bg-none p-0"
+              className="hover:bg-none dark:hover:bg-neutral-800 p-0"
             >
-              <span className="hover:underline cursor-pointer text-neutral-700 dark:text-neutral-200 text-xs">
+              <span className="hover:underline cursor-pointer text-neutral-700 dark:text-neutral-200  text-xs">
                 Reply
               </span>
             </Button>
@@ -170,7 +170,7 @@ const CommentSectionCard = ({
           <Button
             onClick={() => setIsReplying(false)}
             variant="ghost"
-            className="text-white flex justify-end w-full bg-neutral-800 hover:bg-neutral-800 p-0 pr-6 -mt-3 text-xs"
+            className="dark:text-white dark:hover:text-neutral-300 flex justify-end w-full bg-neutral-800 hover:bg-neutral-800 p-0 pr-6 -mt-3 text-xs"
           >
             Cancel
           </Button>

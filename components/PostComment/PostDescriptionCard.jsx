@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,13 +14,20 @@ import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
 import PostVote from "../PostVote/PostVote";
 import { useSession } from "next-auth/react";
-import CommentSection from "./CommentSection";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import HeartVote from "../PostVote/HeartVote";
 import MultipleImageRender from "../Post/multiple-image-render";
+
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
+import { usePathname } from "next/navigation";
+import CreateComment from "./CreateComment";
+import { COMMENT_PAGE } from "@/config";
+import CommentSectionCard from "./CommentSectionCard";
+import { Button } from "../ui/Button";
 
 const PostDescriptionCard = ({ blog, sharedPost }) => {
   const { data: session } = useSession();
@@ -27,7 +35,7 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
   const { mutate: getComments } = useMutation({
     mutationFn: async () => {
       const payload = { postId: blog.id };
-      const { data } = await axios.fetch(
+      const { data } = await axios.post(
         "/api/posts/postDescriptionComment",
         payload
       );
@@ -36,7 +44,14 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
     onSuccess: (data) => {
       setComments(data);
     },
+    onError: (err) => {
+      console.log(err);
+    },
   });
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   const { data: dominantColorPost, isLoading } = useQuery({
     queryKey: ["dominantColorPost", blog.image],
@@ -45,6 +60,30 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
       return res;
     },
   });
+  const fetchComments = async ({ pageParam = 1 }) => {
+    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${blog.id}`;
+    const res = await fetch(query, { cache: "no-store" });
+    if (!res.ok) throw new Error("Network response was not ok");
+    const data = await res.json();
+    return data;
+  };
+
+  const { data, fetchNextPage, refetch, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["viewMoreCommentsPostDescription", blog.id],
+      queryFn: fetchComments,
+      getNextPageParam: (lastPage, allPages) => {
+        // Adjust the logic here based on your API's response
+        if (lastPage.length === 0) {
+          return undefined; // No more pages
+        }
+        const nextPage = allPages.length + 1;
+        return nextPage;
+      },
+    });
+
+  // Flatten the data from all pages
+  const commentsData = data?.pages.flat() ?? [];
 
   return (
     <Dialog onOpenChange={() => getComments()}>
@@ -55,16 +94,16 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="p-0 min-w-[40rem] bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
-        <DialogHeader className="px-4 py-4 border-b-[1px] dark:border-neutral-600 ">
+      <DialogContent className="p-0 min-w-[40rem] gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
+        <DialogHeader className="px-4 py-4  border-b-[1px] dark:border-neutral-600 ">
           <DialogTitle className="text-xl text-center font-semibold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
           </DialogTitle>
         </DialogHeader>
 
         {/* user profile */}
-        <div className="relative">
-          <div className="custom-scrollbar  max-h-[80vh]">
+        <div className="relative mt-2">
+          <SimpleBar style={{ maxHeight: "60vh" }}>
             <div className="flex items-center gap-1 px-5 ">
               <UserAvatar
                 className="h-10 w-10 "
@@ -89,7 +128,6 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
             </div>
 
             {/* post description */}
-
             <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal text-neutral-800 dark:text-neutral-50">
               {blog.description}
             </p>
@@ -164,7 +202,7 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
             )}
 
             {/* home post vote comment and share */}
-            <div className="grid grid-cols-4 my-1 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">
+            <div className="grid grid-cols-4 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">
               {/* vote */}
               <PostVote />
               <HeartVote />
@@ -185,16 +223,90 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
             </div>
 
             {/* comment section */}
-            <div className={`w-full ${session?.user ? "mb-[15vh]" : "mb-5"} `}>
-              <CommentSection
-                session={session}
-                post={blog}
-                initialComments={comments}
-                getComments={getComments}
-              />
+            <div className="mt-2 pl-4 pr-1 overflow-auto">
+              <div className="text-end py-2">
+                <p className="text-neutral-800 dark:text-neutral-300 text-sm font-medium">
+                  <span className="px-2 cursor-pointer">Top comments</span>
+                </p>
+              </div>
+              {/* comments */}
+              {commentsData
+                .filter((comment) => !comment.replyToId)
+                .map((topLevelComment, index) => {
+                  // const divRefs = Array(topLevelComment.replies.length)
+                  //   .fill(null)
+                  //   .map(() => useRef(null));
+                  return (
+                    <div className="flex flex-col relative" key={index}>
+                      {topLevelComment.replies.length !== 0 && (
+                        <div
+                          // className={`absolute left-4 border-l-2 border-neutral-600 h-[calc(100%-${
+                          //   divRefs[divRefs.length - 1].current?.offsetHeight
+                          // }px)] `}
+                          className={`absolute left-4 border-l-2 border-neutral-600 h-[90%]`}
+                        />
+                      )}
+                      <CommentSectionCard
+                        comment={topLevelComment}
+                        session={session}
+                        index={index}
+                        getComments={getComments}
+                        refetch={refetch}
+                        post={blog}
+                      />
+
+                      {/* replies */}
+                      {topLevelComment.replies.map((reply, index) => {
+                        return (
+                          <div
+                            key={reply.id}
+                            className="pl-4 relative"
+                            // ref={divRefs[index]}
+                          >
+                            <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                            <div className="ml-8 mt-2">
+                              <CommentSectionCard
+                                comment={reply}
+                                session={session}
+                                index={index}
+                                getComments={getComments}
+                                refetch={refetch}
+                                post={blog}
+                                classNameForUserAvatarReplies="h-7 w-7"
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
             </div>
-          </div>
+
+            {hasNextPage && (
+              <Button
+                variant="ghost"
+                className="dark:text-white text-neutral-100 hover:underline hover:bg-neutral-800 dark:hover:text-neutral-300 focus:ring-0 focus:outline-none"
+                onClick={() => fetchNextPage()}
+              >
+                {commentsData.length < COMMENT_PAGE - 1
+                  ? ""
+                  : "View more comments"}
+              </Button>
+            )}
+          </SimpleBar>
         </div>
+
+        {session?.user && (
+          <div>
+            <CreateComment
+              session={session}
+              postId={blog.id}
+              getComments={getComments}
+              refetch={refetch}
+            />
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

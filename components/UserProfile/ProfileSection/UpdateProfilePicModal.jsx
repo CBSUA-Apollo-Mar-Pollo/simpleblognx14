@@ -145,7 +145,7 @@ const UpdateProfilePicModal = ({ userId }) => {
             />
           ) : (
             <Button
-              className="w-full py-2"
+              className="w-full py-2 bg-blue-600 hover:bg-blue-400"
               onClick={() => {
                 setSrc("");
                 setToggleUpload(true);
@@ -163,7 +163,12 @@ const UpdateProfilePicModal = ({ userId }) => {
             >
               Cancel
             </Button>
-            <Button onClick={() => save()}>Save</Button>
+            <Button
+              className=" bg-blue-600 hover:bg-blue-400"
+              onClick={() => save()}
+            >
+              Save
+            </Button>
           </div>
 
           {/* Uploads */}

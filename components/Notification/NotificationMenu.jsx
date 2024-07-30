@@ -68,23 +68,29 @@ const NotificationMenu = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white px-2 py-2 min-w-[22vw] -mr-14"
+        className="bg-white dark:bg-neutral-800 px-2 py-2 min-w-[22vw] -mr-14 dark:border-0"
         align="end"
       >
         <div className="flex items-center justify-between mx-2">
-          <DropdownMenuLabel className="text-2xl font-bold">
+          <DropdownMenuLabel className="text-2xl font-bold dark:text-white">
             Notifications
           </DropdownMenuLabel>
           <div>
-            <MoreHorizontal />
+            <MoreHorizontal className="dark:text-white" />
           </div>
         </div>
 
         <div className="mx-2">
-          <Button variant="ghost" className="font-semibold px-2 py-3">
+          <Button
+            variant="ghost"
+            className="font-semibold px-2 py-3 dark:text-white"
+          >
             All
           </Button>
-          <Button variant="ghost" className="font-semibold px-2 py-3">
+          <Button
+            variant="ghost"
+            className="font-semibold px-2 py-3 dark:text-white"
+          >
             Unread
           </Button>
         </div>
@@ -132,7 +138,9 @@ const NotificationMenu = () => {
 
         {/* Notifications */}
         <div className="mx-3">
-          <p className="text-[14px] font-semibold my-2">Earlier</p>
+          <p className="text-[14px] font-semibold my-2 dark:text-white">
+            Earlier
+          </p>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -156,7 +156,7 @@ const ProfileSection = ({ user, deleteImage }) => {
           user={user}
         />
 
-        <div className="mt-5 w-full relative flex justify-between">
+        <div className="mt-5 w-full relative flex justify-between z-10">
           <div className="ml-[16rem]">
             <h1 className="font-bold text-4xl dark:text-white">{user?.name}</h1>
             <span className="text-base font-medium dark:text-white">
