@@ -25,6 +25,7 @@ const CreateComment = ({
   setIsReplying,
   commentProps,
   shortsvId,
+  imageIndex,
 }) => {
   const [textareaValue, setTextareaValue] = useState(
     replyToName ? "@" + replyToName + " " : ""
@@ -43,6 +44,7 @@ const CreateComment = ({
         replyToId,
         commentId,
         commentImageUrl: imageUrl,
+        imageIndex,
       };
 
       const { data } = await axios.patch("/api/posts/postComment", payload);

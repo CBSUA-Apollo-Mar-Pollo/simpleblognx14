@@ -53,20 +53,22 @@ const PostCommentCard = ({ post, index, session, comments }) => {
         >
           <PostDescription
             post={post}
-            commentAmt={post.comments.length}
+            index={index}
+            commentAmt={comments.length}
             session={session}
           />
 
-          <Separator className="bg-neutral-200 dark:bg-neutral-700" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-700" />
 
           <VoteCommentAndShare />
 
-          <Separator className="bg-neutral-200 dark:bg-neutral-700" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-700" />
 
           <CommentSection
             session={session}
             post={post}
             initialComments={comments}
+            imageIndex={index}
           />
         </div>
       </div>

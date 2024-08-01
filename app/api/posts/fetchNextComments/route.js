@@ -5,37 +5,65 @@ export async function GET(req) {
   const url = new URL(req.url);
 
   try {
-    const { limit, page, postId } = z
+    const { limit, page, postId, imageIndex } = z
       .object({
         limit: z.string(),
         page: z.string(),
         postId: z.string(),
+        imageIndex: z.string().optional().nullable(),
       })
       .parse({
         limit: url.searchParams.get("limit"),
         page: url.searchParams.get("page"),
         postId: url.searchParams.get("postId"),
+        imageIndex: url.searchParams.get("imageIndex"),
       });
 
-    const comments = await db.comment.findMany({
-      take: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit),
-      where: {
-        postId: postId,
-        replyToId: null,
-      },
-      include: {
-        author: true,
-        replies: {
-          include: {
-            author: true,
+    let comments = [];
+
+    if (imageIndex !== undefined || null) {
+      comments = await db.comment.findMany({
+        take: parseInt(limit),
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        where: {
+          postId: postId,
+          replyToId: null,
+          index: imageIndex,
+        },
+        include: {
+          author: true,
+          replies: {
+            include: {
+              author: true,
+            },
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    } else {
+      comments = await db.comment.findMany({
+        take: parseInt(limit),
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        where: {
+          postId: postId,
+          replyToId: null,
+          index: null,
+        },
+        include: {
+          author: true,
+          replies: {
+            include: {
+              author: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }
 
     return new Response(JSON.stringify(comments));
   } catch (error) {

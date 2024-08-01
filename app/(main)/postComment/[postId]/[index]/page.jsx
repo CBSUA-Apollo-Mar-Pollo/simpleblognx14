@@ -8,7 +8,7 @@ export const metadata = {
   description: "All in one social media app",
 };
 
-const postComment = async ({ params }) => {
+const postCommentPage = async ({ params }) => {
   const session = await getAuthSession();
   const post = await db.blog.findFirst({
     where: {
@@ -27,6 +27,7 @@ const postComment = async ({ params }) => {
     where: {
       postId: post.id,
       replyToId: null,
+      index: params?.index,
     },
     include: {
       author: true,
@@ -51,4 +52,4 @@ const postComment = async ({ params }) => {
   );
 };
 
-export default postComment;
+export default postCommentPage;

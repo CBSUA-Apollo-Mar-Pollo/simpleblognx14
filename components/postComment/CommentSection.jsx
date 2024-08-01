@@ -14,6 +14,7 @@ const CommentSection = ({
   shortsvId,
   initialComments,
   getComments,
+  imageIndex,
 }) => {
   const pathname = usePathname();
 
@@ -28,7 +29,7 @@ const CommentSection = ({
   }, []);
 
   const fetchComments = async ({ pageParam }) => {
-    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${post.id}`;
+    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${post.id}&imageIndex=${imageIndex}`;
 
     const res = await fetch(query, { cache: "no-store" });
 
@@ -139,6 +140,7 @@ const CommentSection = ({
             shortsvId={shortsvId}
             getComments={getComments}
             refetch={refetch}
+            imageIndex={imageIndex}
           />
         </div>
       )}

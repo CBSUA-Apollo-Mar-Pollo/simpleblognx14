@@ -5,28 +5,30 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const ImagePost = ({ image, index }) => {
+const ImagePost = ({ image, index, postId }) => {
   const router = useRouter();
   const close = () => {
-    router.back();
+    router.replace("/");
   };
 
   const [imageCounter, setImageCounter] = useState(parseInt(index));
+
   const handleClickForward = () => {
     if (imageCounter === image.length - 1) {
-      setImageCounter(0);
+      router.push(`/postComment/${postId}/${0}`);
     } else {
-      setImageCounter(imageCounter + 1);
+      router.push(`/postComment/${postId}/${parseInt(index) + 1}`);
     }
   };
 
   const handleClickBack = () => {
     if (imageCounter === 0) {
-      setImageCounter(image.length - 1);
+      router.push(`/postComment/${postId}/${image.length - 1}`);
     } else {
-      setImageCounter(imageCounter - 1);
+      router.push(`/postComment/${postId}/${index - 1}`);
     }
   };
+
   return (
     <>
       {image.length > 1 && (
@@ -69,7 +71,7 @@ const ImagePost = ({ image, index }) => {
         sizes="100vw"
         width={0}
         height={0}
-        src={image[imageCounter]?.url}
+        src={image[parseInt(index)]?.url}
         alt="profile image"
         referrerPolicy="no-referrer"
         className="object-contain w-auto transition max-h-screen"

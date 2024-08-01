@@ -111,8 +111,10 @@ model Comment {
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
 
-  blog   Blog   @relation(fields: [postId], references: [id])
+  blog Blog @relation(fields: [postId], references: [id])
+
   postId String
+  index  String?
 
   replyToId String?
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)

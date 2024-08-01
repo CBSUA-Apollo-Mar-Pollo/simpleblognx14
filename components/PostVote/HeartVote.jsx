@@ -32,7 +32,7 @@ const HeartVote = () => {
           )}
         />
       </Button>
-      <p className="text-center font-medium text-base tetx-neutral-900 px-2 dark:text-white">
+      <p className="text-center font-medium text-base tetx-neutral-900 px-2 dark:text-white text-neutral-900">
         0
       </p>
 

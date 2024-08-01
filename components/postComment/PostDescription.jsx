@@ -9,7 +9,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 
-const PostDescription = ({ post, commentAmt, session }) => {
+const PostDescription = ({ post, commentAmt, session, index }) => {
   return (
     <div className="my-2 mx-3">
       <div className="flex items-center justify-between gap-1">
@@ -22,8 +22,8 @@ const PostDescription = ({ post, commentAmt, session }) => {
             }}
           />
 
-          <div className="px-2 pt-1 text-neutral-700 dark:text-white">
-            <div className="gap-x-1">
+          <div className="px-2 pt-1  text-neutral-700 dark:text-white">
+            <div className="gap-x-1 flex items-center">
               <p className="font-semibold text-sm hover:underline text-[12px]">
                 {post?.author?.name}
               </p>
@@ -52,7 +52,11 @@ const PostDescription = ({ post, commentAmt, session }) => {
       </div>
 
       <div className="text-neutral-700 dark:text-neutral-200 my-2 mb-5">
-        <p className="text-sm">{post.description}</p>
+        <p className="text-sm">
+          {post.image.length === 1
+            ? post.description
+            : post.image[index].description}
+        </p>
       </div>
 
       {commentAmt !== 0 && (
