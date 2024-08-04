@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const ImagePost = ({ image, index, postId }) => {
+const ImagePost = ({ image, index, postId, setToggleExpand }) => {
   const router = useRouter();
   const close = () => {
     router.replace("/");
@@ -57,11 +57,14 @@ const ImagePost = ({ image, index, postId }) => {
           </Link>
         </div>
         {/* enter fullscreen */}
-        <div className="flex">
-          <div className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition">
-            <Download className="text-white" />
+        <div className="flex z-20">
+          <div className="py-4 px-4 cursor-pointer hover:bg-gray-600 hover:bg-opacity-40 rounded-full transition">
+            <Download className="text-white " />
           </div>
-          <div className="py-4 px-4 cursor-pointer hover:bg-gray-600 rounded-full transition">
+          <div
+            onClick={() => setToggleExpand((prevState) => !prevState)}
+            className="py-4 px-4 cursor-pointer hover:bg-gray-600 hover:bg-opacity-40  rounded-full transition"
+          >
             <Scaling className="text-white" />
           </div>
         </div>
@@ -74,7 +77,7 @@ const ImagePost = ({ image, index, postId }) => {
         src={image[parseInt(index)]?.url}
         alt="profile image"
         referrerPolicy="no-referrer"
-        className="object-contain w-auto transition max-h-screen"
+        className="object-fill w-auto transition max-h-screen"
       />
 
       {image.length > 1 && (

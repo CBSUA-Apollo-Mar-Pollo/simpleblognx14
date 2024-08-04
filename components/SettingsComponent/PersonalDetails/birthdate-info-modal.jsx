@@ -47,7 +47,6 @@ const formSchema = z.object({
 
 const BirthdateInfoModal = () => {
   const { data: session } = useSession();
-  console.log(session);
   const { toast } = useToast();
   const [toggleContentModal, setToggleContentModal] = useState(false);
 
