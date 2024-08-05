@@ -83,8 +83,10 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
   });
 
   useEffect(() => {
-    const textarea = document.getElementById("auto-resize-textarea");
-    textarea.style.height = `${textarea.scrollHeight}px`;
+    if (session?.user.id) {
+      const textarea = document.getElementById("auto-resize-textarea");
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
   }, [watchedField, toggleEditDescription]);
 
   return (
@@ -132,7 +134,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
       {!toggleEditDescription && (
         <p
           style={{ whiteSpace: "pre-line" }}
-          className="text-sm text-neutral-50 mt-2"
+          className="text-sm dark:text-neutral-50 mt-2"
         >
           {post.image.length === 1
             ? post.description
@@ -140,12 +142,12 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
         </p>
       )}
 
-      {post.author.id === session.user.id &&
+      {post.author.id === session?.user.id &&
         (toggleEditDescription ? (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="mt-4">
-                <div className="relative dark:bg-neutral-700 rounded-lg pb-1 pr-1">
+                <div className="relative bg-neutral-100 dark:bg-neutral-700 rounded-lg pb-1 pr-1">
                   <FormField
                     control={form.control}
                     name="description"
@@ -155,7 +157,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
                           <Textarea
                             id="auto-resize-textarea"
                             placeholder="Add a description"
-                            className="dark:bg-neutral-700 text-neutral-100 placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
+                            className="bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
                             {...field}
                           />
                         </FormControl>
@@ -180,7 +182,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
                   <Button
                     type="submit"
                     size="sm"
-                    className="my-2 bg-blue-300 dark:bg-blue-700 dark:hover:bg-blue-500"
+                    className="my-2 bg-blue-500 dark:bg-blue-700 dark:hover:bg-blue-500"
                   >
                     Done Editing
                   </Button>
@@ -190,7 +192,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
                       setToggleEditDescription(false);
                       reset();
                     }}
-                    className="my-2 bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500"
+                    className="my-2 bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500"
                   >
                     Cancel
                   </Button>
@@ -203,7 +205,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
             <Button
               size="sm"
               onClick={() => setToggleEditDescription(true)}
-              className=" bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500 text-sm"
+              className=" bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500 text-sm"
             >
               Edit
             </Button>

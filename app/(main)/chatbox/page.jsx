@@ -1,5 +1,6 @@
 import ChatSideBar from "@/components/chat/chat-sidebar";
 import ConversationCard from "@/components/chat/conversation-card";
+import SocketTestComponent from "@/components/socket-test-component";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -21,6 +22,7 @@ const ChatBoxPage = async () => {
       </div>
       <div className="col-span-6 ">
         <ConversationCard />
+        <SocketTestComponent />
       </div>
     </div>
   );
