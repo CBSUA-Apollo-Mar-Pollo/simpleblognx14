@@ -97,7 +97,7 @@ export default async function HomePage() {
       <div className=" col-span-1 relative flex flex-col ">
         <div className="sticky top-16">
           <RecentPostsCard />
-          {session?.user && (
+          {/* {session?.user && (
             <div className="bg-white dark:bg-neutral-800 rounded-2xl mr-4 mt-3 px-5 pt-1 drop-shadow-lg">
               <h1 className=" text-neutral-950 dark:text-neutral-200 font-bold text-xl mt-2">
                 Who to follow
@@ -131,7 +131,7 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

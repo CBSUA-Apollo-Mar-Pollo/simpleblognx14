@@ -30,7 +30,6 @@ import CommentSectionCard from "./CommentSectionCard";
 import { Button } from "../ui/Button";
 
 const PostDescriptionCard = ({ blog, sharedPost }) => {
-  console.log(blog, "blog");
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const { mutate: getComments } = useMutation({

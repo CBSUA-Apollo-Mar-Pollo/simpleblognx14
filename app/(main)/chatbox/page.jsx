@@ -15,6 +15,7 @@ const ChatBoxPage = async () => {
       requesterUser: true,
     },
   });
+
   return (
     <div className="grid grid-cols-8 h-screen">
       <div className=" col-span-2 border-r border-neutral-300 dark:border-neutral-700">

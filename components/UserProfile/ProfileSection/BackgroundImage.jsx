@@ -80,8 +80,8 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           ) : (
             // show a blank cover photo
-            <div className=" rounded-b-3xl scroll-container bg-neutral-400 dark:bg-neutral-900 h-[55vh]">
-              <div className="w-[70vw]" />
+            <div className=" rounded-b-3xl scroll-container bg-neutral-400 dark:bg-neutral-800 h-[55vh]">
+              <div className="w-[80vw]" />
             </div>
           )}
 

@@ -88,63 +88,72 @@ const ChatBoxMenu = () => {
         </div>
 
         <div className="min-h-[70vh] mx-3 py-2">
-          <div>
+          <div className="gap-x-2 flex">
             <Button
+              size="small"
               variant="secondary"
-              className="hover:bg-neutral-200 rounded-full"
+              className="hover:bg-neutral-200 rounded-full px-4 py-1.5 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-700/50"
             >
               Inbox
             </Button>
             <Button
+              size="small"
               variant="secondary"
-              className="hover:bg-neutral-200 rounded-full"
+              className="hover:bg-neutral-200 rounded-full px-4 py-1.5 dark:bg-neutral-700 dark:text-neutral-100 dark:hover:bg-neutral-700/50"
             >
               Channels
             </Button>
           </div>
-          {isLoading ? (
-            <span>loading</span>
-          ) : (
-            friends?.map((friend, index) =>
-              friend.requesterUser.id !== session?.user.id ? (
-                <div
-                  key={index}
-                  className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
-                >
-                  <UserAvatar
-                    className="h-12 w-12 "
-                    user={{
-                      image: friend?.requesterUser.image || null,
-                    }}
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-neutral-700">
-                      {friend?.requesterUser.name}
-                    </span>
-                    <span className="text-xs">message example</span>
+
+          <div className="mt-2">
+            {isLoading ? (
+              <span>loading</span>
+            ) : (
+              friends?.map((friend, index) =>
+                friend.requesterUser.id !== session?.user.id ? (
+                  <div
+                    key={index}
+                    className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-600 rounded-md cursor-pointer"
+                  >
+                    <UserAvatar
+                      className="h-12 w-12 "
+                      user={{
+                        image: friend?.requesterUser.image || null,
+                      }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-neutral-700 dark:text-neutral-100">
+                        {friend?.requesterUser.name}
+                      </span>
+                      <span className="text-xs dark:text-neutral-100">
+                        message example
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div
-                  key={index}
-                  className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
-                >
-                  <UserAvatar
-                    className="h-12 w-12 "
-                    user={{
-                      image: friend?.user.image || null,
-                    }}
-                  />
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-neutral-700">
-                      {friend?.user.name}
-                    </span>
-                    <span className="text-xs">message example</span>
+                ) : (
+                  <div
+                    key={index}
+                    className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-600 rounded-md cursor-pointer"
+                  >
+                    <UserAvatar
+                      className="h-12 w-12 "
+                      user={{
+                        image: friend?.user.image || null,
+                      }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-semibold text-neutral-700 dark:text-neutral-100">
+                        {friend?.user.name}
+                      </span>
+                      <span className="text-xs dark:text-neutral-100">
+                        message example
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )
               )
-            )
-          )}
+            )}
+          </div>
         </div>
 
         <div className="border-t dark:border-neutral-700 py-2 text-center text-sm mt-2">

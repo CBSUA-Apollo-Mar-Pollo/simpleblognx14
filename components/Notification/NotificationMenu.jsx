@@ -56,7 +56,7 @@ const NotificationMenu = () => {
               open
                 ? "bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-300"
                 : "bg-gray-100 hover:bg-gray-200 dark:hover:bg-neutral-500"
-            } dark:bg-neutral-600 p-2 rounded-full cursor-pointer `}
+            } dark:bg-neutral-600 p-2 rounded-full cursor-pointer relative`}
           >
             <Icons.bell
               className={` ${
@@ -97,10 +97,12 @@ const NotificationMenu = () => {
 
         {/* friend request */}
         {friendRequestData && (
-          <div className="mx-3">
-            <h6 className="text-[14px] font-semibold my-2">Friend requests</h6>
+          <div className="ml-3">
+            <h6 className="text-[14px] font-semibold my-2 dark:text-neutral-100">
+              Friend requests
+            </h6>
 
-            <DropdownMenuItem className="gap-x-3 p-2">
+            <DropdownMenuItem className="gap-x-3  dark:hover:bg-neutral-600/20 p-3">
               <UserAvatar
                 post="user"
                 className="h-14 w-14 "
@@ -113,24 +115,30 @@ const NotificationMenu = () => {
                 }}
               />
               <div className="w-full">
-                <p className="font-semibold text-neutral-700 ml-1 my-1">
+                <p className="font-semibold text-neutral-700 ml-1 my-1 dark:text-neutral-50">
                   {friendRequestData?.requesterUserData.name}
                 </p>
-                <div className="flex gap-x-1">
+                <div className="flex gap-x-3">
                   <Button
                     onClick={() => handleCancelAndFriendRequest("true")}
                     size="sm"
-                    className="w-full bg-blue-600 "
+                    className="w-full bg-blue-600 hover:bg-blue-600/80"
                   >
                     Confirm
                   </Button>
-                  <Button size="sm" className="w-full">
+                  <Button
+                    size="sm"
+                    className="w-full dark:bg-neutral-700 dark:hover:bg-neutral-700/80"
+                  >
                     Delete
                   </Button>
                 </div>
               </div>
             </DropdownMenuItem>
-            <Button size="sm" className="w-full mb-2 mt-3">
+            <Button
+              size="sm"
+              className="w-full mb-2 mt-3 dark:bg-neutral-700 dark:hover:bg-neutral-700/80"
+            >
               See all
             </Button>
           </div>

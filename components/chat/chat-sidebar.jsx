@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { MoreHorizontal, Pencil, Search } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
+import Link from "next/link";
 
 const ChatSideBar = ({ friendLists, session }) => {
   return (
@@ -13,15 +14,15 @@ const ChatSideBar = ({ friendLists, session }) => {
         <div className="flex items-center gap-x-2">
           <Button
             size="icon"
-            className="bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-50 rounded-full"
+            className="bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-700/95 dark:hover:bg-neutral-600  rounded-full"
           >
-            <MoreHorizontal className="h-6 w-6 text-neutral-800" />
+            <MoreHorizontal className="h-6 w-6 text-neutral-800 dark:text-neutral-200" />
           </Button>
           <Button
             size="icon"
-            className="bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-300/95 rounded-full dark:bg-neutral-50 "
+            className="bg-neutral-200 hover:bg-neutral-300/80 dark:bg-neutral-700/95 dark:hover:bg-neutral-600 rounded-full "
           >
-            <Pencil className="h-6 w-6 text-neutral-800" />
+            <Pencil className="h-6 w-6 text-neutral-800 dark:text-neutral-200" />
           </Button>
         </div>
       </div>
@@ -58,9 +59,10 @@ const ChatSideBar = ({ friendLists, session }) => {
       <div className="mx-4 mt-2">
         {friendLists?.map((friend, index) =>
           friend.requesterUser.id !== session?.user.id ? (
-            <div
+            <Link
+              href={`/chatbox/${friend.requesterUser.id}`}
               key={index}
-              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
+              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
             >
               <UserAvatar
                 className="h-12 w-12 "
@@ -69,16 +71,17 @@ const ChatSideBar = ({ friendLists, session }) => {
                 }}
               />
               <div className="flex flex-col">
-                <span className="font-semibold text-neutral-700">
+                <span className="font-semibold text-neutral-700 dark:text-neutral-50">
                   {friend?.requesterUser.name}
                 </span>
-                <span className="text-xs">message example</span>
+                <span className="text-xs dark:text-white">message example</span>
               </div>
-            </div>
+            </Link>
           ) : (
-            <div
+            <Link
               key={index}
-              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 rounded-md cursor-pointer"
+              href={`/chatbox/${friend.user.id}`}
+              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
             >
               <UserAvatar
                 className="h-12 w-12 "
@@ -87,12 +90,12 @@ const ChatSideBar = ({ friendLists, session }) => {
                 }}
               />
               <div className="flex flex-col">
-                <span className="font-semibold text-neutral-700">
+                <span className="font-semibold text-neutral-700 dark:text-neutral-50">
                   {friend?.user.name}
                 </span>
-                <span className="text-xs">message example</span>
+                <span className="text-xs dark:text-white">message example</span>
               </div>
-            </div>
+            </Link>
           )
         )}
       </div>
