@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/utils/Provider";
+import { SocketProvider } from "@/components/Providers/socket-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,8 +19,10 @@ export default function RootLayout({ children }) {
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
-          <div className="mx-auto dark:bg-neutral-900">{children}</div>
-          <Toaster />
+          <SocketProvider>
+            <div className="mx-auto dark:bg-neutral-900">{children}</div>
+            <Toaster />
+          </SocketProvider>
         </Providers>
       </body>
     </html>

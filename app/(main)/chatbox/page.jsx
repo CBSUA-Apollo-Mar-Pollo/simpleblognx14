@@ -3,9 +3,15 @@ import ConversationCard from "@/components/chat/conversation-card";
 import SocketTestComponent from "@/components/socket-test-component";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
 const ChatBoxPage = async () => {
   const session = await getAuthSession();
+
+  if (!session?.user) {
+    redirect("/");
+  }
+
   const friendLists = await db.friend.findMany({
     where: {
       OR: [{ userId: session.user.id }, { requesterUserId: session.user.id }],

@@ -2,6 +2,8 @@ import Image from "next/image";
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { MoreHorizontal } from "lucide-react";
+import { SocketIndicator } from "../socket-indicator";
+import ChatWelcome from "./chat-welcome";
 
 const ConversationCard = ({ userProfile }) => {
   return (
@@ -18,7 +20,7 @@ const ConversationCard = ({ userProfile }) => {
       )}
 
       {userProfile && (
-        <div className="flex items-center justify-between py-3  px-5 dark:bg-neutral-900 drop-shadow border-b border-neutral-800">
+        <div className="flex items-center justify-between py-3  px-5 dark:bg-neutral-900  border-b border-neutral-300 dark:border-neutral-800">
           <div className="flex items-center gap-x-3">
             <UserAvatar
               className="h-12 w-12 "
@@ -33,11 +35,16 @@ const ConversationCard = ({ userProfile }) => {
             </h2>
           </div>
 
-          <div>
+          <div className="flex items-center gap-x-2">
+            <SocketIndicator />
             <MoreHorizontal className="dark:text-white" />
           </div>
         </div>
       )}
+
+      <div className="flex-1 flex flex-col py-4 overflow-y-auto">
+        <ChatWelcome name={userProfile.name} />
+      </div>
     </div>
   );
 };
