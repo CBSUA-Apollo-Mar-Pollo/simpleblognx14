@@ -1,50 +1,175 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import UserAvatar from "../utils/UserAvatar";
-import { MoreHorizontal } from "lucide-react";
+import { ImagePlus, MoreHorizontal, Sticker, ThumbsUp } from "lucide-react";
 import { SocketIndicator } from "../socket-indicator";
 import ChatWelcome from "./chat-welcome";
+import { format } from "date-fns";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/Button";
+import EmojiPicker from "../PostComment/EmojiPicker";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem } from "../ui/Form";
+import { useMutation } from "@tanstack/react-query";
+import { Textarea } from "../ui/Textarea";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
-const ConversationCard = ({ userProfile }) => {
+const messageSchema = z.object({
+  content: z.string(),
+});
+
+const ConversationCard = ({ userProfile, conversationDate }) => {
+  const form = useForm({
+    resolver: zodResolver(messageSchema),
+    defaultValues: {
+      content: "",
+    },
+  });
+
+  const { mutate: onSubmit, isLoading } = useMutation({
+    mutationFn: async (values) => {
+      console.log(values);
+    },
+  });
+
+  function formatDate(isoString) {
+    if (conversationDate) {
+      const date = new Date(isoString);
+      return format(date, "M/d/yy, h:mm a");
+    }
+  }
+
+  const { reset, formState, control, setValue, getValues } = form;
+
+  const watchedField = useWatch({
+    control,
+    name: "content",
+  });
+
+  console.log(watchedField.length, "watchfield");
+
+  useEffect(() => {
+    if (userProfile) {
+      const textArea = document.getElementById("auto-resize-textarea");
+      if (watchedField.length !== 0) {
+        textArea.style.height = `${textArea.scrollHeight}px`;
+        if (watchedField.length >= 500) {
+          textArea.style.borderRadius = "10px";
+        }
+      } else {
+        textArea.style.height = `0px`;
+      }
+    }
+  }, [watchedField]);
+
   return (
-    <div className="">
+    <div className="flex flex-col h-full">
+      {/* Conditional content for when userProfile is not available */}
       {!userProfile && (
-        <div className="flex items-center justify-center h-[95vh]">
+        <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col items-center space-y-4">
             <Image width={480} height={480} src="/conversation.png" />
             <h1 className="text-2xl dark:text-neutral-200 font-medium">
-              Click any of your friends to start conversation.
+              Click any of your friends to start a conversation.
             </h1>
           </div>
         </div>
       )}
 
+      {/* Conditional content for when userProfile is available */}
       {userProfile && (
-        <div className="flex items-center justify-between py-3  px-5 dark:bg-neutral-900  border-b border-neutral-300 dark:border-neutral-800">
-          <div className="flex items-center gap-x-3">
-            <UserAvatar
-              className="h-12 w-12 "
-              user={{
-                name: userProfile.name || null,
-                image: userProfile.image || null,
-              }}
-            />
-
-            <h2 className="dark:text-neutral-50 font-semibold text-lg">
-              {userProfile.name}
-            </h2>
+        <>
+          <div className="flex items-center justify-between py-2 px-5 dark:bg-neutral-900 border-b border-neutral-300 dark:border-neutral-800">
+            <div className="flex items-center gap-x-3">
+              <UserAvatar
+                className="h-12 w-12"
+                user={{
+                  name: userProfile.name || null,
+                  image: userProfile.image || null,
+                }}
+              />
+              <h2 className="dark:text-neutral-50 font-semibold text-lg">
+                {userProfile.name}
+              </h2>
+            </div>
+            <div className="flex items-center gap-x-2">
+              <SocketIndicator />
+              <MoreHorizontal className="dark:text-white" />
+            </div>
           </div>
 
-          <div className="flex items-center gap-x-2">
-            <SocketIndicator />
-            <MoreHorizontal className="dark:text-white" />
+          <div className="flex-1 max-h-[82vh] overflow-y-auto">
+            <div className="flex  h-full">
+              <div className="flex-1 flex  justify-center items-end ">
+                <div className="flex flex-col w-full">
+                  <ChatWelcome
+                    userProfile={userProfile}
+                    date={formatDate(conversationDate)}
+                  />
+
+                  {/* messages output */}
+                  <div>
+                    <h1>sass</h1>
+                  </div>
+
+                  {/* input message and buttons */}
+                  <div className="flex items-center pl-1 pr-4 gap-x-2 mb-1">
+                    <div className="flex items-center">
+                      <Button variant="ghost" size="icon">
+                        <ImagePlus className="text-neutral-800" />
+                      </Button>
+                      <Button variant="ghost" size="icon">
+                        <Sticker className="text-neutral-800" />
+                      </Button>
+                      <Button variant="ghost" size="icon" className="">
+                        <span className="font-medium p-1 border border-neutral-400 rounded-md text-xs">
+                          GIF
+                        </span>
+                      </Button>
+                    </div>
+                    <div className="relative flex-1">
+                      <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                          <FormField
+                            control={form.control}
+                            name="content"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Textarea
+                                    id="auto-resize-textarea"
+                                    placeholder="Aa"
+                                    className="rounded-3xl bg-neutral-200 pl-5 min-h-[5.5vh]  h-[5.5vh] resize-none pr-14 max-h-[20vh] overflow-y-auto "
+                                    {...field}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+
+                          <Button
+                            type="submit"
+                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hidden"
+                          ></Button>
+                        </form>
+                      </Form>
+                    </div>
+                    <EmojiPicker />
+                    <Button variant="ghost" size="icon">
+                      <ThumbsUp className="text-neutral-800" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
-
-      <div className="flex-1 flex flex-col py-4 overflow-y-auto">
-        <ChatWelcome name={userProfile.name} />
-      </div>
     </div>
   );
 };

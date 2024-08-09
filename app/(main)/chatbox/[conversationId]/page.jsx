@@ -46,12 +46,17 @@ const ChatBoxPage = async ({ params }) => {
   });
 
   return (
-    <div className="grid grid-cols-8 h-screen dark:bg-neutral-900">
-      <div className=" col-span-2 border-r border-neutral-300 dark:border-neutral-800">
-        <ChatSideBar friendLists={friendLists} session={session} />
-      </div>
-      <div className="col-span-6 ">
-        <ConversationCard userProfile={userProfile} />
+    <div className="h-full m-0">
+      <div className="h-full grid grid-cols-8 dark:bg-neutral-900">
+        <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
+          <ChatSideBar friendLists={friendLists} session={session} />
+        </div>
+        <div className="col-span-6 h-full">
+          <ConversationCard
+            userProfile={userProfile}
+            conversationDate={conversation?.createdAt}
+          />
+        </div>
       </div>
     </div>
   );

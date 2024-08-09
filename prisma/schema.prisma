@@ -207,6 +207,8 @@ model Conversation {
   userTwoId String
   userTwo   User   @relation("UserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+
   Message Message[]
 
   @@unique([userOneId, userTwoId])

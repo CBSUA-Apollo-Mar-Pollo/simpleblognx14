@@ -8,9 +8,9 @@ export const metadata = {
 
 const ChatLayout = ({ children }) => {
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Navbar />
-      {children}
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );
 };

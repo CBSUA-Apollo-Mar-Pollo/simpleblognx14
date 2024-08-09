@@ -19,10 +19,9 @@ TODO
 ALREADY DONE
 
 - post multiple photos
+- make the post who have multiple photos also have individual comments
 
 INCOMPLETE
 
 - add a chat system
 - add more settings
-- make the post who have multiple photos also have individual comments
--
