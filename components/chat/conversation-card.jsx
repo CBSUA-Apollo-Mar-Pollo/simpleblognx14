@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { ImagePlus, MoreHorizontal, Sticker, ThumbsUp } from "lucide-react";
 import { SocketIndicator } from "../socket-indicator";
@@ -18,12 +18,20 @@ import { useMutation } from "@tanstack/react-query";
 import { Textarea } from "../ui/Textarea";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import qs from "query-string";
+import axios from "axios";
 
 const messageSchema = z.object({
   content: z.string(),
 });
 
-const ConversationCard = ({ userProfile, conversationDate }) => {
+const ConversationCard = ({
+  session,
+  userProfile,
+  conversationDate,
+  conversationId,
+}) => {
+  const formRef = useRef(null);
   const form = useForm({
     resolver: zodResolver(messageSchema),
     defaultValues: {
@@ -33,7 +41,20 @@ const ConversationCard = ({ userProfile, conversationDate }) => {
 
   const { mutate: onSubmit, isLoading } = useMutation({
     mutationFn: async (values) => {
-      console.log(values);
+      let sessionId = session?.user.id;
+      const url = qs.stringifyUrl({
+        url: "/api/socket/direct-messages",
+        query: {
+          conversationId,
+          sessionId,
+        },
+      });
+
+      await axios.post(url, values);
+      form.reset();
+    },
+    onError: (err) => {
+      console.log(err, "chat input");
     },
   });
 
@@ -51,17 +72,27 @@ const ConversationCard = ({ userProfile, conversationDate }) => {
     name: "content",
   });
 
-  console.log(watchedField.length, "watchfield");
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // Prevent default behavior of adding a newline
+      event.preventDefault();
+      // You can also add additional logic here if needed
+      if (formRef.current) {
+        formRef.current.requestSubmit(); // Programmatically submit the form
+      }
+    }
+  };
 
   useEffect(() => {
     if (userProfile) {
       const textArea = document.getElementById("auto-resize-textarea");
-      if (watchedField.length !== 0) {
+      if (watchedField.length !== 0 && watchedField.length >= 90) {
         textArea.style.height = `${textArea.scrollHeight}px`;
         if (watchedField.length >= 500) {
           textArea.style.borderRadius = "10px";
         }
       } else {
+        textArea.style.borderRadius = "50px";
         textArea.style.height = `0px`;
       }
     }
@@ -118,7 +149,7 @@ const ConversationCard = ({ userProfile, conversationDate }) => {
                   </div>
 
                   {/* input message and buttons */}
-                  <div className="flex items-center pl-1 pr-4 gap-x-2 mb-1">
+                  <div className="flex items-end pl-1 pr-4 gap-x-2 mb-1">
                     <div className="flex items-center">
                       <Button variant="ghost" size="icon">
                         <ImagePlus className="text-neutral-800" />
@@ -134,7 +165,10 @@ const ConversationCard = ({ userProfile, conversationDate }) => {
                     </div>
                     <div className="relative flex-1">
                       <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <form
+                          ref={formRef}
+                          onSubmit={form.handleSubmit(onSubmit)}
+                        >
                           <FormField
                             control={form.control}
                             name="content"
@@ -142,6 +176,7 @@ const ConversationCard = ({ userProfile, conversationDate }) => {
                               <FormItem>
                                 <FormControl>
                                   <Textarea
+                                    onKeyDown={handleKeyDown}
                                     id="auto-resize-textarea"
                                     placeholder="Aa"
                                     className="rounded-3xl bg-neutral-200 pl-5 min-h-[5.5vh]  h-[5.5vh] resize-none pr-14 max-h-[20vh] overflow-y-auto "

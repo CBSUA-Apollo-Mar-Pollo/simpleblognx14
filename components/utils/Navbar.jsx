@@ -34,7 +34,7 @@ const Navbar = () => {
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1">
           <Link href="/" className="font-bold">
-            <span className=" px-3.5 rounded-full bg-yellow-400 text-[30px] ">
+            <span className=" px-3.5 rounded-full bg-yellow-500/80 text-[30px] ">
               E
             </span>
           </Link>
