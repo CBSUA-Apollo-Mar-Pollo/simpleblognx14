@@ -30,7 +30,7 @@ const ChatBoxPage = async ({ params }) => {
 
   const { userOne, userTwo } = conversation;
 
-  const otherMember = userOne.id === session?.user.id ? userTwo : userOne;
+  const currentUser = userOne.id === session?.user.id ? userOne : userTwo;
 
   // console.log(otherMember, "otherMember");
 
@@ -40,9 +40,10 @@ const ChatBoxPage = async ({ params }) => {
         <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
           <ChatSideBar friendLists={friendLists} session={session} />
         </div>
-        <div className="col-span-6 h-full">
+        <div className="col-span-6">
           <ConversationCard
             session={session}
+            currentUser={currentUser}
             userProfile={userProfile}
             conversationDate={conversation?.createdAt}
             conversationId={conversation?.id}
