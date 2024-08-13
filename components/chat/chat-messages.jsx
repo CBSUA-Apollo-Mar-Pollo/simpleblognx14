@@ -1,11 +1,14 @@
+"use client";
+
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { useChatSocket } from "@/hooks/use-chat-socket";
-import { Loader2 } from "lucide-react";
+import { Loader2, ServerCrash } from "lucide-react";
 import React, { Fragment, useRef } from "react";
 import ChatItem from "./chat-item";
 import { format } from "date-fns";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 import ChatWelcome from "./chat-welcome";
+import { useSocket } from "../Providers/socket-provider";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -17,19 +20,16 @@ const ChatMessages = ({
   conversationId,
   currentUser,
   conversationDate,
+  apiUrl,
 }) => {
-  function formatDate(isoString) {
-    if (conversationDate) {
-      const date = new Date(isoString);
-      return format(date, "M/d/yy, h:mm a");
-    }
-  }
-
-  let socketUrl = "/api/socket/direct-messages";
-  let apiUrl = "/api/direct-messages";
+  const { socket } = useSocket();
+  console.log(socket);
 
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
+
+  let socketUrl = "/api/socket/direct-messages";
+
   //   const updateKey = `chat:${chatId}:messages:update`;
 
   const chatRef = useRef(null);
@@ -52,6 +52,13 @@ const ChatMessages = ({
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
     count: data?.pages?.[0]?.items?.length ?? 0,
   });
+
+  function formatDate(isoString) {
+    if (conversationDate) {
+      const date = new Date(isoString);
+      return format(date, "M/d/yy, h:mm a");
+    }
+  }
 
   if (status === "pending") {
     return (

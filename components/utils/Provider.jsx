@@ -12,7 +12,8 @@ import { LoaderContext } from "@/context/LoaderContext";
 import { ThemeProvider } from "next-themes";
 
 const Providers = ({ children }) => {
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
+
   const [isLoading, setIsLoading] = useState(false);
   const [loaderDescription, setLoaderDescription] = useState("");
 

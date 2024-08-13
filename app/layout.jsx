@@ -18,12 +18,12 @@ export default function RootLayout({ children }) {
       <body
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
-        <Providers>
-          <SocketProvider>
+        <SocketProvider>
+          <Providers>
             <div className="mx-auto dark:bg-neutral-900">{children}</div>
             <Toaster />
-          </SocketProvider>
-        </Providers>
+          </Providers>
+        </SocketProvider>
       </body>
     </html>
   );

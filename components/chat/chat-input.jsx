@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/Button";
 import { ImagePlus, Sticker, ThumbsUp } from "lucide-react";
