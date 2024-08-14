@@ -43,7 +43,6 @@ const CreateShortsv = ({ session }) => {
       return data;
     },
     onError: (err) => {
-      console.log(err);
       setIsLoading(false);
       return toast({
         title: "There was a problem",

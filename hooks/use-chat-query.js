@@ -5,8 +5,6 @@ import qs from "query-string";
 export const useChatQuery = ({ queryKey, apiUrl, paramKey, paramValue }) => {
   const { isConnected } = useSocket();
 
-  console.log(queryKey, apiUrl, paramKey, paramValue, "use chat query");
-
   const fetchMessages = async ({ pageParam = undefined }) => {
     const url = qs.stringifyUrl(
       {

@@ -43,7 +43,14 @@ const ChatBoxPage = async ({ params }) => {
     <div className="h-full m-0">
       <div className="h-full grid grid-cols-8 dark:bg-neutral-900">
         <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
-          <ChatSideBar friendLists={friendLists} session={session} />
+          <ChatSideBar
+            friendLists={friendLists}
+            session={session}
+            chatId={conversation.id}
+            paramKey="conversationId"
+            paramValue={conversation.id}
+            apiUrl="/api/direct-messages"
+          />
         </div>
         <div className="col-span-6">
           {/* chat message */}

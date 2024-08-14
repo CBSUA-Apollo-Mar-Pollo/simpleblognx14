@@ -112,8 +112,6 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
   });
 
-  console.log(isAFriend, "is a Friend");
-
   return (
     <div
       className="relative "

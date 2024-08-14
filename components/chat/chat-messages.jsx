@@ -22,9 +22,6 @@ const ChatMessages = ({
   conversationDate,
   apiUrl,
 }) => {
-  const { socket } = useSocket();
-  console.log(socket);
-
   const queryKey = `chat:${chatId}`;
   const addKey = `chat:${chatId}:messages`;
 

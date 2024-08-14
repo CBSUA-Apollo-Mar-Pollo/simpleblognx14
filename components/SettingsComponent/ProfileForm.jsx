@@ -20,7 +20,6 @@ import UserAvatar from "../utils/UserAvatar";
 import { Plus } from "lucide-react";
 
 const ProfileForm = ({ user }) => {
-  console.log(user);
   const [handleName, setHandleName] = useState("");
   const [bio, setBio] = useState("");
   const { toast } = useToast();
@@ -38,7 +37,6 @@ const ProfileForm = ({ user }) => {
       return data;
     },
     onError: (err) => {
-      console.log(err);
       if (err.response?.status === 401) {
         window.location.replace("/");
       }

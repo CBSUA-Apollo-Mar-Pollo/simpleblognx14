@@ -2,11 +2,48 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { MoreHorizontal, Pencil, Search } from "lucide-react";
+import { Loader2, MoreHorizontal, Pencil, Search } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
+import { useChatQuery } from "@/hooks/use-chat-query";
+import { useChatSocket } from "@/hooks/use-chat-socket";
 
-const ChatSideBar = ({ friendLists, session }) => {
+const ChatSideBar = ({
+  friendLists,
+  session,
+  chatId,
+  paramKey,
+  paramValue,
+  apiUrl,
+}) => {
+  const queryKey = `chat:${chatId}`;
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useChatQuery({
+      queryKey,
+      apiUrl,
+      paramKey,
+      paramValue,
+    });
+
+  const lastMessage = data?.pages[0].items.filter(
+    (message) => message.userId !== session.user.id
+  );
+
+  if (status === "pending") {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Loading messages...
+        </p>
+      </div>
+    );
+  }
+
+  console.log(lastMessage);
+
   return (
     <>
       <div className="flex items-center justify-between m-4">

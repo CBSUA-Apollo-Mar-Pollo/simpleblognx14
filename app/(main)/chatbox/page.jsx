@@ -22,6 +22,14 @@ const ChatBoxPage = async () => {
     },
   });
 
+  console.log(friendLists[0]);
+
+  if (friendLists[0].requesterUser.id === session.user.id) {
+    redirect(`/chatbox/${friendLists[0].user.id}`);
+  } else {
+    redirect(`/chatbox/${friendLists[0].requesterUser.id}`);
+  }
+
   return (
     <div className="grid grid-cols-8 h-screen">
       <div className=" col-span-2 border-r border-neutral-300 dark:border-neutral-700">

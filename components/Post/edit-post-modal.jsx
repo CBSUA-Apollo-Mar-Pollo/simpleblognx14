@@ -43,11 +43,6 @@ const EditPostModal = ({ blog, deleteImage }) => {
   );
 
   const [isHovered, setIsHovered] = useState(false);
-
-  console.log(selectedFiles, "selectedFiles");
-
-  console.log(blog.image, "blog image");
-
   const { mutate: updatePost, isLoading } = useMutation({
     mutationFn: async () => {
       let images = [];

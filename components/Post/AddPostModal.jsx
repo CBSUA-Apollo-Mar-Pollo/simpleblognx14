@@ -73,7 +73,6 @@ const AddPostModal = ({ session, user }) => {
       return data;
     },
     onError: (err) => {
-      console.log(err);
       setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {

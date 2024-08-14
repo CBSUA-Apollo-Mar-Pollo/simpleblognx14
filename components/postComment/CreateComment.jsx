@@ -51,7 +51,6 @@ const CreateComment = ({
       return data;
     },
     onError: (err) => {
-      console.log(err, "error");
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           return loginToast();
@@ -108,8 +107,6 @@ const CreateComment = ({
     }
   };
 
-  console.log(textareaValue);
-
   useEffect(() => {
     const textarea = document.getElementById("auto-resize-textarea");
     textarea.style.height = "auto";
@@ -119,7 +116,6 @@ const CreateComment = ({
   function handleFileChange(event) {
     setImageLoading(true);
     const file = event.target.files[0];
-    console.log(file);
     uploadFiles("imageUploader", {
       files: [file],
     })

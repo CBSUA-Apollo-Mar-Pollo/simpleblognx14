@@ -1,7 +1,6 @@
 import React from "react";
 
 const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
-  console.log(imagePreviews, "Image Previews");
   return (
     <>
       {imagePreviews.length === 1 && (
