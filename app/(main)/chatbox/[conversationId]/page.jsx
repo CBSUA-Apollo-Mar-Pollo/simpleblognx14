@@ -12,16 +12,6 @@ import Image from "next/image";
 const ChatBoxPage = async ({ params }) => {
   const session = await getAuthSession();
 
-  const friendLists = await db.friend.findMany({
-    where: {
-      OR: [{ userId: session.user.id }, { requesterUserId: session.user.id }],
-    },
-    include: {
-      user: true,
-      requesterUser: true,
-    },
-  });
-
   const conversation = await getOrCreateConversation(
     session?.user.id,
     params.conversationId
@@ -37,20 +27,42 @@ const ChatBoxPage = async ({ params }) => {
 
   const currentUser = userOne.id === session?.user.id ? userOne : userTwo;
 
-  // console.log(otherMember, "otherMember");
+  const getAllConversationsByLogInUser = await db.conversation.findMany({
+    where: {
+      OR: [{ userOneId: session.user.id }, { userTwoId: session.user.id }],
+    },
+    include: {
+      userOne: true,
+      userTwo: true,
+    },
+  });
+
+  const users = getAllConversationsByLogInUser.map((item) => {
+    let { userOne, userTwo, ...rest } = item;
+
+    // Remove userOne if it matches session.user.id
+    if (userOne.id === session.user.id) {
+      userOne = null;
+    }
+
+    // Remove userTwo if it matches session.user.id
+    if (userTwo.id === session.user.id) {
+      userTwo = null;
+    }
+
+    // Return the new object with potentially null values
+    return {
+      ...rest,
+      userOne,
+      userTwo,
+    };
+  });
 
   return (
     <div className="h-full m-0">
       <div className="h-full grid grid-cols-8 dark:bg-neutral-900">
         <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
-          <ChatSideBar
-            friendLists={friendLists}
-            session={session}
-            chatId={conversation.id}
-            paramKey="conversationId"
-            paramValue={conversation.id}
-            apiUrl="/api/direct-messages"
-          />
+          <ChatSideBar users={users} session={session} />
         </div>
         <div className="col-span-6">
           {/* chat message */}

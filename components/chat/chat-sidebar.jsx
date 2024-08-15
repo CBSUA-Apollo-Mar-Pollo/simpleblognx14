@@ -2,48 +2,11 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Loader2, MoreHorizontal, Pencil, Search } from "lucide-react";
-import UserAvatar from "../utils/UserAvatar";
-import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
-import { useChatQuery } from "@/hooks/use-chat-query";
-import { useChatSocket } from "@/hooks/use-chat-socket";
+import { MoreHorizontal, Pencil, Search } from "lucide-react";
+import ChatContactsListUserOne from "./chat-contacts-lists-user-one";
+import ChatContactsListUserTwo from "./chat-contacts-lists-user-two";
 
-const ChatSideBar = ({
-  friendLists,
-  session,
-  chatId,
-  paramKey,
-  paramValue,
-  apiUrl,
-}) => {
-  const queryKey = `chat:${chatId}`;
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useChatQuery({
-      queryKey,
-      apiUrl,
-      paramKey,
-      paramValue,
-    });
-
-  const lastMessage = data?.pages[0].items.filter(
-    (message) => message.userId !== session.user.id
-  );
-
-  if (status === "pending") {
-    return (
-      <div className="flex flex-col flex-1 justify-center items-center">
-        <Loader2 className="h-7 w-7 text-zinc-500 animate-spin my-4" />
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          Loading messages...
-        </p>
-      </div>
-    );
-  }
-
-  console.log(lastMessage);
-
+const ChatSideBar = ({ users, session }) => {
   return (
     <>
       <div className="flex items-center justify-between m-4">
@@ -94,47 +57,35 @@ const ChatSideBar = ({
       </div>
 
       <div className="mx-4 mt-2">
-        {friendLists?.map((friend, index) =>
-          friend.requesterUser.id !== session?.user.id ? (
-            <Link
-              href={`/chatbox/${friend.requesterUser.id}`}
-              key={index}
-              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
-            >
-              <UserAvatar
-                className="h-12 w-12 "
-                user={{
-                  image: friend?.requesterUser.image || null,
-                }}
+        {users.map((user, index) => {
+          // Generate a unique key for each item
+          const key = user.id || index; // Prefer a unique identifier from user if available
+
+          if (user.userOne) {
+            return (
+              <ChatContactsListUserOne
+                key={key} // Add key here
+                user={user}
+                index={index}
+                session={session}
               />
-              <div className="flex flex-col">
-                <span className="font-semibold text-neutral-700 dark:text-neutral-50">
-                  {friend?.requesterUser.name}
-                </span>
-                <span className="text-xs dark:text-white">message example</span>
-              </div>
-            </Link>
-          ) : (
-            <Link
-              key={index}
-              href={`/chatbox/${friend.user.id}`}
-              className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
-            >
-              <UserAvatar
-                className="h-12 w-12 "
-                user={{
-                  image: friend?.user.image || null,
-                }}
+            );
+          }
+
+          if (user.userTwo) {
+            return (
+              <ChatContactsListUserTwo
+                key={key} // Add key here
+                user={user}
+                index={index}
+                session={session}
               />
-              <div className="flex flex-col">
-                <span className="font-semibold text-neutral-700 dark:text-neutral-50">
-                  {friend?.user.name}
-                </span>
-                <span className="text-xs dark:text-white">message example</span>
-              </div>
-            </Link>
-          )
-        )}
+            );
+          }
+
+          // You might want to handle the case where neither userOne nor userTwo is present
+          return null;
+        })}
       </div>
     </>
   );
