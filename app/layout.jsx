@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/utils/Provider";
 import { SocketProvider } from "@/components/Providers/socket-provider";
+import ChatWindow from "@/components/chat/chat-window";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,6 +23,9 @@ export default function RootLayout({ children }) {
           <Providers>
             <div className="mx-auto dark:bg-neutral-900">{children}</div>
             <Toaster />
+            <div className="fixed bottom-0 right-4">
+              <ChatWindow />
+            </div>
           </Providers>
         </SocketProvider>
       </body>

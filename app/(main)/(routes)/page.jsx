@@ -27,21 +27,43 @@ export default async function HomePage() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
-  const users = await db.user.findMany({
-    where: {
-      NOT: {
-        id: session?.user.id,
-      },
-    },
-    take: 3,
-  });
-
   const deleteImage = async (image) => {
     "use server";
     const utapi = new UTApi();
     await utapi.deleteFiles(image.key);
     console.log(image);
   };
+
+  const getAllConversationsByLogInUser = await db.conversation.findMany({
+    where: {
+      OR: [{ userOneId: session?.user.id }, { userTwoId: session?.user.id }],
+    },
+    include: {
+      userOne: true,
+      userTwo: true,
+    },
+  });
+
+  const conversationList = getAllConversationsByLogInUser.map((item) => {
+    let { userOne, userTwo, ...rest } = item;
+
+    // Remove userOne if it matches session.user.id
+    if (userOne.id === session.user.id) {
+      userOne = null;
+    }
+
+    // Remove userTwo if it matches session.user.id
+    if (userTwo.id === session.user.id) {
+      userTwo = null;
+    }
+
+    // Return the new object with potentially null values
+    return {
+      ...rest,
+      userOne,
+      userTwo,
+    };
+  });
 
   return (
     <div className="grid grid-cols-4 bg-neutral-200/30 dark:bg-neutral-900">
@@ -98,7 +120,12 @@ export default async function HomePage() {
       <div className=" col-span-1 relative flex flex-col ">
         <div className="sticky top-16">
           <RecentPostsCard />
-          <ChatHomeContactList />
+          {session?.user && (
+            <ChatHomeContactList
+              conversationList={conversationList}
+              session={session}
+            />
+          )}
         </div>
       </div>
     </div>

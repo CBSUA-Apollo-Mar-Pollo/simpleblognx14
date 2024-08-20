@@ -1,42 +1,13 @@
+"use client";
+
 import { MoreHorizontal, Search } from "lucide-react";
 import React from "react";
-import { db } from "@/lib/db";
-import { getAuthSession } from "@/lib/auth";
 import UserAvatar from "../utils/UserAvatar";
+import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 
-const ChatHomeContactList = async () => {
-  const session = await getAuthSession();
-  const getAllConversationsByLogInUser = await db.conversation.findMany({
-    where: {
-      OR: [{ userOneId: session.user.id }, { userTwoId: session.user.id }],
-    },
-    include: {
-      userOne: true,
-      userTwo: true,
-    },
-  });
-
-  const users = getAllConversationsByLogInUser.map((item) => {
-    let { userOne, userTwo, ...rest } = item;
-
-    // Remove userOne if it matches session.user.id
-    if (userOne.id === session.user.id) {
-      userOne = null;
-    }
-
-    // Remove userTwo if it matches session.user.id
-    if (userTwo.id === session.user.id) {
-      userTwo = null;
-    }
-
-    // Return the new object with potentially null values
-    return {
-      ...rest,
-      userOne,
-      userTwo,
-    };
-  });
-
+const ChatHomeContactList = ({ conversationList, session }) => {
+  const { onOpen, data } = useChatWindowStore();
+  console.log(data, "chat-home-contact-list");
   return (
     <div className="mt-2 mx-4">
       <div className="flex justify-between mb-2">
@@ -50,14 +21,15 @@ const ChatHomeContactList = async () => {
       </div>
 
       <div className=" mt-2">
-        {users.map((user, index) => {
+        {conversationList.map((user, index) => {
           // Generate a unique key for each item
           const key = user.id || index; // Prefer a unique identifier from user if available
 
           if (user.userOne) {
             return (
               <div
-                key={index}
+                onClick={() => onOpen("directMessage", [user.userOne])}
+                key={key}
                 className="py-1 pl-2 flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
               >
                 <div className="relative">
@@ -80,7 +52,8 @@ const ChatHomeContactList = async () => {
           if (user.userTwo) {
             return (
               <div
-                key={index}
+                onClick={() => onOpen("directMessage", [user.userTwo])}
+                key={key}
                 className="py-1 pl-2  flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-md cursor-pointer"
               >
                 <div className="relative">
