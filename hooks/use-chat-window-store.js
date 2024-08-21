@@ -1,9 +1,7 @@
 import { create } from "zustand";
 
 export const useChatWindowStore = create((set) => ({
-  type: null,
   data: [],
-  isOpen: false,
   onOpen: (type, newData = []) =>
     set((state) => {
       // Filter out duplicates from newData
@@ -12,10 +10,12 @@ export const useChatWindowStore = create((set) => ({
       );
 
       return {
-        isOpen: true,
         type,
         data: [...state.data, ...uniqueNewData], // Accumulate unique new data
       };
     }),
-  onClose: () => set({ type: null, isOpen: false }),
+  onClose: (id) =>
+    set((state) => ({
+      data: state.data.filter((item) => item.id !== id),
+    })),
 }));

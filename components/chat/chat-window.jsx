@@ -5,16 +5,18 @@ import React from "react";
 import { Button } from "../ui/Button";
 import { Minus, PenSquare, Phone, X } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
-import ChatInput from "./chat-input";
 import { useSession } from "next-auth/react";
+import ChatWindowInput from "./chat-window-input";
 
 const ChatWindow = () => {
-  const { onOpen, data } = useChatWindowStore();
+  const { data } = useChatWindowStore();
   return (
     <div className="flex items-end gap-x-5">
       <div className="flex items-end gap-x-1">
         {data.map((chat, index) => (
-          <ChatWindowBox chat={chat} />
+          <div key={index}>
+            <ChatWindowBox chat={chat} />
+          </div>
         ))}
       </div>
       <Button
@@ -29,10 +31,11 @@ const ChatWindow = () => {
 };
 
 const ChatWindowBox = ({ chat }) => {
+  const { onClose } = useChatWindowStore();
   const { data: session } = useSession();
   console.log(chat, "chat");
   return (
-    <div className="max-w-[20vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
+    <div className="max-w-[22vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
       {/* header */}
       <div className="py-2 px-2 drop-shadow-sm bg-white rounded-t-xl border border-neutral-200">
         <div className="flex items-center justify-between">
@@ -46,10 +49,20 @@ const ChatWindowBox = ({ chat }) => {
             />
             <span className="font-semibold">{chat.name}</span>
           </div>
-          <div className="flex items-center gap-x-2">
-            <Phone className="h-5 w-5 text-blue-700 fill-blue-700" />
-            <Minus className=" text-blue-700 " />
-            <X className="h-6 w-6 text-blue-700" />
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon">
+              <Phone className="h-5 w-5 text-blue-700 fill-blue-700" />
+            </Button>
+            <Button variant="ghost" size="icon">
+              <Minus className=" text-blue-700 " />
+            </Button>
+            <Button
+              onClick={() => onClose(chat.id)}
+              variant="ghost"
+              size="icon"
+            >
+              <X className="h-6 w-6 text-blue-700" />
+            </Button>
           </div>
         </div>
       </div>
@@ -81,7 +94,7 @@ const ChatWindowBox = ({ chat }) => {
 
       {/* footer */}
       <div className="bg-white border-l border-r border-neutral-300 overflow-y-auto pl-2 pt-2">
-        <ChatInput
+        <ChatWindowInput
           session={session}
           conversationId={"clwytc7p8000pvou85ttg2rjp"}
           userProfile={chat}

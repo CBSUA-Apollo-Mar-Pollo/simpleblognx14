@@ -138,7 +138,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
         >
           {post.image.length === 1
             ? post.description
-            : post.image[index].description}
+            : post.image[index]?.description}
         </p>
       )}
 
