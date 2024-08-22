@@ -15,14 +15,13 @@ import {
   X,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import UserAvatar from "../utils/UserAvatar";
-import { Button, buttonVariants } from "../ui/Button";
-import { cn } from "@/lib/utils";
+import { Button } from "../ui/Button";
+
 import useCustomHooks from "@/hooks/use-custom-hooks";
 
 const LogoVideoAndIcon = ({
