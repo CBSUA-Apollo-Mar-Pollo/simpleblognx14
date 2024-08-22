@@ -1,15 +1,39 @@
 "use client";
 
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import { Minus, PenSquare, Phone, X } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
 import { useSession } from "next-auth/react";
 import ChatWindowInput from "./chat-window-input";
+import { usePathname } from "next/navigation";
 
 const ChatWindow = () => {
-  const { data } = useChatWindowStore();
+  const [handleMouseHoverData, setHandleMouseHoverData] = useState(null);
+  const { data, onClose, minimizedChats, onMinimizeOpen } =
+    useChatWindowStore();
+  const pathname = usePathname();
+
+  console.log(pathname, "pathname");
+
+  // Regular expression to match paths that start with '/chatbox/'
+  const excludePattern = /^\/chatbox\/.*/;
+
+  // Check if the current pathname is in the excludePaths array
+  const shouldExcludeChatWindow = excludePattern.test(pathname);
+
+  if (shouldExcludeChatWindow) {
+    return null;
+  }
+
+  const handleMouseEnter = (id) => {
+    setHandleMouseHoverData(id);
+  };
+  const handleMouseLeave = () => {
+    setHandleMouseHoverData(null);
+  };
+
   return (
     <div className="flex items-end gap-x-5">
       <div className="flex items-end gap-x-1">
@@ -19,23 +43,52 @@ const ChatWindow = () => {
           </div>
         ))}
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="bg-white rounded-full drop-shadow-md mb-4 h-[7vh] w-[3.5vw] text-neutral-800"
-      >
-        <PenSquare className="h-6 w-6" />
-      </Button>
+      <div className="flex flex-col items-center gap-y-1">
+        {minimizedChats.map((user) => (
+          <Button
+            onMouseEnter={() => handleMouseEnter(user.id)}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => onMinimizeOpen(user.id)}
+            variant="ghost"
+            className="mb-1 relative h-14 w-14"
+          >
+            {handleMouseHoverData === user.id && (
+              <Button
+                onClick={() => onClose(user.id)}
+                size="icon"
+                variant="ghost"
+                className="absolute top-0 right-0 z-50 bg-neutral-800 h-6 w-6 rounded-full hover:bg-neutral-600"
+              >
+                <X className="text-neutral-100 h-10 w-10 m-1" />
+              </Button>
+            )}
+            <UserAvatar
+              className="h-14 w-14 border border-neutral-300"
+              user={{
+                name: user.name || null,
+                image: user.image || null,
+              }}
+            />
+          </Button>
+        ))}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="bg-white rounded-full drop-shadow-md mb-4 h-[7vh] w-[3.5vw] text-neutral-800"
+        >
+          <PenSquare className="h-6 w-6" />
+        </Button>
+      </div>
     </div>
   );
 };
 
 const ChatWindowBox = ({ chat }) => {
-  const { onClose } = useChatWindowStore();
+  const { onClose, onMinimizeClose } = useChatWindowStore();
   const { data: session } = useSession();
   console.log(chat, "chat");
   return (
-    <div className="max-w-[22vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
+    <div className="max-w-[22vw] w-[22vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
       {/* header */}
       <div className="py-2 px-2 drop-shadow-sm bg-white rounded-t-xl border border-neutral-200">
         <div className="flex items-center justify-between">
@@ -53,7 +106,11 @@ const ChatWindowBox = ({ chat }) => {
             <Button variant="ghost" size="icon">
               <Phone className="h-5 w-5 text-blue-700 fill-blue-700" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button
+              onClick={() => onMinimizeClose(chat.id)}
+              variant="ghost"
+              size="icon"
+            >
               <Minus className=" text-blue-700 " />
             </Button>
             <Button
@@ -93,7 +150,7 @@ const ChatWindowBox = ({ chat }) => {
       </div>
 
       {/* footer */}
-      <div className="bg-white border-l border-r border-neutral-300 overflow-y-auto pl-2 pt-2">
+      <div className="bg-white border-l border-r border-neutral-300 overflow-y-auto pl-2 pt-2 flex-1">
         <ChatWindowInput
           session={session}
           conversationId={"clwytc7p8000pvou85ttg2rjp"}

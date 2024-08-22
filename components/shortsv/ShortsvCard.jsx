@@ -10,7 +10,7 @@ import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 const ShortsvCard = ({ video, comments, session }) => {
   const [toggleCommentSection, setToggleCommentSection] = useState(false);
   return (
-    <div className="grid grid-cols-4 relative">
+    <div className="grid grid-cols-4 relative bg-neutral-950">
       <div
         className={`${
           toggleCommentSection ? "col-span-3 " : "col-span-4"

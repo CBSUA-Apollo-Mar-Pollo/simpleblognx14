@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import qs from "query-string";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChatIcons } from "./chat-icons";
 import { useTheme } from "next-themes";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
@@ -37,7 +37,7 @@ const EmojiPickerChat = ({ onChange, triggerClassName }) => {
       <PopoverContent
         side="right"
         sideOffset={40}
-        className="bg-transparent border-none shadow-none drop-shadow-none mb-16"
+        className="bg-transparent border-none shadow-none drop-shadow-none mb-8 mr-5"
       >
         <Picker
           theme={resolvedTheme}
@@ -114,19 +114,26 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
       }
     }
   }, [watchedField]);
+
   return (
     <div className="flex items-end pl-1 pr-1 gap-x-1 mb-1">
-      <div className="flex items-center gap-x-1 mb-1">
-        <Button variant="ghost" size="icon" className="h-6 w-6">
-          <ChatIcons.ImageAdd className="fill-blue-600 text-blue-600 h-6 w-6" />
+      {watchedField.length === 0 ? (
+        <div className="flex items-center gap-x-1 mb-1">
+          <Button variant="ghost" size="icon" className="h-6 w-6">
+            <ChatIcons.ImageAdd className="fill-blue-600 text-blue-600 h-6 w-6" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-[18px] w-[18px]">
+            <ChatIcons.ChooseSticker className="fill-blue-600 text-blue-600 h-6 w-6" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-7 w-7">
+            <ChatIcons.Gif className="fill-blue-600 text-blue-600 h-8 w-8" />
+          </Button>
+        </div>
+      ) : (
+        <Button variant="ghost" size="icon" className="h-6 w-6 mb-1.5">
+          <ChatIcons.Plus className="fill-blue-600 text-blue-600 h-7 w-7" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-[18px] w-[18px]">
-          <ChatIcons.ChooseSticker className="fill-blue-600 text-blue-600 h-6 w-6" />
-        </Button>
-        <Button variant="ghost" size="icon" className="h-7 w-7">
-          <ChatIcons.Gif className="fill-blue-600 text-blue-600 h-8 w-8" />
-        </Button>
-      </div>
+      )}
       <div className="relative flex-1">
         <Form {...form}>
           <form ref={formRef} onSubmit={form.handleSubmit(onSubmit)}>

@@ -74,13 +74,13 @@ const LogoVideoAndIcon = ({
             className="p-4 cursor-pointer dark:hover:bg-gray-600 hover:bg-neutral-300 rounded-full transition"
             onClick={close}
           >
-            <X className=" dark:text-white h-7 w-7" />
+            <X className=" text-white h-7 w-7" />
           </div>
           <Link href="/" className="font-bold flex items-center gap-x-3">
             <span className="py-[6px] px-4 rounded-full bg-yellow-400 text-4xl">
               E
             </span>
-            <h1 className="dark:text-white font-bold text-2xl">Shortsv</h1>
+            <h1 className="text-white font-bold text-2xl">Shortsv</h1>
           </Link>
         </div>
         {/* enter fullscreen */}

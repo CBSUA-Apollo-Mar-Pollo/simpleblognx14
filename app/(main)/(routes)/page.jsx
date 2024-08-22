@@ -7,7 +7,6 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import AddPostModal from "@/components/Post/AddPostModal";
 import Posts from "@/components/Post/Posts";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { Separator } from "@/components/ui/Separator";
 import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
@@ -39,8 +38,22 @@ export default async function HomePage() {
       OR: [{ userOneId: session?.user.id }, { userTwoId: session?.user.id }],
     },
     include: {
-      userOne: true,
-      userTwo: true,
+      userOne: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      userTwo: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
     },
   });
 
