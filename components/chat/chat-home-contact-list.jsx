@@ -7,7 +7,6 @@ import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 
 const ChatHomeContactList = ({ conversationList, session }) => {
   const { onOpen, data } = useChatWindowStore();
-  console.log(data, "chat-home-contact-list");
   return (
     <div className="mt-2 mx-4">
       <div className="flex justify-between mb-2">

@@ -8,15 +8,15 @@ import UserAvatar from "../utils/UserAvatar";
 import { useSession } from "next-auth/react";
 import ChatWindowInput from "./chat-window-input";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getConversationInfoForChatWindow } from "@/actions/getConversationInfoForChatWindow";
+import ChatWindowMessages from "./chat-window-messages";
 
 const ChatWindow = () => {
   const [handleMouseHoverData, setHandleMouseHoverData] = useState(null);
   const { data, onClose, minimizedChats, onMinimizeOpen } =
     useChatWindowStore();
   const pathname = usePathname();
-
-  console.log(pathname, "pathname");
-
   // Regular expression to match paths that start with '/chatbox/'
   const excludePattern = /^\/chatbox\/.*/;
 
@@ -30,6 +30,7 @@ const ChatWindow = () => {
   const handleMouseEnter = (id) => {
     setHandleMouseHoverData(id);
   };
+
   const handleMouseLeave = () => {
     setHandleMouseHoverData(null);
   };
@@ -86,7 +87,26 @@ const ChatWindow = () => {
 const ChatWindowBox = ({ chat }) => {
   const { onClose, onMinimizeClose } = useChatWindowStore();
   const { data: session } = useSession();
-  console.log(chat, "chat");
+
+  const {
+    data: conversationData,
+    status,
+    isLoading,
+  } = useQuery({
+    queryKey: ["getInfoForChatWindow", chat.id],
+    queryFn: async () => {
+      const res = await getConversationInfoForChatWindow(
+        chat.id,
+        session.user.id
+      );
+      return res;
+    },
+  });
+
+  const conversation = conversationData?.conversation;
+  const userProfile = conversationData?.userProfile;
+  const currentUser = conversationData?.currentUser;
+
   return (
     <div className="max-w-[22vw] w-[22vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
       {/* header */}
@@ -125,36 +145,32 @@ const ChatWindowBox = ({ chat }) => {
       </div>
 
       {/* message content */}
-      <div className="bg-white border-l border-r border-neutral-300 max-h-[45vh] overflow-y-auto pl-2">
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
-        <h1>sasa</h1>
+
+      <div className="flex-1 bg-white max-h-[50vh] overflow-y-auto">
+        <div className="flex  h-full">
+          <div className="flex-1 flex  justify-center items-end ">
+            <div className="flex flex-col w-full">
+              <ChatWindowMessages
+                currentUser={currentUser}
+                userProfile={userProfile}
+                chatId={conversation?.id}
+                paramKey="conversationId"
+                paramValue={conversation?.id}
+                conversationId={conversation?.id}
+                conversationDate={conversation?.createdAt}
+                apiUrl="/api/direct-messages"
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* footer */}
       <div className="bg-white border-l border-r border-neutral-300 overflow-y-auto pl-2 pt-2 flex-1">
         <ChatWindowInput
           session={session}
-          conversationId={"clwytc7p8000pvou85ttg2rjp"}
-          userProfile={chat}
+          conversationId={conversation?.id}
+          userProfile={userProfile}
         />
       </div>
     </div>

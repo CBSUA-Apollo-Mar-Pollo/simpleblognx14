@@ -11,10 +11,11 @@ import ImagePost from "./ImagePost";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
 
 const PostCommentCard = ({ post, index, session, comments }) => {
+  const { isFullScreen, setFullScreen } = useFullScreenImage();
   const router = useRouter();
-  const [toggleExpand, setToggleExpand] = useState(true);
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" || e.keyCode === 27) {
@@ -32,7 +33,7 @@ const PostCommentCard = ({ post, index, session, comments }) => {
       {/* Image */}
       <div
         className={cn(
-          toggleExpand ? "col-span-3 " : "col-span-4",
+          isFullScreen ? "col-span-3 " : "col-span-4",
           "flex h-screen justify-center items-center relative bg-black"
         )}
       >
@@ -41,19 +42,20 @@ const PostCommentCard = ({ post, index, session, comments }) => {
             image={post.image}
             index={index}
             postId={post.id}
+            setToggleExpand={setFullScreen}
           />
         ) : (
           <ImagePost
             image={post.image}
             index={index}
             postId={post.id}
-            setToggleExpand={setToggleExpand}
+            setToggleExpand={setFullScreen}
           />
         )}
       </div>
 
       {/* comment side */}
-      {toggleExpand && (
+      {isFullScreen && (
         <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">
           <ProfileImageAndIcons session={session} />
 

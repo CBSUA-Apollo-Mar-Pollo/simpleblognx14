@@ -1,14 +1,21 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Download, Scaling, X } from "lucide-react";
+import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
+import { Download, Scaling, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React from "react";
 
-const BackgroundImagePost = ({ image, index }) => {
+const BackgroundImagePost = ({ image, index, setToggleExpand }) => {
+  const { isFullScreen, setManualScreen } = useFullScreenImage();
   const router = useRouter();
   const close = () => {
-    router.back();
+    router.replace("/");
+    if (isFullScreen === false) {
+      setManualScreen(true);
+    } else if (isFullScreen === true) {
+      setManualScreen(true);
+    }
   };
 
   return (
@@ -33,7 +40,10 @@ const BackgroundImagePost = ({ image, index }) => {
           <div className="py-4 px-4 cursor-pointer hover:bg-neutral-500/70 rounded-full transition">
             <Download className="text-white" />
           </div>
-          <div className="py-4 px-4 cursor-pointer hover:bg-neutral-500/70 rounded-full transition">
+          <div
+            onClick={() => setToggleExpand((prevState) => !prevState)}
+            className="py-4 px-4 cursor-pointer hover:bg-neutral-500/70 rounded-full transition"
+          >
             <Scaling className="text-white" />
           </div>
         </div>

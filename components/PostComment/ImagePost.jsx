@@ -1,14 +1,21 @@
 "use client";
 
+import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
 import { ChevronLeft, ChevronRight, Download, Scaling, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const ImagePost = ({ image, index, postId, setToggleExpand }) => {
+  const { isFullScreen, setManualScreen } = useFullScreenImage();
   const router = useRouter();
   const close = () => {
     router.replace("/");
+    if (isFullScreen === false) {
+      setManualScreen(true);
+    } else if (isFullScreen === true) {
+      setManualScreen(true);
+    }
   };
 
   const [imageCounter, setImageCounter] = useState(parseInt(index));

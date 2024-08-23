@@ -14,12 +14,12 @@ const ChatBoxPage = async ({ params }) => {
 
   const conversation = await getOrCreateConversation(
     session?.user.id,
-    params.conversationId
+    params.userId
   );
 
   const userProfile = await db.user.findFirst({
     where: {
-      id: params.conversationId,
+      id: params.userId,
     },
   });
 

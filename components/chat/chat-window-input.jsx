@@ -2,10 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/Button";
-import { ImagePlus, Smile, Sticker, ThumbsUp } from "lucide-react";
 import { Form, FormControl, FormField, FormItem } from "../ui/Form";
 import { Textarea } from "../ui/Textarea";
-import EmojiPicker from "../PostComment/EmojiPicker";
+
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,18 +61,18 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
   const { mutate: onSubmit } = useMutation({
     mutationFn: async (values) => {
       console.log(values, "chat window");
-      //   let sessionId = session?.user.id;
-      //   const url = qs.stringifyUrl({
-      //     url: "/api/socket/direct-messages",
-      //     query: {
-      //       conversationId,
-      //       sessionId,
-      //     },
-      //   });
+      let sessionId = session?.user.id;
+      const url = qs.stringifyUrl({
+        url: "/api/socket/direct-messages",
+        query: {
+          conversationId,
+          sessionId,
+        },
+      });
 
-      //   await axios.post(url, values);
-      //   form.reset();
-      //   router.refresh();
+      await axios.post(url, values);
+      form.reset();
+      router.refresh();
     },
     onError: (err) => {
       console.log(err, "chat input");
@@ -105,7 +104,7 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
       const textArea = document.getElementById("auto-resize-textarea");
       if (watchedField.length !== 0 && watchedField.length >= 15) {
         textArea.style.height = `${textArea.scrollHeight}px`;
-        if (watchedField.length >= 15) {
+        if (watchedField.length >= 30) {
           textArea.style.borderRadius = "10px";
         }
       } else {
@@ -149,7 +148,7 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
                         onKeyDown={handleKeyDown}
                         id="auto-resize-textarea"
                         placeholder="Aa"
-                        className="rounded-3xl bg-gray-200 pl-5 min-h-[4.7vh] h-[4.7vh] resize-none pr-8 max-h-[15vh] mb-[2px] overflow-y-auto "
+                        className="rounded-3xl bg-gray-200 pl-5 min-h-[5vh] h-[4.7vh] resize-none pr-8 max-h-[15vh] mb-[2px] overflow-y-auto "
                         {...field}
                       />
                       <div className="absolute bottom-[2px] right-2">
