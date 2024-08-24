@@ -1,3 +1,4 @@
+import { Icons } from "@/components/utils/Icons";
 import {
   Album,
   Book,
@@ -5,6 +6,7 @@ import {
   Church,
   Cpu,
   FlaskConical,
+  Home,
   HomeIcon,
   LineChart,
   MessageSquareMore,
@@ -100,6 +102,11 @@ export const SideBarFirstLinks = [
 ];
 
 export const SideBarSecondLinks = [
+  {
+    Icon: <Icons.Home className="w-7 h-7 dark:fill-neutral-50" />,
+    label: "Home",
+    link: "/",
+  },
   {
     Icon: (
       <Image

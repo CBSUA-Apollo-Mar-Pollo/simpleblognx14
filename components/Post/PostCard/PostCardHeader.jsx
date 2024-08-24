@@ -9,7 +9,7 @@ import PostOption from "../PostOption";
 
 const PostCardHeader = ({ blog, session, deleteImage }) => {
   return (
-    <div className="flex items-center justify-between gap-1 pl-5">
+    <div className="flex items-center justify-between gap-1 pl-5 py-0">
       {/* profile image  */}
       <div className="flex items-center gap-x-1">
         <UserAvatar

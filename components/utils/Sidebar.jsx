@@ -63,7 +63,7 @@ const Sidebar = ({ session }) => {
                 <div className="text-gray-500 dark:text-neutral-300">
                   {item.Icon}
                 </div>
-                <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
+                <span className="text-sm text-neutral-800 dark:text-neutral-50 font-semibold">
                   {item.label}
                 </span>
               </Link>
@@ -75,7 +75,7 @@ const Sidebar = ({ session }) => {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathname === item.link
-                    ? "bg-gray-200 dark:bg-neutral-700"
+                    ? "bg-gray-200 dark:bg-neutral-800"
                     : "",
                   "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-5"
                 )}
@@ -83,7 +83,7 @@ const Sidebar = ({ session }) => {
                 <div className="text-gray-500 dark:text-neutral-300">
                   {item.Icon}
                 </div>
-                <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
+                <span className="text-sm text-neutral-800 dark:text-neutral-100 font-semibold">
                   {item.label}
                 </span>
               </Link>
@@ -108,7 +108,7 @@ const Sidebar = ({ session }) => {
             <div className="text-gray-500 dark:text-neutral-300">
               {item.Icon}
             </div>
-            <span className="text-sm text-gray-600 dark:text-neutral-300 font-semibold">
+            <span className="text-sm text-neutral-800 dark:text-neutral-50 font-semibold">
               {item.label}
             </span>
           </Link>

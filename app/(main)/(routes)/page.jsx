@@ -134,10 +134,13 @@ export default async function HomePage() {
         <div className="sticky top-16">
           <RecentPostsCard />
           {session?.user && (
-            <ChatHomeContactList
-              conversationList={conversationList}
-              session={session}
-            />
+            <>
+              <Separator />
+              <ChatHomeContactList
+                conversationList={conversationList}
+                session={session}
+              />
+            </>
           )}
         </div>
       </div>

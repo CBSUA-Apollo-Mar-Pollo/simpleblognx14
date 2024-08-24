@@ -42,7 +42,7 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="grid grid-cols-5 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
+        <div className="grid grid-cols-4 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
               <div className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5">
@@ -70,7 +70,7 @@ const Navbar = () => {
             )}
           </ToolTipComp>
 
-          <ToolTipComp content="Gaming">
+          {/* <ToolTipComp content="Gaming">
             {pathname === "/Gaming" ? (
               <Link
                 href="/shortsv"
@@ -83,35 +83,35 @@ const Navbar = () => {
                 <Icons.GamePad className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
               </div>
             )}
-          </ToolTipComp>
+          </ToolTipComp> */}
 
-          <ToolTipComp content="Following Pages/People">
-            {pathname === "/shortsv" ? (
+          <ToolTipComp content="Communities" className="cursor-pointer">
+            {pathname === "/communities" ? (
               <Link
-                href="/shortsv"
+                href="/communities"
                 className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
               >
-                <Icons.Group className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
+                <Icons.Group className="fill-blue-500 h-8 w-8 " />
               </Link>
             ) : (
-              <div className="flex justify-center  py-3">
+              <Link href="/communities" className="flex justify-center py-3">
                 <Icons.Group className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </div>
+              </Link>
             )}
           </ToolTipComp>
 
-          <ToolTipComp content="Market">
-            {pathname === "/shortsv" ? (
+          <ToolTipComp content="Market" className="cursor-pointer">
+            {pathname === "/market" ? (
               <Link
-                href="/shortsv"
+                href="/market"
                 className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
               >
                 <Icons.Market className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
               </Link>
             ) : (
-              <div className="flex justify-center  py-3">
+              <Link href="/market" className="flex justify-center  py-3">
                 <Icons.Market className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </div>
+              </Link>
             )}
           </ToolTipComp>
         </div>

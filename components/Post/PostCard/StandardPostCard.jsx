@@ -19,9 +19,11 @@ const StandardPostCard = ({ blog }) => {
 
   return (
     <div>
-      <p className="px-5 text-justify leading-snug text-[15px] mb-1 font-[12px] py-2">
-        {blog.description}
-      </p>
+      {blog.description && (
+        <p className="px-5 text-justify leading-snug text-[15px] font-[12px] py-1">
+          {blog.description}
+        </p>
+      )}
 
       <MultipleImageRender
         blog={blog}
