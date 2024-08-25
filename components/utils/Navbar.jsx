@@ -29,7 +29,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-800 drop-shadow">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 dark:bg-neutral-900 border-b dark:border-neutral-800">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1">
@@ -140,7 +140,7 @@ const Navbar = () => {
                   onClick={() => setTheme("dark")}
                   size="icon"
                   variant="ghost"
-                  className="dark:hover:bg-neutral-700"
+                  className="dark:hover:bg-neutral-700 rounded-full"
                 >
                   <Moon className="w-5 h-5 text-neutral-800" />
                 </Button>
@@ -149,16 +149,16 @@ const Navbar = () => {
                   onClick={() => setTheme("light")}
                   size="icon"
                   variant="ghost"
-                  className="dark:hover:bg-neutral-700"
+                  className="dark:hover:bg-neutral-700 rounded-full"
                 >
-                  <Sun className="w-5 h-5 text-neutral-100" />
+                  <Sun className="w-5 h-5 text-neutral-100 " />
                 </Button>
               )}
 
               <Link
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "dark:text-neutral-100"
+                  "dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 rounded-full"
                 )}
                 href="/sign-in"
               >

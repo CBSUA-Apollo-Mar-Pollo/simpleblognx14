@@ -15,7 +15,7 @@ const ClearButton = () => {
       }}
       size="sm"
       variant="ghost"
-      className="text-blue-500 mr-4 dark:hover:bg-neutral-800"
+      className="text-blue-500  dark:hover:bg-neutral-800"
     >
       Clear
     </Button>

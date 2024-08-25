@@ -10,12 +10,12 @@ const ChatHomeContactList = ({ conversationList, session }) => {
   return (
     <div className="mt-2 mx-4">
       <div className="flex justify-between mb-2">
-        <h1 className="font-semibold text-neutral-600 text-[16px] pl-2">
+        <h1 className="font-semibold  dark:text-neutral-50 text-[18px] pl-2">
           Contacts
         </h1>
         <div className="flex items-center gap-x-2">
-          <Search className="h-5 w-5" />
-          <MoreHorizontal />
+          <Search className="h-5 w-5 dark:text-neutral-50" />
+          <MoreHorizontal className="dark:text-neutral-50" />
         </div>
       </div>
 

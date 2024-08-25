@@ -98,7 +98,7 @@ const ReelsHomeCard = () => {
   };
 
   return (
-    <Card className="dark:bg-neutral-800 dark:border-0 rounded-xl mb-3 mt-2">
+    <Card className="dark:bg-neutral-800 dark:border-0 rounded-xl mb-3">
       <CardHeader className="px-4 pt-4">
         <CardTitle className="text-[16px] font-bold flex justify-between dark:text-neutral-100">
           <div className="flex items-center gap-x-2">

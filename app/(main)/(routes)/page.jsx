@@ -84,8 +84,9 @@ export default async function HomePage() {
       <div className=" col-span-1 relative">
         <Sidebar session={session} />
       </div>
+
       {/* middle section all posts and adding posts */}
-      <div className="mt-5 space-y-3 col-span-2 mx-[5rem] ">
+      <div className="mt-5 space-y-3 col-span-2 mx-[4rem] ">
         {session?.user && (
           <div className=" pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 drop-shadow dark:border-0">
             <div className="flex flex-row items-center space-x-4">
@@ -130,12 +131,12 @@ export default async function HomePage() {
         />
       </div>
       {/* third section recent posts and who to follow */}
-      <div className=" col-span-1 relative flex flex-col ">
+      <div className=" col-span-1 relative flex flex-col border-l dark:border-neutral-800 px-3">
         <div className="sticky top-16">
           <RecentPostsCard />
+
           {session?.user && (
             <>
-              <Separator />
               <ChatHomeContactList
                 conversationList={conversationList}
                 session={session}

@@ -1,22 +1,30 @@
 import { Icons } from "@/components/utils/Icons";
 import {
-  Album,
   Book,
   CakeSlice,
+  Cat,
   Church,
+  Clapperboard,
+  Component,
   Cpu,
+  Flame,
   FlaskConical,
-  Home,
-  HomeIcon,
+  Gamepad2,
+  HelpCircle,
   LineChart,
-  MessageSquareMore,
+  MonitorPlay,
+  Music,
+  Newspaper,
   Palette,
+  PanelTop,
   Plane,
-  Save,
-  ThumbsUp,
-  TrendingUp,
+  Scale,
+  ScrollText,
+  Sparkles,
   Tv,
   User,
+  UtensilsCrossed,
+  Wrench,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -28,7 +36,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/fire.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Popular",
@@ -41,7 +49,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/history.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "History",
@@ -54,7 +62,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/bookmark.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Saved",
@@ -67,7 +75,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/FindGroup.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Group",
@@ -80,7 +88,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/Streamerlive.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Streams",
@@ -93,7 +101,7 @@ export const SideBarFirstLinks = [
         src={"/ImageIcons/pageIcon.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Pages",
@@ -103,7 +111,7 @@ export const SideBarFirstLinks = [
 
 export const SideBarSecondLinks = [
   {
-    Icon: <Icons.Home className="w-7 h-7 dark:fill-neutral-50" />,
+    Icon: <Icons.Home className="w-6 h-6 dark:fill-neutral-50" />,
     label: "Home",
     link: "/",
   },
@@ -114,7 +122,7 @@ export const SideBarSecondLinks = [
         src={"/ImageIcons/trend.png"}
         width="0"
         height="0"
-        className="w-7 h-7"
+        className="w-6 h-6"
       />
     ),
     label: "Popular",
@@ -122,10 +130,60 @@ export const SideBarSecondLinks = [
   },
 ];
 
+export const AnotherLinks = [
+  {
+    Icon: <Flame className="mr-4 w-6 h-6 fill-white" />,
+    label: "Best Posts",
+    link: "/explore/personal",
+  },
+  {
+    Icon: (
+      <Icons.Group className="mr-4 w-6 h-6 fill-neutral-600 dark:fill-white" />
+    ),
+    label: "Communities",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <MonitorPlay className="mr-4 w-6 h-6 " />,
+    label: "Watch Videos",
+    link: "/explore/personal",
+  },
+];
+
 export const SideBarExploreLinks = [
+  {
+    Icon: <Cat className="mr-4  h-6" />,
+    label: "Internet Culture",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Gamepad2 className="mr-4  h-6 " />,
+    label: "Games",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Music className="mr-4  h-6" />,
+    label: "Music",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Sparkles className="mr-4  h-6" />,
+    label: "Pop culture",
+    link: "/explore/personal",
+  },
   {
     Icon: <User className="mr-4  h-6" />,
     label: "Personal",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Newspaper className="mr-4  h-5" />,
+    label: "News & Politics",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Icons.Anime className="w-6 h-6 dark:fill-neutral-50 mr-3" />,
+    label: "Anime",
     link: "/explore/personal",
   },
   {
@@ -134,8 +192,23 @@ export const SideBarExploreLinks = [
     link: "/explore/business",
   },
   {
-    Icon: <Tv className="mr-4  h-6" />,
-    label: "Television",
+    Icon: <Clapperboard className="mr-4  h-6" />,
+    label: "Movies & Tv",
+    link: "/explore/television",
+  },
+  {
+    Icon: <Wrench className="mr-4  h-6" />,
+    label: "Education & Careers",
+    link: "/explore/television",
+  },
+  {
+    Icon: <Icons.PottedPlant className="mr-4 w-6 h-6 fill-white" />,
+    label: "Garden & Home",
+    link: "/explore/television",
+  },
+  {
+    Icon: <Icons.Cosmetics className="mr-4 w-6 h-6 fill-white" />,
+    label: "Fashion & Beauty",
     link: "/explore/television",
   },
   {
@@ -154,8 +227,8 @@ export const SideBarExploreLinks = [
     link: "/explore/reading-writing-and-literature",
   },
   {
-    Icon: <CakeSlice className="mr-4  h-6" />,
-    label: "Food",
+    Icon: <UtensilsCrossed className="mr-4  h-6" />,
+    label: "Food & Drinks",
     link: "/explore/food",
   },
   {
@@ -165,12 +238,40 @@ export const SideBarExploreLinks = [
   },
   {
     Icon: <Plane className="mr-4  h-6" />,
-    label: "Travel",
+    label: "Travel & Places",
     link: "/explore/travel",
   },
   {
     Icon: <Cpu className="mr-4  h-6" />,
     label: "Technology",
     link: "/explore/technology",
+  },
+];
+
+export const Resources = [
+  {
+    Icon: <Component className="mr-4 w-6 h-6 " />,
+    label: "About Us",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <HelpCircle className="mr-4 h-6" />,
+    label: "Help",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <PanelTop className="mr-4 h-6" />,
+    label: "Content Policy",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <Scale className="mr-4 h-6" />,
+    label: "Privacy Policy",
+    link: "/explore/personal",
+  },
+  {
+    Icon: <ScrollText className="mr-4 h-6" />,
+    label: "User Agreement",
+    link: "/explore/personal",
   },
 ];

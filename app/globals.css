@@ -49,21 +49,22 @@
   backdrop-filter: blur(50px);
 }
 
-::-webkit-scrollbar {
-  background-color: #dbdbdb;
+.sidebarContainer::-webkit-scrollbar {
+  background-color: transparent;
   width: 6px;
 }
 
-::-webkit-scrollbar-thumb {
+.sidebarContainer::-webkit-scrollbar-thumb {
   background-color: #888;
   border-radius: 2px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
+.sidebarContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #313131;
 }
 
 .scroll-container::-webkit-scrollbar {
+  margin-right: 10px;
   width: 0; /* Hide scrollbar */
 }
 /* Optionally, you can add additional styling for the scrollbar track and thumb */
@@ -74,6 +75,15 @@
   background-color: #ccc;
   border-radius: 8px;
 } */
+
+.recenpostsContainer::-webkit-scrollbar {
+  background-color: #555555;
+  width: 6px;
+}
+.recenpostsContainer::-webkit-scrollbar-thumb {
+  background-color: #444444;
+  border-radius: 2px;
+}
 
 .simplebar-content {
   z-index: 10;
