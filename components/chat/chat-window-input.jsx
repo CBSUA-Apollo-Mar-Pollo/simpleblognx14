@@ -30,7 +30,7 @@ const EmojiPickerChat = ({ onChange, triggerClassName }) => {
       <PopoverTrigger
         className={cn(" rounded-full cursor-pointer", triggerClassName)}
       >
-        <ChatIcons.Smiley className="h-5 w-5 0 fill-blue-600 transition" />
+        <ChatIcons.Smiley className="h-5 w-5 0 fill-blue-600 dark:fill-blue-400 transition" />
       </PopoverTrigger>
 
       <PopoverContent
@@ -118,19 +118,31 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
     <div className="flex items-end pl-1 pr-1 gap-x-1 mb-1">
       {watchedField.length === 0 ? (
         <div className="flex items-center gap-x-1 mb-1">
-          <Button variant="ghost" size="icon" className="h-6 w-6">
-            <ChatIcons.ImageAdd className="fill-blue-600 text-blue-600 h-6 w-6" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-6 dark:hover:bg-neutral-700"
+          >
+            <ChatIcons.ImageAdd className="fill-blue-600 text-blue-600 dark:fill-blue-400 dark:text-blue-400 h-6 w-6" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-[18px] w-[18px]">
-            <ChatIcons.ChooseSticker className="fill-blue-600 text-blue-600 h-6 w-6" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-[18px] w-[18px] dark:hover:bg-neutral-700"
+          >
+            <ChatIcons.ChooseSticker className="fill-blue-600 text-blue-600 dark:fill-blue-400 dark:text-blue-400 h-6 w-6" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7">
-            <ChatIcons.Gif className="fill-blue-600 text-blue-600 h-8 w-8" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7 dark:hover:bg-neutral-700"
+          >
+            <ChatIcons.Gif className="fill-blue-600 text-blue-600 dark:fill-blue-400 dark:text-blue-400 h-8 w-8" />
           </Button>
         </div>
       ) : (
         <Button variant="ghost" size="icon" className="h-6 w-6 mb-1.5">
-          <ChatIcons.Plus className="fill-blue-600 text-blue-600 h-7 w-7" />
+          <ChatIcons.Plus className="fill-blue-600 text-blue-600 dark:fill-blue-400 dark:text-blue-400 h-7 w-7" />
         </Button>
       )}
       <div className="relative flex-1">
@@ -148,7 +160,7 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
                         onKeyDown={handleKeyDown}
                         id="auto-resize-textarea"
                         placeholder="Aa"
-                        className="rounded-3xl bg-gray-200 pl-5 min-h-[5vh] h-[4.7vh] resize-none pr-8 max-h-[15vh] mb-[2px] overflow-y-auto "
+                        className="rounded-3xl bg-gray-200 dark:text-neutral-50 dark:placeholder:text-neutral-200 dark:bg-neutral-700 pl-5 min-h-[5vh] h-[4.7vh] resize-none pr-8 max-h-[15vh] mb-[2px] overflow-y-auto "
                         {...field}
                       />
                       <div className="absolute bottom-[2px] right-2">
@@ -168,8 +180,12 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
         </Form>
       </div>
 
-      <Button variant="ghost" size="icon">
-        <ChatIcons.Like className="fill-blue-600 h-6 w-6" />
+      <Button
+        variant="ghost"
+        size="icon"
+        className="dark:hover:bg-neutral-700 rounded-full"
+      >
+        <ChatIcons.Like className="fill-blue-600 h-6 w-6 dark:fill-blue-400" />
       </Button>
     </div>
   );

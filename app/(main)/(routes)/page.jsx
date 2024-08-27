@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/Separator";
 import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
 import { UTApi } from "uploadthing/server";
 import ChatHomeContactList from "@/components/chat/chat-home-contact-list";
+import PopularCommunities from "@/components/community/popular-communities";
 
 export default async function HomePage() {
   const session = await getAuthSession();
@@ -86,7 +87,7 @@ export default async function HomePage() {
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className="mt-5 space-y-3 col-span-2 mx-[4rem] ">
+      <div className="mt-5 space-y-3 col-span-2  ml-[4rem] mr-[6rem] ">
         {session?.user && (
           <div className=" pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 drop-shadow dark:border-0">
             <div className="flex flex-row items-center space-x-4">
@@ -134,6 +135,8 @@ export default async function HomePage() {
       <div className=" col-span-1 relative flex flex-col border-l dark:border-neutral-800 px-3">
         <div className="sticky top-16">
           <RecentPostsCard />
+
+          {!session?.user && <PopularCommunities />}
 
           {session?.user && (
             <>

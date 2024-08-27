@@ -29,12 +29,12 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 dark:bg-neutral-900 border-b dark:border-neutral-800">
+    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-neutral-100 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1">
           <Link href="/" className="font-bold">
-            <span className=" px-3.5 rounded-full bg-yellow-500/80 text-[30px] ">
+            <span className=" px-3.5 py-[2px] rounded-full bg-yellow-500/80 text-[27px] ">
               E
             </span>
           </Link>

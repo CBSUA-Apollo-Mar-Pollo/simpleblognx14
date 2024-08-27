@@ -75,9 +75,9 @@ const ChatWindow = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="bg-white rounded-full drop-shadow-md mb-4 h-[7vh] w-[3.5vw] text-neutral-800"
+          className="bg-white rounded-full drop-shadow-md mb-4 h-[7.2vh] w-[3.4vw] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
         >
-          <PenSquare className="h-6 w-6" />
+          <PenSquare className="h-7 w-7" />
         </Button>
       </div>
     </div>
@@ -108,9 +108,9 @@ const ChatWindowBox = ({ chat }) => {
   const currentUser = conversationData?.currentUser;
 
   return (
-    <div className="max-w-[22vw] w-[22vw]  bg-neutral-100 drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
+    <div className="max-w-[22vw] w-[22vw]   drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
       {/* header */}
-      <div className="py-2 px-2 drop-shadow-sm bg-white rounded-t-xl border border-neutral-200">
+      <div className="py-2 px-2 drop-shadow-sm bg-white dark:bg-neutral-800 dark:border-0 rounded-t-xl border dark:border-b dark:border-neutral-700 border-neutral-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
             <UserAvatar
@@ -120,25 +120,31 @@ const ChatWindowBox = ({ chat }) => {
                 image: chat.image || null,
               }}
             />
-            <span className="font-semibold">{chat.name}</span>
+            <span className="font-semibold dark:text-white">{chat.name}</span>
           </div>
           <div className="flex items-center">
-            <Button variant="ghost" size="icon">
-              <Phone className="h-5 w-5 text-blue-700 fill-blue-700" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="dark:hover:bg-neutral-700 rounded-full"
+            >
+              <Phone className="h-5 w-5 text-blue-700 fill-blue-700 dark:text-blue-500 dark:fill-blue-500" />
             </Button>
             <Button
               onClick={() => onMinimizeClose(chat.id)}
               variant="ghost"
               size="icon"
+              className="dark:hover:bg-neutral-700 rounded-full"
             >
-              <Minus className=" text-blue-700 " />
+              <Minus className=" text-blue-700 dark:text-blue-500 " />
             </Button>
             <Button
               onClick={() => onClose(chat.id)}
               variant="ghost"
               size="icon"
+              className="dark:hover:bg-neutral-700 rounded-full"
             >
-              <X className="h-6 w-6 text-blue-700" />
+              <X className="h-6 w-6 text-blue-700 dark:text-blue-500" />
             </Button>
           </div>
         </div>
@@ -146,7 +152,7 @@ const ChatWindowBox = ({ chat }) => {
 
       {/* message content */}
 
-      <div className="flex-1 bg-white max-h-[50vh] overflow-y-auto">
+      <div className="flex-1 bg-white dark:bg-neutral-800 max-h-[50vh] overflow-y-auto">
         <div className="flex  h-full">
           <div className="flex-1 flex  justify-center items-end ">
             <div className="flex flex-col w-full">
@@ -166,7 +172,7 @@ const ChatWindowBox = ({ chat }) => {
       </div>
 
       {/* footer */}
-      <div className="bg-white border-l border-r border-neutral-300 overflow-y-auto pl-2 pt-2 flex-1">
+      <div className="bg-white dark:bg-neutral-800 border-l border-r dark:border-l-0 dark:border-r-0  border-neutral-300 overflow-y-auto pl-2 pt-2 flex-1">
         <ChatWindowInput
           session={session}
           conversationId={conversation?.id}

@@ -4,11 +4,11 @@ import { useChatQuery } from "@/hooks/use-chat-query";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { Loader2, ServerCrash } from "lucide-react";
 import React, { Fragment, useRef } from "react";
-import ChatItem from "./chat-item";
 import { format } from "date-fns";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 import ChatWelcome from "./chat-welcome";
 import { useSocket } from "../Providers/socket-provider";
+import ChatItemWindow from "./chat-item-window";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -106,7 +106,7 @@ const ChatWindowMessages = ({
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
             {group.items.map((message) => (
-              <ChatItem
+              <ChatItemWindow
                 currentUser={message.user}
                 key={message.id}
                 id={message.id}
