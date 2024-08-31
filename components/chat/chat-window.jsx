@@ -13,6 +13,7 @@ import { getConversationInfoForChatWindow } from "@/actions/getConversationInfoF
 import ChatWindowMessages from "./chat-window-messages";
 
 const ChatWindow = () => {
+  const { data: session } = useSession();
   const [handleMouseHoverData, setHandleMouseHoverData] = useState(null);
   const { data, onClose, minimizedChats, onMinimizeOpen } =
     useChatWindowStore();
@@ -72,13 +73,16 @@ const ChatWindow = () => {
             />
           </Button>
         ))}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="bg-white rounded-full drop-shadow-md mb-4 h-[7.2vh] w-[3.4vw] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
-        >
-          <PenSquare className="h-7 w-7" />
-        </Button>
+
+        {session?.user && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-white rounded-full drop-shadow-md mb-4 h-[7.2vh] w-[3.4vw] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
+          >
+            <PenSquare className="h-7 w-7" />
+          </Button>
+        )}
       </div>
     </div>
   );

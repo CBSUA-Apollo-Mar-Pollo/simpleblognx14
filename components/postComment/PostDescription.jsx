@@ -125,7 +125,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
 
         {/* TODO: add a edit settings for the post  */}
         {session?.user && (
-          <div className="hover:bg-neutral-100 dark:bg-neutral-600 dark:hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
+          <div className="hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 py-2 px-2 rounded-full cursor-pointer">
             <MoreHorizontal className="text-neutral-700 dark:text-white" />
           </div>
         )}
@@ -205,7 +205,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
             <Button
               size="sm"
               onClick={() => setToggleEditDescription(true)}
-              className=" bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500 text-sm"
+              className=" bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-300 text-sm"
             >
               Edit
             </Button>

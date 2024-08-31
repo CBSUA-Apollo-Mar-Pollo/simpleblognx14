@@ -3,7 +3,7 @@ import React from "react";
 
 const PopularCommunities = () => {
   return (
-    <div className="bg-neutral-200/50 dark:bg-neutral-800 pl-6 rounded-lg mt-3 ml-3 mr-12 pb-5">
+    <div className="bg-neutral-200/50 dark:bg-neutral-800 pl-6 rounded-lg mt-3 ml-3 mr-5 pb-5">
       <h1 className="py-3 dark:text-white font-semibold">
         Popular communities
       </h1>

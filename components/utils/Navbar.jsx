@@ -42,7 +42,7 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="grid grid-cols-4 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
+        <div className="grid grid-cols-3 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
               <div className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5">
@@ -100,7 +100,7 @@ const Navbar = () => {
             )}
           </ToolTipComp>
 
-          <ToolTipComp content="Market" className="cursor-pointer">
+          {/* <ToolTipComp content="Market" className="cursor-pointer">
             {pathname === "/market" ? (
               <Link
                 href="/market"
@@ -113,7 +113,7 @@ const Navbar = () => {
                 <Icons.Market className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
               </Link>
             )}
-          </ToolTipComp>
+          </ToolTipComp> */}
         </div>
 
         {/* notification and profile pic */}

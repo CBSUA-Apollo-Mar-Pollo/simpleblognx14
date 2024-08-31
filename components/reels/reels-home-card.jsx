@@ -156,7 +156,7 @@ const ReelsHomeCard = () => {
           onClick={() => RightScroll()}
           size="icon"
           variant="ghost"
-          className="absolute top-[25vh] right-[2vw] z-50 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"
+          className="absolute top-[25vh] right-[2vw] z-10 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"
         >
           <ChevronRight className="h-9 w-9 text-neutral-800 dark:text-neutral-300 stroke-[1.6px]" />
         </Button>

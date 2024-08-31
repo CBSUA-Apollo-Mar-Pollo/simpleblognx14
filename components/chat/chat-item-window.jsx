@@ -53,27 +53,27 @@ const ChatItemWindow = ({
             <div
               onMouseEnter={() => handleMouseEnter(currentUser.id)}
               onMouseLeave={() => handleMouseLeave()}
-              className="flex justify-end gap-x-2"
+              className="flex justify-end gap-x-1"
             >
               <div
                 className={cn(
                   dataId === currentUser.id ? "visible" : "invisible",
-                  "flex items-center gap-x-2"
+                  "flex items-center"
                 )}
               >
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 hover:bg-neutral-300 dark:hover:bg-neutral-700"
+                  className="h-10 w-10 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full"
                 >
-                  <Reply className="dark:text-neutral-300" />
+                  <Reply className="dark:text-neutral-300 w-5 h-5" />
                 </Button>
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 hover:bg-neutral-300 dark:hover:bg-neutral-700"
+                  className="h-10 w-10 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full"
                 >
-                  <MoreVertical className="dark:text-neutral-300" />
+                  <MoreVertical className="dark:text-neutral-300 w-5 h-5" />
                 </Button>
               </div>
 
@@ -96,7 +96,7 @@ const ChatItemWindow = ({
               onMouseLeave={() => handleMouseLeave()}
               className="flex justify-start"
             >
-              <div className="flex items-center gap-x-4">
+              <div className="flex items-center gap-x-1">
                 <div className="flex items-end">
                   <UserAvatar
                     className="h-6 w-6 mb-1 mr-2"
@@ -122,22 +122,22 @@ const ChatItemWindow = ({
                 <div
                   className={cn(
                     dataId === currentUser.id ? "visible" : "invisible",
-                    "flex items-center gap-x-2"
+                    "flex items-center"
                   )}
                 >
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-8 w-8 hover:bg-neutral-300 dark:hover:bg-neutral-700"
+                    className="h-10 w-10 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full"
                   >
-                    <Reply className="dark:text-neutral-300" />
+                    <Reply className="dark:text-neutral-300 w-5 h-5" />
                   </Button>
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-8 w-8 hover:bg-neutral-300 dark:hover:bg-neutral-700"
+                    className="h-10 w-10 hover:bg-neutral-300 dark:hover:bg-neutral-700 rounded-full"
                   >
-                    <MoreVertical className="dark:text-neutral-300" />
+                    <MoreVertical className="dark:text-neutral-300 w-5 h-5" />
                   </Button>
                 </div>
               </div>

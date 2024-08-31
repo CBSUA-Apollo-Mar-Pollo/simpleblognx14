@@ -27,7 +27,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
               />
             </Link>
           )}
-
+          {/* 
           {blog.image.length === 1 && blog.userStatus === "edited" && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
@@ -44,27 +44,40 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
               />
             </Link>
-          )}
+          )} */}
 
           {/* render if it has 1 image */}
-          {blog.image.length === 1 && blog.userStatus === null && (
+          {blog.image.length === 1 && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
             >
-              <Image
-                sizes="100vw"
-                width={0}
-                height={0}
-                priority="true"
-                src={blog.image[0].url}
-                alt="profile image"
-                referrerPolicy="no-referrer"
-                className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
+              {/* Background Container */}
+              <div
+                className="absolute inset-0 z-[-1] bg-cover bg-center"
                 style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.1) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.2) 100%)`,
+                  backgroundImage: `url(${blog.image[0].url})`,
+                  filter: "blur(10px)", // Adjust the blur amount as needed
+                  zIndex: "-1", // Ensures the background is behind other content
                 }}
               />
+              {/* Main Content */}
+              <div className="relative w-full flex flex-col">
+                <Image
+                  sizes="100vw"
+                  width={0}
+                  height={0}
+                  priority="true"
+                  src={blog.image[0].url}
+                  alt="profile image"
+                  referrerPolicy="no-referrer"
+                  className="object-contain w-full transition max-h-[30rem]"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.1) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.2) 100%)`,
+                    backgroundBlendMode: "overlay", // This will blend the gradient with the image
+                  }}
+                />
+              </div>
             </Link>
           )}
 

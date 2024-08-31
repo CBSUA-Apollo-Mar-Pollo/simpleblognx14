@@ -32,7 +32,7 @@ const ChatBoxMenu = () => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger className="focus-visible:outline-none">
+      <DropdownMenuTrigger className="focus-visible:outline-none drop-shadow">
         <ToolTipComp content="Notification">
           <div
             className={`  ${

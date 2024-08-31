@@ -33,19 +33,6 @@ export const SideBarFirstLinks = [
     Icon: (
       <Image
         sizes="100vw"
-        src={"/ImageIcons/fire.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-      />
-    ),
-    label: "Popular",
-    link: "/e/popular",
-  },
-  {
-    Icon: (
-      <Image
-        sizes="100vw"
         src={"/ImageIcons/history.png"}
         width="0"
         height="0"
@@ -68,32 +55,7 @@ export const SideBarFirstLinks = [
     label: "Saved",
     link: "/e/popular",
   },
-  {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/FindGroup.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-      />
-    ),
-    label: "Group",
-    link: "/e/groups/feed",
-  },
-  {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/Streamerlive.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-      />
-    ),
-    label: "Streams",
-    link: "/e/streams/feed",
-  },
+
   {
     Icon: (
       <Image
