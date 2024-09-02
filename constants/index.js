@@ -103,7 +103,7 @@ export const AnotherLinks = [
       <Icons.Group className="mr-4 w-6 h-6 fill-neutral-600 dark:fill-white" />
     ),
     label: "Communities",
-    link: "/explore/personal",
+    link: "/communities",
   },
   {
     Icon: <MonitorPlay className="mr-4 w-6 h-6 " />,

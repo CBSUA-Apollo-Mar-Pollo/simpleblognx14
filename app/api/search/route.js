@@ -14,13 +14,6 @@ export async function POST(req) {
       },
     });
 
-    await db.SearchHistory.create({
-      data: {
-        text: data,
-        userId: session.user.id,
-      },
-    });
-
     return new Response(JSON.stringify(searchData));
   } catch (error) {
     return new Response("Something went wrong", { status: 500 });

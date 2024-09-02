@@ -7,8 +7,10 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
 import { Pencil } from "lucide-react";
+import { getAuthSession } from "@/lib/auth";
 
 const UserBio = async ({ user }) => {
+  const session = getAuthSession();
   const userImages = await db.userPostedImages.findMany({
     where: {
       authorId: user.id,
@@ -22,8 +24,8 @@ const UserBio = async ({ user }) => {
   return (
     <div className="space-y-3">
       <Card className="dark:bg-neutral-800 dark:border-0">
-        <CardContent>
-          <h2 className="text-xl font-bold py-4 dark:text-white">Intro</h2>
+        <CardContent className="p-0">
+          <h2 className="text-xl font-bold py-4 dark:text-white ml-5">Intro</h2>
           <div className="flex flex-col space-y-4 w-full">
             {user.bio ? (
               <div className="flex justify-between items-center mx-2">
@@ -38,19 +40,26 @@ const UserBio = async ({ user }) => {
                 </Link>
               </div>
             ) : (
-              <Link
-                href="/settings"
-                className={cn(
-                  buttonVariants("secondary"),
-                  "dark:bg-neutral-700 dark:hover:bg-neutral-500"
+              <>
+                {session?.user?.id === user.id && (
+                  <>
+                    <Link
+                      href="/settings"
+                      className={cn(
+                        buttonVariants("secondary"),
+                        "dark:bg-neutral-700 dark:hover:bg-neutral-500"
+                      )}
+                    >
+                      Add Bio
+                    </Link>
+
+                    <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+                      Edit details
+                    </Button>
+                  </>
                 )}
-              >
-                Add Bio
-              </Link>
+              </>
             )}
-            <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
-              Edit details
-            </Button>
           </div>
         </CardContent>
       </Card>
