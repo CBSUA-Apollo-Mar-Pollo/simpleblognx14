@@ -1,7 +1,8 @@
+import CommunityContent from "@/components/community/community-content";
 import React from "react";
 
 const CommunitiesInitialPage = () => {
-  return <div>CommunitiesPage</div>;
+  return <CommunityContent />;
 };
 
 export default CommunitiesInitialPage;

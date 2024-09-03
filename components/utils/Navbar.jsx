@@ -42,7 +42,7 @@ const Navbar = () => {
           <SearchInput />
         </div>
 
-        <div className="grid grid-cols-3 text-neutral-600 dark:text-neutral-300 col-span-2 px-14">
+        <div className="grid grid-cols-3 text-neutral-600 dark:text-neutral-300 col-span-2 px-[3vw] mr-10">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
               <div className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5">
