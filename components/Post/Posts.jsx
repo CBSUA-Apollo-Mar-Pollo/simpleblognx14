@@ -53,6 +53,16 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
         {posts.map((blog, index) => {
+          const votesAmt = blog.votes.reduce((acc, vote) => {
+            if (vote.type === "UP") return acc + 1;
+            if (vote.type === "DOWN") return acc - 1;
+            return acc;
+          }, 0);
+
+          const currentVote = blog.votes.find(
+            (vote) => vote.userId === session?.user.id
+          );
+
           if (index === posts.length - 1) {
             return (
               <li key={blog.id} className="list-none" ref={ref}>
@@ -60,6 +70,8 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                   blog={blog}
                   session={session}
                   deleteImage={deleteImage}
+                  votesAmt={votesAmt}
+                  currentVote={currentVote}
                 />
                 {index === randNumber && <ReelsHomeCard />}
               </li>
@@ -73,6 +85,8 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                   key={blog.id}
                   session={session}
                   deleteImage={deleteImage}
+                  votesAmt={votesAmt}
+                  currentVote={currentVote}
                 />
               </li>
             );

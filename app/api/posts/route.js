@@ -21,6 +21,7 @@ export async function GET(req) {
       include: {
         author: true,
         comments: true,
+        votes: true,
       },
       orderBy: {
         createdAt: "desc",

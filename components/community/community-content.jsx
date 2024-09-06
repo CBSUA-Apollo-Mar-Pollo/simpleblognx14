@@ -21,7 +21,7 @@ const CommunityContent = () => {
             />
           </div>
 
-          <span className="ml-3 text-sm">Recent posts</span>
+          <span className="ml-3 text-sm dark:text-white">Recent posts</span>
 
           {/* render when user is not yet a part of any community */}
           <div className="flex flex-col items-center mt-4">
@@ -31,7 +31,7 @@ const CommunityContent = () => {
               height={800}
               className="h-[60-vh] w-[70vw] rounded-3xl"
             />
-            <p className="mx-10 text-xl">
+            <p className="text-xl mt-2 dark:text-white">
               "Discover shared interests and passions by joining a community or
               creating your own".
             </p>

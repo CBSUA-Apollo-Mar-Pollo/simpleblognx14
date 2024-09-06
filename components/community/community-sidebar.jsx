@@ -7,11 +7,13 @@ import Image from "next/image";
 
 const CommunitySideBar = () => {
   return (
-    <div className="border-r border-neutral-300 h-screen">
+    <div className="border-r border-neutral-300 dark:border-neutral-800 h-screen">
       <div className="pt-2">
         <div className="flex items-center justify-between px-3 p-2">
-          <h1 className="text-2xl font-bold text-neutral-800">Communities</h1>
-          <Settings />
+          <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">
+            Communities
+          </h1>
+          <Settings className="dark:text-white" />
         </div>
 
         <div className="mx-3 my-1">
@@ -22,13 +24,15 @@ const CommunitySideBar = () => {
         </div>
 
         <div className="px-3 mt-3 space-y-1">
-          <div className="flex items-center gap-x-2 hover:bg-neutral-200 py-1 pl-2 rounded-xl cursor-pointer">
-            <AppWindow className="bg-neutral-100 p-2 h-9 w-9 rounded-full text-neutral-800" />
-            <p className="font-medium text-[14px]">Community posts</p>
+          <div className="flex items-center gap-x-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-1 pl-2 rounded-xl cursor-pointer">
+            <AppWindow className="bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white" />
+            <p className="font-medium text-[14px] dark:text-white">
+              Community posts
+            </p>
           </div>
-          <div className="flex items-center gap-x-2 hover:bg-neutral-200 py-1 pl-2 rounded-xl cursor-pointer">
-            <UsersRound className="bg-neutral-100 p-2 h-9 w-9 rounded-full text-neutral-800" />
-            <p className="font-medium text-[14px]">Explore</p>
+          <div className="flex items-center gap-x-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-1 pl-2 rounded-xl cursor-pointer">
+            <UsersRound className="bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white" />
+            <p className="font-medium text-[14px] dark:text-white">Explore</p>
           </div>
         </div>
 
@@ -37,7 +41,7 @@ const CommunitySideBar = () => {
         </div>
 
         <div className="mx-3">
-          <h1 className=" text-neutral-800 font-medium">
+          <h1 className=" text-neutral-800 font-medium dark:text-white">
             Communities you've joined
           </h1>
         </div>
@@ -50,7 +54,7 @@ const CommunitySideBar = () => {
             height={800}
             className="h-72 w-72 rounded-3xl"
           />
-          <p className="mt-3 text-sm mx-10 text-justify">
+          <p className="mt-3 text-sm mx-10 text-justify dark:text-white">
             "Ready to make a difference? Join or start a community that inspires
             and empowers".
           </p>

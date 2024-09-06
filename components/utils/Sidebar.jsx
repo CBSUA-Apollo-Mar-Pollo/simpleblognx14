@@ -150,7 +150,7 @@ const Sidebar = ({ session }) => {
           ).map((item, index) => (
             <Link
               key={index}
-              href={item.link}
+              href={`/topic/${item.label}`}
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 pathname === item.link ? "bg-gray-200 dark:bg-neutral-700" : "",

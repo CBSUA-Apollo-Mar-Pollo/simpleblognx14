@@ -3,10 +3,14 @@ import React from "react";
 import HeartVote from "../PostVote/HeartVote";
 import PostVote from "../PostVote/PostVote";
 
-const VoteCommentAndShare = () => {
+const VoteCommentAndShare = ({ postId, initialVotesAmt, initialVote }) => {
   return (
     <div className="grid grid-cols-3 text-neutral-300">
-      <HeartVote />
+      <PostVote
+        postId={postId}
+        initialVote={initialVote}
+        initialVotesAmt={initialVotesAmt}
+      />
 
       <div className="flex items-center justify-center gap-2 px-3 hover:bg-neutral-200 dark:hover:bg-neutral-600   rounded cursor-pointer py-1">
         <MessageCircle className="h-6 w-6 text-neutral-700 dark:text-neutral-200" />

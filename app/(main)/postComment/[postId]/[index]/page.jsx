@@ -17,6 +17,7 @@ const postCommentPage = async ({ params }) => {
     include: {
       author: true,
       comments: true,
+      votes: true,
     },
     orderBy: {
       createdAt: "desc",

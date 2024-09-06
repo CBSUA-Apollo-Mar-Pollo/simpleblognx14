@@ -20,6 +20,7 @@ export default async function HomePage() {
     include: {
       author: true,
       comments: true,
+      votes: true,
     },
     orderBy: {
       createdAt: "desc",

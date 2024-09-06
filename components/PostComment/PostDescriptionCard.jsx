@@ -29,7 +29,13 @@ import { COMMENT_PAGE } from "@/config";
 import CommentSectionCard from "./CommentSectionCard";
 import { Button } from "../ui/Button";
 
-const PostDescriptionCard = ({ blog, sharedPost }) => {
+const PostDescriptionCard = ({
+  blog,
+  sharedPost,
+  postId,
+  initialVote,
+  initialVotesAmt,
+}) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const { mutate: getComments } = useMutation({
@@ -202,10 +208,14 @@ const PostDescriptionCard = ({ blog, sharedPost }) => {
             )}
 
             {/* home post vote comment and share */}
-            <div className="grid grid-cols-4 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">
+            <div className="grid grid-cols-3 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">
               {/* vote */}
-              <PostVote />
-              <HeartVote />
+              <PostVote
+                postId={postId}
+                initialVote={initialVote}
+                initialVotesAmt={initialVotesAmt}
+              />
+              {/* <HeartVote /> */}
               {/* comment button */}
               <div className="flex items-center justify-center gap-2 hover:bg-neutral-200 dark:hover:bg-neutral-500 px-5 rounded cursor-pointer">
                 <MessageCircle className="h-6 w-6 text-neutral-700 dark:text-neutral-200" />

@@ -16,7 +16,7 @@ import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
 
-const PostCard = ({ blog, session, deleteImage }) => {
+const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
   // get shared post data
   const { data: sharedPost } = useQuery({
     // Query key (unique identifier)
@@ -69,11 +69,14 @@ const PostCard = ({ blog, session, deleteImage }) => {
         <Separator className="dark:bg-neutral-700" />
 
         {/* home post vote comment and share */}
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-3">
           {/* vote */}
-
-          <PostVote />
-          <HeartVote />
+          <PostVote
+            postId={blog.id}
+            initialVote={currentVote?.type}
+            initialVotesAmt={votesAmt}
+          />
+          {/* <HeartVote /> */}
 
           {/* comment button */}
           {/* {blog?.image ? (
@@ -90,7 +93,13 @@ const PostCard = ({ blog, session, deleteImage }) => {
             className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
             onClick={() => storeToRecentPosts(blog.id)}
           >
-            <PostDescriptionCard blog={blog} sharedPost={sharedPost} />
+            <PostDescriptionCard
+              blog={blog}
+              sharedPost={sharedPost}
+              postId={blog.id}
+              initialVote={currentVote?.type}
+              initialVotesAmt={votesAmt}
+            />
           </div>
           {/* )} */}
 
