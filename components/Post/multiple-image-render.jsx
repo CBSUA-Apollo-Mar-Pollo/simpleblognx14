@@ -51,6 +51,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
+              shallow
             >
               {/* Background Container */}
               <div

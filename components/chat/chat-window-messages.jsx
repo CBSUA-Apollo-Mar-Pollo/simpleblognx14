@@ -1,16 +1,14 @@
-"use client";
-
+import React, { Fragment, useRef } from "react";
+import { format, isToday, isSameDay, startOfDay } from "date-fns";
 import { useChatQuery } from "@/hooks/use-chat-query";
 import { useChatSocket } from "@/hooks/use-chat-socket";
 import { Loader2, ServerCrash } from "lucide-react";
-import React, { Fragment, useRef } from "react";
-import { format } from "date-fns";
 import { useChatScroll } from "@/hooks/use-chat-scroll";
 import ChatWelcome from "./chat-welcome";
-import { useSocket } from "../Providers/socket-provider";
 import ChatItemWindow from "./chat-item-window";
 
-const DATE_FORMAT = "d MMM yyyy, HH:mm";
+const DATE_FORMAT = "MMMM d, yyyy"; // Full date format
+const TIME_FORMAT = "h:mm a"; // Time format
 
 const ChatWindowMessages = ({
   userProfile,
@@ -26,8 +24,6 @@ const ChatWindowMessages = ({
   const addKey = `chat:${chatId}:messages`;
 
   let socketUrl = "/api/socket/direct-messages";
-
-  //   const updateKey = `chat:${chatId}:messages:update`;
 
   const chatRef = useRef(null);
   const bottomRef = useRef(null);
@@ -51,10 +47,16 @@ const ChatWindowMessages = ({
   });
 
   function formatDate(isoString) {
-    if (conversationDate) {
-      const date = new Date(isoString);
-      return format(date, "M/d/yy, h:mm a");
+    const date = new Date(isoString);
+    if (isToday(date)) {
+      return format(date, TIME_FORMAT);
+    } else {
+      return format(date, DATE_FORMAT);
     }
+  }
+
+  function isDifferentDay(currentDate, previousDate) {
+    return !isSameDay(currentDate, previousDate);
   }
 
   if (status === "pending") {
@@ -79,8 +81,10 @@ const ChatWindowMessages = ({
     );
   }
 
+  let lastDate = null;
+
   return (
-    <div ref={chatRef} className="flex-1 flex flex-col py-4  max-h-[75vh]">
+    <div ref={chatRef} className="flex-1 flex flex-col py-4 max-h-[75vh]">
       {!hasNextPage && <div className="flex-1" />}
       {!hasNextPage && (
         <ChatWelcome
@@ -105,19 +109,32 @@ const ChatWindowMessages = ({
       <div className="flex flex-col-reverse mt-auto">
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
-            {group.items.map((message) => (
-              <ChatItemWindow
-                currentUser={message.user}
-                key={message.id}
-                id={message.id}
-                content={message.content}
-                deleted={message.deleted}
-                timeStamp={format(new Date(message.createdAt), DATE_FORMAT)}
-                isUpdated={message.updatedAt !== message.createdAt}
-                socketUrl={socketUrl}
-                socketQuery={conversationId}
-              />
-            ))}
+            {group.items.map((message) => {
+              const messageDate = new Date(message.createdAt);
+              const shouldShowDate = isDifferentDay(messageDate, lastDate);
+              lastDate = messageDate;
+
+              return (
+                <Fragment key={message.id}>
+                  <ChatItemWindow
+                    currentUser={message.user}
+                    id={message.id}
+                    content={message.content}
+                    deleted={message.deleted}
+                    rawTimeStamp={message.createdAt}
+                    timeStamp={formatDate(message.createdAt)}
+                    isUpdated={message.updatedAt !== message.createdAt}
+                    socketUrl={socketUrl}
+                    socketQuery={conversationId}
+                  />
+                  {shouldShowDate && (
+                    <span className="text-[11px] text-center text-neutral-700 dark:text-neutral-200 my-2">
+                      {formatDate(message.createdAt)}
+                    </span>
+                  )}
+                </Fragment>
+              );
+            })}
           </Fragment>
         ))}
       </div>

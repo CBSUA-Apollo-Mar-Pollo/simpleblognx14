@@ -155,7 +155,7 @@ const SignInForm = () => {
           )}
 
           <Button className="w-full rounded-full mt-1">
-            Sign In with Email
+            Sign In with email
           </Button>
         </form>
 

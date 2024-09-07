@@ -19,6 +19,7 @@ const ChatItemWindow = ({
   isUpdated,
   socketUrl,
   socketQuery,
+  rawTimeStamp,
 }) => {
   const { data: session } = useSession();
   const [dataId, setDataId] = useState(null);
@@ -29,7 +30,6 @@ const ChatItemWindow = ({
     setDataId(null);
   };
 
-  console.log(dataId, "data id");
   return (
     <div className="relative group flex items-center hover:bg-black/5 px-2 py-1 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
@@ -47,6 +47,10 @@ const ChatItemWindow = ({
               {timeStamp}
             </span>
           </div> */}
+
+          {/* <span className="text-[11px] text-center text-neutral-700 dark:text-neutral-200 my-2">
+            {timeStamp}
+          </span> */}
 
           {/* message content */}
           {session?.user.id === currentUser.id ? (
@@ -77,18 +81,20 @@ const ChatItemWindow = ({
                 </Button>
               </div>
 
-              <p
-                className={cn(
-                  "text-[14px]  bg-blue-500 text-white py-3 px-4 rounded-3xl "
-                )}
-              >
-                {content}
-                {isUpdated && !deleted && (
+              <div className="flex items-end">
+                <p
+                  className={cn(
+                    "text-[13px] bg-blue-500 text-white py-2 px-4 rounded-3xl "
+                  )}
+                >
+                  {content}
+                  {/* {isUpdated && !deleted && (
                   <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                     (edited)
                   </span>
-                )}
-              </p>
+                )} */}
+                </p>
+              </div>
             </div>
           ) : (
             <div
@@ -107,7 +113,7 @@ const ChatItemWindow = ({
                   />
                   <p
                     className={cn(
-                      "text-[14px] bg-neutral-200  py-3 px-4 rounded-3xl dark:bg-neutral-700 dark:text-white "
+                      "text-[13px] bg-neutral-200  py-2 px-4 rounded-3xl dark:bg-neutral-700 dark:text-white "
                     )}
                   >
                     {content}

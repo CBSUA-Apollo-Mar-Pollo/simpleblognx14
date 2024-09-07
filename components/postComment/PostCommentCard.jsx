@@ -19,7 +19,7 @@ const PostCommentCard = ({ post, index, session, comments }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" || e.keyCode === 27) {
-        router.back();
+        router.push("/");
       }
     };
 
@@ -37,8 +37,6 @@ const PostCommentCard = ({ post, index, session, comments }) => {
   const currentVote = post.votes.find(
     (vote) => vote.userId === session?.user.id
   );
-
-  console.log(post, "post comment card");
 
   return (
     <div className="grid grid-cols-4 relative">

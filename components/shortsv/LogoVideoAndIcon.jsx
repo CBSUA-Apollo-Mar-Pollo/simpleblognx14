@@ -23,6 +23,7 @@ import UserAvatar from "../utils/UserAvatar";
 import { Button } from "../ui/Button";
 
 import useCustomHooks from "@/hooks/use-custom-hooks";
+import ShortsvVote from "../PostVote/shortsv-vote";
 
 const LogoVideoAndIcon = ({
   videoData,
@@ -160,16 +161,11 @@ const LogoVideoAndIcon = ({
                     image: videoData?.author?.image || null,
                   }}
                 />
-                <span className="text-white">
+                <span className="text-white text-sm">
                   {videoData?.author?.name || videoData?.author?.handleName}
                 </span>
               </div>
-              <Button
-                size="sm"
-                className="mr-6 px-5 rounded-3xl bg-neutral-50 hover:bg-neutral-200 text-neutral-800 text-[13px] font-medium  "
-              >
-                Follow
-              </Button>
+
               {/* <Button
                 variant="ghost"
                 className="px-5 py-2 bg-neutral-600 text-white"
@@ -182,10 +178,8 @@ const LogoVideoAndIcon = ({
             </div>
           </div>
         </div>
-        <div className="space-y-5 flex flex-col justify-end mx-2 mb-5 z-30">
-          <div className="p-3  rounded-full bg-neutral-800">
-            <Heart className="stroke-white fill-white" />
-          </div>
+        <div className="space-y-3 flex flex-col justify-end mx-2 mb-5 z-30 ml-4">
+          <ShortsvVote />
           {/* comment button and comment amount */}
           <div className="flex flex-col space-y-1">
             <Button
@@ -200,22 +194,20 @@ const LogoVideoAndIcon = ({
                 }`}
               />
             </Button>
-            <span className="text-center dark:text-white text-sm">
-              {commentAmt}
-            </span>
+            <span className="text-center text-white ">{commentAmt}</span>
           </div>
           {/* share button */}
           <div className="flex flex-col space-y-2">
             <Button className="px-3 py-6  rounded-full bg-neutral-800">
               <Redo2 className="dark:stroke-white" />
             </Button>
-            <span className="text-center dark:text-white text-sm">Share</span>
+            <span className="text-center text-white text-sm">Share</span>
           </div>
           <div className="p-3  rounded-full bg-neutral-800">
             <MoreVertical className="stroke-white" />
           </div>
         </div>
-        <div className="z-20 flex items-center">
+        <div className="z-20 flex items-center ml-3">
           <Button
             onClick={() => router.refresh()}
             size="md"
@@ -231,10 +223,10 @@ const LogoVideoAndIcon = ({
         <div className="absolute right-7 top-16 mt-1">
           <Button
             onClick={CheckSession}
-            className="bg-neutral-100 drop-shadow-md text-neutral-700 font-semibold dark:text-white dark:bg-neutral-800 rounded-lg py-0 text-[13px] hover:bg-neutral-200 dark:hover:bg-neutral-500"
+            className="bg-neutral-100 drop-shadow-md text-neutral-900 font-bold  rounded-lg py-0 text-[13px] hover:bg-neutral-200 "
           >
             <span className="pr-2.5">
-              <Clapperboard className="w-5.5 h-5.5 text-neutral-600 dark:text-neutral-200" />
+              <Clapperboard className="w-5.5 h-5.5 text-neutral-900 " />
             </span>
             Create shortsv
           </Button>

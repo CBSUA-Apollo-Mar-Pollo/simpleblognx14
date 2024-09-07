@@ -59,14 +59,11 @@ const PostVote = ({ postId, initialVotesAmt, initialVote }) => {
       }
     },
   });
+
   return (
     <div className="flex items-center justify-center my-2 gap-x-2">
       {/* upvote button */}
-      <button
-        //   onClick={() => vote("UP")}
-        onClick={() => vote("UP")}
-        aria-label="upvote"
-      >
+      <button onClick={() => vote("UP")} aria-label="upvote">
         <ArrowBigUp
           className={cn(
             "h-10 w-10  hover:text-orange-600 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full p-1.5",

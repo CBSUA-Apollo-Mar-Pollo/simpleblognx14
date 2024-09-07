@@ -80,22 +80,22 @@ const ProfileButtons = ({ userId }) => {
             </div>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="bg-neutral-800 dark:border-none">
+          <DropdownMenuContent className="dark:bg-neutral-800 dark:border-none">
             {session?.user.id === userId ? (
               <>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer dark:text-white">
                   View As
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer dark:text-white">
                   Profile Status
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer dark:text-white">
                   Archive
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer dark:text-white">
                   Activity Log
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer dark:text-white">
                   Lock Profile
                 </DropdownMenuItem>
               </>

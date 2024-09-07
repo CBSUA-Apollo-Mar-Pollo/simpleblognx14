@@ -166,9 +166,9 @@ const ProfileSection = ({ user, deleteImage }) => {
 
           {session?.user.id === user.id ? (
             <div className="mr-10 mt-4">
-              <Button className="bg-neutral-200 hover:bg-neutral-300 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+              <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
                 <span className="pr-2">
-                  <Pencil className="fill-black stroke-neutral-200 h-6 w-6" />
+                  <Pencil className="fill-black stroke-transparent  h-4 w-4" />
                 </span>
                 Edit Profile
               </Button>

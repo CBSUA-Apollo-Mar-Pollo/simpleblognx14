@@ -14,17 +14,19 @@ const ChatWelcome = ({ userProfile, date }) => {
             image: userProfile.image || null,
           }}
         />
-        <span className="text-lg font-semibold text-neutral-900/90">
+        <span className="text-lg font-semibold text-neutral-900/90 dark:text-white">
           {userProfile.name}
         </span>
       </div>
-      <div className="space-y-2 px-4 mb-4">
-        <p className="text-zinc-600 dark:text-zinc-400 text-xs font-medium">
+      <div className="space-y-2 px-12 mb-4">
+        <p className="text-zinc-600 dark:text-zinc-400 text-xs font-medium text-center">
           {`This is the start of your conversation with ${userProfile.name}`}
         </p>
       </div>
 
-      <span className="text-xs font-semibold text-neutral-700">{date}</span>
+      <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-200 my-2">
+        {date}
+      </span>
     </div>
   );
 };
