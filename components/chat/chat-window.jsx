@@ -52,20 +52,20 @@ const ChatWindow = () => {
             onMouseLeave={handleMouseLeave}
             onClick={() => onMinimizeOpen(user.id)}
             variant="ghost"
-            className="mb-1 relative h-14 w-14"
+            className="mb-1 relative h-14 w-14 dark:hover:bg-neutral-700 rounded-full"
           >
             {handleMouseHoverData === user.id && (
               <Button
                 onClick={() => onClose(user.id)}
                 size="icon"
                 variant="ghost"
-                className="absolute top-0 right-0 z-50 bg-neutral-800 h-6 w-6 rounded-full hover:bg-neutral-600"
+                className="absolute top-0 right-0 z-50 bg-neutral-800 h-6 w-6 rounded-full hover:bg-neutral-600 dark:hover:bg-neutral-700"
               >
                 <X className="text-neutral-100 h-10 w-10 m-1" />
               </Button>
             )}
             <UserAvatar
-              className="h-14 w-14 border border-neutral-300"
+              className="h-12 w-12 border border-neutral-300"
               user={{
                 name: user.name || null,
                 image: user.image || null,

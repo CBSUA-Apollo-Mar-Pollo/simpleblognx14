@@ -80,7 +80,7 @@ const RecentPostsCard = async () => {
                     </div>
 
                     <div className="my-2 ">
-                      {post.blog.image[0] && (
+                      {post?.blog?.image[0] && (
                         <Link href={`/postComment/${post.blog.id}`}>
                           <div className="relative w-24 h-24">
                             <Image

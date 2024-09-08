@@ -37,8 +37,6 @@ const PostOption = ({ blog, deleteImage }) => {
     },
   });
 
-  const post = sharedPost ? sharedPost : blog;
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -68,7 +66,11 @@ const PostOption = ({ blog, deleteImage }) => {
         </DropdownMenuItem>
         {session?.user?.id === authorId && (
           <>
-            <EditPostModal blog={post} deleteImage={deleteImage} />
+            <EditPostModal
+              blog={blog}
+              sharedPost={sharedPost}
+              deleteImage={deleteImage}
+            />
 
             <Separator className="my-2" />
 

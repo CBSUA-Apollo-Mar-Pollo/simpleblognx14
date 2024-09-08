@@ -73,11 +73,11 @@ const CommentSectionCard = ({
           <div className="flex items-center gap-x-1">
             <div className="bg-neutral-200 dark:bg-neutral-600 rounded-xl px-4 py-2">
               <div className="flex items-center gap-x-1">
-                <p className="text-neutral-700 dark:text-neutral-300 text-xs font-semibold">
+                <p className="text-neutral-700 dark:text-neutral-100 text-xs font-semibold">
                   {comment?.author?.name}
                 </p>
                 {post?.author.id === comment?.author?.id && (
-                  <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-500 bg-opacity-35 px-2 rounded">
+                  <span className="text-xs text-blue-600 dark:text-blue-300 bg-blue-500 bg-opacity-35 px-2 rounded">
                     Author
                   </span>
                 )}

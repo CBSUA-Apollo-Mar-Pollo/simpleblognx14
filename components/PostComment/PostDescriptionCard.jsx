@@ -20,7 +20,6 @@ import Link from "next/link";
 import Image from "next/image";
 import HeartVote from "../PostVote/HeartVote";
 import MultipleImageRender from "../Post/multiple-image-render";
-
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import { usePathname } from "next/navigation";
@@ -66,6 +65,7 @@ const PostDescriptionCard = ({
       return res;
     },
   });
+
   const fetchComments = async ({ pageParam = 1 }) => {
     const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${blog.id}`;
     const res = await fetch(query, { cache: "no-store" });
@@ -134,43 +134,37 @@ const PostDescriptionCard = ({
             </div>
 
             {/* post description */}
-            <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal text-neutral-800 dark:text-neutral-50">
-              {blog.description}
-            </p>
+            {blog.description && (
+              <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal text-neutral-800 dark:text-neutral-50">
+                {blog.description}
+              </p>
+            )}
 
-            <MultipleImageRender
-              blog={blog}
-              dominantColorPost={dominantColorPost}
-              isLoading={isLoading}
-            />
+            {blog.image && (
+              <MultipleImageRender
+                blog={blog.sharedPostId === null ? blog : null}
+                dominantColorPost={dominantColorPost}
+                isLoading={isLoading}
+              />
+            )}
 
             {sharedPost && (
-              <div className=" mx-5 mb-2">
-                <div className="rounded-2xl border border-neutral-600">
+              <div className=" mx-2 mb-2 mt-2">
+                <div className="rounded-xl border border-neutral-700 px-2 pt-1">
                   {sharedPost.image && (
-                    <Link
-                      href={`/postComment/${sharedPost.id}`}
-                      className="relative overflow-clip w-full "
-                      // ref={pRef}
-                    >
-                      <Image
-                        sizes="100vw"
-                        width={0}
-                        height={0}
-                        src={sharedPost.image}
-                        alt="profile image"
-                        referrerPolicy="no-referrer"
-                        className="object-contain w-full transition max-h-[30rem] bg-black rounded-t-2xl "
-                      />
-                    </Link>
+                    <MultipleImageRender
+                      blog={blog.sharedPostId ? sharedPost : null}
+                      dominantColorPost={dominantColorPost}
+                      isLoading={isLoading}
+                    />
                   )}
                   {/* shared post description */}
-                  <div className=" gap-1 my-2 mx-4">
+                  <div className=" gap-1 my-2 mx-1">
                     {/* profile image  */}
                     <Link href={`/user/${sharedPost?.author.id}`}>
                       <div className="flex items-center gap-1">
                         <UserAvatar
-                          className="h-9 w-9 "
+                          className="h-10 w-10 "
                           user={{
                             name: sharedPost.author?.name || null,
                             image: sharedPost.author?.image || null,
@@ -182,26 +176,28 @@ const PostDescriptionCard = ({
                             {sharedPost?.author?.name}
                           </p>
                           <div className="flex items-center">
-                            <p className=" text-xs text-gray-600 ">
+                            <p className=" text-xs text-gray-600 dark:text-white">
                               {formatTimeToNow(new Date(sharedPost?.createdAt))}
                             </p>
-                            <Dot className="-mx-1 text-gray-600" />
-                            <Globe className="h-3 w-3 text-gray-600" />
+                            <Dot className="-mx-1 text-gray-600 dark:text-white" />
+                            <Globe className="h-3 w-3 text-gray-600 dark:text-white" />
                           </div>
                         </div>
                       </div>
                     </Link>
 
-                    <p className=" text-justify py-2 text-sm leading-relaxed mb-1 font-medium">
-                      {sharedPost.description}
-                    </p>
+                    {sharedPost.description && (
+                      <p className=" text-justify py-2 text-sm leading-relaxed mb-1 font-medium">
+                        {sharedPost.description}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             )}
 
             {blog.comments.length !== 0 && (
-              <div className="py-3 flex items-center justify-end mr-4 text-sm hover:underline">
+              <div className="pb-2 flex items-center justify-end mr-4 text-xs hover:underline">
                 {blog.comments.length}{" "}
                 {blog.comments.length === 1 ? "Comment" : "Comments"}
               </div>
@@ -233,7 +229,7 @@ const PostDescriptionCard = ({
             </div>
 
             {/* comment section */}
-            <div className="mt-2 pl-4 pr-1 overflow-auto">
+            <div className="mt-2 pl-4 pr-4 overflow-auto">
               <div className="text-end py-2">
                 <p className="text-neutral-800 dark:text-neutral-300 text-sm font-medium">
                   <span className="px-2 cursor-pointer">Top comments</span>

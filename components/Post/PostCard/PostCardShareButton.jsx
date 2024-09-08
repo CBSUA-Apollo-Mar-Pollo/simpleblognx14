@@ -86,9 +86,9 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
         <div className="flex flex-col dark:bg-neutral-700">
           <Button
             variant="ghost"
-            className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:bg-neutral-600"
+            className="flex justify-start gap-x-3 dark:text-neutral-200 dark:hover:text-white dark:hover:bg-neutral-600"
             onClick={() => {
-              sharePost(blog.id);
+              sharePost(blog.sharedPostId ? blog.sharedPostId : blog.id);
               toast({
                 description: "Posting...",
               });
@@ -99,6 +99,7 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
           </Button>
           {session?.user && (
             <>
+              {/* share to feed */}
               <SharePostModal
                 session={session}
                 sharedPost={sharedPost}

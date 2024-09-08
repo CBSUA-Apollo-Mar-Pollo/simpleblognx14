@@ -91,7 +91,7 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
           ) : ( */}
           <div
             className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
-            onClick={() => storeToRecentPosts(blog.id)}
+            // onClick={() => storeToRecentPosts(blog.id)}
           >
             <PostDescriptionCard
               blog={blog}
