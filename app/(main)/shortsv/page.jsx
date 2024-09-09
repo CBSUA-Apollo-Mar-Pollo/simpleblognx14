@@ -9,30 +9,47 @@ export const metadata = {
 };
 
 const shortsVPage = async () => {
-  // get videos
-  const shortsVideo = await db.shortsv.findMany({
-    include: {
-      author: true,
-      comments: true,
+  // Get all video IDs
+  const shortsVideoIds = await db.shortsv.findMany({
+    select: {
+      id: true,
     },
   });
 
-  let shortsvLength = shortsVideo.length;
+  // Ensure we have IDs to work with
+  if (shortsVideoIds.length === 0) {
+    // Handle case when there are no video IDs
+    return <div>No videos available</div>;
+  }
 
+  // Function to get a random index
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  let num = getRandomInt(0, shortsvLength);
+  // Pick a random ID
+  const randomIndex = getRandomInt(0, shortsVideoIds.length);
 
-  const session = await getAuthSession();
-  // get comments
+  const randomSecondIndex = getRandomInt(0, shortsVideoIds.length); // for shortsvideo id
+
+  const randomVideoId = shortsVideoIds[randomIndex]?.id;
+
+  // Fetch the details for the selected random video
+  const shortsVideo = await db.shortsv.findUnique({
+    where: { id: randomVideoId },
+    include: {
+      author: true,
+      comments: true,
+    },
+  });
+
+  // Get comments for the selected video
   const comments = await db.comment.findMany({
     where: {
-      postId: shortsVideo[num]?.id,
-      shortsvId: shortsVideo[num]?.id,
+      postId: shortsVideo.id,
+      shortsvId: shortsVideo.id,
       replyToId: null,
     },
     include: {
@@ -47,11 +64,16 @@ const shortsVPage = async () => {
       createdAt: "desc",
     },
   });
+
+  // Get the current user's session
+  const session = await getAuthSession();
+
   return (
     <div className="bg-neutral-50 dark:bg-neutral-950">
       <ShortsvCard
-        video={shortsVideo[num]}
+        video={shortsVideo}
         comments={comments}
+        nextLink={shortsVideoIds[randomSecondIndex]?.id}
         session={session}
       />
     </div>

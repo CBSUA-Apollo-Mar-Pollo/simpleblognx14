@@ -7,7 +7,7 @@ import CommentSection from "../PostComment/CommentSection";
 import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 
-const ShortsvCard = ({ video, comments, session }) => {
+const ShortsvCard = ({ video, comments, session, nextLink }) => {
   const [toggleCommentSection, setToggleCommentSection] = useState(false);
   return (
     <div className="grid grid-cols-4 relative bg-neutral-950">
@@ -21,6 +21,7 @@ const ShortsvCard = ({ video, comments, session }) => {
           commentAmt={video?.comments?.length}
           setToggleCommentSection={setToggleCommentSection}
           toggleCommentSection={toggleCommentSection}
+          nextLink={nextLink}
         />
       </div>
 

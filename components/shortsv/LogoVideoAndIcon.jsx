@@ -30,6 +30,7 @@ const LogoVideoAndIcon = ({
   setToggleCommentSection,
   toggleCommentSection,
   commentAmt,
+  nextLink,
 }) => {
   const { data: session } = useSession();
   const { signinToast } = useCustomHooks();
@@ -65,6 +66,10 @@ const LogoVideoAndIcon = ({
     }
   };
 
+  const goToNextLink = () => {
+    router.push(`/shortsv/${nextLink}`);
+  };
+
   return (
     <>
       <div className="absolute top-0 flex justify-between w-full items-center px-5 py-2">
@@ -94,6 +99,7 @@ const LogoVideoAndIcon = ({
       <div className="flex justify-center">
         <div className="z-20 flex items-center mr-20 ">
           <Button
+            onClick={() => router.back()}
             size="md"
             variant="ghost"
             className="hover:bg-neutral-700 rounded-full bg-neutral-800"
@@ -209,7 +215,7 @@ const LogoVideoAndIcon = ({
         </div>
         <div className="z-20 flex items-center ml-3">
           <Button
-            onClick={() => router.refresh()}
+            onClick={() => goToNextLink()}
             size="md"
             variant="ghost"
             className="hover:bg-neutral-700 rounded-full bg-neutral-800"

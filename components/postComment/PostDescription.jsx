@@ -157,7 +157,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
                           <Textarea
                             id="auto-resize-textarea"
                             placeholder="Add a description"
-                            className="bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
+                            className="bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 dark:placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
                             {...field}
                           />
                         </FormControl>
@@ -192,7 +192,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
                       setToggleEditDescription(false);
                       reset();
                     }}
-                    className="my-2 bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-500"
+                    className="my-2 bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-50 dark:hover:bg-neutral-500"
                   >
                     Cancel
                   </Button>
@@ -205,7 +205,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
             <Button
               size="sm"
               onClick={() => setToggleEditDescription(true)}
-              className=" bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-100 dark:hover:bg-neutral-300 text-sm"
+              className=" bg-neutral-200 text-neutral-800 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-50 dark:hover:bg-neutral-300 text-sm mt-1"
             >
               Edit
             </Button>

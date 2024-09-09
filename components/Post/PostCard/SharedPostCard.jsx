@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import MultipleImageRender from "../multiple-image-render";
+import SharedPostMultipleImageRender from "../SharedPostMultipleImageRender";
 
 const SharedPostCard = ({ sharedPost, blog }) => {
   const { data: dominantColorSharedPost, isLoading } = useQuery({
@@ -25,15 +26,15 @@ const SharedPostCard = ({ sharedPost, blog }) => {
       <p className="pl-3 text-justify text-base leading-relaxed mb-1 font-medium">
         {blog.description}
       </p>
-      <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 px-2 pt-1">
-        <MultipleImageRender
+      <div className="rounded-2xl border border-neutral-300 dark:border-neutral-700">
+        <SharedPostMultipleImageRender
           blog={sharedPost}
           dominantColorPost={dominantColorSharedPost}
           isLoading={isLoading}
         />
 
         {/* the shared post description */}
-        <div className=" gap-1 my-2 ml-1">
+        <div className=" gap-1 my-2 ml-4">
           {/* profile image  */}
           <Link href={`/user/${sharedPost?.author.id}`}>
             <div className="flex items-center gap-1">

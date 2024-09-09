@@ -34,8 +34,28 @@ const page = async ({ params }) => {
       createdAt: "desc",
     },
   });
+
+  const shortsVideoId = await db.shortsv.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  const randomIndex = getRandomInt(0, shortsVideoId.length);
+
   return (
-    <ShortsvCard video={shortsVideo} comments={comments} session={session} />
+    <ShortsvCard
+      video={shortsVideo}
+      comments={comments}
+      nextLink={shortsVideoId[randomIndex]?.id}
+      session={session}
+    />
   );
 };
 

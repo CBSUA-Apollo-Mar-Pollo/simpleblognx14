@@ -149,8 +149,8 @@ const PostDescriptionCard = ({
             )}
 
             {sharedPost && (
-              <div className=" mx-2 mb-2 mt-2">
-                <div className="rounded-xl border border-neutral-700 px-2 pt-1">
+              <div className=" mx-6 mb-3 mt-2">
+                <div className="rounded-xl border border-neutral-300 dark:border-neutral-700 px-2 pt-1">
                   {sharedPost.image && (
                     <MultipleImageRender
                       blog={blog.sharedPostId ? sharedPost : null}
@@ -289,7 +289,7 @@ const PostDescriptionCard = ({
                 })}
             </div>
 
-            {hasNextPage && (
+            {hasNextPage && session?.user && (
               <Button
                 variant="ghost"
                 className="dark:text-white text-neutral-100 hover:underline hover:bg-neutral-800 dark:hover:text-neutral-300 focus:ring-0 focus:outline-none"
