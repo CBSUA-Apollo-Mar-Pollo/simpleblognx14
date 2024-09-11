@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-import CreateComment from "./CreateComment";
+
 import { usePathname } from "next/navigation";
 import { COMMENT_PAGE } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
-import CommentSectionCard from "./CommentSectionCard";
 
-const CommentSection = ({
+import CreateComment from "../PostComment/CreateComment";
+import CommentSectionCard from "../PostComment/CommentSectionCard";
+
+const ShortsVCommentSection = ({
   session,
   post,
   shortsvId,
@@ -29,7 +31,7 @@ const CommentSection = ({
   }, []);
 
   const fetchComments = async ({ pageParam }) => {
-    const query = `/api/posts/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${post.id}&imageIndex=${imageIndex}`;
+    const query = `/api/shortsv/fetchNextComments?limit=${COMMENT_PAGE}&page=${pageParam}&postId=${post.id}`;
 
     const res = await fetch(query, { cache: "no-store" });
 
@@ -150,4 +152,4 @@ const CommentSection = ({
   );
 };
 
-export default CommentSection;
+export default ShortsVCommentSection;

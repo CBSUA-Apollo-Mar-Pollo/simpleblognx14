@@ -24,8 +24,10 @@ export async function POST(req) {
 
     let imageExist = images.length !== 0 ? images : null;
 
+    let post = null;
+
     if (userStatus) {
-      await db.blog.create({
+      post = await db.blog.create({
         data: {
           description,
           image: imageExist[0],
@@ -34,7 +36,7 @@ export async function POST(req) {
         },
       });
     } else {
-      await db.blog.create({
+      post = await db.blog.create({
         data: {
           description,
           image: imageExist,
@@ -43,6 +45,14 @@ export async function POST(req) {
         },
       });
     }
+
+    await db.vote.create({
+      data: {
+        userId: session.user.id,
+        postId: post.id,
+        type: "UP",
+      },
+    });
 
     // if (images) {
     //   await db.userPostedImages.create({

@@ -5,7 +5,7 @@ export async function GET(req) {
   const url = new URL(req.url);
 
   try {
-    const { limit, page, postId, imageIndex } = z
+    const { limit, page, postId } = z
       .object({
         limit: z.string(),
         page: z.string(),
@@ -16,36 +16,9 @@ export async function GET(req) {
         limit: url.searchParams.get("limit"),
         page: url.searchParams.get("page"),
         postId: url.searchParams.get("postId"),
-        imageIndex: url.searchParams.get("imageIndex"),
       });
 
-    let comments = [];
-
-    if (imageIndex !== undefined || null) {
-      comments = await db.comment.findMany({
-        take: parseInt(limit),
-        skip: (parseInt(page) - 1) * parseInt(limit),
-        where: {
-          postId: postId,
-          replyToId: null,
-          index: imageIndex,
-        },
-        include: {
-          author: true,
-          replies: {
-            include: {
-              author: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-      return new Response(JSON.stringify(comments));
-    }
-
-    comments = await db.comment.findMany({
+    const comments = await db.comment.findMany({
       take: parseInt(limit),
       skip: (parseInt(page) - 1) * parseInt(limit),
       where: {

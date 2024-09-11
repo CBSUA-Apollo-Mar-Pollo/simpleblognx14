@@ -34,6 +34,7 @@ const PostDescriptionCard = ({
   postId,
   initialVote,
   initialVotesAmt,
+  sharedAmount,
 }) => {
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
@@ -196,12 +197,21 @@ const PostDescriptionCard = ({
               </div>
             )}
 
-            {blog.comments.length !== 0 && (
-              <div className="pb-2 flex items-center justify-end mr-4 text-xs hover:underline">
-                {blog.comments.length}{" "}
-                {blog.comments.length === 1 ? "Comment" : "Comments"}
-              </div>
-            )}
+            <div className="flex items-center justify-end my-1">
+              {blog.comments.length !== 0 && (
+                <div className=" flex items-center justify-end mr-3 text-xs hover:underline">
+                  {blog.comments.length}{" "}
+                  {blog.comments.length === 1 ? "Comment" : "Comments"}
+                </div>
+              )}
+
+              {/* amount of shares  */}
+              {sharedAmount !== 0 && (
+                <div className="py-1 flex items-center justify-end mr-3 text-xs">
+                  {sharedAmount} {sharedAmount === 1 ? "Share" : "Shared"}
+                </div>
+              )}
+            </div>
 
             {/* home post vote comment and share */}
             <div className="grid grid-cols-3 gap-x-2 border-y-[1px] border-neutral-300  dark:border-neutral-600">

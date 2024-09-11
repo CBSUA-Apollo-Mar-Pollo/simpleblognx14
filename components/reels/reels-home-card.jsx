@@ -4,7 +4,14 @@ import { getAllReels } from "@/actions/getAllReels";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";
-import { ChevronLeft, ChevronRight, Film, Play, X } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Film,
+  MoreHorizontal,
+  Play,
+  X,
+} from "lucide-react";
 import { Button } from "../ui/Button";
 import { Icons } from "../utils/Icons";
 import ToolTipComp from "../utils/ToolTipComp";
@@ -111,7 +118,7 @@ const ReelsHomeCard = () => {
               variant="ghost"
               className="mr-1 rounded-full dark:hover:bg-neutral-700 dark:hover:text-neutral-300"
             >
-              <X />
+              <MoreHorizontal />
             </Button>
           </ToolTipComp>
         </CardTitle>

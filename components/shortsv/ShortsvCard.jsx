@@ -6,6 +6,7 @@ import { Separator } from "../ui/Separator";
 import CommentSection from "../PostComment/CommentSection";
 import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
+import ShortsVCommentSection from "./shortsv-comment-section";
 
 const ShortsvCard = ({ video, comments, session, nextLink }) => {
   const [toggleCommentSection, setToggleCommentSection] = useState(false);
@@ -43,7 +44,7 @@ const ShortsvCard = ({ video, comments, session, nextLink }) => {
 
             <Separator className="bg-gray-700" />
 
-            <CommentSection
+            <ShortsVCommentSection
               session={session}
               post={video}
               shortsvId={video.id}

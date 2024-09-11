@@ -15,6 +15,7 @@ import PostCardShareButton from "./PostCardShareButton";
 import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
+import { getSharedAmount } from "@/actions/getSharedAmount";
 
 const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
   // get shared post data
@@ -24,6 +25,17 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
     // Query function
     queryFn: async () => {
       const res = await getSharedPost(blog.sharedPostId);
+      return res;
+    },
+  });
+
+  // get shared amount
+  const { data: sharedAmount } = useQuery({
+    // Query key (unique identifier)
+    queryKey: ["sharedAmount", blog.id],
+    // Query function
+    queryFn: async () => {
+      const res = await getSharedAmount(blog.id);
       return res;
     },
   });
@@ -50,21 +62,31 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
           <SharedPostCardLoader />
         )}
 
-        {blog.comments.length !== 0 &&
-          (blog?.image ? (
-            <Link
-              href={`/postComment/${blog.id}`}
-              className="py-1 flex items-center justify-end mr-4 text-xs hover:underline"
-            >
-              {blog.comments.length}{" "}
-              {blog.comments.length === 1 ? "Comment" : "Comments"}
-            </Link>
-          ) : (
-            <div className="pb-2 flex items-center justify-end mr-4 text-sm hover:underline">
-              {blog.comments.length}{" "}
-              {blog.comments.length === 1 ? "Comment" : "Comments"}
+        <div className="flex items-center justify-end">
+          {/* amount of comments  */}
+          {blog.comments.length !== 0 &&
+            (blog?.image ? (
+              <Link
+                href={`/postComment/${blog.id}`}
+                className="py-1 flex items-center justify-end mr-3 text-xs hover:underline"
+              >
+                {blog.comments.length}{" "}
+                {blog.comments.length === 1 ? "Comment" : "Comments"}
+              </Link>
+            ) : (
+              <div className="pb-2 flex items-center justify-end mr-4 text-sm hover:underline">
+                {blog.comments.length}{" "}
+                {blog.comments.length === 1 ? "Comment" : "Comments"}
+              </div>
+            ))}
+
+          {/* amount of shares  */}
+          {sharedAmount !== 0 && (
+            <div className="py-1 flex items-center justify-end mr-3 text-xs">
+              {sharedAmount} {sharedAmount === 1 ? "Share" : "Shared"}
             </div>
-          ))}
+          )}
+        </div>
 
         <Separator className="dark:bg-neutral-700" />
 
@@ -99,6 +121,7 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
               postId={blog.id}
               initialVote={currentVote?.type}
               initialVotesAmt={votesAmt}
+              sharedAmount={sharedAmount}
             />
           </div>
           {/* )} */}
