@@ -1,6 +1,5 @@
 TODO
 
-- change sidebar UI
 - search functionality
 - video like tiktok functionality(incomplete)
 - friend or follower system (friend functionality done)
@@ -20,6 +19,7 @@ ALREADY DONE
 
 - post multiple photos
 - make the post who have multiple photos also have individual comments
+- change sidebar UI
 
 INCOMPLETE
 

@@ -7,8 +7,10 @@ import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
 import PostCard from "./PostCard/PostCard";
 import ReelsHomeCard from "../reels/reels-home-card";
+import { useScrollTracker } from "@/hooks/use-scroll-tracker";
 
 export default function Posts({ initialPosts, session, deleteImage }) {
+  const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
     root: null,
@@ -47,6 +49,29 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     const numbers = [1, 2, 3];
     const randomIndex = Math.floor(Math.random() * numbers.length);
     setRandNumber(numbers[randomIndex]);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolledNumber(window.scrollY);
+    };
+
+    // Add event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (scrolledNumber !== undefined) {
+      window.scrollTo({
+        top: scrolledNumber,
+        behavior: "smooth", // or 'auto' if you want instant scrolling
+      });
+    }
   }, []);
 
   return (

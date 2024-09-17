@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/Toaster";
 import Providers from "@/components/utils/Provider";
 import { SocketProvider } from "@/components/Providers/socket-provider";
 import ChatWindow from "@/components/chat/chat-window";
+import { Suspense } from "react";
+import ClientSideScrollRestorer from "@/components/utils/client-side-scroll-restorer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,6 +24,9 @@ export default function RootLayout({ children }) {
         <SocketProvider>
           <Providers>
             <div className="mx-auto dark:bg-neutral-900">{children}</div>
+            <Suspense>
+              <ClientSideScrollRestorer />
+            </Suspense>
             <Toaster />
             <div className="fixed bottom-0 right-4">
               <ChatWindow />

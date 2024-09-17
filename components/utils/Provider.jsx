@@ -7,9 +7,10 @@ import {
 } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import BackgroundLoader from "@/components/Loaders/BackgroundLoader";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { LoaderContext } from "@/context/LoaderContext";
 import { ThemeProvider } from "next-themes";
+import { ScrollRestoration } from "@tanstack/react-router";
 
 const Providers = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -31,6 +32,7 @@ const Providers = ({ children }) => {
           {isLoading && (
             <BackgroundLoader loaderDescription={loaderDescription} />
           )}
+
           <SessionProvider>{children}</SessionProvider>
         </LoaderContext.Provider>
       </QueryClientProvider>

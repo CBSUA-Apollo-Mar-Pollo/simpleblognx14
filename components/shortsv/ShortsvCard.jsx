@@ -7,26 +7,27 @@ import CommentSection from "../PostComment/CommentSection";
 import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import ShortsVCommentSection from "./shortsv-comment-section";
+import { useToggleCommentSection } from "@/hooks/use-toggle-comment-section";
 
 const ShortsvCard = ({ video, comments, session, nextLink }) => {
-  const [toggleCommentSection, setToggleCommentSection] = useState(false);
+  const { isToggleCommentSection, setToggled } = useToggleCommentSection();
   return (
     <div className="grid grid-cols-4 relative bg-neutral-950">
       <div
         className={`${
-          toggleCommentSection ? "col-span-3 " : "col-span-4"
+          isToggleCommentSection ? "col-span-3 " : "col-span-4"
         }  h-screen`}
       >
         <LogoVideoAndIcon
           videoData={video}
           commentAmt={video?.comments?.length}
-          setToggleCommentSection={setToggleCommentSection}
-          toggleCommentSection={toggleCommentSection}
+          setToggleCommentSection={setToggled}
+          toggleCommentSection={isToggleCommentSection}
           nextLink={nextLink}
         />
       </div>
 
-      {toggleCommentSection && (
+      {isToggleCommentSection && (
         <div className="col-span-1 bg-neutral-800 border-l border-neutral-700 max-h-full relative">
           <ProfileImageAndIcons session={session} />
 

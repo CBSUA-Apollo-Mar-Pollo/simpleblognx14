@@ -9,13 +9,15 @@ import CommentSection from "./CommentSection";
 import BackgroundImagePost from "./BackgroundImagePost";
 import ImagePost from "./ImagePost";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
 
 const PostCommentCard = ({ post, index, session, comments }) => {
   const { isFullScreen, setFullScreen } = useFullScreenImage();
+
   const router = useRouter();
+  const pathname = usePathname();
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" || e.keyCode === 27) {

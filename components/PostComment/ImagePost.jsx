@@ -10,7 +10,7 @@ const ImagePost = ({ image, index, postId, setToggleExpand }) => {
   const { isFullScreen, setManualScreen } = useFullScreenImage();
   const router = useRouter();
   const close = () => {
-    router.replace("/");
+    router.push("/");
     if (isFullScreen === false) {
       setManualScreen(true);
     } else if (isFullScreen === true) {

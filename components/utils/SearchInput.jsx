@@ -42,8 +42,6 @@ const SearchInput = () => {
     },
   });
 
-  console.log(status, "return Data");
-
   // Function to handle search after user stops typing for 500ms
   const handleTyping = () => {
     setIsLoading(true);
