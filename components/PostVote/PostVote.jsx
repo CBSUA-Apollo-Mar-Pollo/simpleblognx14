@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import PostVoteDetails from "../Post/PostCard/post-voted-details";
 
 const PostVote = ({ postId, initialVotesAmt, initialVote }) => {
   const { signinToast } = useCustomHooks();
@@ -76,9 +77,7 @@ const PostVote = ({ postId, initialVotesAmt, initialVote }) => {
       </button>
 
       {/* currentvote */}
-      <p className="text-center font-semibold  text-neutral-600 px-1 dark:text-neutral-200">
-        {votesAmt}
-      </p>
+      <PostVoteDetails votesAmt={votesAmt} postId={postId} />
 
       {/* downvote button */}
       <button onClick={() => vote("DOWN")} aria-label="downvote">

@@ -15,6 +15,8 @@ TODO
 - Live polls and quizzes: Enable live polls and quizzes within live streams or groups to increase engagement.
 - Bookmarking system: Let users bookmark interesting content for later viewing.
 
+- add a reward system when post or comments has been upvoted in a certain number.
+
 ALREADY DONE
 
 - post multiple photos
