@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowBigLeft, Loader2, MoveLeft, Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/Input";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,50 +15,82 @@ import {
 import { Button } from "../ui/Button";
 import UserAvatar from "./UserAvatar";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
 
 const SearchInput = () => {
-  const [searchInput, setSearchInput] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
   const [returnData, setReturnData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [resEmpty, setResEmpty] = useState(false);
   const [active, setActive] = useState(false);
+  const searchParams = useSearchParams();
 
-  const { mutate: handleSearch, status } = useMutation({
+  const router = useRouter();
+
+  const { mutate: handleSearch } = useMutation({
     mutationFn: async () => {
-      const payload = {
-        data: searchInput,
-      };
       if (searchInput) {
+        const payload = { data: searchInput };
         const { data } = await axios.post("/api/search", payload);
         return data;
       }
     },
     onError: (err) => {
+      console.error(err);
       setIsLoading(false);
-      console.log(err);
     },
     onSuccess: (data) => {
-      setIsLoading(false);
       setReturnData(data);
+      setResEmpty(data.length === 0);
+      setIsLoading(false);
     },
   });
 
-  // Function to handle search after user stops typing for 500ms
-  const handleTyping = () => {
+  const url = qs.stringifyUrl({
+    url: "/search/top",
+    query: {
+      q: searchInput,
+    },
+  });
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      router.push(url);
+      setActive(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [searchInput, router]); // Add searchInput to dependencies
+
+  const handleTyping = (e) => {
+    setSearchInput(e.target.value);
     setIsLoading(true);
-    setTimeout(() => {
+    setResEmpty(false);
+
+    // Debounce search: wait 300ms after the user stops typing
+    clearTimeout(window.searchTimeout);
+    window.searchTimeout = setTimeout(() => {
       handleSearch();
-    }, 1000); // Adjust this value to set the delay
+    }, 300);
   };
 
   return (
     <DropdownMenu modal={false} open={active} onOpenChange={setActive}>
-      <DropdownMenuTrigger className="">
+      <DropdownMenuTrigger>
         <div className="relative flex items-center">
           <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
           <Input
             onClick={() => setActive(true)}
-            placeholder="Search..."
-            className=" pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700  border-0 bg-neutral-200 font-light rounded-full w-[240px] text-sm "
+            placeholder={
+              searchParams.get("q") ? searchParams.get("q") : `Search...`
+            }
+            className="pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700 border-0 bg-neutral-200 font-light rounded-full w-[240px] text-sm"
           />
         </div>
       </DropdownMenuTrigger>
@@ -76,12 +108,9 @@ const SearchInput = () => {
             <div className="w-full">
               <Input
                 value={searchInput}
-                onChange={(e) => {
-                  setSearchInput(e.target.value);
-                  handleTyping();
-                }}
+                onChange={handleTyping}
                 placeholder="Search"
-                className="pl-5 focus-visible:ring-transparent  border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base"
+                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base"
               />
             </div>
           </div>
@@ -92,28 +121,20 @@ const SearchInput = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-blue-600 font-normal text-base dark:hover:bg-neutral-700"
+              className="text-blue-600 font-normal text-sm dark:hover:bg-neutral-700"
             >
               Edit
             </Button>
           </div>
         </DropdownMenuLabel>
 
-        {isLoading && (
-          <div className="flex justify-center">
-            <Loader2 className="w-10 h-10 text-zinc-500 animate-spin mb-2" />
-          </div>
-        )}
-
-        {returnData &&
+        {returnData?.length > 0 &&
+          searchInput &&
           returnData.map((rd, index) => (
             <div key={index}>
-              <Link href={`/user/${rd?.id}`}>
+              <Link href={url}>
                 <DropdownMenuItem className="dark:hover:bg-neutral-700 gap-x-3 py-2 pl-4 cursor-pointer rounded-md">
-                  <UserAvatar
-                    className="h-10 w-10"
-                    user={{ name: rd.name || null, image: rd?.image || null }}
-                  />
+                  <Search className="h-9 w-9 bg-neutral-200 p-2 rounded-full" />
                   <span className="text-neutral-800 dark:text-white text-base font-medium">
                     {rd.name}
                   </span>
@@ -122,9 +143,15 @@ const SearchInput = () => {
             </div>
           ))}
 
-        {returnData?.length === 0 && searchInput?.length === 0 && (
+        {resEmpty && (
           <div className="flex justify-center my-4">
             <span className="dark:text-neutral-50">No results found!</span>
+          </div>
+        )}
+
+        {isLoading && (
+          <div className="flex justify-center">
+            <Loader2 className="w-8 h-8 text-zinc-500 animate-spin mb-2" />
           </div>
         )}
       </DropdownMenuContent>

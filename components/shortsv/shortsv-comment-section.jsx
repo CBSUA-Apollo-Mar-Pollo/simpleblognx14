@@ -40,7 +40,7 @@ const ShortsVCommentSection = ({
 
   const { data, fetchNextPage, refetch, isFetchingNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["viewMoreComments"],
+      queryKey: ["viewMoreComments", post.id],
       queryFn: fetchComments,
       initialPageParam: 1,
       getNextPageParam: (lastPage, allPages) => {
