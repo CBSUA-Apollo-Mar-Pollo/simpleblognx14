@@ -101,7 +101,7 @@ const PostDescriptionCard = ({
         </div>
       </DialogTrigger>
 
-      <DialogContent className="p-0 min-w-[40rem] gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
+      <DialogContent className="p-0 min-w-[45rem]  gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
         <DialogHeader className="px-4 py-4  border-b-[1px] dark:border-neutral-600 ">
           <DialogTitle className="text-xl text-center font-semibold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
@@ -110,7 +110,7 @@ const PostDescriptionCard = ({
 
         {/* user profile */}
         <div className="relative mt-2">
-          <SimpleBar style={{ maxHeight: "60vh" }}>
+          <SimpleBar style={{ maxHeight: session?.user ? "70vh" : "85vh" }}>
             <div className="flex items-center gap-1 px-5 ">
               <UserAvatar
                 className="h-10 w-10 "
@@ -197,7 +197,7 @@ const PostDescriptionCard = ({
               </div>
             )}
 
-            <div className="flex items-center justify-end my-1">
+            <div className="flex items-center justify-end ">
               {blog.comments.length !== 0 && (
                 <div className=" flex items-center justify-end mr-3 text-xs hover:underline">
                   {blog.comments.length}{" "}

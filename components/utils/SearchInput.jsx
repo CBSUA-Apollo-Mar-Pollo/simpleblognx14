@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowBigLeft, Loader2, MoveLeft, Search } from "lucide-react";
+import { ArrowBigLeft, Loader2, MoveLeft, Search, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Input } from "../ui/Input";
 import { useMutation } from "@tanstack/react-query";
@@ -90,7 +90,7 @@ const SearchInput = () => {
             placeholder={
               searchParams.get("q") ? searchParams.get("q") : `Search...`
             }
-            className="pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700 border-0 bg-neutral-200 font-light rounded-full w-[240px] text-sm"
+            className="pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700 border-0 bg-neutral-200/50 font-light rounded-full w-[240px] text-sm dark:placeholder:text-white"
           />
         </div>
       </DropdownMenuTrigger>
@@ -110,9 +110,18 @@ const SearchInput = () => {
                 value={searchInput}
                 onChange={handleTyping}
                 placeholder="Search"
-                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base"
+                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base dark:placeholder:text-neutral-50"
               />
             </div>
+
+            {searchInput.length !== 0 && (
+              <button
+                onClick={() => setSearchInput("")}
+                className="absolute bottom-[6px] right-2 hover:bg-neutral-200 dark:hover:bg-neutral-500 rounded-full"
+              >
+                <X className=" w-7 h-7 dark:text-neutral-200 stroke-2 p-1" />
+              </button>
+            )}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuLabel>

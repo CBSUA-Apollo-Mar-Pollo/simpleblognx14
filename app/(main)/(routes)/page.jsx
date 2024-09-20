@@ -14,6 +14,10 @@ import { UTApi } from "uploadthing/server";
 import ChatHomeContactList from "@/components/chat/chat-home-contact-list";
 import PopularCommunities from "@/components/community/popular-communities";
 
+export const metadata = {
+  title: `Estorya | Home`,
+};
+
 export default async function HomePage() {
   const session = await getAuthSession();
   const posts = await db.blog.findMany({
@@ -81,7 +85,7 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="grid grid-cols-4 bg-neutral-200/30 dark:bg-neutral-900">
+    <div className="grid grid-cols-4  dark:bg-neutral-900">
       {/* first column the side bar */}
       <div className=" col-span-1 relative">
         <Sidebar session={session} />

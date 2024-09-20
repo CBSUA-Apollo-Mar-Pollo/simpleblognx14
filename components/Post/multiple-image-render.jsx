@@ -6,7 +6,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
   return (
     <>
       {blog.image && (
-        <div className="w-full">
+        <div className="w-full ">
           {/* render the this post when the user change his/her cover photo */}
 
           {/* render any of this image that meet the requirement */}

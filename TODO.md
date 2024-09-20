@@ -16,6 +16,7 @@ TODO
 - Bookmarking system: Let users bookmark interesting content for later viewing.
 
 - add a reward system when post or comments has been upvoted in a certain number.
+- add a page where they can add a profile photo and add a intro before they interact with the app.
 
 ALREADY DONE
 

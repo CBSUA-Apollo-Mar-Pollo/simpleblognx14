@@ -11,8 +11,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import PostCard from "../Post/PostCard/PostCard";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
-const SearchPageContent = ({ people, initialPosts, session }) => {
+const SearchPageContent = ({ people, initialPosts, session, filter }) => {
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
@@ -74,60 +75,83 @@ const SearchPageContent = ({ people, initialPosts, session }) => {
   }, []);
 
   return (
-    <div className="flex justify-center ">
-      <div className=" border-x  border-neutral-300 max-w-[45vw] min-h-screen relative">
-        <div className="sticky top-14 z-50">
-          <div className="grid grid-cols-5 px-8 border-b border-neutral-300 bg-white">
+    <div className="">
+      <div className=" border-x  border-neutral-300 dark:border-neutral-700 max-w-[42vw] min-h-screen relative">
+        <div className="sticky top-[3.55em] z-50">
+          <div className="grid grid-cols-6 px-4 border-b border-neutral-300 pt-1  dark:border-neutral-700 bg-white dark:bg-neutral-900 gap-x-2">
             <Button
               variant="ghost"
-              className="px-2 py-1 w-32 pt-2 border-b-4 border-blue-500 rounded-none text-blue-500 font-semibold "
+              className={cn(
+                "px-2 py-1 w-24 pt-2 border-b-4 rounded-none  font-semibold ",
+                {
+                  "text-blue-500 border-blue-500": filter === "top",
+                }
+              )}
             >
               Top
             </Button>
             <Button
               variant="ghost"
-              className="px-2 py-1 w-32 pt-2 font-semibold text-neutral-600"
+              className="px-2 pb-2 w-24 pt-3 font-semibold text-neutral-600 dark:text-white"
             >
               People
             </Button>
             <Button
               variant="ghost"
-              className="px-2 py-1 w-32 pt-2 font-semibold text-neutral-600"
+              className="px-2 pb-2 w-24 pt-3 font-semibold text-neutral-600 dark:text-white"
             >
               Posts
             </Button>
             <Button
               variant="ghost"
-              className="px-2 py-1 w-32 pt-2 font-semibold text-neutral-600"
+              className="px-2 pb-2 w-24 pt-3 font-semibold text-neutral-600 dark:text-white"
             >
               Media
             </Button>
             <Button
               variant="ghost"
-              className="px-2 py-1 w-32 pt-2 font-semibold text-neutral-600"
+              className="px-2 pb-2 w-24 pt-3 font-semibold text-neutral-600 dark:text-white"
             >
-              Lists
+              Page
+            </Button>
+            <Button
+              variant="ghost"
+              className="px-2 pb-2 w-24 pt-3 font-semibold text-neutral-600 dark:text-white"
+            >
+              Community
             </Button>
           </div>
         </div>
 
+        {/* list of people */}
         <div className="pl-5  ">
           {people.length !== 0 && (
             <div className="">
-              <h1 className="pt-2 pb-2 font-bold text-xl">People</h1>
+              <h1 className="pt-2 pb-2 font-bold text-xl dark:text-white">
+                People
+              </h1>
 
-              <div>
+              <div className="space-y-3">
                 {people.map((item) => (
-                  <div className="flex items-start gap-x-2 ">
-                    <UserAvatar
-                      className="h-12 w-12 "
-                      user={{
-                        name: item?.name || null,
-                        image: item?.image || null,
-                      }}
-                    />
+                  <div className="flex items-start gap-x-2">
+                    <Link href={`/user/${item.id}`}>
+                      <UserAvatar
+                        className="h-12 w-12 "
+                        user={{
+                          name: item?.name || null,
+                          image: item?.image || null,
+                        }}
+                      />
+                    </Link>
                     <div className="mt-1">
-                      <p className="font-bold">{item?.name}</p>
+                      <Link
+                        href={`/user/${item.id}`}
+                        className="hover:underline"
+                      >
+                        <p className="font-bold dark:text-white">
+                          {item?.name}
+                        </p>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -140,12 +164,18 @@ const SearchPageContent = ({ people, initialPosts, session }) => {
           )}
         </div>
 
+        {/* list of posts */}
         <div
-          className={cn(" border-neutral-300  mt-2 px-10", {
+          className={cn(" border-neutral-300 dark:border-neutral-700  mt-2 ", {
             "border-t": people.length !== 0,
           })}
         >
-          <div className="z-2 space-y-3">
+          {posts.length !== 0 && (
+            <h1 className="pt-2 pb-2 pl-4 font-bold text-xl dark:text-white">
+              Posts
+            </h1>
+          )}
+          <div className="z-2 space-y-3 px-10">
             <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
               {posts.map((blog, index) => {
                 const votesAmt = blog.votes.reduce((acc, vote) => {
@@ -198,6 +228,14 @@ const SearchPageContent = ({ people, initialPosts, session }) => {
             </ul>
           </div>
         </div>
+
+        {people.length === 0 && posts.length === 0 && (
+          <div className="flex justify-center mt-12">
+            <h1 className="dark:text-white font-bold text-3xl">
+              ! No Results found for "{searchQuery}"
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   );
