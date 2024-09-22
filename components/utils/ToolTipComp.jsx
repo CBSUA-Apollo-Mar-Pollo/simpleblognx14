@@ -73,7 +73,7 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
             side="bottom"
             className="dark:bg-neutral-800 dark:border-0 rounded-xl pb-3 min-w-[25vw]"
           >
-            <div className=" flex gap-x-2 px-4 mt-2">
+            <div className=" flex gap-x-2 px-4 mt-2 ">
               <Avatar className="h-20 w-20">
                 {user?.image ? (
                   <div className="relative aspect-square h-full w-full outline-none">

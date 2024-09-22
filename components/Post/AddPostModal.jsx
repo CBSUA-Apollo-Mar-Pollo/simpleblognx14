@@ -160,7 +160,7 @@ const AddPostModal = ({ session, user }) => {
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="w-full">
+      <DialogTrigger className="w-full ">
         <Input
           className="rounded-full dark:border-0 dark:bg-neutral-700"
           placeholder={`What's on your mind, ${
@@ -168,7 +168,7 @@ const AddPostModal = ({ session, user }) => {
           } ?`}
         />
       </DialogTrigger>
-      <DialogContent className="min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className="min-w-[39vw] min-h-auto dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-2xl font-bold text-center">
             Create post

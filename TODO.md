@@ -17,6 +17,7 @@ TODO
 
 - add a reward system when post or comments has been upvoted in a certain number.
 - add a page where they can add a profile photo and add a intro before they interact with the app.
+- add a post card for shorts and videos.
 
 ALREADY DONE
 

@@ -32,6 +32,25 @@ export default async function HomePage() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
+  // short video posts
+  const shortVideos = await db.shortsv.findMany({
+    include: {
+      author: true,
+      comments: true,
+      shortsVotes: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+  });
+
+  const mergeData = [...posts, ...shortVideos];
+
+  const sortedData = mergeData.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   const deleteImage = async (image) => {
     "use server";
     const utapi = new UTApi();
@@ -94,7 +113,7 @@ export default async function HomePage() {
       {/* middle section all posts and adding posts */}
       <div className="mt-5 space-y-3 col-span-2  ml-[4rem] mr-[6rem] ">
         {session?.user && (
-          <div className=" pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 drop-shadow dark:border-0">
+          <div className=" pt-3 pb-1 px-5 rounded-lg bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">
             <div className="flex flex-row items-center space-x-4">
               <Link href={`/user/${session?.user.id}`}>
                 <UserAvatar
@@ -129,9 +148,10 @@ export default async function HomePage() {
             </div>
           </div>
         )}
+
         {/* all post cards */}
         <Posts
-          initialPosts={posts}
+          initialPosts={sortedData}
           session={session}
           deleteImage={deleteImage}
         />

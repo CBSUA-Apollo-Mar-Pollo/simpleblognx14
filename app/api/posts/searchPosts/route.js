@@ -5,7 +5,7 @@ export async function GET(req) {
   const url = new URL(req.url);
 
   try {
-    const { limit, page } = z
+    const { limit, page, searchQuery } = z
       .object({
         limit: z.string(),
         page: z.string(),
@@ -35,7 +35,7 @@ export async function GET(req) {
 
     return new Response(JSON.stringify(blogs));
   } catch (error) {
-    console.log(error);
+    console.log(error, "/api/posts/searchPosts");
     if (error instanceof z.ZodError) {
       return new Response("Invalid request data passed", { status: 422 });
     }

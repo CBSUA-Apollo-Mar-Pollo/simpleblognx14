@@ -13,7 +13,13 @@ import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const SearchPageContent = ({ people, initialPosts, session, filter }) => {
+const SearchPageContent = ({
+  people,
+  initialPosts,
+  session,
+  searchQuery,
+  filter,
+}) => {
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
@@ -21,10 +27,6 @@ const SearchPageContent = ({ people, initialPosts, session, filter }) => {
     rootMargin: "0px",
     threshold: 0.01,
   });
-
-  const searchParams = useSearchParams();
-
-  const searchQuery = searchParams.get("q");
 
   const fetchPosts = async ({ pageParam }) => {
     const query = `/api/posts/searchPosts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}&searchQuery=${searchQuery}`;
@@ -76,9 +78,9 @@ const SearchPageContent = ({ people, initialPosts, session, filter }) => {
 
   return (
     <div className="">
-      <div className=" border-x  border-neutral-300 dark:border-neutral-700 max-w-[42vw] min-h-screen relative">
+      <div className=" border-x  border-neutral-200 dark:border-neutral-700 max-w-[42vw] min-h-screen relative">
         <div className="sticky top-[3.55em] z-50">
-          <div className="grid grid-cols-6 px-4 border-b border-neutral-300 pt-1  dark:border-neutral-700 bg-white dark:bg-neutral-900 gap-x-2">
+          <div className="grid grid-cols-6 px-4 border-b border-neutral-200 pt-1  dark:border-neutral-700 bg-white dark:bg-neutral-900 gap-x-2">
             <Button
               variant="ghost"
               className={cn(
@@ -124,7 +126,7 @@ const SearchPageContent = ({ people, initialPosts, session, filter }) => {
         </div>
 
         {/* list of people */}
-        <div className="pl-5  ">
+        <div className="pl-5 mt-2 ">
           {people.length !== 0 && (
             <div className="">
               <h1 className="pt-2 pb-2 font-bold text-xl dark:text-white">
@@ -215,8 +217,14 @@ const SearchPageContent = ({ people, initialPosts, session, filter }) => {
               })}
 
               {!isFetchingNextPage && posts.length !== 0 && (
-                <li className="flex justify-center my-20 text-neutral-400">
-                  <span>End of results</span>
+                <li className="flex justify-center text-neutral-400">
+                  <div className="w-full flex flex-row mt-3">
+                    <hr className="w-44 mx-auto my-3 border-b-1 border-slate-300" />
+                    <p className="inline-block px-1 bg-white relative z-10 text-slate-500">
+                      End of results
+                    </p>
+                    <hr className="w-44 mx-auto my-3 border-b-1 border-slate-300" />
+                  </div>
                 </li>
               )}
 

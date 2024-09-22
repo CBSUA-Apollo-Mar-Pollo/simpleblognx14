@@ -28,7 +28,26 @@ export async function GET(req) {
       },
     });
 
-    return new Response(JSON.stringify(blogs));
+    const shortVideos = await db.shortsv.findMany({
+      take: parseInt(limit),
+      skip: (parseInt(page) - 1) * parseInt(limit),
+      include: {
+        author: true,
+        comments: true,
+        shortsVotes: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const mergeData = [...blogs, ...shortVideos];
+
+    const sortedData = mergeData.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    return new Response(JSON.stringify(sortedData));
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

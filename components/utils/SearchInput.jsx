@@ -55,9 +55,9 @@ const SearchInput = () => {
   });
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      router.push(url);
+    if (e.key === "Enter" && active === true) {
       setActive(false);
+      router.push(url);
     }
   };
 
@@ -67,6 +67,12 @@ const SearchInput = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [searchInput, router]); // Add searchInput to dependencies
+
+  useEffect(() => {
+    if (active === false) {
+      setSearchInput("");
+    }
+  }, [active]); // Add searchInput to dependencies
 
   const handleTyping = (e) => {
     setSearchInput(e.target.value);
