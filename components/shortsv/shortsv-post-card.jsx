@@ -1,10 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "../ui/Card";
 import UserAvatar from "../utils/UserAvatar";
-import { Dot, Globe, MoreHorizontal, VolumeX } from "lucide-react";
+import {
+  ArrowBigDown,
+  ArrowBigUp,
+  Dot,
+  Forward,
+  Globe,
+  MessageCircle,
+  MoreHorizontal,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Icons } from "../utils/Icons";
+import { useMutation } from "@tanstack/react-query";
+import { usePrevious } from "@mantine/hooks";
+import useCustomHooks from "@/hooks/use-custom-hooks";
+import axios, { AxiosError } from "axios";
 
 const ShortsVPostCard = ({
   videoData,
@@ -12,9 +28,18 @@ const ShortsVPostCard = ({
   shortsvVotesAmt,
   currentShortsvVote,
 }) => {
-  console.log(videoData, "shortsVPostCard");
+  const { signinToast } = useCustomHooks();
+  const [votesAmt, setVotesAmt] = useState(shortsvVotesAmt);
+  const [currentVote, setCurrentVote] = useState(currentShortsvVote);
+  const prevVote = usePrevious(currentVote);
+
+  useEffect(() => {
+    setCurrentVote(currentShortsvVote);
+  }, [currentShortsvVote]);
 
   const router = useRouter();
+
+  const [isMuted, setIsMuted] = useState(false);
 
   const date = new Date(videoData.createdAt);
   const options = { month: "short", day: "numeric" };
@@ -24,11 +49,72 @@ const ShortsVPostCard = ({
     router.push(`/shortsv/${videoData.id}`);
   };
 
+  const handleVolumeClick = (event) => {
+    event.stopPropagation();
+    setIsMuted((prev) => !prev);
+  };
+
+  const { mutate: vote } = useMutation({
+    mutationFn: async (type) => {
+      const payload = {
+        voteType: type,
+        shortsvId: videoData.id,
+      };
+
+      await axios.patch("/api/shortsv/vote", payload);
+    },
+    onError: (err, voteType) => {
+      if (voteType === "UP") setVotesAmt((prev) => prev - 1);
+      else setVotesAmt((prev) => prev + 1);
+
+      // reset current vote when error 500
+      setCurrentVote(prevVote);
+
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return signinToast();
+        }
+      }
+
+      return toast({
+        title: "Something went wrong",
+        description: "Your vote was not registered. please try again",
+        variant: "destructive",
+      });
+    },
+    onMutate: (type) => {
+      if (currentVote === type) {
+        // User is voting the same way again, so remove their vote
+        setCurrentVote(undefined);
+        if (type === "UP") setVotesAmt((prev) => prev - 1);
+        else if (type === "DOWN") setVotesAmt((prev) => prev + 1);
+      } else {
+        // User is voting in the opposite direction, so subtract 2
+        setCurrentVote(type);
+        if (type === "UP") setVotesAmt((prev) => prev + (currentVote ? 2 : 1));
+        else if (type === "DOWN")
+          setVotesAmt((prev) => prev - (currentVote ? 2 : 1));
+      }
+    },
+  });
+
+  const upvoteClick = (event) => {
+    event.stopPropagation();
+    vote("UP");
+  };
+  const downvoteClick = (event) => {
+    event.stopPropagation();
+    vote("DOWN");
+  };
+
   return (
-    <Card className="rounded-2xl shadow-md" onClick={() => handleClick()}>
+    <Card
+      className="rounded-2xl shadow-md dark:border-none"
+      onClick={() => handleClick()}
+    >
       <CardContent className="p-0">
         <div
-          className="flex justify-center bg-neutral-400 rounded-2xl  relative"
+          className="flex justify-center bg-neutral-400  relative rounded-2xl"
           style={{
             background: `
             linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)),
@@ -74,22 +160,84 @@ const ShortsVPostCard = ({
               </div>
             </div>
             <div className="flex items-center gap-x-3 mr-2">
-              <VolumeX className="stroke-white flex items-start justify-start z-20 cursor-pointer w-6 h-6" />
+              {isMuted ? (
+                <Volume2
+                  onClick={handleVolumeClick}
+                  className="stroke-white flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+                />
+              ) : (
+                <VolumeX
+                  onClick={handleVolumeClick}
+                  className="stroke-white flex items-start justify-start z-20 cursor-pointer w-6 h-6"
+                />
+              )}
               <MoreHorizontal className="stroke-white" />
             </div>
           </div>
-          <div className="max-w-[25vw] ">
+
+          {/* video content */}
+          <div className="max-w-[25vw]">
             <video
               key={videoData?.videoUrl}
               loop
               playsInline
               autoPlay
               preload="metadata"
-              muted={true}
-              className="max-h-[80vh] h-[80vh]  z-10 cursor-pointer object-cover"
+              muted={!isMuted}
+              className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
             >
               <source src={videoData?.videoUrl} type="video/mp4" />
             </video>
+          </div>
+
+          {/* Interactable buttons */}
+          <div className="absolute bottom-7 right-5 flex flex-col space-y-2">
+            <button
+              aria-label="upvote"
+              className="p-2 bg-neutral-800/40  rounded-full"
+              onClick={upvoteClick}
+            >
+              <ArrowBigUp
+                className={cn(
+                  "h-8 w-8  text-neutral-50 hover:text-orange-600 "
+                )}
+              />
+            </button>
+
+            {/* currentvote */}
+            <p className="text-center font-semibold  text-neutral-200 px-1 text-lg">
+              {votesAmt}
+            </p>
+
+            {/* downvote button */}
+            <button
+              aria-label="downvote"
+              className="p-2 bg-neutral-800/40  rounded-full"
+              onClick={downvoteClick}
+            >
+              <ArrowBigDown
+                className={cn(
+                  "h-8 w-8 text-neutral-50  hover:text-violet-500  "
+                )}
+              />
+            </button>
+            <button
+              aria-label="upvote"
+              className="p-3 bg-neutral-800/40  rounded-full"
+            >
+              <MessageCircle
+                className={cn("h-6 w-6  text-neutral-50  fill-neutral-50 ")}
+              />
+            </button>
+
+            <button
+              aria-label="upvote"
+              className="p-3 bg-neutral-800/40  rounded-full"
+            >
+              <Icons.Share
+                className={cn("h-6 w-6  text-neutral-50  fill-neutral-50 ")}
+              />
+            </button>
           </div>
         </div>
       </CardContent>

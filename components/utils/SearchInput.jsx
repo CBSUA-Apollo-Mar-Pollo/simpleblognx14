@@ -1,9 +1,16 @@
 "use client";
 
-import { ArrowBigLeft, Loader2, MoveLeft, Search, X } from "lucide-react";
+import {
+  ArrowBigLeft,
+  History,
+  Loader2,
+  MoveLeft,
+  Search,
+  X,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { Input } from "../ui/Input";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import {
   DropdownMenu,
@@ -17,8 +24,10 @@ import UserAvatar from "./UserAvatar";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import qs from "query-string";
+import { useSession } from "next-auth/react";
 
 const SearchInput = () => {
+  const { data: session } = useSession();
   const [searchInput, setSearchInput] = useState("");
   const [returnData, setReturnData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +56,19 @@ const SearchInput = () => {
     },
   });
 
+  const {
+    data: getSearchHistory,
+    status,
+    refetch,
+    isLoading: gettingSearchHistory,
+  } = useQuery({
+    queryKey: ["getSearchHistory"],
+    queryFn: async () => {
+      const res = await axios.get("/api/search/history");
+      return res;
+    },
+  });
+
   const url = qs.stringifyUrl({
     url: "/search/top",
     query: {
@@ -54,9 +76,11 @@ const SearchInput = () => {
     },
   });
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = async (e) => {
     if (e.key === "Enter" && active === true) {
       setActive(false);
+      const payload = { data: searchInput };
+      await axios.post("/api/search/history", payload);
       router.push(url);
     }
   };
@@ -73,6 +97,12 @@ const SearchInput = () => {
       setSearchInput("");
     }
   }, [active]); // Add searchInput to dependencies
+
+  useEffect(() => {
+    if (active === true) {
+      refetch();
+    }
+  }, [active]);
 
   const handleTyping = (e) => {
     setSearchInput(e.target.value);
@@ -169,6 +199,23 @@ const SearchInput = () => {
             <Loader2 className="w-8 h-8 text-zinc-500 animate-spin mb-2" />
           </div>
         )}
+
+        {session?.user &&
+          getSearchHistory?.data.map((item, index) => (
+            <div key={index}>
+              <Link href={`/search/top?q=${item.text}`}>
+                <DropdownMenuItem className="dark:hover:bg-neutral-700 gap-x-3 py-2 pl-4 cursor-pointer rounded-md flex justify-between">
+                  <div className="flex items-center gap-x-3">
+                    <History className="h-9 w-9 bg-neutral-200 dark:bg-neutral-700 dark:text-white p-2 rounded-full" />
+                    <span className="text-neutral-800 dark:text-white text-base font-medium">
+                      {item.text}
+                    </span>
+                  </div>
+                  <X className="h-8 w-8 p-2 rounded-full dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-600" />
+                </DropdownMenuItem>
+              </Link>
+            </div>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -219,11 +219,11 @@ const SearchPageContent = ({
               {!isFetchingNextPage && posts.length !== 0 && (
                 <li className="flex justify-center text-neutral-400">
                   <div className="w-full flex flex-row mt-3">
-                    <hr className="w-44 mx-auto my-3 border-b-1 border-slate-300" />
-                    <p className="inline-block px-1 bg-white relative z-10 text-slate-500">
+                    <hr className="w-44 mx-auto my-3 border-b-1 border-neutral-300 dark:border-neutral-600" />
+                    <p className="inline-block px-1  relative z-10 text-neutral-500">
                       End of results
                     </p>
-                    <hr className="w-44 mx-auto my-3 border-b-1 border-slate-300" />
+                    <hr className="w-44 mx-auto my-3 border-b-1 border-neutral-300 dark:border-neutral-600" />
                   </div>
                 </li>
               )}

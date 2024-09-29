@@ -5,7 +5,8 @@ import React, { useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { useIntersection } from "@mantine/hooks";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import BlogsCard from "../Post/PostCard/PostCard";
+import PostCard from "../Post/PostCard/PostCard";
+import ShortsVPostCard from "../shortsv/shortsv-post-card";
 
 const UserAllPosts = ({ initialPosts, userId, session }) => {
   const lastPostRef = useRef(null);
@@ -24,7 +25,7 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     cacheTime: 0,
-    queryKey: ["allUsersPosts"],
+    queryKey: ["allUsersPosts", userId],
     queryFn: fetchAllUserPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -41,18 +42,73 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
 
   const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
 
+  console.log(data, "user posts");
+
   return (
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
         {posts.map((blog, index) => {
-          if (index === posts.length - 1) {
+          // votes for post cards
+          const votesAmt = blog?.votes?.reduce((acc, vote) => {
+            if (vote.type === "UP") return acc + 1;
+            if (vote.type === "DOWN") return acc - 1;
+            return acc;
+          }, 0);
+
+          const currentVote = blog?.votes?.find(
+            (vote) => vote.userId === session?.user.id
+          );
+          // votes for shorts video post cards
+          const shortsvVotesAmt = blog?.shortsVotes?.reduce((acc, vote) => {
+            if (vote.type === "UP") return acc + 1;
+            if (vote.type === "DOWN") return acc - 1;
+            return acc;
+          }, 0);
+
+          const currentShortsvVote = blog?.shortsVotes?.find(
+            (vote) => vote.userId === session?.user.id
+          );
+
+          // Check if the blog post is a video or an image
+          const isVideo = Boolean(blog.videoUrl);
+          const isImage = Boolean(blog.image);
+
+          if (isVideo) {
             return (
-              <li key={blog.id} className="list-none" ref={ref}>
-                <BlogsCard blog={blog} session={session} />
+              <li key={blog.id} className="list-none z-10" ref={ref}>
+                <ShortsVPostCard
+                  videoData={blog}
+                  session={session}
+                  shortsvVotesAmt={shortsvVotesAmt}
+                  currentShortsvVote={currentShortsvVote}
+                />
+              </li>
+            );
+          }
+
+          if (index === posts.length - 1 && isImage) {
+            return (
+              <li key={blog.id} className="list-none z-40" ref={ref}>
+                <PostCard
+                  blog={blog}
+                  session={session}
+                  votesAmt={votesAmt}
+                  currentVote={currentVote}
+                />
               </li>
             );
           } else {
-            return <BlogsCard blog={blog} key={blog.id} session={session} />;
+            return (
+              <li key={index} className="z-0" ref={ref}>
+                <PostCard
+                  blog={blog}
+                  key={blog.id}
+                  session={session}
+                  votesAmt={votesAmt}
+                  currentVote={currentVote}
+                />
+              </li>
+            );
           }
         })}
 

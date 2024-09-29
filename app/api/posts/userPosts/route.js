@@ -26,13 +26,36 @@ export async function GET(req) {
       include: {
         author: true,
         comments: true,
+        votes: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return new Response(JSON.stringify(userPosts));
+    const shortVideos = await db.shortsv.findMany({
+      take: parseInt(limit),
+      skip: (parseInt(page) - 1) * parseInt(limit),
+      where: {
+        authorId: userId,
+      },
+      include: {
+        author: true,
+        comments: true,
+        shortsVotes: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    const mergeData = [...userPosts, ...shortVideos];
+
+    const sortedData = mergeData.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+
+    return new Response(JSON.stringify(sortedData));
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

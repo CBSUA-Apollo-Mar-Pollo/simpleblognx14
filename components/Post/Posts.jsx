@@ -113,7 +113,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                   videoData={blog}
                   session={session}
                   shortsvVotesAmt={shortsvVotesAmt}
-                  currentShortsvVote={currentShortsvVote}
+                  currentShortsvVote={currentShortsvVote?.type}
                 />
               </li>
             );
@@ -134,7 +134,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
             );
           } else {
             return (
-              <li key={index} className="z-0">
+              <li key={index} className="z-0" ref={ref}>
                 {index === randNumber && <ReelsHomeCard />}
                 <PostCard
                   blog={blog}

@@ -34,12 +34,35 @@ const UserProfilePage = async ({ params }) => {
     include: {
       comments: true,
       author: true,
+      votes: true,
     },
     orderBy: {
       createdAt: "desc",
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
+
+  // short video posts
+  const shortVideos = await db.shortsv.findMany({
+    where: {
+      authorId: user?.id,
+    },
+    include: {
+      author: true,
+      comments: true,
+      shortsVotes: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: INFINITE_SCROLL_PAGINATION_RESULTS,
+  });
+
+  const mergeData = [...initialPosts, ...shortVideos];
+
+  const sortedData = mergeData.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
 
   const getCoverPhoto = await db.blog.findMany({
     where: {
@@ -108,7 +131,7 @@ const UserProfilePage = async ({ params }) => {
             </div>
           )}
           <UserAllPosts
-            initialPosts={initialPosts}
+            initialPosts={sortedData}
             userId={user.id}
             session={session}
           />
