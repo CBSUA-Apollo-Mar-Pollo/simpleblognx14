@@ -194,13 +194,15 @@ const ShortsVPostCard = ({
           <div className="absolute bottom-7 right-5 flex flex-col space-y-2">
             <button
               aria-label="upvote"
-              className="p-2 bg-neutral-800/40  rounded-full"
+              className={cn("p-2 bg-neutral-800/40  rounded-full", {
+                "bg-orange-500/50": currentVote === "UP",
+              })}
               onClick={upvoteClick}
             >
               <ArrowBigUp
-                className={cn(
-                  "h-8 w-8  text-neutral-50 hover:text-orange-600 "
-                )}
+                className={cn("h-8 w-8  text-neutral-50 ", {
+                  "stroke-[1.6px]  fill-orange-500 ": currentVote === "UP",
+                })}
               />
             </button>
 
@@ -212,13 +214,15 @@ const ShortsVPostCard = ({
             {/* downvote button */}
             <button
               aria-label="downvote"
-              className="p-2 bg-neutral-800/40  rounded-full"
+              className={cn("p-2 bg-neutral-800/40  rounded-full", {
+                "bg-violet-500/50": currentVote === "DOWN",
+              })}
               onClick={downvoteClick}
             >
               <ArrowBigDown
-                className={cn(
-                  "h-8 w-8 text-neutral-50  hover:text-violet-500  "
-                )}
+                className={cn("h-8 w-8 text-neutral-50   ", {
+                  " stroke-[1.6px]  fill-violet-600 ": currentVote === "DOWN",
+                })}
               />
             </button>
             <button

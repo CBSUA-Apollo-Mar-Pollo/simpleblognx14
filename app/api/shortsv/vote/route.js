@@ -17,7 +17,7 @@ export async function PATCH(req) {
     }
 
     // check if user has already voted on this post
-    const existingVote = await db.shortsvidvote.findFirst({
+    const existingVote = await db.shortsVidVote.findFirst({
       where: {
         userId: session.user.id,
         shortsvId,
@@ -42,11 +42,11 @@ export async function PATCH(req) {
     if (existingVote) {
       // delete the vote from the database if the user is click again the same vote type
       if (existingVote.type === voteType) {
-        await db.shortsvidvote.delete({
+        await db.shortsVidVote.delete({
           where: {
-            userId_postId: {
-              shortsvId,
+            userId_shortsvId: {
               userId: session.user.id,
+              shortsvId,
             },
           },
         });
@@ -54,9 +54,9 @@ export async function PATCH(req) {
       }
 
       //  update the type in vote database to opposite of the previous vote type
-      await db.shortsvidvote.update({
+      await db.shortsVidVote.update({
         where: {
-          userId_postId: {
+          userId_shortsvId: {
             shortsvId,
             userId: session.user.id,
           },
@@ -70,7 +70,7 @@ export async function PATCH(req) {
     }
 
     // if there is no existing vote from user yet
-    await db.shortsvidvote.create({
+    await db.shortsVidVote.create({
       data: {
         type: voteType,
         userId: session.user.id,
