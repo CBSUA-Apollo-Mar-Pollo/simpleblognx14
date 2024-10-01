@@ -42,8 +42,6 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
 
   const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
 
-  console.log(data, "user posts");
-
   return (
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
@@ -80,7 +78,7 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
                   videoData={blog}
                   session={session}
                   shortsvVotesAmt={shortsvVotesAmt}
-                  currentShortsvVote={currentShortsvVote}
+                  currentShortsvVote={currentShortsvVote?.type}
                 />
               </li>
             );

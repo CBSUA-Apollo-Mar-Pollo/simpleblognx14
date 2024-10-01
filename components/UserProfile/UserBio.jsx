@@ -7,19 +7,37 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
 import { Pencil } from "lucide-react";
-import { getAuthSession } from "@/lib/auth";
 
-const UserBio = async ({ user }) => {
-  const session = getAuthSession();
-  const userImages = await db.userPostedImages.findMany({
+const UserBio = async ({ user, session }) => {
+  const userImages = await db.blog.findMany({
     where: {
       authorId: user.id,
+      image: {
+        not: null,
+      },
     },
     orderBy: {
       createdAt: "desc",
     },
-    take: 6,
+
+    select: {
+      image: true,
+      id: true,
+    },
   });
+
+  const mergedImages = userImages
+    .flatMap(({ id, image }) => {
+      if (image) {
+        return (Array.isArray(image) ? image : [image]).map((img, index) => ({
+          image: img,
+          postId: id,
+          index, // Store the index of the image
+        }));
+      }
+      return [];
+    })
+    .filter((item) => item.image !== null);
 
   return (
     <div className="space-y-3">
@@ -27,7 +45,7 @@ const UserBio = async ({ user }) => {
         <CardContent className="p-0">
           <h2 className="text-xl font-bold py-4 dark:text-white ml-5">Intro</h2>
           <div className="flex flex-col space-y-4 w-full">
-            {user.bio ? (
+            {user?.bio && (
               <div className="flex justify-between items-center mx-2">
                 <div className="flex gap-x-2">
                   <Icons.BioIcon className="h-6 w-6 dark:fill-neutral-200" />
@@ -39,26 +57,24 @@ const UserBio = async ({ user }) => {
                   <Pencil className="h-4 w-4 dark:fill-neutral-200 dark:stroke-neutral-200" />
                 </Link>
               </div>
-            ) : (
-              <>
-                {session?.user?.id === user.id && (
-                  <>
-                    <Link
-                      href="/settings"
-                      className={cn(
-                        buttonVariants("secondary"),
-                        "dark:bg-neutral-700 dark:hover:bg-neutral-500"
-                      )}
-                    >
-                      Add Bio
-                    </Link>
+            )}
 
-                    <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
-                      Edit details
-                    </Button>
-                  </>
-                )}
-              </>
+            {session?.user?.id === user.id && !user?.bio && (
+              <div className="mx-10 flex flex-col space-y-2 mb-3">
+                <Link
+                  href="/settings"
+                  className={cn(
+                    buttonVariants("secondary"),
+                    "dark:bg-neutral-700 dark:hover:bg-neutral-500"
+                  )}
+                >
+                  Add Bio
+                </Link>
+
+                <Button className="dark:bg-neutral-700 dark:hover:bg-neutral-500">
+                  Edit details
+                </Button>
+              </div>
             )}
           </div>
         </CardContent>
@@ -80,34 +96,24 @@ const UserBio = async ({ user }) => {
               </Link>
             </div>
 
-            {/* photos */}
             <div className="grid grid-cols-3 gap-2 py-2">
-              {await Promise.all(
-                userImages.map(async (img) => {
-                  const postId = await db.blog.findFirst({
-                    where: {
-                      authorId: img.authorId,
-                    },
-                  });
-                  return (
-                    <Link
-                      href={`/postComment/${postId?.id}`}
-                      className="relative overflow-clip "
-                      key={img.id}
-                    >
-                      <Image
-                        sizes="100vw"
-                        width={0}
-                        height={0}
-                        src={img.image}
-                        alt="profile image"
-                        referrerPolicy="no-referrer"
-                        className="w-[10rem] transition h-32 bg-black rounded-md object-cover"
-                      />
-                    </Link>
-                  );
-                })
-              )}
+              {mergedImages.slice(0, 6).map((img) => (
+                <Link
+                  href={`/postComment/${img?.postId}/${img.index}`}
+                  className="relative overflow-clip "
+                  key={img.id}
+                >
+                  <Image
+                    sizes="100vw"
+                    width={0}
+                    height={0}
+                    src={img.image.url}
+                    alt="profile image"
+                    referrerPolicy="no-referrer"
+                    className="w-[10rem] transition h-32 bg-black rounded-md object-cover"
+                  />
+                </Link>
+              ))}
             </div>
           </CardContent>
         )}

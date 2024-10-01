@@ -1,4 +1,4 @@
-import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
+import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import UserPhotos from "@/components/UserProfile/UserPhotos";
 import { db } from "@/lib/db";
 import React from "react";
@@ -14,13 +14,16 @@ const UserProfilePagePhotos = async ({ params }) => {
     },
   });
 
-  const getCoverPhoto = await db.blog.findFirst({
+  const getCoverPhoto = await db.blog.findMany({
     where: {
-      image: user.backgroundImage,
+      image: {
+        path: "$.url",
+        equals: user?.backgroundImage,
+      },
     },
   });
 
-  user.coverPhotoId = getCoverPhoto?.id;
+  user.coverPhotoId = getCoverPhoto[0]?.id;
 
   // delete image in upload thing if the user click the cancel button
   const deleteImage = async (image) => {
@@ -31,10 +34,10 @@ const UserProfilePagePhotos = async ({ params }) => {
 
   return (
     <div className="">
-      <ProfileSection user={user} deleteImage={deleteImage} />
+      <ProfileBanner user={user} deleteImage={deleteImage} />
 
       {/* user all posts */}
-      <div className="bg-neutral-200 px-60 py-5">
+      <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 min-h-screen">
         <UserPhotos userId={params.userId} />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
 import AddPostModal from "@/components/Post/AddPostModal";
-import ProfileSection from "@/components/UserProfile/ProfileSection/ProfileSection";
+import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
 import { Separator } from "@/components/ui/Separator";
@@ -85,17 +85,18 @@ const UserProfilePage = async ({ params }) => {
 
   return (
     <div className="">
-      <ProfileSection user={user} deleteImage={deleteImage} />
+      {/* user profile page header */}
+      <ProfileBanner user={user} deleteImage={deleteImage} />
 
-      {/* user all posts */}
+      {/* content */}
       <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[4.5rem]">
-            <UserBio user={user} />
+            <UserBio user={user} session={session} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">
-          {session?.user.id === user.id && (
+          {session?.user.id === user?.id && (
             <div className=" border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
               <div className="flex flex-row items-center space-x-4">
                 <UserAvatar

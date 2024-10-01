@@ -22,8 +22,9 @@ import {
   UserX,
 } from "lucide-react";
 import { checkIfIsAFriend } from "@/actions/checkIfIsAFriend";
+import ProfilePic from "./profile-pic";
 
-const ProfileSection = ({ user, deleteImage }) => {
+const ProfileBanner = ({ user, deleteImage }) => {
   const { data: session } = useSession();
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
@@ -112,6 +113,11 @@ const ProfileSection = ({ user, deleteImage }) => {
     },
   });
 
+  const formattedName = user?.name
+    ?.split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+
   return (
     <div
       className="relative "
@@ -149,83 +155,89 @@ const ProfileSection = ({ user, deleteImage }) => {
       )}
 
       <div className="mx-52 ">
-        <BackgroundImage
-          imageUrl={imageUrl}
-          setImageUrl={setImageUrl}
-          session={session}
-          user={user}
-        />
+        <div className="relative">
+          <BackgroundImage
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            session={session}
+            user={user}
+          />
 
-        <div className="mt-5 w-full relative flex justify-between z-10">
-          <div className="ml-[16rem]">
-            <h1 className="font-bold text-4xl dark:text-white">{user?.name}</h1>
-            <span className="text-base font-medium dark:text-white">
-              {user.handleName}
-            </span>
-          </div>
+          <ProfilePic user={user} session={session} />
 
-          {session?.user.id === user.id ? (
-            <div className="mr-10 mt-4">
-              <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
-                <span className="pr-2">
-                  <Pencil className="fill-black stroke-transparent  h-4 w-4" />
-                </span>
-                Edit Profile
-              </Button>
+          <div className="mt-7 w-full relative flex justify-between z-10">
+            <div className="ml-[16rem]">
+              <h1 className="font-semibold text-3xl dark:text-white">
+                {formattedName}
+              </h1>
+              <span className="text-base font-medium dark:text-white">
+                {user.handleName}
+              </span>
             </div>
-          ) : (
-            // if there is a logged in user show this ui
-            session?.user && (
-              <div className="mr-10 mt-4 flex gap-x-2">
-                {isAFriend === "onhold" ? (
-                  <Button
-                    onClick={() => handleCancelAndFriendRequest("false")}
-                    className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                  >
-                    <span className="pr-2">
-                      {isRequestLoading ? (
-                        <Loader2 className="w-6 h-6  animate-spin text-white" />
-                      ) : (
-                        <UserX className="fill-white  h-5 w-5" />
-                      )}
-                    </span>
-                    Cancel Request
-                  </Button>
-                ) : isAFriend === true ? (
-                  <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
-                    <span className="pr-2">
-                      <UserCheck className="fill-white  h-5 w-5" />
-                    </span>
-                    Friends
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => handleCancelAndFriendRequest("onhold")}
-                    className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                  >
-                    <span className="pr-2">
-                      {isRequestLoading ? (
-                        <Loader2 className="w-6 h-6  animate-spin text-white" />
-                      ) : (
-                        <UserPlus className="fill-white  h-5 w-5" />
-                      )}
-                    </span>
-                    Add friend
-                  </Button>
-                )}
 
-                <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-300/90 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+            {session?.user.id === user.id ? (
+              <div className="mr-5">
+                <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
                   <span className="pr-2">
-                    <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
+                    <Pencil className="fill-black stroke-transparent  h-4 w-4" />
                   </span>
-                  Message
+                  Edit Profile
                 </Button>
               </div>
-            )
-          )}
+            ) : (
+              // if there is a logged in user show this ui
+              session?.user && (
+                <div className=" mr-5 flex gap-x-2">
+                  {isAFriend === "onhold" ? (
+                    <Button
+                      onClick={() => handleCancelAndFriendRequest("false")}
+                      className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                    >
+                      <span className="pr-2">
+                        {isRequestLoading ? (
+                          <Loader2 className="w-6 h-6  animate-spin text-white" />
+                        ) : (
+                          <UserX className="fill-white  h-5 w-5" />
+                        )}
+                      </span>
+                      Cancel Request
+                    </Button>
+                  ) : isAFriend === true ? (
+                    <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
+                      <span className="pr-2">
+                        <UserCheck className="fill-white  h-5 w-5" />
+                      </span>
+                      Friends
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => handleCancelAndFriendRequest("onhold")}
+                      className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                    >
+                      <span className="pr-2">
+                        {isRequestLoading ? (
+                          <Loader2 className="w-6 h-6  animate-spin text-white" />
+                        ) : (
+                          <UserPlus className="fill-white  h-5 w-5" />
+                        )}
+                      </span>
+                      Add friend
+                    </Button>
+                  )}
+
+                  <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-300/90 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+                    <span className="pr-2">
+                      <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
+                    </span>
+                    Message
+                  </Button>
+                </div>
+              )
+            )}
+          </div>
         </div>
 
-        <Separator className="mt-5 bg-neutral-300 dark:bg-neutral-600" />
+        <Separator className="mt-5 bg-neutral-300 dark:bg-neutral-700" />
 
         <div className="mr-10">
           <ProfileButtons userId={user.id} />
@@ -235,4 +247,4 @@ const ProfileSection = ({ user, deleteImage }) => {
   );
 };
 
-export default ProfileSection;
+export default ProfileBanner;

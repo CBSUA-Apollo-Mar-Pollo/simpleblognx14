@@ -7,7 +7,7 @@ const UpdateCoverPhotoButton = ({ setImageUrl, session, user }) => {
     <>
       {session?.user.id === user.id && (
         <UploadButton
-          className="absolute bottom-1 right-14 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
+          className="absolute bottom-1 right-10 ut-button:bg-white ut-button:text-black ut-button:w-[11rem] ut-button:hover:bg-gray-100 ut-button:px-1"
           endpoint="imageUploader"
           onClientUploadComplete={(res) => {
             setImageUrl(res);

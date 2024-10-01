@@ -2,9 +2,9 @@ import UserAvatar from "@/components/utils/UserAvatar";
 import React from "react";
 import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
-const ProfilePIc = ({ user, session }) => {
+const ProfilePic = ({ user, session }) => {
   return (
-    <div className="absolute bottom-0 top-[20.5vw] left-[4vw] z-10">
+    <div className="absolute bottom-0 left-[4vw] z-10">
       <div className="relative">
         <UserAvatar
           className="h-44 w-44 border-4 border-neutral-50 dark:border-neutral-800"
@@ -24,4 +24,4 @@ const ProfilePIc = ({ user, session }) => {
   );
 };
 
-export default ProfilePIc;
+export default ProfilePic;

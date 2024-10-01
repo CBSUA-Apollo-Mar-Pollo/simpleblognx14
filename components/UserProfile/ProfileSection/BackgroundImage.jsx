@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
-import ProfilePIc from "./ProfilePIc";
+import ProfilePIc from "./profile-pic";
 import { Loader2 } from "lucide-react";
 
 const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
@@ -17,7 +17,7 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
   const handleImageError = () => setImageLoading(false);
 
   return (
-    <div className="relative flex justify-center">
+    <div className="relative">
       {/* div if user is not yet to upload background image */}
       {imageUrl.length ? (
         <div className="relative">
@@ -54,14 +54,12 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             user={user}
             session={session}
           />
-
-          <ProfilePIc user={user} session={session} />
         </div>
       ) : (
         <div>
           {/* if the user has uploaded a cover photo display it */}
           {user.backgroundImage ? (
-            <div className="overflow-hidden h-[55vh] rounded-b-lg scroll-container bg-neutral-900 z-20">
+            <div className="overflow-hidden h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 z-20">
               <Link
                 href={`/postComment/${user.coverPhotoId}/0`}
                 className="scroll-container"
@@ -90,8 +88,6 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             user={user}
             session={session}
           />
-
-          <ProfilePIc user={user} session={session} />
         </div>
       )}
     </div>
