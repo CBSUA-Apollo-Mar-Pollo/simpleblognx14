@@ -19,14 +19,17 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { AlertCircle, ImagePlus, X } from "lucide-react";
+import { AlertCircle, ImagePlus, Pencil, Play, X } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
 import EmojiPicker from "../PostComment/EmojiPicker";
+import ImagePreviewCreatePost from "./image-preview-create-post";
+import { cn } from "@/lib/utils";
 
 const AddGalleryPostModal = ({ session, user }) => {
+  const [toggleButton, setToggleButton] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
@@ -38,6 +41,8 @@ const AddGalleryPostModal = ({ session, user }) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
+
   class UploadError extends Error {
     constructor(message, statusCode) {
       super(message);
@@ -53,15 +58,42 @@ const AddGalleryPostModal = ({ session, user }) => {
   } = useMutation({
     mutationFn: async () => {
       let images = [];
-      const file = selectedFiles;
-      try {
-        const response = await uploadFiles("imageUploader", { files: file });
-        images = response;
-      } catch (error) {
-        setErrorMessage(
-          "Error uploading image, please upload an image with the extension of the following: jpeg, png"
-        );
-        throw new UploadError("Failed to upload image: " + error.message, 400);
+      const files = selectedFiles;
+
+      for (const file of files) {
+        if (file.type.startsWith("image/")) {
+          try {
+            const response = await uploadFiles("imageUploader", {
+              files: [file],
+            }); // Upload the individual file
+            images = [...images, ...response]; // Append to images array
+          } catch (error) {
+            setErrorMessage(
+              "Error uploading image, please upload an image with the extension of the following: jpeg, png"
+            );
+            throw new UploadError(
+              "Failed to upload image: " + error.message,
+              400
+            );
+          }
+        } else if (file.type.startsWith("video/")) {
+          try {
+            const response = await uploadFiles("videoUploader", {
+              files: [file],
+            }); // Upload the individual file
+            images = [...images, ...response]; // Append to images array
+          } catch (error) {
+            setErrorMessage(
+              "Error uploading video, please upload a video file."
+            );
+            throw new UploadError(
+              "Failed to upload video: " + error.message,
+              400
+            );
+          }
+        } else {
+          setErrorMessage("Unsupported file type.");
+        }
       }
 
       const payload = {
@@ -109,7 +141,7 @@ const AddGalleryPostModal = ({ session, user }) => {
       setDescription("");
       setOpen(false);
       setIsLoading(false);
-      window.location.reload();
+      // window.location.reload();
     },
   });
 
@@ -117,8 +149,25 @@ const AddGalleryPostModal = ({ session, user }) => {
   const handleFileSelect = (event) => {
     const files = event.target.files;
     const fileArray = Array.from(files);
-    setSelectedFiles([...selectedFiles, ...fileArray]);
-    previewImages(fileArray);
+
+    const images = [];
+    const videos = [];
+
+    fileArray.forEach((file) => {
+      // Check if the file type is an image or video
+      if (file.type.startsWith("image/")) {
+        images.push(file);
+      } else if (file.type.startsWith("video/")) {
+        videos.push(file);
+      }
+    });
+
+    // Set selected files (you can customize how you want to store images and videos)
+    setSelectedFiles((prevFiles) => [...prevFiles, ...fileArray]);
+
+    // Preview images or videos (modify the function to handle previews as needed)
+    previewImages(images);
+    previewVideos(videos); // Assuming you have a separate function for video previews
   };
 
   // Function to handle file drop
@@ -159,6 +208,20 @@ const AddGalleryPostModal = ({ session, user }) => {
       })
       .catch((error) => console.error("Error loading images:", error));
   };
+
+  const previewVideos = (files) => {
+    const videoUrls = files.map((file) => URL.createObjectURL(file));
+    setVideoPreviews([...videoPreviews, ...videoUrls]);
+  };
+
+  const handleMouseEnter = (id) => {
+    setToggleButton(true);
+  };
+  const handleMouseLeave = () => {
+    setToggleButton(false);
+  };
+
+  console.log(selectedFiles, "preview videos");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -223,7 +286,11 @@ const AddGalleryPostModal = ({ session, user }) => {
             </div>
 
             {/* Image upload UI */}
-            <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
+            <div
+              onMouseEnter={() => handleMouseEnter()}
+              onMouseLeave={() => handleMouseLeave()}
+              className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4"
+            >
               {selectedFiles.length > 0 ? (
                 <div
                   className="w-full"
@@ -231,19 +298,32 @@ const AddGalleryPostModal = ({ session, user }) => {
                   onDragOver={handleDragOver}
                 >
                   <div className="relative">
-                    <Button
-                      onClick={() =>
-                        document.getElementById("fileInput").click()
-                      }
-                      variant="secondary"
-                      className="z-10 absolute top-2 right-4 bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
-                    >
-                      {" "}
-                      <img src="/ImageIcons/imageadd.png" className="h-6 w-6" />
-                      <span className="text-sm font-semibold">
-                        Add Photos/Videos
-                      </span>
-                    </Button>
+                    {toggleButton && (
+                      <>
+                        <Button
+                          variant="secondary"
+                          className="z-10 absolute top-2 left-56 bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-lg"
+                        >
+                          <Pencil className="fill-black stroke-transparent  h-5 w-5" />
+                          <span className="text-sm font-semibold">Edit</span>
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            document.getElementById("fileInput").click()
+                          }
+                          variant="secondary"
+                          className="z-10 absolute top-2 left-4 bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
+                        >
+                          <img
+                            src="/ImageIcons/imageadd.png"
+                            className="h-6 w-6"
+                          />
+                          <span className="text-sm font-semibold">
+                            Add Photos/Videos
+                          </span>
+                        </Button>
+                      </>
+                    )}
                     <input
                       id="fileInput"
                       type="file"
@@ -253,210 +333,35 @@ const AddGalleryPostModal = ({ session, user }) => {
                     />
                   </div>
 
-                  {imagePreviews.length === 1 && (
-                    <div>
-                      {imagePreviews.map((imageUrl, index) => (
-                        <div key={index} className="relative">
-                          <img
-                            src={imageUrl}
-                            alt={imageUrl.name}
-                            className="w-full h-auto object-cover"
-                            style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  <ImagePreviewCreatePost imagePreviews={imagePreviews} />
 
-                  {imagePreviews.length === 2 && (
-                    <div
-                      className={`${
-                        imagePreviews.length === 2 && "grid grid-cols-2 gap-x-1"
-                      }`}
+                  <div
+                    className={cn("relative", {
+                      "opacity-90": toggleButton,
+                    })}
+                  >
+                    <video
+                      className="object-cover w-full h-full rounded-lg z-20"
+                      preload="metadata"
+                      playsInline
+                      loop
+                      muted
                     >
-                      {imagePreviews.map((imageUrl, index) => (
-                        <div key={index} className="relative">
-                          <img
-                            src={imageUrl}
-                            alt="profile image"
-                            className="w-full h-auto object-cover"
-                            style={{ aspectRatio: "6  /10" }} // Example aspect ratio (adjust as needed)
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {imagePreviews.length === 3 && (
-                    <div
-                      className={`${
-                        imagePreviews.length === 3 && "grid grid-cols-8 gap-x-1"
-                      }`}
+                      <source src={videoPreviews[0]} type="video/mp4" />
+                    </video>
+                    <Button
+                      variant="ghost"
+                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60"
                     >
-                      <div className="relative col-span-6">
-                        <img
-                          src={imagePreviews[0]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                      </div>
-                      <div className="mt-[2px] flex flex-col space-y-[4px] col-span-2">
-                        {imagePreviews.map((imageUrl, index) => {
-                          if (index === 0) {
-                            return null;
-                          }
-
-                          return (
-                            <div key={index} className="relative">
-                              <img
-                                src={imageUrl}
-                                alt="profile image"
-                                className="w-full h-auto object-cover"
-                                style={{ aspectRatio: "8/12" }} // Example aspect ratio (adjust as needed)
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {imagePreviews.length === 4 && (
-                    <div className="flex flex-col">
-                      <div className="relative grid grid-cols-2">
-                        <img
-                          src={imagePreviews[0]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                        <img
-                          src={imagePreviews[1]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                      </div>
-                      <div className="mt-[2px] grid grid-cols-2">
-                        {imagePreviews.map((imageUrl, index) => {
-                          if (index === 0) {
-                            return null;
-                          }
-
-                          if (index === 1) {
-                            return null;
-                          }
-
-                          return (
-                            <div key={index} className="relative">
-                              <img
-                                src={imageUrl}
-                                alt="profile image"
-                                className="w-full h-auto object-cover"
-                                style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {imagePreviews.length === 5 && (
-                    <div className="flex flex-col">
-                      <div className="relative grid grid-cols-2">
-                        <img
-                          src={imagePreviews[0]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                        <img
-                          src={imagePreviews[1]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                      </div>
-                      <div className="mt-[2px] grid grid-cols-3">
-                        {imagePreviews.map((imageUrl, index) => {
-                          if (index === 0) {
-                            return null;
-                          }
-
-                          if (index === 1) {
-                            return null;
-                          }
-
-                          return (
-                            <div key={index} className="relative">
-                              <img
-                                src={imageUrl}
-                                alt="profile image"
-                                className="w-full h-auto object-cover"
-                                style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {imagePreviews.length >= 6 && (
-                    <div className="flex flex-col">
-                      <div className="relative grid grid-cols-2">
-                        <img
-                          src={imagePreviews[0]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                        <img
-                          src={imagePreviews[1]}
-                          alt="profile image"
-                          className="w-full h-auto object-cover"
-                          style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                        />
-                      </div>
-                      <div className="mt-[2px] grid grid-cols-3">
-                        {imagePreviews.map((imageUrl, index) => {
-                          if (index === 0) {
-                            return null;
-                          }
-
-                          if (index === 1) {
-                            return null;
-                          }
-
-                          if (index >= 5) {
-                            return null;
-                          }
-
-                          return (
-                            <div key={index} className="relative ">
-                              <img
-                                src={imageUrl}
-                                alt="profile image"
-                                className={`w-full h-auto object-cover ${
-                                  index === 4 && "opacity-55"
-                                }`}
-                                style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                              />
-                              {index === 4 && (
-                                <span className="absolute inset-0 flex items-center justify-center text-[3em]">
-                                  +
-                                  {imagePreviews.length > 5 &&
-                                    imagePreviews.length - 5}
-                                </span>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                      <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="absolute top-2 right-3 bg-neutral-800 rounded-full px-[10px] hover:bg-neutral-600"
+                    >
+                      <X className="stroke-2 text-white h-5 w-5" />
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <>

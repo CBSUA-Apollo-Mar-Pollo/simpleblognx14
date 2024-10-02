@@ -15,7 +15,7 @@ TODO
 - Live polls and quizzes: Enable live polls and quizzes within live streams or groups to increase engagement.
 - Bookmarking system: Let users bookmark interesting content for later viewing.
 
-- add a reward system when post or comments has been upvoted in a certain number.
+- add a reward system for post or comments by other users.
 - add a page where they can add a profile photo and add a intro before they interact with the app.
 - add a post card for shorts and videos.
 - add a log in modal (reconsidering)

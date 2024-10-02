@@ -243,6 +243,10 @@ const ShortsVPostCard = ({
               />
             </button>
           </div>
+
+          <div className="absolute left-6 bottom-4">
+            <span className="text-neutral-100">{videoData.description}</span>
+          </div>
         </div>
       </CardContent>
     </Card>
