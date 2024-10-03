@@ -13,11 +13,17 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description, userStatus, images } = body;
+    const { description, userStatus, images, videos } = body;
 
-    if (images.length === 0 && description.length === 0) {
+    console.log(videos, "videos api blog");
+
+    if (
+      images.length === 0 &&
+      videos.length === 0 &&
+      description.length === 0
+    ) {
       return new NextResponse(
-        "For you to create a post you need to put a description or upload a image.",
+        "For you to create a post you need to put a description or upload a image or video",
         { status: 400 }
       );
     }
@@ -26,20 +32,33 @@ export async function POST(req) {
 
     let post = null;
 
-    if (userStatus) {
+    if (images.length !== 0) {
+      if (userStatus) {
+        post = await db.blog.create({
+          data: {
+            description,
+            image: imageExist[0],
+            userStatus: userStatus,
+            authorId: session.user.id,
+          },
+        });
+      } else {
+        post = await db.blog.create({
+          data: {
+            description,
+            image: imageExist,
+            userStatus: userStatus,
+            authorId: session.user.id,
+          },
+        });
+      }
+    }
+
+    if (videos.length !== 0) {
       post = await db.blog.create({
         data: {
           description,
-          image: imageExist[0],
-          userStatus: userStatus,
-          authorId: session.user.id,
-        },
-      });
-    } else {
-      post = await db.blog.create({
-        data: {
-          description,
-          image: imageExist,
+          video: videos,
           userStatus: userStatus,
           authorId: session.user.id,
         },

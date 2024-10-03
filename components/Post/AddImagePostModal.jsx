@@ -58,6 +58,7 @@ const AddGalleryPostModal = ({ session, user }) => {
   } = useMutation({
     mutationFn: async () => {
       let images = [];
+      let videos = [];
       const files = selectedFiles;
 
       for (const file of files) {
@@ -81,7 +82,7 @@ const AddGalleryPostModal = ({ session, user }) => {
             const response = await uploadFiles("videoUploader", {
               files: [file],
             }); // Upload the individual file
-            images = [...images, ...response]; // Append to images array
+            videos = [...videos, ...response]; // Append to images array
           } catch (error) {
             setErrorMessage(
               "Error uploading video, please upload a video file."
@@ -99,6 +100,7 @@ const AddGalleryPostModal = ({ session, user }) => {
       const payload = {
         description,
         images,
+        videos,
       };
 
       const { data } = await axios.post("/api/blog", payload);
@@ -141,7 +143,7 @@ const AddGalleryPostModal = ({ session, user }) => {
       setDescription("");
       setOpen(false);
       setIsLoading(false);
-      // window.location.reload();
+      window.location.reload();
     },
   });
 

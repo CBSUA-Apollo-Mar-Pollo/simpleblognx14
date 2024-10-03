@@ -73,6 +73,7 @@ model Blog {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   image       Json?
+  video       Json?
   userStatus  String?
 
   author   User   @relation(fields: [authorId], references: [id])
