@@ -18,7 +18,7 @@ import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { Dot, Globe, ImagePlus, Pen, Pencil, X } from "lucide-react";
+import { Dot, Globe, ImagePlus, Pen, Pencil, Play, X } from "lucide-react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
@@ -35,6 +35,7 @@ import MultipleImageRender from "./multiple-image-render";
 import Link from "next/link";
 
 const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
+  console.log(blog, "edit post blog");
   const { data: session } = useSession();
   const [description, setDescription] = useState(blog?.description || "");
   const [open, setOpen] = useState(false);
@@ -44,6 +45,9 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(
     blog.image !== null ? [...blog.image] : []
+  );
+  const [videoPreviews, setVideoPreviews] = useState(
+    blog.video !== null ? [...blog.video] : []
   );
 
   const [isHovered, setIsHovered] = useState(false);
@@ -335,7 +339,9 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                   >
                     {/* Image upload UI */}
 
-                    {selectedFiles.length > 0 || imagePreviews.length !== 0 ? (
+                    {selectedFiles.length > 0 ||
+                    imagePreviews.length !== 0 ||
+                    videoPreviews.length !== 0 ? (
                       <div
                         className="w-full"
                         onDrop={handleFileDrop}
@@ -356,7 +362,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                             <div className="flex items-center gap-x-2">
                               <Button className="flex items-center gap-x-2 bg-neutral-50 hover:bg-neutral-200">
                                 <Pencil className="h-5 w-5 text-neutral-800" />
-                                <span className=" text-neutral-800 font-bold text-[15px]">
+                                <span className=" text-neutral-800 font-semibold text-[15px]">
                                   Edit
                                 </span>
                               </Button>
@@ -406,6 +412,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                                 />
                               </Button>
                             ) : (
+                              // show modal for removing multiple images
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <Button
@@ -484,10 +491,41 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                         </div>
 
                         {/* preview the images */}
-                        <ImagePreviewEditPost
-                          imagePreviews={imagePreviews}
-                          blog={blog}
-                        />
+                        {blog.image && (
+                          <ImagePreviewEditPost
+                            imagePreviews={imagePreviews}
+                            blog={blog}
+                          />
+                        )}
+
+                        {blog.video && (
+                          <div className="relative flex flex-col items-center hover:cursor-pointer bg-neutral-950">
+                            <video
+                              className="object-cover border-0 max-h-[55vh]"
+                              preload="metadata"
+                              playsInline
+                              loop
+                              muted
+                            >
+                              <source
+                                src={videoPreviews[0].url}
+                                type="video/mp4"
+                              />
+                            </video>
+                            <Button
+                              variant="ghost"
+                              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60"
+                            >
+                              <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              className="absolute top-2 right-3 bg-neutral-800 rounded-full px-[10px] hover:bg-neutral-600"
+                            >
+                              <X className="stroke-2 text-white h-5 w-5" />
+                            </Button>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <>

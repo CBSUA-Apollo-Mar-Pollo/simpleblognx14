@@ -7,8 +7,16 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import MultipleImageRender from "../multiple-image-render";
-import { Pause, Play } from "lucide-react";
+import {
+  Maximize,
+  Maximize2,
+  Pause,
+  Play,
+  Settings,
+  Volume2,
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { Icons } from "@/components/utils/Icons";
 
 const StandardPostCard = ({ blog }) => {
   const videoRef = useRef(null);
@@ -17,6 +25,7 @@ const StandardPostCard = ({ blog }) => {
   const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isVolumeHovered, setIsVolumeHovered] = useState(false);
 
   useEffect(() => {
     const handleLoadedMetadata = () => {
@@ -64,9 +73,10 @@ const StandardPostCard = ({ blog }) => {
   };
 
   const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
     const video = videoRef.current;
-    video.volume = e.target.value;
-    setVolume(e.target.value);
+    video.volume = newVolume; // Set the video volume
+    setVolume(newVolume); // Update state
   };
 
   const { data: dominantColorPost, isLoading } = useQuery({
@@ -76,6 +86,20 @@ const StandardPostCard = ({ blog }) => {
       return res;
     },
   });
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  }
+
+  const handleVolumeHovered = () => {
+    setIsVolumeHovered(true);
+  };
+
+  const handleVolumeUnhovered = () => {
+    setIsVolumeHovered(false);
+  };
 
   return (
     <div>
@@ -95,7 +119,7 @@ const StandardPostCard = ({ blog }) => {
 
       {blog.video && (
         <div className="bg-neutral-950 relative">
-          {isPlaying === false && (
+          {isPlaying === false && progress === 0 && (
             <Button
               onClick={() => togglePlayPause()}
               variant="ghost"
@@ -104,6 +128,7 @@ const StandardPostCard = ({ blog }) => {
               <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
             </Button>
           )}
+
           <div
             onClick={togglePlayPause}
             className="flex flex-col items-center hover:cursor-pointer"
@@ -114,43 +139,76 @@ const StandardPostCard = ({ blog }) => {
               preload="metadata"
               playsInline
               loop
-              muted
               onTimeUpdate={handleTimeUpdate}
               src={blog.video[0].url}
             />
           </div>
 
-          {isPlaying === true && (
-            <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4">
-              <button
-                onClick={togglePlayPause}
-                className=" text-white p-2 rounded"
-              >
-                {isPlaying ? (
-                  <Pause className="fill-white" />
-                ) : (
-                  <Play className="fill-white" />
-                )}
-              </button>
-              <span className="text-white">
-                {Math.floor(currentTime)} / {Math.floor(duration)}
-              </span>
+          {/* custom control buttons */}
+
+          {progress !== 0 && (
+            <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4 ">
+              <div className="flex items-center">
+                <button
+                  onClick={togglePlayPause}
+                  className=" text-white p-2 rounded"
+                >
+                  {isPlaying ? (
+                    <Pause className="fill-white h-5 w-5" />
+                  ) : (
+                    <Play className="fill-white h-5 w-5" />
+                  )}
+                </button>
+                <span className="text-white text-sm">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+              </div>
+
+              {/* video progress bar */}
               <input
+                id="video-progress"
                 type="range"
                 value={progress}
                 onChange={handleSeek}
-                className="flex-1 "
+                style={{
+                  background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${progress}%, #7a7a7a ${progress}%, #7a7a7a 100%)`,
+                }}
+                className="hover:cursor-pointer flex-1"
               />
 
-              <input
-                type="range"
-                value={volume}
-                min="0"
-                max="1"
-                step="0.1"
-                onChange={handleVolumeChange}
-                className="w-24"
-              />
+              <div className="flex items-center gap-x-4 pl-4">
+                <Icons.SettingIcon className="h-5 w-5 fill-white" />
+
+                <Maximize2 className="text-white  h-5 w-5" />
+
+                <Icons.Minimize className="h-7 w-7 fill-white text-white" />
+                {/* volume slider */}
+                <div
+                  onMouseEnter={handleVolumeHovered}
+                  class="flex items-center relative"
+                >
+                  <Volume2 className="text-white h-7 w-7" />
+                  {isVolumeHovered && (
+                    <input
+                      onMouseEnter={handleVolumeHovered}
+                      onMouseLeave={handleVolumeUnhovered}
+                      id="volume-slider"
+                      type="range"
+                      value={volume}
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      onChange={handleVolumeChange}
+                      style={{
+                        background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${
+                          volume * 100
+                        }%, #7a7a7a ${volume * 100}%, #7a7a7a 100%)`,
+                      }}
+                      className="transform -rotate-90  cursor-pointer absolute bottom-20 -right-9 rounded-full"
+                    />
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
