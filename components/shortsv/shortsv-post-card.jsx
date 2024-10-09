@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Card, CardContent } from "../ui/Card";
 import UserAvatar from "../utils/UserAvatar";
 import {
@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
 import { useMutation } from "@tanstack/react-query";
-import { usePrevious } from "@mantine/hooks";
+import { useIntersection, usePrevious } from "@mantine/hooks";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import axios, { AxiosError } from "axios";
 
@@ -28,18 +28,35 @@ const ShortsVPostCard = ({
   shortsvVotesAmt,
   currentShortsvVote,
 }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const { signinToast } = useCustomHooks();
   const [votesAmt, setVotesAmt] = useState(shortsvVotesAmt);
   const [currentVote, setCurrentVote] = useState(currentShortsvVote);
+  const [isMuted, setIsMuted] = useState(true);
   const prevVote = usePrevious(currentVote);
+
+  const { ref, entry } = useIntersection({
+    threshold: 1, // Adjust this value as needed
+  });
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (entry?.isIntersecting) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [entry]);
 
   useEffect(() => {
     setCurrentVote(currentShortsvVote);
   }, [currentShortsvVote]);
 
   const router = useRouter();
-
-  const [isMuted, setIsMuted] = useState(false);
 
   const date = new Date(videoData.createdAt);
   const options = { month: "short", day: "numeric" };
@@ -107,6 +124,11 @@ const ShortsVPostCard = ({
     vote("DOWN");
   };
 
+  const toggleVolume = (e) => {
+    e.stopPropagation();
+    setIsMuted((prev) => !prev);
+  };
+
   return (
     <Card
       className="rounded-2xl shadow-md dark:border-none"
@@ -162,28 +184,29 @@ const ShortsVPostCard = ({
             <div className="flex items-center gap-x-3 mr-2">
               {isMuted ? (
                 <Volume2
-                  onClick={handleVolumeClick}
+                  onClick={toggleVolume}
                   className="stroke-white flex items-start justify-start z-20 cursor-pointer w-6 h-6"
                 />
               ) : (
                 <VolumeX
-                  onClick={handleVolumeClick}
+                  onClick={toggleVolume}
                   className="stroke-white flex items-start justify-start z-20 cursor-pointer w-6 h-6"
                 />
               )}
+
               <MoreHorizontal className="stroke-white" />
             </div>
           </div>
 
           {/* video content */}
-          <div className="max-w-[25vw]">
+          <div ref={ref} className="max-w-[25vw]">
             <video
+              ref={videoRef}
               key={videoData?.videoUrl}
               loop
               playsInline
-              autoPlay
-              preload="metadata"
               muted={!isMuted}
+              preload="metadata"
               className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
             >
               <source src={videoData?.videoUrl} type="video/mp4" />

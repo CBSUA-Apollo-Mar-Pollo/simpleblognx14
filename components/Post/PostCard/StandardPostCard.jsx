@@ -3,8 +3,6 @@
 import { getDominantColor } from "@/actions/getDominantColor";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import MultipleImageRender from "../multiple-image-render";
 import {
@@ -17,16 +15,53 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/utils/Icons";
+import { useIntersection } from "@mantine/hooks";
 
-const StandardPostCard = ({ blog }) => {
+const StandardPostCard = ({
+  blog,
+  isVideoPaused,
+  currentTime,
+  setCurrentTime,
+  duration,
+  setDuration,
+  progress,
+  setProgress,
+}) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
+
   const [volume, setVolume] = useState(1);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+
   const [isVolumeHovered, setIsVolumeHovered] = useState(false);
 
+  const { ref, entry } = useIntersection({
+    threshold: 1, // Adjust this value as needed
+  });
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isVideoPaused) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
+  }, [isVideoPaused]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (entry?.isIntersecting) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        setIsVolumeHovered(false);
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [entry]);
+
+  // for gettting the duration
   useEffect(() => {
     const handleLoadedMetadata = () => {
       if (videoRef.current) {
@@ -130,6 +165,7 @@ const StandardPostCard = ({ blog }) => {
           )}
 
           <div
+            ref={ref}
             onClick={togglePlayPause}
             className="flex flex-col items-center hover:cursor-pointer"
           >
@@ -185,7 +221,7 @@ const StandardPostCard = ({ blog }) => {
                 {/* volume slider */}
                 <div
                   onMouseEnter={handleVolumeHovered}
-                  class="flex items-center relative"
+                  className="flex items-center relative"
                 >
                   <Volume2 className="text-white h-7 w-7" />
                   {isVolumeHovered && (

@@ -17,8 +17,9 @@ TODO
 
 - add a reward system for post or comments by other users.
 - add a page where they can add a profile photo and add a intro before they interact with the app.
-- add a post card for shorts and videos.
+
 - add a log in modal (reconsidering)
+- make the all pages responsive.
 
 ALREADY DONE
 
@@ -30,3 +31,8 @@ INCOMPLETE
 
 - add a chat system
 - add more settings
+- add a post card for shorts and videos.
+
+HARD TO DO:
+
+- add a selection of resolution for video player.

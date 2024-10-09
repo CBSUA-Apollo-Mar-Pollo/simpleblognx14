@@ -78,7 +78,7 @@ const SearchPageContent = ({
 
   return (
     <div className="">
-      <div className=" border-x  border-neutral-200 dark:border-neutral-700 max-w-[42vw] min-h-screen relative">
+      <div className=" border-x  border-neutral-200 dark:border-neutral-700 min-w-[45vw] max-w-[50vw] min-h-screen relative">
         <div className="sticky top-[3.55em] z-50">
           <div className="grid grid-cols-6 px-4 border-b border-neutral-200 pt-1  dark:border-neutral-700 bg-white dark:bg-neutral-900 gap-x-2">
             <Button

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/Dialog";
-import { Dot, Forward, Globe, MessageCircle } from "lucide-react";
+import {
+  Dot,
+  Forward,
+  Globe,
+  Maximize2,
+  MessageCircle,
+  Pause,
+  Play,
+  Volume2,
+} from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
 import PostVote from "../PostVote/PostVote";
@@ -27,6 +36,8 @@ import CreateComment from "./CreateComment";
 import { COMMENT_PAGE } from "@/config";
 import CommentSectionCard from "./CommentSectionCard";
 import { Button } from "../ui/Button";
+import { Icons } from "../utils/Icons";
+import { useIntersection } from "@mantine/hooks";
 
 const PostDescriptionCard = ({
   blog,
@@ -35,9 +46,30 @@ const PostDescriptionCard = ({
   initialVote,
   initialVotesAmt,
   sharedAmount,
+  setVideoPaused,
+  currentTime,
+  setCurrentTime,
+  duration,
+  setDuration,
+  progress,
+  setProgress,
 }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [volume, setVolume] = useState(1);
+
+  const [isVolumeHovered, setIsVolumeHovered] = useState(false);
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.play(); // Automatically play the video if desired
+    }
+  }, []);
+
   const { mutate: getComments } = useMutation({
     mutationFn: async () => {
       const payload = { postId: blog.id };
@@ -92,8 +124,71 @@ const PostDescriptionCard = ({
   // Flatten the data from all pages
   const commentsData = data?.pages.flat() ?? [];
 
+  // CODE BELOW IS FOR VIDEO PLAYER
+  // for gettting the duration
+  useEffect(() => {
+    const handleLoadedMetadata = () => {
+      if (videoRef.current) {
+        setDuration(videoRef.current.duration);
+      }
+    };
+
+    if (videoRef.current) {
+      videoRef.current.addEventListener("loadedmetadata", handleLoadedMetadata);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener(
+          "loadedmetadata",
+          handleLoadedMetadata
+        );
+      }
+    };
+  }, [videoRef.current]);
+
+  const togglePlayPause = () => {
+    const video = videoRef.current;
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleSeek = (e) => {
+    const video = videoRef.current;
+    video.currentTime = (e.target.value / 100) * video.duration;
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    const video = videoRef.current;
+    video.volume = newVolume; // Set the video volume
+    setVolume(newVolume); // Update state
+  };
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  }
+
+  const handleVolumeHovered = () => {
+    setIsVolumeHovered(true);
+  };
+
+  const handleVolumeUnhovered = () => {
+    setIsVolumeHovered(false);
+  };
+
   return (
-    <Dialog onOpenChange={() => getComments()}>
+    <Dialog
+      onOpenChange={() => {
+        getComments(), setVideoPaused((prev) => !prev);
+      }}
+    >
       <DialogTrigger>
         <div className="flex items-center gap-2  px-10  py-3 rounded cursor-pointer">
           <MessageCircle className="h-6 w-6 text-neutral-700 dark:text-neutral-200" />
@@ -147,6 +242,102 @@ const PostDescriptionCard = ({
                 dominantColorPost={dominantColorPost}
                 isLoading={isLoading}
               />
+            )}
+
+            {blog.video && (
+              <div className="bg-neutral-950 relative">
+                {isPlaying === false && progress === 0 && (
+                  <Button
+                    onClick={() => togglePlayPause()}
+                    variant="ghost"
+                    className="hover:cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60 z-40"
+                  >
+                    <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
+                  </Button>
+                )}
+
+                <div
+                  onClick={togglePlayPause}
+                  className="flex flex-col items-center hover:cursor-pointer"
+                >
+                  <video
+                    ref={videoRef}
+                    className="object-cover border-0 max-h-[55vh]"
+                    preload="metadata"
+                    playsInline
+                    loop
+                    src={blog.video[0].url}
+                  />
+                </div>
+
+                {/* custom control buttons */}
+
+                {progress !== 0 && (
+                  <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4 ">
+                    <div className="flex items-center">
+                      <button
+                        onClick={togglePlayPause}
+                        className=" text-white p-2 rounded"
+                      >
+                        {isPlaying ? (
+                          <Pause className="fill-white h-5 w-5" />
+                        ) : (
+                          <Play className="fill-white h-5 w-5" />
+                        )}
+                      </button>
+                      <span className="text-white text-sm">
+                        {formatTime(currentTime)} / {formatTime(duration)}
+                      </span>
+                    </div>
+
+                    {/* video progress bar */}
+                    <input
+                      id="video-progress"
+                      type="range"
+                      value={progress}
+                      onChange={handleSeek}
+                      style={{
+                        background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${progress}%, #7a7a7a ${progress}%, #7a7a7a 100%)`,
+                      }}
+                      className="hover:cursor-pointer flex-1"
+                    />
+
+                    <div className="flex items-center gap-x-4 pl-4">
+                      <Icons.SettingIcon className="h-5 w-5 fill-white" />
+
+                      <Maximize2 className="text-white  h-5 w-5" />
+
+                      <Icons.Minimize className="h-7 w-7 fill-white text-white" />
+                      {/* volume slider */}
+                      <div
+                        onMouseEnter={handleVolumeHovered}
+                        className="flex items-center relative"
+                      >
+                        <Volume2 className="text-white h-7 w-7" />
+                        {isVolumeHovered && (
+                          <input
+                            onMouseEnter={handleVolumeHovered}
+                            onMouseLeave={handleVolumeUnhovered}
+                            id="volume-slider"
+                            type="range"
+                            value={volume}
+                            min="0"
+                            max="1"
+                            step="0.05"
+                            onChange={handleVolumeChange}
+                            style={{
+                              background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${
+                                volume * 100
+                              }%, #7a7a7a ${volume * 100}%, #7a7a7a 100%)`,
+                            }}
+                            className="transform -rotate-90  cursor-pointer absolute bottom-20 -right-9 rounded-full"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
 
             {sharedPost && (
