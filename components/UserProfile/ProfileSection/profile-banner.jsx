@@ -155,7 +155,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
       )}
 
       <div className="mx-52 ">
-        <div className="relative">
+        <div className="">
           <BackgroundImage
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
@@ -163,81 +163,85 @@ const ProfileBanner = ({ user, deleteImage }) => {
             user={user}
           />
 
-          <ProfilePic user={user} session={session} />
-
-          <div className="mt-7 w-full relative flex justify-between z-10">
-            <div className="ml-[16rem]">
-              <h1 className="font-semibold text-3xl dark:text-white">
-                {formattedName}
-              </h1>
-              <span className="text-base font-medium dark:text-white">
-                {user.handleName}
-              </span>
+          <div className="mt-10  grid grid-cols-10">
+            <div className="col-span-2 relative">
+              <ProfilePic user={user} session={session} />
             </div>
 
-            {session?.user.id === user.id ? (
-              <div className="mr-5">
-                <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
-                  <span className="pr-2">
-                    <Pencil className="fill-black stroke-transparent  h-4 w-4" />
-                  </span>
-                  Edit Profile
-                </Button>
+            <div className="-mt-4 w-full relative flex justify-between z-10 col-span-8">
+              <div className="ml-2">
+                <h1 className="font-semibold text-3xl dark:text-white">
+                  {formattedName}
+                </h1>
+                <span className="text-base font-medium dark:text-white">
+                  {user.handleName}
+                </span>
               </div>
-            ) : (
-              // if there is a logged in user show this ui
-              session?.user && (
-                <div className=" mr-5 flex gap-x-2">
-                  {isAFriend === "onhold" ? (
-                    <Button
-                      onClick={() => handleCancelAndFriendRequest("false")}
-                      className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                    >
-                      <span className="pr-2">
-                        {isRequestLoading ? (
-                          <Loader2 className="w-6 h-6  animate-spin text-white" />
-                        ) : (
-                          <UserX className="fill-white  h-5 w-5" />
-                        )}
-                      </span>
-                      Cancel Request
-                    </Button>
-                  ) : isAFriend === true ? (
-                    <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
-                      <span className="pr-2">
-                        <UserCheck className="fill-white  h-5 w-5" />
-                      </span>
-                      Friends
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => handleCancelAndFriendRequest("onhold")}
-                      className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
-                    >
-                      <span className="pr-2">
-                        {isRequestLoading ? (
-                          <Loader2 className="w-6 h-6  animate-spin text-white" />
-                        ) : (
-                          <UserPlus className="fill-white  h-5 w-5" />
-                        )}
-                      </span>
-                      Add friend
-                    </Button>
-                  )}
 
-                  <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-300/90 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+              {session?.user.id === user.id ? (
+                <div className="mr-5">
+                  <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
                     <span className="pr-2">
-                      <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
+                      <Pencil className="fill-black stroke-transparent  h-4 w-4" />
                     </span>
-                    Message
+                    Edit Profile
                   </Button>
                 </div>
-              )
-            )}
+              ) : (
+                // if there is a logged in user show this ui
+                session?.user && (
+                  <div className=" mr-5 flex gap-x-2">
+                    {isAFriend === "onhold" ? (
+                      <Button
+                        onClick={() => handleCancelAndFriendRequest("false")}
+                        className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                      >
+                        <span className="pr-2">
+                          {isRequestLoading ? (
+                            <Loader2 className="w-6 h-6  animate-spin text-white" />
+                          ) : (
+                            <UserX className="fill-white  h-5 w-5" />
+                          )}
+                        </span>
+                        Cancel Request
+                      </Button>
+                    ) : isAFriend === true ? (
+                      <Button className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center">
+                        <span className="pr-2">
+                          <UserCheck className="fill-white  h-5 w-5" />
+                        </span>
+                        Friends
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handleCancelAndFriendRequest("onhold")}
+                        className="bg-blue-600 hover:bg-blue-700 drop-shadow-sm text-neutral-100 font-semibold px-4 flex items-center"
+                      >
+                        <span className="pr-2">
+                          {isRequestLoading ? (
+                            <Loader2 className="w-6 h-6  animate-spin text-white" />
+                          ) : (
+                            <UserPlus className="fill-white  h-5 w-5" />
+                          )}
+                        </span>
+                        Add friend
+                      </Button>
+                    )}
+
+                    <Button className="bg-neutral-200 hover:bg-neutral-300 dark:hover:bg-neutral-300/90 drop-shadow text-neutral-800 font-semibold px-3 flex items-center">
+                      <span className="pr-2">
+                        <MessageCircleMore className="fill-neutral-800 stroke-neutral-200 h-8 w-8" />
+                      </span>
+                      Message
+                    </Button>
+                  </div>
+                )
+              )}
+            </div>
           </div>
         </div>
 
-        <Separator className="mt-5 bg-neutral-300 dark:bg-neutral-700" />
+        <Separator className="mt-7 bg-neutral-300 dark:bg-neutral-700" />
 
         <div className="mr-10">
           <ProfileButtons userId={user.id} />

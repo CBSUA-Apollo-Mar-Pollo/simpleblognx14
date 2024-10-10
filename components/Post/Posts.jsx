@@ -113,6 +113,9 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                   shortsvVotesAmt={shortsvVotesAmt}
                   currentShortsvVote={currentShortsvVote?.type}
                 />
+                <div className="mt-3">
+                  {index === randNumber && <ReelsHomeCard />}
+                </div>
               </li>
             );
           }

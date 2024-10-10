@@ -4,7 +4,7 @@ import UpdateProfilePicModal from "./UpdateProfilePicModal";
 
 const ProfilePic = ({ user, session }) => {
   return (
-    <div className="absolute bottom-0 left-[4vw] z-10">
+    <div className="absolute -bottom-4 left-[4vw] z-10">
       <div className="relative">
         <UserAvatar
           className="h-44 w-44 border-4 border-neutral-50 dark:border-neutral-800"

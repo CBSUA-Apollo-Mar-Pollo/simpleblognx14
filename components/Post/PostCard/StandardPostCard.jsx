@@ -12,6 +12,7 @@ import {
   Play,
   Settings,
   Volume2,
+  VolumeX,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/utils/Icons";
@@ -136,6 +137,17 @@ const StandardPostCard = ({
     setIsVolumeHovered(false);
   };
 
+  const handleClickMute = () => {
+    const video = videoRef.current;
+    if (video.volume === 0) {
+      video.volume = 1;
+      setVolume(1);
+    } else {
+      video.volume = 0;
+      setVolume(0);
+    }
+  };
+
   return (
     <div>
       {blog.description && (
@@ -223,7 +235,18 @@ const StandardPostCard = ({
                   onMouseEnter={handleVolumeHovered}
                   className="flex items-center relative"
                 >
-                  <Volume2 className="text-white h-7 w-7" />
+                  {volume === 0 ? (
+                    <VolumeX
+                      onClick={() => handleClickMute()}
+                      className="text-white h-7 w-7 cursor-pointer"
+                    />
+                  ) : (
+                    <Volume2
+                      onClick={() => handleClickMute()}
+                      className="text-white h-7 w-7 cursor-pointer"
+                    />
+                  )}
+
                   {isVolumeHovered && (
                     <input
                       onMouseEnter={handleVolumeHovered}

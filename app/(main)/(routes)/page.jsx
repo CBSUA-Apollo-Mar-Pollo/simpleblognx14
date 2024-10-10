@@ -106,7 +106,7 @@ export default async function HomePage() {
   return (
     <div className="grid grid-cols-4  dark:bg-neutral-900">
       {/* first column the side bar */}
-      <div className=" col-span-1 relative">
+      <div className=" col-span-1 relative border-r border-neutral-200 dark:border-neutral-800 w-[20vw] ">
         <Sidebar session={session} />
       </div>
 
