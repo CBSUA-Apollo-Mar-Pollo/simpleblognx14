@@ -40,30 +40,6 @@ const StandardPostCard = ({
   });
 
   useEffect(() => {
-    if (videoRef.current) {
-      if (isVideoPaused) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-    }
-  }, [isVideoPaused]);
-
-  useEffect(() => {
-    if (videoRef.current) {
-      if (entry?.isIntersecting) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        setIsVolumeHovered(false);
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
-    }
-  }, [entry]);
-
-  // for gettting the duration
-  useEffect(() => {
     const handleLoadedMetadata = () => {
       if (videoRef.current) {
         setDuration(videoRef.current.duration);
@@ -83,6 +59,32 @@ const StandardPostCard = ({
       }
     };
   }, [videoRef.current]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isVideoPaused) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.currentTime = currentTime;
+        videoRef.current.play();
+      }
+    }
+  }, [isVideoPaused]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (entry?.isIntersecting) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        setIsVolumeHovered(false);
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  }, [entry]);
+
+  // for gettting the duration
 
   const togglePlayPause = () => {
     const video = videoRef.current;

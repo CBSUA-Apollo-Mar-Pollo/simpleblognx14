@@ -68,7 +68,7 @@ const PostDescriptionCard = ({
     if (video) {
       video.play(); // Automatically play the video if desired
     }
-  }, []);
+  }, [videoRef.current]);
 
   const { mutate: getComments } = useMutation({
     mutationFn: async () => {
@@ -130,6 +130,8 @@ const PostDescriptionCard = ({
     const handleLoadedMetadata = () => {
       if (videoRef.current) {
         setDuration(videoRef.current.duration);
+
+        videoRef.current.currentTime = currentTime;
       }
     };
 
@@ -155,6 +157,13 @@ const PostDescriptionCard = ({
       video.play();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+
+    setProgress((video.currentTime / video.duration) * 100);
+    setCurrentTime(video.currentTime);
   };
 
   const handleSeek = (e) => {
@@ -266,6 +275,7 @@ const PostDescriptionCard = ({
                     preload="metadata"
                     playsInline
                     loop
+                    onTimeUpdate={handleTimeUpdate}
                     src={blog.video[0].url}
                   />
                 </div>
