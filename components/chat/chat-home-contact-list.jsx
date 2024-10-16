@@ -1,12 +1,18 @@
 "use client";
 
+import { useEffect } from "react";
 import { MoreHorizontal, Search } from "lucide-react";
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
+import { useSocket } from "../Providers/socket-provider";
+import { useMakeUserOnline } from "@/hooks/use-make-user-online";
 
 const ChatHomeContactList = ({ conversationList, session }) => {
   const { onOpen, data } = useChatWindowStore();
+
+  useMakeUserOnline();
+
   return (
     <div className="mt-2 mx-4">
       <div className="flex justify-between mb-2">

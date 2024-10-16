@@ -59,7 +59,17 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
         {/* post content */}
         {sharedPost ? (
           // shared post card component
-          <SharedPostCard sharedPost={sharedPost} blog={blog} />
+          <SharedPostCard
+            sharedPost={sharedPost}
+            blog={blog}
+            isVideoPaused={isVideoPaused}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+            duration={duration}
+            setDuration={setDuration}
+            progress={progress}
+            setProgress={setProgress}
+          />
         ) : !blog.sharedPostId ? (
           //  /* normal post card component */
           <StandardPostCard
@@ -88,7 +98,7 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
                 {blog.comments.length === 1 ? "Comment" : "Comments"}
               </Link>
             ) : (
-              <div className="pb-2 flex items-center justify-end mr-4 text-sm hover:underline">
+              <div className="py-1  flex items-center justify-end mr-4 text-xs hover:underline">
                 {blog.comments.length}{" "}
                 {blog.comments.length === 1 ? "Comment" : "Comments"}
               </div>

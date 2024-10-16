@@ -351,17 +351,10 @@ const PostDescriptionCard = ({
             )}
 
             {sharedPost && (
-              <div className=" mx-6 mb-3 mt-2">
-                <div className="rounded-xl border border-neutral-300 dark:border-neutral-700 px-2 pt-1">
-                  {sharedPost.image && (
-                    <MultipleImageRender
-                      blog={blog.sharedPostId ? sharedPost : null}
-                      dominantColorPost={dominantColorPost}
-                      isLoading={isLoading}
-                    />
-                  )}
+              <div className=" ml-3 mr-4 mb-3 mt-2">
+                <div className="rounded-2xl border border-neutral-300 dark:border-neutral-700 pt-1">
                   {/* shared post description */}
-                  <div className=" gap-1 my-2 mx-1">
+                  <div className=" gap-1 my-2 ml-6">
                     {/* profile image  */}
                     <Link href={`/user/${sharedPost?.author.id}`}>
                       <div className="flex items-center gap-1">
@@ -394,6 +387,125 @@ const PostDescriptionCard = ({
                       </p>
                     )}
                   </div>
+
+                  {/* images for shared post */}
+                  {sharedPost.image && (
+                    <MultipleImageRender
+                      blog={blog.sharedPostId ? sharedPost : null}
+                      dominantColorPost={dominantColorPost}
+                      isLoading={isLoading}
+                    />
+                  )}
+
+                  {sharedPost.video && (
+                    <div className="bg-neutral-950 relative rounded-b-2xl">
+                      {isPlaying === false && progress === 0 && (
+                        <Button
+                          onClick={() => togglePlayPause()}
+                          variant="ghost"
+                          className="hover:cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60 z-40"
+                        >
+                          <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
+                        </Button>
+                      )}
+
+                      <div
+                        onClick={togglePlayPause}
+                        className="flex flex-col items-center hover:cursor-pointer"
+                      >
+                        <video
+                          ref={videoRef}
+                          className="object-cover border-0 max-h-[55vh]"
+                          preload="metadata"
+                          playsInline
+                          loop
+                          onTimeUpdate={handleTimeUpdate}
+                          src={sharedPost.video[0].url}
+                        />
+                      </div>
+
+                      {/* custom control buttons */}
+
+                      {progress !== 0 && (
+                        <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4 ">
+                          <div className="flex items-center">
+                            <button
+                              onClick={togglePlayPause}
+                              className=" text-white p-2 rounded"
+                            >
+                              {isPlaying ? (
+                                <Pause className="fill-white h-5 w-5" />
+                              ) : (
+                                <Play className="fill-white h-5 w-5" />
+                              )}
+                            </button>
+                            <span className="text-white text-sm">
+                              {formatTime(currentTime)} / {formatTime(duration)}
+                            </span>
+                          </div>
+
+                          {/* video progress bar */}
+                          <input
+                            id="video-progress"
+                            type="range"
+                            value={progress}
+                            onChange={handleSeek}
+                            style={{
+                              background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${progress}%, #7a7a7a ${progress}%, #7a7a7a 100%)`,
+                            }}
+                            className="hover:cursor-pointer flex-1"
+                          />
+
+                          <div className="flex items-center gap-x-4 pl-4">
+                            <Icons.SettingIcon className="h-5 w-5 fill-white" />
+
+                            <Maximize2 className="text-white  h-5 w-5" />
+
+                            <Icons.Minimize className="h-7 w-7 fill-white text-white" />
+                            {/* volume slider */}
+                            <div
+                              onMouseEnter={handleVolumeHovered}
+                              className="flex items-center relative"
+                            >
+                              {volume === 0 ? (
+                                <VolumeX
+                                  onClick={() => handleClickMute()}
+                                  className="text-white h-7 w-7 cursor-pointer"
+                                />
+                              ) : (
+                                <Volume2
+                                  onClick={() => handleClickMute()}
+                                  className="text-white h-7 w-7 cursor-pointer"
+                                />
+                              )}
+
+                              {isVolumeHovered && (
+                                <input
+                                  onMouseEnter={handleVolumeHovered}
+                                  onMouseLeave={handleVolumeUnhovered}
+                                  id="volume-slider"
+                                  type="range"
+                                  value={volume}
+                                  min="0"
+                                  max="1"
+                                  step="0.05"
+                                  onChange={handleVolumeChange}
+                                  style={{
+                                    background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${
+                                      volume * 100
+                                    }%, #7a7a7a ${
+                                      volume * 100
+                                    }%, #7a7a7a 100%)`,
+                                  }}
+                                  className="transform -rotate-90  cursor-pointer absolute bottom-20 -right-9 rounded-full"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -422,7 +534,6 @@ const PostDescriptionCard = ({
                 initialVote={initialVote}
                 initialVotesAmt={initialVotesAmt}
               />
-              {/* <HeartVote /> */}
               {/* comment button */}
               <div className="flex items-center justify-center gap-2 hover:bg-neutral-200 dark:hover:bg-neutral-500 px-5 rounded cursor-pointer">
                 <MessageCircle className="h-6 w-6 text-neutral-700 dark:text-neutral-200" />

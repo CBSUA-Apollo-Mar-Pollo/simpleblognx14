@@ -18,7 +18,7 @@ const SharedPostMultipleImageRender = ({
           {blog.userStatus === "updated his cover photo" && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
-              className="relative overflow-clip w-full flex flex-col rounded-t-2xl"
+              className="relative overflow-clip w-full flex flex-col rounded-b-2xl"
             >
               <Image
                 sizes="100vw"
@@ -56,7 +56,7 @@ const SharedPostMultipleImageRender = ({
           {blog.image.length === 1 && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
-              className="relative overflow-clip w-full flex flex-col rounded-t-2xl"
+              className="relative overflow-clip w-full flex flex-col rounded-b-2xl"
               shallow
             >
               {/* Background Container */}
@@ -135,11 +135,11 @@ const SharedPostMultipleImageRender = ({
                   height={0}
                   src={blog.image[0].url}
                   alt="profile image"
-                  className="w-full h-auto object-cover rounded-tl-2xl"
+                  className="w-full h-auto object-cover rounded-bl-2xl"
                   style={{ aspectRatio: "14/17" }} // Example aspect ratio (adjust as needed)
                 />
               </Link>
-              <div className="flex flex-col  col-span-3 space-y-1">
+              <div className="flex flex-col  col-span-3 space-y-2">
                 {blog.image.map((imageUrl, index) => {
                   if (index === 0) {
                     return null;
@@ -158,7 +158,7 @@ const SharedPostMultipleImageRender = ({
                         height={0}
                         alt="profile image"
                         className={cn(" w-full h-auto object-cover", {
-                          "rounded-tr-2xl": index === 1,
+                          "rounded-br-2xl": index === 2,
                         })}
                         style={{ aspectRatio: "13/13" }} // Example aspect ratio (adjust as needed)
                       />
@@ -313,7 +313,7 @@ const SharedPostMultipleImageRender = ({
                     height={0}
                     src={blog.image[0].url}
                     alt="profile image"
-                    className="w-full h-auto object-cover rounded-tl-2xl"
+                    className="w-full h-auto object-cover "
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
                   />
                 </Link>
@@ -327,7 +327,7 @@ const SharedPostMultipleImageRender = ({
                     height={0}
                     src={blog.image[1].url}
                     alt="profile image"
-                    className="w-full h-auto object-cover rounded-tr-2xl"
+                    className="w-full h-auto object-cover"
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
                   />
                 </Link>
@@ -358,9 +358,11 @@ const SharedPostMultipleImageRender = ({
                         height={0}
                         src={imageUrl.url}
                         alt="profile image"
-                        className={`w-full h-auto object-cover px-[1px] ${
-                          index === 4 && "opacity-50"
-                        }`}
+                        className={cn("w-full h-auto object-cover px-[1px]", {
+                          "opacity-50": index === 4,
+                          "rounded-bl-2xl": index === 2,
+                          "rounded-br-2xl": index === 4,
+                        })}
                         style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
                       />
                       {index === 4 && (

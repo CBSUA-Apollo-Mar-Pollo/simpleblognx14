@@ -15,9 +15,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { getFriendsList } from "@/actions/getFriendsList";
 import UserAvatar from "./UserAvatar";
+import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 
 const ChatBoxMenu = () => {
   const [open, setOpen] = useState(false);
+  const { onOpen, data } = useChatWindowStore();
   const { data: session, isLoading } = useSession();
   // get shared post data
   const { data: friends } = useQuery({
@@ -112,42 +114,67 @@ const ChatBoxMenu = () => {
               friends?.map((friend, index) =>
                 friend.requesterUser.id !== session?.user.id ? (
                   <div
+                    onClick={() => {
+                      onOpen("directMessage", [friend.requesterUser]);
+                      setOpen(false);
+                    }}
                     key={index}
                     className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-600 rounded-md cursor-pointer"
                   >
-                    <UserAvatar
-                      className="h-12 w-12 "
-                      user={{
-                        image: friend?.requesterUser.image || null,
-                      }}
-                    />
+                    <div className="relative">
+                      <UserAvatar
+                        className="h-12 w-12 "
+                        user={{
+                          image: friend?.requesterUser.image || null,
+                        }}
+                      />
+                      <div className="absolute -right-0.5 bottom-[1px] h-[12px] w-[12px] bg-green-600 rounded-full border border-neutral-100" />
+                    </div>
                     <div className="flex flex-col">
                       <span className="font-semibold text-neutral-700 dark:text-neutral-100">
                         {friend?.requesterUser.name}
                       </span>
-                      <span className="text-xs dark:text-neutral-100">
-                        message example
-                      </span>
+                      {friend?.lastMessage?.userId === session?.user.id ? (
+                        <span className="text-xs dark:text-neutral-100">
+                          You : {friend?.lastMessage?.content}
+                        </span>
+                      ) : (
+                        <span className="text-xs dark:text-neutral-100">
+                          {friend?.lastMessage?.content}
+                        </span>
+                      )}
                     </div>
                   </div>
                 ) : (
                   <div
+                    onClick={() => {
+                      onOpen("directMessage", [friend.user]), setOpen(false);
+                    }}
                     key={index}
                     className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-600 rounded-md cursor-pointer"
                   >
-                    <UserAvatar
-                      className="h-12 w-12 "
-                      user={{
-                        image: friend?.user.image || null,
-                      }}
-                    />
+                    <div className="relative">
+                      <UserAvatar
+                        className="h-12 w-12 "
+                        user={{
+                          image: friend?.user.image || null,
+                        }}
+                      />
+                      <div className="absolute -right-0.5 bottom-[1px] h-[12px] w-[12px] bg-green-600 rounded-full border border-neutral-100" />
+                    </div>
                     <div className="flex flex-col">
                       <span className="font-semibold text-neutral-700 dark:text-neutral-100">
                         {friend?.user.name}
                       </span>
-                      <span className="text-xs dark:text-neutral-100">
-                        message example
-                      </span>
+                      {friend?.lastMessage.userId === session?.user.id ? (
+                        <span className="text-xs dark:text-neutral-100">
+                          You : {friend?.lastMessage.content}
+                        </span>
+                      ) : (
+                        <span className="text-xs dark:text-neutral-100">
+                          {friend?.lastMessage.content}
+                        </span>
+                      )}
                     </div>
                   </div>
                 )

@@ -101,18 +101,6 @@ const NavBarSettings = () => {
             </div>
             Information and Permission
           </Link>
-          <Link
-            href="/settings/account/paymentinfo"
-            className={cn(
-              pathname === "/settings/account/paymentinfo"
-                ? "bg-gray-200 dark:bg-neutral-700"
-                : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-              "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-            )}
-          >
-            <CreditCard className="h-6 w-6 mr-3" />
-            Payment details & methods
-          </Link>
         </div>
 
         <div className="py-2">
