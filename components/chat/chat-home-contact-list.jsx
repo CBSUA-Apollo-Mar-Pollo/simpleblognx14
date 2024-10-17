@@ -1,17 +1,37 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { MoreHorizontal, Search } from "lucide-react";
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 import { useSocket } from "../Providers/socket-provider";
 import { useMakeUserOnline } from "@/hooks/use-make-user-online";
+import { useGetUserOnlineData } from "@/hooks/use-get-user-online-data";
 
 const ChatHomeContactList = ({ conversationList, session }) => {
   const { onOpen, data } = useChatWindowStore();
+  const { socket } = useSocket();
+  const [userData, setUserData] = useState(null);
 
-  useMakeUserOnline();
+  useMakeUserOnline({ session });
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleUserOnline = (userData) => {
+      console.log("User is online:", userData);
+      setUserData(userData);
+      // Handle the user online event (update state, etc.)
+    };
+
+    socket.on("userOnline", handleUserOnline);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      socket.off("userOnline", handleUserOnline);
+    };
+  }, [socket]);
 
   return (
     <div className="mt-2 mx-4">
@@ -19,6 +39,7 @@ const ChatHomeContactList = ({ conversationList, session }) => {
         <h1 className="font-semibold  dark:text-neutral-50 text-[18px] pl-2">
           Contacts
         </h1>
+
         <div className="flex items-center gap-x-2">
           <Search className="h-5 w-5 dark:text-neutral-50" />
           <MoreHorizontal className="dark:text-neutral-50" />
@@ -44,7 +65,11 @@ const ChatHomeContactList = ({ conversationList, session }) => {
                       image: user.userOne?.image || null,
                     }}
                   />
-                  <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
+                  {/* green badge for online */}
+
+                  {userData?.user.id === user.userOne.id && (
+                    <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
+                  )}
                 </div>
 
                 <span className="font-semibold text-neutral-700 dark:text-neutral-50 text-sm">
@@ -68,7 +93,10 @@ const ChatHomeContactList = ({ conversationList, session }) => {
                       image: user.userTwo?.image || null,
                     }}
                   />
-                  <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
+
+                  {userData?.user.id === user.userTwo.id && (
+                    <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
+                  )}
                 </div>
 
                 <span className="font-semibold text-neutral-700 text-sm dark:text-neutral-50">

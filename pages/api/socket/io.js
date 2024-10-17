@@ -1,6 +1,7 @@
 import { Server as NetServer } from "http";
 import { Server as ServerIO } from "socket.io";
 import { setupSocketEvents } from "./socket-handlers";
+import { dbPages } from "@/lib/db-pages";
 
 export const config = {
   api: {
@@ -12,6 +13,8 @@ const ioHandler = (req, res) => {
   if (!res.socket.server.io) {
     const path = "/api/socket/io";
     const httpServer = res.socket.server;
+
+    // Initialize the socket.io server
     const io = new ServerIO(httpServer, {
       path: path,
       addTrailingSlash: false,
@@ -21,9 +24,11 @@ const ioHandler = (req, res) => {
       console.log("A user connected");
 
       socket.on("userLoggedIn", (data) => {
-        console.log(`${data.userId} is now online`);
-        // Broadcast to other clients
+        console.log(data, "data from userLoggedIn");
+
         socket.broadcast.emit("userOnline", data);
+
+        // Broadcast to other clients
       });
 
       socket.on("disconnect", () => {
@@ -31,9 +36,11 @@ const ioHandler = (req, res) => {
       });
     });
 
+    // Save the instance of the socket server
     res.socket.server.io = io;
   }
 
+  // Respond to the request
   res.end();
 };
 
