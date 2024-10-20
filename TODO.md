@@ -22,7 +22,6 @@ TODO
 - make the all pages responsive.
 
 - add a number animation in post votes.
-- add a realtime online status.
 
 ALREADY DONE
 
@@ -35,6 +34,7 @@ INCOMPLETE
 - add a chat system
 - add more settings
 - add a post card for shorts and videos.
+- add a realtime online status.
 
 HARD TO DO:
 

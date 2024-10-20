@@ -11,6 +11,8 @@ export const useMakeUserOnline = ({ session }) => {
 
     socket.emit("userLoggedIn", session);
 
+    socket.emit("getUserOnline", session);
+
     return () => {
       socket.off("userLoggedIn");
       //   socket.off(updateKey);

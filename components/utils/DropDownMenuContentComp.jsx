@@ -10,9 +10,12 @@ import { Icons } from "./Icons";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { ChevronRight, HelpCircle, MessageSquareWarning } from "lucide-react";
+import { useSocket } from "../Providers/socket-provider";
 
 const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
   const router = useRouter();
+  const { socket } = useSocket();
+
   return (
     <DropdownMenuGroup>
       <DropdownMenuSeparator className="my-4 bg-neutral-200 dark:bg-neutral-600" />
@@ -80,6 +83,7 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
             signOut({
               callbackUrl: `${window.location.origin}/sign-in`,
             });
+            socket.emit("sign-out", user.id);
           }}
           className="cursor-pointer gap-x-3 dark:hover:bg-neutral-700"
         >

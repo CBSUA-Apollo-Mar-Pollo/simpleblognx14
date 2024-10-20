@@ -12,17 +12,26 @@ import { useGetUserOnlineData } from "@/hooks/use-get-user-online-data";
 const ChatHomeContactList = ({ conversationList, session }) => {
   const { onOpen, data } = useChatWindowStore();
   const { socket } = useSocket();
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
 
   useMakeUserOnline({ session });
 
   useEffect(() => {
     if (!socket) return;
 
-    const handleUserOnline = (userData) => {
-      console.log("User is online:", userData);
-      setUserData(userData);
-      // Handle the user online event (update state, etc.)
+    const handleUserOnline = (data) => {
+      console.log("User is online:", data);
+
+      const userId = data.id;
+      const hasAlreadyStored = userData.some((item) => item?.id === userId);
+      const isAFriend = conversationList.some(
+        (item) => item.userOneId === userId || item.userTwoId === userId
+      );
+
+      // Only add the user if they are not already stored and are a friend
+      if (!hasAlreadyStored && isAFriend) {
+        setUserData((prevData) => [...prevData, data]);
+      }
     };
 
     socket.on("userOnline", handleUserOnline);
@@ -31,7 +40,57 @@ const ChatHomeContactList = ({ conversationList, session }) => {
     return () => {
       socket.off("userOnline", handleUserOnline);
     };
+  }, [socket, userData]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("userHasSignedOut", (data) => {
+      setUserData((prevData) => prevData.filter((item) => item.id !== data));
+    });
+
+    return () => {
+      socket.off("userHasSignedOut");
+    };
   }, [socket]);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("friendsOnlineStatus", (data) => {
+      const filteredData = data.filter((item) => {
+        // Check if the requesterUser or user has onlineStatus set to true
+        return item.requesterUser?.onlineStatus || item.user?.onlineStatus;
+      });
+      console.log(filteredData, "friendsOnlineStatus");
+
+      const hasAlreadyStored = filteredData.some((item) =>
+        data.some(
+          (dataItem) =>
+            (dataItem.user && dataItem.user.id === item.id) ||
+            (dataItem.requesterUser && dataItem.requesterUser.id === item.id)
+        )
+      );
+
+      if (!hasAlreadyStored) {
+        setUserData((prevData) => [
+          ...prevData,
+          ...filteredData
+            .flatMap((dataItem) => [
+              dataItem.user ? dataItem.user : null,
+              dataItem.requesterUser ? dataItem.requesterUser : null,
+            ])
+            .filter(Boolean), // Remove any null values
+        ]);
+      }
+    });
+
+    return () => {
+      socket.off("friendsOnlineStatus");
+    };
+  }, [socket]);
+
+  console.log(userData, "user data");
 
   return (
     <div className="mt-2 mx-4">
@@ -67,7 +126,7 @@ const ChatHomeContactList = ({ conversationList, session }) => {
                   />
                   {/* green badge for online */}
 
-                  {userData?.user.id === user.userOne.id && (
+                  {userData.find((item) => item.id === user.userOne.id) && (
                     <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
                   )}
                 </div>
@@ -94,7 +153,7 @@ const ChatHomeContactList = ({ conversationList, session }) => {
                     }}
                   />
 
-                  {userData?.user.id === user.userTwo.id && (
+                  {userData.find((item) => item.id === user.userTwo.id) && (
                     <div className="absolute right-0 bottom-[1px] h-2.5 w-2.5 bg-green-600 rounded-full border border-neutral-100" />
                   )}
                 </div>

@@ -31,16 +31,18 @@ model Account {
 }
 
 model User {
-  id              String    @id @default(cuid())
-  name            String?
-  handleName      String?
-  bio             String?
-  email           String?   @unique
-  emailVerified   DateTime?
-  image           String?
-  backgroundImage String?
-  password        String?
-  birthdate       DateTime?
+  id               String    @id @default(cuid())
+  name             String?
+  handleName       String?
+  bio              String?
+  email            String?   @unique
+  emailVerified    DateTime?
+  image            String?
+  backgroundImage  String?
+  password         String?
+  birthdate        DateTime?
+  onlineStatus     Boolean   @default(false)
+  lastStatusChange DateTime  @default(now())
 
   accounts         Account[]
   blogs            Blog[]
