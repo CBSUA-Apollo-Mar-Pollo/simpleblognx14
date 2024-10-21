@@ -223,7 +223,8 @@ const AddGalleryPostModal = ({ session, user }) => {
     setToggleButton(false);
   };
 
-  console.log(selectedFiles, "preview videos");
+  console.log(imagePreviews, "preview image");
+  console.log(videoPreviews, "preview video");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -335,35 +336,39 @@ const AddGalleryPostModal = ({ session, user }) => {
                     />
                   </div>
 
-                  <ImagePreviewCreatePost imagePreviews={imagePreviews} />
+                  {imagePreviews.length !== 0 && (
+                    <ImagePreviewCreatePost imagePreviews={imagePreviews} />
+                  )}
 
-                  <div
-                    className={cn("relative", {
-                      "opacity-90": toggleButton,
-                    })}
-                  >
-                    <video
-                      className="object-cover w-full h-full rounded-lg z-20"
-                      preload="metadata"
-                      playsInline
-                      loop
-                      muted
+                  {videoPreviews.length !== 0 && (
+                    <div
+                      className={cn("relative", {
+                        "opacity-90": toggleButton,
+                      })}
                     >
-                      <source src={videoPreviews[0]} type="video/mp4" />
-                    </video>
-                    <Button
-                      variant="ghost"
-                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60"
-                    >
-                      <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      className="absolute top-2 right-3 bg-neutral-800 rounded-full px-[10px] hover:bg-neutral-600"
-                    >
-                      <X className="stroke-2 text-white h-5 w-5" />
-                    </Button>
-                  </div>
+                      <video
+                        className="object-cover w-full h-full rounded-lg z-20"
+                        preload="metadata"
+                        playsInline
+                        loop
+                        muted
+                      >
+                        <source src={videoPreviews[0]} type="video/mp4" />
+                      </video>
+                      <Button
+                        variant="ghost"
+                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  border-[4px] rounded-full h-24 w-28 px-[10px] py-[50px] bg-neutral-900/60 hover:bg-neutral-900/60"
+                      >
+                        <Play className="h-16 w-16 text-neutral-50 fill-white ml-2" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="absolute top-2 right-3 bg-neutral-800 rounded-full px-[10px] hover:bg-neutral-600"
+                      >
+                        <X className="stroke-2 text-white h-5 w-5" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>

@@ -8,6 +8,7 @@ import { SocketProvider } from "@/components/Providers/socket-provider";
 import ChatWindow from "@/components/chat/chat-window";
 import { Suspense } from "react";
 import ClientSideScrollRestorer from "@/components/utils/client-side-scroll-restorer";
+import BeforeUnload from "@/components/utils/before-unload";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
       >
         <SocketProvider>
           <Providers>
-            <div className="mx-auto dark:bg-neutral-900">{children}</div>
+            <div className="mx-auto dark:bg-neutral-900">
+              <BeforeUnload>{children}</BeforeUnload>
+            </div>
             <Suspense>
               <ClientSideScrollRestorer />
             </Suspense>

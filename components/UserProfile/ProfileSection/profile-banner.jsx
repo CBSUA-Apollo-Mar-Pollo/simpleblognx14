@@ -170,7 +170,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
 
             <div className="-mt-4 w-full relative flex justify-between z-10 col-span-8">
               <div className="ml-2">
-                <h1 className="font-semibold text-3xl dark:text-white">
+                <h1 className="font-extrabold text-4xl dark:text-white">
                   {formattedName}
                 </h1>
                 <span className="text-base font-medium dark:text-white">

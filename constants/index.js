@@ -53,7 +53,7 @@ export const SideBarFirstLinks = [
       />
     ),
     label: "Saved",
-    link: "/e/popular",
+    link: "/saved",
   },
 
   {

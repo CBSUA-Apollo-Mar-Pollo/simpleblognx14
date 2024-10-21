@@ -28,13 +28,13 @@ ALREADY DONE
 - post multiple photos
 - make the post who have multiple photos also have individual comments
 - change sidebar UI
+- add a realtime online status.
 
 INCOMPLETE
 
 - add a chat system
 - add more settings
 - add a post card for shorts and videos.
-- add a realtime online status.
 
 HARD TO DO:
 
