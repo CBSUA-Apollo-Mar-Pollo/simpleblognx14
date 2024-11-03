@@ -40,7 +40,9 @@ const Menu = ({ contentClassName }) => {
           >
             <Grip
               className={` ${
-                open ? "fill-blue-600 dark:fill-blue-600" : "fill-neutral-800"
+                open
+                  ? "fill-blue-600 text-blue-600 dark:fill-blue-600"
+                  : "fill-neutral-800"
               } dark:text-neutral-100`}
             />
           </div>
@@ -190,40 +192,6 @@ const Menu = ({ contentClassName }) => {
 
             <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
 
-            {/* Shopping */}
-            <div className="mt-2">
-              <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
-                Shopping
-              </h1>
-
-              <div className="mt-2">
-                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img
-                    src="/ImageIcons/business.png"
-                    className="h-7 w-7 mt-1"
-                  />
-                  <div>
-                    <h3 className="font-semibold">Orders and Payments</h3>
-                    <p className="text-[13px] font-light">
-                      An effortless and secure payment solution integrated into
-                      your favorite app.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/shop.png" className="h-7 w-7 mt-1" />
-                  <div>
-                    <h3 className="font-semibold">Marketplace</h3>
-                    <p className="text-[13px] font-light">
-                      Buy and sell in your community
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <DropdownMenuSeparator className="my-4 mx-2 bg-neutral-400 dark:bg-neutral-600" />
-
             {/* Personal */}
             <div className="mt-2">
               <h1 className="font-semibold text-neutral-800 dark:text-neutral-100 text-base ml-4">
@@ -330,14 +298,6 @@ const Menu = ({ contentClassName }) => {
                     <CalendarPlus className="h-5 w-5 text-neutral-800  dark:text-neutral-100" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Event</h3>
-                </div>
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
-                  <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
-                    <ShoppingBag className="h-5 w-5 text-neutral-800  dark:text-neutral-100" />
-                  </div>
-                  <h3 className="font-semibold text-[15px]">
-                    Marketplace listing
-                  </h3>
                 </div>
               </div>
             </div>

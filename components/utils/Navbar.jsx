@@ -56,7 +56,7 @@ const Navbar = () => {
           </ToolTipComp>
 
           <ToolTipComp content="Videos" className="cursor-pointer">
-            {pathname === "/shortsv" ? (
+            {pathname === "/watch" ? (
               <Link
                 href="/shortsv"
                 className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
@@ -64,26 +64,11 @@ const Navbar = () => {
                 <Icons.Play className="fill-blue-500 h-8 w-8 " />
               </Link>
             ) : (
-              <Link href="/shortsv" className="flex justify-center py-3">
+              <Link href="/watch" className="flex justify-center py-3">
                 <Icons.Play className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
               </Link>
             )}
           </ToolTipComp>
-
-          {/* <ToolTipComp content="Gaming">
-            {pathname === "/Gaming" ? (
-              <Link
-                href="/shortsv"
-                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
-              >
-                <Icons.GamePad className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
-              </Link>
-            ) : (
-              <div className="flex justify-center  py-3">
-                <Icons.GamePad className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </div>
-            )}
-          </ToolTipComp> */}
 
           <ToolTipComp content="Communities" className="cursor-pointer">
             {pathname === "/communities" ? (
@@ -99,21 +84,6 @@ const Navbar = () => {
               </Link>
             )}
           </ToolTipComp>
-
-          {/* <ToolTipComp content="Market" className="cursor-pointer">
-            {pathname === "/market" ? (
-              <Link
-                href="/market"
-                className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"
-              >
-                <Icons.Market className="h-8 w-8 fill-neutral-500 dark:fill-neutral-300" />
-              </Link>
-            ) : (
-              <Link href="/market" className="flex justify-center  py-3">
-                <Icons.Market className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </Link>
-            )}
-          </ToolTipComp> */}
         </div>
 
         {/* notification and profile pic */}

@@ -22,6 +22,7 @@ TODO
 - make the all pages responsive.
 
 - add a number animation in post votes.
+- add a animation of messaging when the user is typing in chat box.
 
 ALREADY DONE
 
