@@ -79,6 +79,7 @@ const WatchPageVideos = ({ initialVideos, session }) => {
             );
           }
         })}
+
         {isFetchingNextPage && (
           <li className="flex justify-center my-20">
             <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
