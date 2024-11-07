@@ -9,24 +9,35 @@ import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
 import SearchInput from "./SearchInput";
 import { Icons } from "./Icons";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
 import { Skeleton } from "../ui/Skeleton";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import useCustomHooks from "@/hooks/use-custom-hooks";
 
 const Navbar = () => {
   const { setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
   const [isLoader, setIsloader] = useState(true);
+  const { signinToast } = useCustomHooks();
   useEffect(() => {
     if (!session?.user) {
       setIsloader(false);
     }
   }, []);
+
+  const handleNavigate = () => {
+    if (!session?.user) {
+      return signinToast();
+    }
+
+    return router.push("/communities");
+  };
 
   return (
     <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
@@ -79,9 +90,12 @@ const Navbar = () => {
                 <Icons.Group className="fill-blue-500 h-8 w-8 " />
               </Link>
             ) : (
-              <Link href="/communities" className="flex justify-center py-3">
+              <div
+                onClick={() => handleNavigate()}
+                className="flex justify-center py-3"
+              >
                 <Icons.Group className="fill-neutral-600 dark:fill-neutral-300 h-8 w-8 " />
-              </Link>
+              </div>
             )}
           </ToolTipComp>
         </div>

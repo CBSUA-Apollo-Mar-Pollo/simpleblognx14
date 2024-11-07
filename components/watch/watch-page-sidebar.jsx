@@ -50,7 +50,7 @@ const WatchPageSideBar = () => {
         </Link>
         <div className="flex items-center gap-x-3  p-2 rounded-lg pl-4 dark:hover:bg-neutral-700">
           <div className="p-2 bg-neutral-200 rounded-full">
-            <RocketIcon className="fill-neutral-500 text-neutral-800/80  h-6 w-6" />
+            <RocketIcon className="fill-neutral-900 text-neutral-900  h-6 w-6" />
           </div>
           <span className="font-semibold text-sm dark:text-white">Explore</span>
         </div>

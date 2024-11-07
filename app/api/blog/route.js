@@ -15,17 +15,26 @@ export async function POST(req) {
     const body = await req.json();
     const { description, userStatus, images, videos } = body;
 
-    console.log(videos, "videos api blog");
-
-    if (
-      images.length === 0 &&
-      videos.length === 0 &&
-      description.length === 0
-    ) {
+    if (!description.length && images.length === 0 && videos.length === 0) {
       return new NextResponse(
-        "For you to create a post you need to put a description or upload a image or video",
+        "For you to create a post you need to put a description or upload an image or video",
         { status: 400 }
       );
+    }
+
+    if (
+      description.length !== 0 &&
+      images.length === 0 &&
+      videos.length === 0
+    ) {
+      await db.blog.create({
+        data: {
+          description,
+          authorId: session.user.id,
+        },
+      });
+
+      return new Response("OK");
     }
 
     let imageExist = images.length !== 0 ? images : null;
