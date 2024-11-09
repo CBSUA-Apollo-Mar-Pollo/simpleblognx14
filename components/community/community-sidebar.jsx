@@ -4,6 +4,7 @@ import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
+import CreateCommunityModal from "./create-community-modal";
 
 const CommunitySideBar = () => {
   return (
@@ -17,10 +18,7 @@ const CommunitySideBar = () => {
         </div>
 
         <div className="mx-3 my-1">
-          <Button className="w-full bg-blue-600 hover:bg-blue-500 rounded-full">
-            <Plus className="h-5 w-5 mr-2" />
-            Create Community
-          </Button>
+          <CreateCommunityModal />
         </div>
 
         <div className="px-3 mt-3 space-y-1">
