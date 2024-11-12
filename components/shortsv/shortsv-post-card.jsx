@@ -136,16 +136,21 @@ const ShortsVPostCard = ({
     >
       <CardContent className="p-0">
         <div
-          className="flex justify-center bg-neutral-400  relative rounded-2xl"
-          style={{
-            background: `
-            linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)),
-            linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))
-          `,
-          }}
+          className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative rounded-2xl overflow-clip"
+          ref={ref}
         >
+          <video
+            ref={videoRef}
+            key={videoData?.videoUrl}
+            playsInline
+            muted={true}
+            className="absolute inset-0 w-full h-full object-cover  blur-[25px] z-[1] rounded-2xl "
+          >
+            <source src={videoData?.videoUrl} type="video/mp4" />
+          </video>
+
           <div
-            className="absolute top-0 flex justify-between w-full px-5 rounded-2xl"
+            className="absolute top-0 flex justify-between w-full px-5 rounded-2xl z-[3]"
             style={{
               background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0))`,
             }}
@@ -199,7 +204,7 @@ const ShortsVPostCard = ({
           </div>
 
           {/* video content */}
-          <div ref={ref} className="max-w-[25vw]">
+          <div className="max-w-[25vw] z-[2]">
             <video
               ref={videoRef}
               key={videoData?.videoUrl}
@@ -208,13 +213,16 @@ const ShortsVPostCard = ({
               muted={!isMuted}
               preload="metadata"
               className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
+              style={{
+                backgroundBlendMode: "overlay",
+              }}
             >
               <source src={videoData?.videoUrl} type="video/mp4" />
             </video>
           </div>
 
           {/* Interactable buttons */}
-          <div className="absolute bottom-7 right-5 flex flex-col space-y-2">
+          <div className="absolute bottom-7 right-5 flex flex-col space-y-2 z-[3]">
             <button
               aria-label="upvote"
               className={cn("p-2 bg-neutral-800/40  rounded-full", {
@@ -267,7 +275,7 @@ const ShortsVPostCard = ({
             </button>
           </div>
 
-          <div className="absolute left-6 bottom-4">
+          <div className="absolute left-6 bottom-4 z-[3]">
             <span className="text-neutral-100">{videoData.description}</span>
           </div>
         </div>
