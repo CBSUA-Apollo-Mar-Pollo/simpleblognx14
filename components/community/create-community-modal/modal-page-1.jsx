@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
-import { Dot } from "lucide-react";
+import { AlertTriangle, Dot } from "lucide-react";
 import React from "react";
 
 const ModalPage1 = ({
@@ -58,7 +58,8 @@ const ModalPage1 = ({
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+
+                      <FormMessage className="text-[12px] ml-2" />
                     </FormItem>
                   )}
                 />
@@ -83,7 +84,7 @@ const ModalPage1 = ({
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-[12px] ml-2" />
                     </FormItem>
                   )}
                 />

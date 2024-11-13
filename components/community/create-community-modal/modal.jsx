@@ -17,14 +17,19 @@ import { Button } from "../../ui/Button";
 import ModalPage1 from "./modal-page-1";
 import ModalPage2 from "./modal-page-2";
 import ModalPage3 from "./modal-page-3";
+import ModalPage4 from "./modal-page-4";
 
 const CreateCommunityModal = () => {
   const [page, setPage] = useState(1);
   const [topicsSelected, setTopicsSelected] = useState([]);
 
   const formSchema = z.object({
-    name: z.string(),
-    description: z.string(),
+    name: z
+      .string()
+      .min(1, { message: "Please add a name for your community." }),
+    description: z.string().min(8, {
+      message: "Please add at least 8 characters to describe your community.",
+    }),
   });
 
   const form = useForm({
@@ -32,9 +37,19 @@ const CreateCommunityModal = () => {
     defaultValues: {
       name: "",
       description: "",
+      topics: [],
+      visibility: "",
     },
   });
-  const { reset, formState, control, setValue, getValues } = form;
+
+  const {
+    reset,
+    formState: { errors },
+    control,
+    setValue,
+    getValuesm,
+    trigger,
+  } = form;
 
   const onSubmit = () => {
     console.log("handle submit");
@@ -50,6 +65,7 @@ const CreateCommunityModal = () => {
     name: "description",
   });
 
+  console.log(errors);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -80,6 +96,8 @@ const CreateCommunityModal = () => {
         {page === 3 && (
           <ModalPage3 {...{ topicsSelected, setTopicsSelected }} />
         )}
+
+        {page === 4 && <ModalPage4 />}
 
         <DialogFooter className="mx-4 mb-4">
           <div className="flex items-center justify-between w-full">
@@ -117,24 +135,39 @@ const CreateCommunityModal = () => {
                     }
                   })
                 }
-                className="bg-neutral-200 text-neutral-900 hover:bg-neutral-300 hover:text-black font-semibold"
+                className="bg-neutral-200 text-neutral-900 hover:bg-neutral-300 hover:text-black font-semibold rounded-full"
               >
                 {page === 1 ? "Cancel" : "Back"}
               </Button>
-              <Button
-                onClick={() =>
-                  setPage((current) => {
-                    if (current === 4) {
-                      return current;
+
+              {page === 4 ? (
+                <Button className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold rounded-full">
+                  Create Community
+                </Button>
+              ) : (
+                <Button
+                  onClick={async () => {
+                    // Wait for validation to finish
+                    const isValid = await trigger();
+
+                    // Check if validation passed
+                    if (!isValid) {
+                      return; // If there are errors, don't proceed
                     } else {
-                      return (current += 1);
+                      setPage((current) => {
+                        if (current === 4) {
+                          return current;
+                        } else {
+                          return current + 1;
+                        }
+                      });
                     }
-                  })
-                }
-                className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold"
-              >
-                Next
-              </Button>
+                  }}
+                  className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold rounded-full"
+                >
+                  Next
+                </Button>
+              )}
             </div>
           </div>
         </DialogFooter>
