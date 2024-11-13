@@ -4,7 +4,7 @@ import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
-import CreateCommunityModal from "./create-community-modal";
+import CreateCommunityModal from "./create-community-modal/modal";
 
 const CommunitySideBar = () => {
   return (
