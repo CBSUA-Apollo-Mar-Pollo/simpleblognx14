@@ -5,8 +5,9 @@ import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import CreateCommunityModal from "./create-community-modal/modal";
+import Link from "next/link";
 
-const CommunitySideBar = () => {
+const CommunitySideBar = ({ communitiesCreated }) => {
   return (
     <div className="border-r border-neutral-300 dark:border-neutral-800 h-screen">
       <div className="pt-2">
@@ -34,12 +35,43 @@ const CommunitySideBar = () => {
           </div>
         </div>
 
+        {communitiesCreated.length !== 0 && (
+          <>
+            <div className="mx-3">
+              <Separator className="my-3 bg-gray-300 dark:bg-neutral-700" />
+            </div>
+
+            <div className="mx-3">
+              <h1 className=" text-neutral-800 font-bold dark:text-white">
+                Communities you've created
+              </h1>
+
+              {communitiesCreated.map((community) => (
+                <Link
+                  href={`/c/${community.id}`}
+                  className="flex items-center gap-x-3 hover:bg-neutral-200"
+                >
+                  <img
+                    src={community.icon}
+                    alt="Preview"
+                    className="my-2 rounded-full h-12 w-12"
+                  />
+
+                  <p className="font-semibold text-neutral-700">
+                    {community.name}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
         <div className="mx-3">
           <Separator className="my-3 bg-gray-300 dark:bg-neutral-700" />
         </div>
 
         <div className="mx-3">
-          <h1 className=" text-neutral-800 font-medium dark:text-white">
+          <h1 className=" text-neutral-800 font-bold dark:text-white">
             Communities you've joined
           </h1>
         </div>

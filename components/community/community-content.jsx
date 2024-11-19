@@ -4,12 +4,12 @@ import { Search } from "lucide-react";
 import { Input } from "../ui/Input";
 import Image from "next/image";
 
-const CommunityContent = () => {
+const CommunityContent = ({ communitiesCreated }) => {
   return (
     <div className="">
       <div className="grid grid-cols-9">
         <div className="col-span-2 ">
-          <CommunitySideBar />
+          <CommunitySideBar {...{ communitiesCreated }} />
         </div>
 
         <div className="col-span-7 mx-80 mt-4">

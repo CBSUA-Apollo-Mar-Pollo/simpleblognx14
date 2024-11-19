@@ -27,7 +27,7 @@ const ModalPage1 = ({
         <DialogTitle className="font-bold text-2xl">
           Tell us about your community
         </DialogTitle>
-        <DialogDescription className="text-black">
+        <DialogDescription className="text-neutral-600">
           a name and description help people understand what your community is
           all about.
         </DialogDescription>

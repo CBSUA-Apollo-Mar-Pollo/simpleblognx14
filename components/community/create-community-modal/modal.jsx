@@ -13,15 +13,49 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "../../ui/Dialog";
+
 import { Button } from "../../ui/Button";
+
 import ModalPage1 from "./modal-page-1";
 import ModalPage2 from "./modal-page-2";
 import ModalPage3 from "./modal-page-3";
 import ModalPage4 from "./modal-page-4";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { uploadFiles } from "@/lib/uploadThing";
+import { useRouter } from "next/navigation";
 
 const CreateCommunityModal = () => {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [topicsSelected, setTopicsSelected] = useState([]);
+
+  const [previewBanner, setPreviewBanner] = useState(null);
+  const [previewIcon, setPreviewIcon] = useState(null);
+
+  const [bannerFile, setBannerFile] = useState(null);
+  const [iconFile, setIconFile] = useState(null);
+
+  const [selectedVisibility, setSelectedVisibility] = useState("public");
+
+  const handleBannerFileSelect = (event) => {
+    const banner = event.target.files[0];
+    if (banner) {
+      const objectUrl = URL.createObjectURL(banner);
+      setPreviewBanner(objectUrl);
+      setBannerFile(banner);
+    }
+  };
+
+  const handleIconFileSelect = (event) => {
+    const icon = event.target.files[0];
+
+    if (icon) {
+      const objectUrl = URL.createObjectURL(icon);
+      setPreviewIcon(objectUrl);
+      setIconFile(icon);
+    }
+  };
 
   const formSchema = z.object({
     name: z
@@ -37,8 +71,6 @@ const CreateCommunityModal = () => {
     defaultValues: {
       name: "",
       description: "",
-      topics: [],
-      visibility: "",
     },
   });
 
@@ -47,13 +79,50 @@ const CreateCommunityModal = () => {
     formState: { errors },
     control,
     setValue,
-    getValuesm,
+    getValues,
     trigger,
   } = form;
 
-  const onSubmit = () => {
-    console.log("handle submit");
-  };
+  const values = getValues();
+
+  const { mutate: onSubmit, isLoading } = useMutation({
+    mutationFn: async () => {
+      let images = [];
+      const files = [bannerFile, iconFile];
+      for (const file of files) {
+        try {
+          const response = await uploadFiles("imageUploader", {
+            files: [file],
+          });
+
+          images = [...images, ...response];
+        } catch (error) {
+          throw new UploadError(
+            "Failed to upload image: " + error.message,
+            400
+          );
+        }
+      }
+
+      const payload = {
+        name: values.name,
+        description: values.description,
+        banner: images[0],
+        icon: images[1],
+        topics: topicsSelected,
+        visibility: selectedVisibility,
+      };
+
+      const data = await axios.post("/api/community", payload);
+      return data;
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    onSuccess: ({ data }) => {
+      return router.push(`/c/${data}`);
+    },
+  });
 
   const watchedFieldCommunityName = useWatch({
     control,
@@ -65,7 +134,6 @@ const CreateCommunityModal = () => {
     name: "description",
   });
 
-  console.log(errors);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -89,7 +157,14 @@ const CreateCommunityModal = () => {
 
         {page === 2 && (
           <ModalPage2
-            {...{ watchedFieldCommunityName, watchedFieldCommunityDescription }}
+            {...{
+              watchedFieldCommunityName,
+              watchedFieldCommunityDescription,
+              handleBannerFileSelect,
+              handleIconFileSelect,
+              previewBanner,
+              previewIcon,
+            }}
           />
         )}
 
@@ -97,7 +172,9 @@ const CreateCommunityModal = () => {
           <ModalPage3 {...{ topicsSelected, setTopicsSelected }} />
         )}
 
-        {page === 4 && <ModalPage4 />}
+        {page === 4 && (
+          <ModalPage4 {...{ selectedVisibility, setSelectedVisibility }} />
+        )}
 
         <DialogFooter className="mx-4 mb-4">
           <div className="flex items-center justify-between w-full">
@@ -141,11 +218,15 @@ const CreateCommunityModal = () => {
               </Button>
 
               {page === 4 ? (
-                <Button className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold rounded-full">
+                <Button
+                  onClick={() => onSubmit()}
+                  className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold rounded-full"
+                >
                   Create Community
                 </Button>
               ) : (
                 <Button
+                  disabled={page === 1 && !values.name}
                   onClick={async () => {
                     // Wait for validation to finish
                     const isValid = await trigger();

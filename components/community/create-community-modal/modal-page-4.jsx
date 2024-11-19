@@ -7,7 +7,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
 import { Eye, Globe, Lock, WholeWord } from "lucide-react";
 
-const ModalPage4 = () => {
+const ModalPage4 = ({ selectedVisibility, setSelectedVisibility }) => {
   return (
     <div>
       <DialogHeader className="ml-4 mt-4">
@@ -23,7 +23,12 @@ const ModalPage4 = () => {
       </DialogHeader>
 
       <div className="mb-20">
-        <RadioGroup className="ml-8 mr-14 mt-5" defaultValue="public">
+        <RadioGroup
+          value={selectedVisibility}
+          onValueChange={setSelectedVisibility}
+          className="ml-8 mr-14 mt-5"
+          defaultValue="public"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-6">
               <Globe className="h-6 w-6" />
