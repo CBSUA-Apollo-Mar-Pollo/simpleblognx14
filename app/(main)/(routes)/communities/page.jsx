@@ -1,4 +1,4 @@
-import CommunityContent from "@/components/community/community-content";
+import CommunityInitialPageContent from "@/components/community/community-initialpage-content";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -11,9 +11,12 @@ const CommunitiesInitialPage = async () => {
     where: {
       creatorId: session.user.id,
     },
+    include: {
+      posts: true,
+    },
   });
 
-  return <CommunityContent {...{ communitiesCreated }} />;
+  return <CommunityInitialPageContent {...{ communitiesCreated }} />;
 };
 
 export default CommunitiesInitialPage;

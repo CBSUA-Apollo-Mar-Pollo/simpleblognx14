@@ -1,15 +1,15 @@
 import React from "react";
-import CommunitySideBar from "./community-sidebar";
+import CommunityInitialPageSideBar from "./community-initialpage-sidebar";
 import { Search } from "lucide-react";
 import { Input } from "../ui/Input";
 import Image from "next/image";
 
-const CommunityContent = ({ communitiesCreated }) => {
+const CommunityInitialPageContent = ({ communitiesCreated }) => {
   return (
     <div className="">
       <div className="grid grid-cols-9">
         <div className="col-span-2 ">
-          <CommunitySideBar {...{ communitiesCreated }} />
+          <CommunityInitialPageSideBar {...{ communitiesCreated }} />
         </div>
 
         <div className="col-span-7 mx-80 mt-4">
@@ -42,4 +42,4 @@ const CommunityContent = ({ communitiesCreated }) => {
   );
 };
 
-export default CommunityContent;
+export default CommunityInitialPageContent;

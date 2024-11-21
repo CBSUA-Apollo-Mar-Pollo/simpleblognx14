@@ -26,6 +26,7 @@ const UserProfilePage = async ({ params }) => {
       blogs: true,
     },
   });
+
   const initialPosts = await db.blog.findMany({
     // get all posts by user
     where: {
@@ -84,7 +85,7 @@ const UserProfilePage = async ({ params }) => {
   };
 
   return (
-    <div className="">
+    <div>
       {/* user profile page header */}
       <ProfileBanner user={user} deleteImage={deleteImage} />
 

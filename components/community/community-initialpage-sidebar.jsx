@@ -1,3 +1,5 @@
+"use client";
+
 import { AppWindow, Plus, Search, Settings, UsersRound } from "lucide-react";
 import React from "react";
 import { Input } from "../ui/Input";
@@ -6,8 +8,10 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import CreateCommunityModal from "./create-community-modal/modal";
 import Link from "next/link";
+import moment from "moment";
 
-const CommunitySideBar = ({ communitiesCreated }) => {
+const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
+  console.log(communitiesCreated, "ccommunitiesCreated");
   return (
     <div className="border-r border-neutral-300 dark:border-neutral-800 h-screen">
       <div className="pt-2">
@@ -46,22 +50,32 @@ const CommunitySideBar = ({ communitiesCreated }) => {
                 Communities you've created
               </h1>
 
-              {communitiesCreated.map((community) => (
-                <Link
-                  href={`/c/${community.id}`}
-                  className="flex items-center gap-x-3 hover:bg-neutral-200"
-                >
-                  <img
-                    src={community.icon}
-                    alt="Preview"
-                    className="my-2 rounded-full h-12 w-12"
-                  />
+              <div className="mt-2">
+                {communitiesCreated.map((community) => (
+                  <Link
+                    href={`/communities/${community.id}`}
+                    className="flex items-center gap-x-3 hover:bg-neutral-200 pl-2 rounded-lg"
+                  >
+                    <img
+                      src={community.icon}
+                      alt="Preview"
+                      className="my-2 rounded-full h-14 w-14"
+                    />
 
-                  <p className="font-semibold text-neutral-700">
-                    {community.name}
-                  </p>
-                </Link>
-              ))}
+                    <div className="flex flex-col">
+                      <p className="font-bold text-neutral-700">
+                        {community.name}
+                      </p>
+                      <span className="text-[12px] text-neutral-700">
+                        Last active{" "}
+                        {community.posts.length === 0
+                          ? moment(community.createdAt).fromNow()
+                          : moment(community.posts[0].createdA).fromNow()}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </>
         )}
@@ -94,4 +108,4 @@ const CommunitySideBar = ({ communitiesCreated }) => {
   );
 };
 
-export default CommunitySideBar;
+export default CommunityInitialPageSideBar;

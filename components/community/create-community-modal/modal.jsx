@@ -120,7 +120,7 @@ const CreateCommunityModal = () => {
       console.log(err);
     },
     onSuccess: ({ data }) => {
-      return router.push(`/c/${data}`);
+      return router.push(`/communities/${data}`);
     },
   });
 
