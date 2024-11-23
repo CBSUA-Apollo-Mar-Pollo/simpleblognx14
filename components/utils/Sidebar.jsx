@@ -40,7 +40,7 @@ const Sidebar = ({ session }) => {
   };
   return (
     <div
-      className={`sticky top-[7vh]  z-0 px-4 max-h-[93vh] sidebarContainer 00 ${
+      className={`sticky top-[7vh]  z-0 px-4 max-h-[93vh] sidebarContainer ${
         toggleScrollBar ? "overflow-auto" : "overflow-hidden"
       }  dark:bg-neutral-900 dark:text-neutral-100`}
       style={{ "--scrollbar-thumb-bg": scrollbarThumbStyle.backgroundColor }}

@@ -25,8 +25,8 @@ const CommunityPage = async ({ params }) => {
 
   return (
     <div className="grid grid-cols-11">
-      <div className="col-span-2 border-r border-neutral-200">
-        <CommunitySideBar />
+      <div className="col-span-2 border-r border-neutral-200 relative">
+        <CommunitySideBar {...{ communityDetails }} />
       </div>
       <div className="col-span-9">
         <CommunityContent {...{ communityDetails }} />

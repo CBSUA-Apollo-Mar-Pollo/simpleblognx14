@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/Button";
 import { CakeSlice, ChevronDown, Lock, Pencil, Plus } from "lucide-react";
 
 const CommunityContent = async ({ communityDetails }) => {
-  console.log(communityDetails.members[0].user.image);
   const session = await getAuthSession();
   const date = new Date(communityDetails.createdAt);
   const formattedDate = date.toLocaleDateString("en-US", {
@@ -25,7 +24,7 @@ const CommunityContent = async ({ communityDetails }) => {
       <div className="bg-neutral-100">
         <div className="grid grid-cols-8 pt-4 gap-x-4 ml-16">
           <div className="col-span-5">
-            <div className="border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0 ml-16">
+            <div className="border pt-3 pb-1 px-5 rounded-xl bg-white dark:bg-neutral-800 dark:border-0 ml-16">
               <div className="flex flex-row items-center space-x-4">
                 <UserAvatar
                   className="h-10 w-10 "
@@ -73,13 +72,24 @@ const CommunityContent = async ({ communityDetails }) => {
               <Separator className="bg-neutral-200" />
             </div>
             {/* todo: user posts */}
+
+            {communityDetails.posts.length === 0 && (
+              <div className="flex flex-col items-center justify-center w-full mt-10">
+                <h2 className="font-bold text-2xl">
+                  This community doesn't have any posts yet
+                </h2>
+                <span className="text-neutral-600">
+                  make one and get this feed started.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* community info */}
           <div className="col-span-3 mb-4">
-            <div className="bg-white border mr-32  py-2 rounded-lg">
+            <div className="bg-white border mr-32  py-2 rounded-xl">
               <div className="flex items-center justify-between px-5">
-                <h4 className="font-semibold text-lg">
+                <h4 className="font-semibold text-2xl mt-2">
                   {communityDetails.name}
                 </h4>
                 <Button
@@ -134,8 +144,8 @@ const CommunityContent = async ({ communityDetails }) => {
                 <h4 className="font-semibold text-neutral-700">ADMIN</h4>
 
                 <div className="mt-2">
-                  {communityDetails.members.map((member) => (
-                    <div className="flex items-center gap-x-2">
+                  {communityDetails.members.map((member, index) => (
+                    <div className="flex items-center gap-x-2" key={index}>
                       <UserAvatar
                         className="h-9 w-9 "
                         user={{
