@@ -29,7 +29,7 @@ import { uploadFiles } from "@/lib/uploadThing";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
 
-const AddPostModal = ({ session, user }) => {
+const AddPostModal = ({ session, user, communityId }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
@@ -69,6 +69,7 @@ const AddPostModal = ({ session, user }) => {
       const payload = {
         description,
         images,
+        communityId,
       };
 
       const { data } = await axios.post("/api/blog", payload);

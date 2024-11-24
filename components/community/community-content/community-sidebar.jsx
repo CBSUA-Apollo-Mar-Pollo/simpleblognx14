@@ -33,6 +33,7 @@ const CommunitySideBar = ({ communityDetails }) => {
   const handleMouseLeave = () => {
     setToggleScrollBar(false);
   };
+
   return (
     <div
       className={`sticky top-[7vh]  z-0  max-h-[93vh] pb-3 sidebarContainer ${
@@ -69,7 +70,7 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-700 text-lg ml-2">Overview</h3>
+          <h3 className="font-bold text-neutral-800 text-lg ml-2">Overview</h3>
           <Button
             variant="ghost"
             className="text-neutral-700 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
@@ -123,7 +124,7 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-700 text-lg ml-2">
+          <h3 className="font-bold text-neutral-800 text-lg ml-2">
             Moderation
           </h3>
           <Button
@@ -179,7 +180,7 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-700 text-lg ml-2">Settings</h3>
+          <h3 className="font-bold text-neutral-800 text-lg ml-2">Settings</h3>
           <Button
             variant="ghost"
             className="text-neutral-700 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"

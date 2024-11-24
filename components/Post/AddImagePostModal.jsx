@@ -28,7 +28,7 @@ import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
 import { cn } from "@/lib/utils";
 
-const AddGalleryPostModal = ({ session, user }) => {
+const AddGalleryPostModal = ({ session, user, communityId }) => {
   const [toggleButton, setToggleButton] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -101,6 +101,7 @@ const AddGalleryPostModal = ({ session, user }) => {
         description,
         images,
         videos,
+        communityId,
       };
 
       const { data } = await axios.post("/api/blog", payload);

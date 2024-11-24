@@ -13,7 +13,7 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description, userStatus, images, videos } = body;
+    const { description, userStatus, images, videos, communityId } = body;
 
     if (!description.length && images.length === 0 && videos.length === 0) {
       return new NextResponse(
@@ -70,6 +70,17 @@ export async function POST(req) {
           video: videos,
           userStatus: userStatus,
           authorId: session.user.id,
+        },
+      });
+    }
+
+    if (communityId) {
+      await db.blog.update({
+        where: {
+          id: post.id,
+        },
+        data: {
+          communityId,
         },
       });
     }
