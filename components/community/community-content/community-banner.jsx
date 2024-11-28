@@ -85,7 +85,7 @@ const CommunityBanner = ({ communityDetails, session }) => {
             <div className="-mt-4 w-full relative flex justify-between z-10 col-span-8 ">
               <div className="-ml-10">
                 <h1 className="font-extrabold text-4xl dark:text-white">
-                  c/{communityDetails.name}
+                  {communityDetails.name}
                 </h1>
               </div>
 

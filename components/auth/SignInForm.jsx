@@ -138,13 +138,13 @@ const SignInForm = () => {
           <Input
             type="email"
             placeholder="Email"
-            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5"
+            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
             {...register("email")}
           />
           <PasswordInput
             type="password"
             placeholder="Password"
-            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5"
+            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
             {...register("password")}
           />
 

@@ -1,10 +1,13 @@
 import CommunityContent from "@/components/community/community-content/community-content";
 import CommunitySideBar from "@/components/community/community-content/community-sidebar";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
+import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const CommunityPage = async ({ params }) => {
+  const session = await getAuthSession();
   const communityDetails = await db.community.findUnique({
     where: {
       id: params.communityId,
@@ -29,6 +32,10 @@ const CommunityPage = async ({ params }) => {
       shortsv: true,
     },
   });
+
+  if (!session?.user?.id) {
+    return redirect("/");
+  }
 
   return (
     <div className="grid grid-cols-11">

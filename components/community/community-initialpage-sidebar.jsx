@@ -1,17 +1,17 @@
 "use client";
 
-import { AppWindow, Plus, Search, Settings, UsersRound } from "lucide-react";
+import { AppWindow, Compass, Settings, UsersRound } from "lucide-react";
 import React from "react";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import CreateCommunityModal from "./create-community-modal/modal";
 import Link from "next/link";
 import moment from "moment";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
-  console.log(communitiesCreated, "ccommunitiesCreated");
+  const pathname = usePathname();
   return (
     <div className="border-r border-neutral-300 dark:border-neutral-800 h-screen">
       <div className="pt-2">
@@ -27,16 +27,69 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
         </div>
 
         <div className="px-3 mt-3 space-y-1">
-          <div className="flex items-center gap-x-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-1 pl-2 rounded-xl cursor-pointer">
-            <AppWindow className="bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white" />
+          <Link
+            href="/communities"
+            className={cn(
+              "flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-2 pl-2 rounded-xl cursor-pointer",
+              {
+                "dark:bg-neutral-700": pathname === "/communities",
+              }
+            )}
+          >
+            <AppWindow
+              className={cn(
+                "bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white",
+                {
+                  "fill-blue-500 dark:bg-blue-500": pathname === "/communities",
+                }
+              )}
+            />
             <p className="font-medium text-[14px] dark:text-white">
-              Community posts
+              Community feed
             </p>
-          </div>
-          <div className="flex items-center gap-x-2 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-1 pl-2 rounded-xl cursor-pointer">
-            <UsersRound className="bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white" />
+          </Link>
+          <Link
+            href="/communities/explore"
+            className={cn(
+              "flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-2 pl-2 rounded-xl cursor-pointer",
+              {
+                "dark:bg-neutral-700": pathname === "/communities/explore",
+              }
+            )}
+          >
+            <Compass
+              className={cn(
+                "bg-neutral-100 dark:bg-neutral-700 p-1.5 h-9 w-9 rounded-full text-neutral-800 dark:text-white",
+                {
+                  "fill-blue-500 dark:bg-blue-500":
+                    pathname === "/communities/explore",
+                }
+              )}
+            />
             <p className="font-medium text-[14px] dark:text-white">Explore</p>
-          </div>
+          </Link>
+          <Link
+            href="/communities/joined"
+            className={cn(
+              "flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-2 pl-2 rounded-xl cursor-pointer",
+              {
+                "dark:bg-neutral-700": pathname === "/communities/joined",
+              }
+            )}
+          >
+            <UsersRound
+              className={cn(
+                "bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white",
+                {
+                  "fill-blue-500 dark:bg-blue-500":
+                    pathname === "/communities/joined",
+                }
+              )}
+            />
+            <p className="font-medium text-[14px] dark:text-white">
+              Your Communities
+            </p>
+          </Link>
         </div>
 
         {communitiesCreated.length !== 0 && (

@@ -25,6 +25,12 @@ export default async function HomePage() {
       author: true,
       comments: true,
       votes: true,
+      community: true,
+    },
+    where: {
+      community: {
+        visibility: "public", // Filter communities with visibility 'public'
+      },
     },
     orderBy: {
       createdAt: "desc",

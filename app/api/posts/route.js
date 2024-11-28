@@ -22,6 +22,12 @@ export async function GET(req) {
         author: true,
         comments: true,
         votes: true,
+        community: true,
+      },
+      where: {
+        community: {
+          visibility: "public", // Filter communities with visibility 'public'
+        },
       },
       orderBy: {
         createdAt: "desc",
