@@ -19,6 +19,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import CommunityDropdownInvite from "./community-dropdowns/community-dropdown-invite";
+import CommunityDropdownOptions from "./community-dropdowns/community-dropdown-options";
 
 const CommunityBanner = ({ communityDetails, session }) => {
   const pathname = usePathname();
@@ -90,16 +92,11 @@ const CommunityBanner = ({ communityDetails, session }) => {
               </div>
 
               <div className="flex items-center gap-x-2 mr-4">
-                <Button className="px-3 py-2 text-black bg-white border border-neutral-300 hover:bg-neutral-200">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Invite
-                </Button>
+                <CommunityDropdownInvite />
                 <Button className="px-5 py-2 rounded-full text-white bg-blue-700">
                   Admin tools
                 </Button>
-                <Button className="px-2 py-2 text-black bg-white border border-neutral-300 hover:bg-neutral-200 rounded-full">
-                  <MoreHorizontal />
-                </Button>
+                <CommunityDropdownOptions />
               </div>
             </div>
           </div>

@@ -32,7 +32,8 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
             className={cn(
               "flex items-center gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-700 py-2 pl-2 rounded-xl cursor-pointer",
               {
-                "dark:bg-neutral-700": pathname === "/communities",
+                "bg-neutral-200 dark:bg-neutral-700":
+                  pathname === "/communities",
               }
             )}
           >
@@ -40,7 +41,8 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
               className={cn(
                 "bg-neutral-100 dark:bg-neutral-700 p-2 h-9 w-9 rounded-full text-neutral-800 dark:text-white",
                 {
-                  "fill-blue-500 dark:bg-blue-500": pathname === "/communities",
+                  "dark:fill-blue-500 dark:bg-blue-500":
+                    pathname === "/communities",
                 }
               )}
             />

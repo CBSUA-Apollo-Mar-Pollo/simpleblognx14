@@ -16,7 +16,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
   const { ref, entry } = useIntersection({
     root: null,
     rootMargin: "0px",
-    threshold: 0.01,
+    threshold: 0.5,
   });
 
   const fetchPosts = async ({ pageParam }) => {

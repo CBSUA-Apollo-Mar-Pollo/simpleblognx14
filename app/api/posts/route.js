@@ -24,11 +24,6 @@ export async function GET(req) {
         votes: true,
         community: true,
       },
-      where: {
-        community: {
-          visibility: "public", // Filter communities with visibility 'public'
-        },
-      },
       orderBy: {
         createdAt: "desc",
       },
