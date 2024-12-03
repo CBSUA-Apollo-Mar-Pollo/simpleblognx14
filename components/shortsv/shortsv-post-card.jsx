@@ -21,6 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useIntersection, usePrevious } from "@mantine/hooks";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import axios, { AxiosError } from "axios";
+import ShortsVCardOptions from "./shortsv-card-options";
 
 const ShortsVPostCard = ({
   videoData,
@@ -199,7 +200,7 @@ const ShortsVPostCard = ({
                 />
               )}
 
-              <MoreHorizontal className="stroke-white" />
+              <ShortsVCardOptions />
             </div>
           </div>
 
