@@ -93,7 +93,7 @@ const ChatHomeContactList = ({ conversationList, session }) => {
   console.log(userData, "user data");
 
   return (
-    <div className="mt-2 mx-4">
+    <div className="mt-2 mx-1">
       <div className="flex justify-between mb-2">
         <h1 className="font-semibold  dark:text-neutral-50 text-[18px] pl-2">
           Contacts

@@ -78,9 +78,9 @@ const ChatWindow = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="bg-white rounded-full drop-shadow-md mb-4 h-[7.2vh] w-[3.4vw] text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
+            className="bg-white border rounded-full drop-shadow-[0px_0px_7px_rgba(0,0,0,0.2)] mb-4 h-12 w-12  text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200"
           >
-            <PenSquare className="h-7 w-7" />
+            <PenSquare className="h-6 w-6  text-neutral-800 fill-neutral-200" />
           </Button>
         )}
       </div>
