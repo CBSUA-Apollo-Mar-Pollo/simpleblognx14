@@ -15,6 +15,7 @@ import ChatHomeContactList from "@/components/chat/chat-home-contact-list";
 import PopularCommunities from "@/components/community/popular-communities";
 import Image from "next/image";
 import { Plus } from "lucide-react";
+import HomePageStoryCards from "@/components/stories/homepage-story-cards";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -108,15 +109,15 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="grid grid-cols-5 dark:bg-neutral-900">
+    <div className="grid grid-cols-10 dark:bg-neutral-900">
       {/* first column the side bar */}
-      <div className=" col-span-1 relative border-r border-neutral-200 dark:border-neutral-800 w-[20vw] ">
+      <div className=" col-span-2 relative border-r border-neutral-200 dark:border-neutral-800 w-[20vw] ">
         <Sidebar session={session} />
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className="col-span-3 bg-gray-50 ">
-        <div className="mt-5 mx-[11rem] space-y-3 ">
+      <div className="col-span-6 bg-gray-50 ">
+        <div className="mt-5 mx-[12rem] space-y-3 ">
           {session?.user && (
             <>
               <div className=" pt-3 pb-1 px-5 rounded-lg bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">
@@ -154,28 +155,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="overflow-x-hidden pb-1">
-                <div className="relative border w-44 rounded-2xl bg-white drop-shadow">
-                  <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
-                    src={session?.user.image}
-                    alt="profile image"
-                    className="w-44 h-52 object-cover rounded-t-2xl"
-                  />
-
-                  <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <Plus className="bg-blue-700 text-white h-10 w-10 rounded-full border-4" />
-                  </div>
-
-                  <div className="pt-8 pb-2 border-t">
-                    <p className="text-[15px] font-medium text-center">
-                      Create story
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <HomePageStoryCards session={session} />
             </>
           )}
 
@@ -188,7 +168,7 @@ export default async function HomePage() {
         </div>
       </div>
       {/* third section recent posts and who to follow */}
-      <div className=" col-span-1 relative flex flex-col border-l dark:border-neutral-800 px-3">
+      <div className=" col-span-2 relative flex flex-col border-l dark:border-neutral-800 px-2">
         <div className="sticky top-16">
           <RecentPostsCard />
 
