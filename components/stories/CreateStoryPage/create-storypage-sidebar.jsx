@@ -4,15 +4,21 @@ import { Button } from "@/components/ui/Button";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { Settings, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const CreateStoryPageSidebar = ({ session }) => {
+  const router = useRouter();
+
   return (
     <div>
       <div className="flex items-center justify-start mt-2 pl-4 pb-2 gap-2 border-b">
-        <div className="p-[8px] cursor-pointer bg-neutral-700/50 hover:bg-neutral-500/70 rounded-full transition">
+        <button
+          onClick={() => router.push("/")}
+          className="p-[8px] cursor-pointer bg-neutral-700/50 rounded-full transition hover:bg-neutral-300"
+        >
           <X className=" text-neutral-200 h-8 w-8" />
-        </div>
+        </button>
         <Link href="/" className="font-bold">
           <span className="py-[2px] px-4 rounded-full bg-yellow-400 text-3xl">
             E
