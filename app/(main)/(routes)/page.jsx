@@ -116,7 +116,7 @@ export default async function HomePage() {
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className="col-span-6 bg-gray-50 ">
+      <div className="col-span-6 bg-gray-50 dark:bg-neutral-900 ">
         <div className="mt-5 mx-[12rem] space-y-3 ">
           {session?.user && (
             <>
