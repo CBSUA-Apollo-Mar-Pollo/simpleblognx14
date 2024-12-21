@@ -36,6 +36,8 @@ const CraeateStoryPageContent = ({ session }) => {
   const dragStart = useRef({ x: 0, y: 0 });
   const dragging = useRef(false);
   const containerRef = useRef(null);
+  const [scale, setScale] = useState(1);
+  const [rotation, setRotation] = useState(0);
 
   // Function to handle mouse down
   const handleMouseDown = (e) => {
@@ -87,6 +89,25 @@ const CraeateStoryPageContent = ({ session }) => {
     };
   }, []);
 
+  const zoomIn = () => setScale((prevScale) => prevScale + 0.1);
+  const zoomOut = () =>
+    setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
+
+  const handleSliderClick = (e) => {
+    const slider = e.target;
+    const rect = slider.getBoundingClientRect();
+    const clickX = e.clientX - rect.left; // X-coordinate relative to the slider
+    const sliderWidth = rect.width;
+
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+    const newValue = min + (clickX / sliderWidth) * (max - min);
+
+    setScale(newValue.toFixed(2)); // Set value with precision
+  };
+
+  const rotateClockwise = () => setRotation((prev) => prev + 90);
+
   return (
     <div className="relative">
       <div className="absolute top-4 right-7 flex items-center justify-end  gap-x-2">
@@ -103,14 +124,24 @@ const CraeateStoryPageContent = ({ session }) => {
             <div>
               <div
                 ref={containerRef}
-                className="relative w-[48vw] h-[77vh] bg-neutral-900 rounded-t-2xl flex items-center justify-center overflow-hidden"
+                className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden"
               >
+                {/* This div represents the hole */}
+
                 <div
-                  className="border h-[70vh] w-[40vh] bg-opacity-0 z-50 "
+                  className="absolute inset-0 z-50 grid grid-cols-12 "
                   onMouseDown={handleMouseDown}
-                />
-                {/* Background and gradient */}
-                <div className="absolute inset-0 bg-neutral-900 opacity-60 z-40 pointer-events-none" />
+                >
+                  <div className="col-span-3 bg-neutral-950 opacity-95"></div>
+                  <div className="col-span-6 flex flex-col ">
+                    <div className="basis-[40px] bg-neutral-950 opacity-95 z-40 border-b"></div>
+                    <div className="basis-full z-40 border-x"></div>
+                    <div className="basis-[20px] bg-neutral-950 opacity-95 z-40 border-t"></div>
+                  </div>
+                  <div className="col-span-3 bg-neutral-950 opacity-95"></div>
+                </div>
+
+                {/* Semi-transparent overlay to simulate "paper" effect */}
 
                 {/* Draggable image */}
                 <div
@@ -127,25 +158,43 @@ const CraeateStoryPageContent = ({ session }) => {
                     height={480}
                     src={storyPreview}
                     alt="Draggable image"
+                    style={{
+                      transform: `scale(${scale}) rotate(${rotation}deg)`,
+                      transformOrigin: "center",
+                      transition: "transform 0.3s ease",
+                    }}
                   />
                 </div>
               </div>
+
               <div className="w-[48vw] h-[6vh] bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-3">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
-                  <Minus className="text-white" />
+                  <Minus
+                    onClick={zoomOut}
+                    className="text-white cursor-pointer"
+                  />
                   <div className="mb-2 w-full max-w-xs">
                     <input
                       type="range"
-                      min="0.5"
-                      max="10"
+                      min="0.1"
+                      max="1"
                       step="0.1"
-                      className="w-full h-1 rounded-none border-0 cursor-pointer"
+                      className="w-full h-1 rounded-none border-0 cursor-pointer  transition-all duration-300 ease-in-out"
+                      value={scale}
+                      onChange={(e) => setScale(e.target.value)}
+                      onMouseDown={handleSliderClick} // Handle clicks
                     />
                   </div>
-                  <Plus className="text-white" />
+                  <Plus
+                    onClick={zoomIn}
+                    className="text-white cursor-pointer"
+                  />
                 </div>
 
-                <Button className="flex gap-x-2 bg-neutral-200 hover:bg-neutral-100">
+                <Button
+                  onClick={rotateClockwise}
+                  className="flex gap-x-2 bg-neutral-200 hover:bg-neutral-100"
+                >
                   <RotateCw className="h-5 w-5 text-black" />
                   <span className="text-black ">Rotate Image</span>
                 </Button>
