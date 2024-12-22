@@ -1,66 +1,40 @@
+import { db } from "@/lib/db";
+import Link from "next/link";
 import React from "react";
 
-const PopularCommunities = () => {
+const PopularCommunities = async () => {
+  const communities = await db.community.findMany({
+    include: {
+      members: true,
+    },
+  });
+
   return (
-    <div className="bg-neutral-200/50 dark:bg-neutral-800 pl-6 rounded-lg mt-3 ml-3 mr-3 pb-5">
-      <h1 className="py-3 dark:text-white font-semibold">
+    <div className="bg-neutral-200/50 dark:bg-neutral-800  rounded-lg pb-2 mx-4 mt-2">
+      <h1 className="pt-3 pb-1 dark:text-white font-semibold pl-4">
         Popular communities
       </h1>
-      <div className="space-y-4">
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-x-3">
-          <img src="/ImageIcons/group.png" className="h-10 w-10" />
-          <div className="flex flex-col">
-            <h4 className="text-sm dark:text-white">Community example</h4>
-            <p className="text-xs font-light dark:text-white">
-              2,555 <span className="text-xs">members</span>
-            </p>
-          </div>
-        </div>
+      <div className="space-y-2">
+        {communities.map((community) => (
+          <Link
+            href={`/communities/${community.id}`}
+            className="flex items-center gap-x-3 hover:bg-neutral-300 px-2 py-2 mx-2 rounded-lg transition duration-150 ease-in-out"
+            key={community.id}
+          >
+            <img src={community.icon} className="h-10 w-10 rounded-full" />
+            <div className="flex flex-col">
+              <h4 className="text-sm dark:text-white font-semibold">
+                {community.name}
+              </h4>
+              <p className="text-xs font-light dark:text-white">
+                {community.members.length}{" "}
+                <span className="text-xs">
+                  {community.members.length > 1 ? "members" : "member"}{" "}
+                </span>
+              </p>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );

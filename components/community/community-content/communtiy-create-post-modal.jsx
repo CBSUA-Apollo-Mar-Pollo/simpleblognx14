@@ -11,8 +11,8 @@ const CommunityCreatePostModal = ({ session, communityId }) => {
         <UserAvatar
           className="h-10 w-10 "
           user={{
-            name: session?.user.name || null || user?.name,
-            image: session?.user.image || null || user?.image,
+            name: session?.user.name || null,
+            image: session?.user.image || null,
           }}
         />
 

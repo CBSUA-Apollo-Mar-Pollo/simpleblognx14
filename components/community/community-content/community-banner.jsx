@@ -109,6 +109,18 @@ const CommunityBanner = ({ communityDetails, session }) => {
 
       <ul className="flex justify-start text-neutral-800 dark:text-neutral-100 pt-2 gap-x-2 ml-32">
         <Link
+          href={`/communities/${communityDetails.id}/about`}
+          className={cn(
+            buttonVariants({ variant: "ghost" }),
+            `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100  py-5 dark:hover:bg-neutral-700 ${
+              pathname === `/communities/${communityDetails.id}/about` &&
+              "border-b-4 rounded-none border-blue-600 text-blue-600 dark:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-700"
+            }`
+          )}
+        >
+          About
+        </Link>
+        <Link
           href={`/communities/${communityDetails.id}`}
           className={cn(
             buttonVariants({ variant: "ghost" }),

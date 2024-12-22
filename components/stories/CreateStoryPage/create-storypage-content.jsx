@@ -126,8 +126,7 @@ const CraeateStoryPageContent = ({ session }) => {
                 ref={containerRef}
                 className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden"
               >
-                {/* This div represents the hole */}
-
+                {/* This div represents the crop area */}
                 <div
                   className="absolute inset-0 z-50 grid grid-cols-12 "
                   onMouseDown={handleMouseDown}
@@ -140,8 +139,6 @@ const CraeateStoryPageContent = ({ session }) => {
                   </div>
                   <div className="col-span-3 bg-neutral-950 opacity-95"></div>
                 </div>
-
-                {/* Semi-transparent overlay to simulate "paper" effect */}
 
                 {/* Draggable image */}
                 <div
@@ -167,6 +164,7 @@ const CraeateStoryPageContent = ({ session }) => {
                 </div>
               </div>
 
+              {/* footer for rotating image and zoom in and out the image */}
               <div className="w-[48vw] h-[6vh] bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-3">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
                   <Minus
