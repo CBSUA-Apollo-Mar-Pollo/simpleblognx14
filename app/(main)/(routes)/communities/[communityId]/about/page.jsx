@@ -2,6 +2,7 @@ import CommunityContent from "@/components/community/community-content/community
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const CommunityAboutPage = async ({ params }) => {
@@ -30,9 +31,16 @@ const CommunityAboutPage = async ({ params }) => {
       shortsv: true,
     },
   });
+
+  if (session?.user?.id === communityDetails.creatorId) {
+    return redirect(`/communities/${params.communityId}`);
+  }
   return (
     <div>
-      <CommunityContent {...{ communityDetails }} />
+      <CommunityContent
+        {...{ communityDetails }}
+        communityId={params.communityId}
+      />
     </div>
   );
 };

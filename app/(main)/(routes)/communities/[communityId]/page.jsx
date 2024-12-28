@@ -33,10 +33,6 @@ const CommunityPage = async ({ params }) => {
     },
   });
 
-  if (!session?.user?.id) {
-    return redirect(`/communities/${params.communityId}/about`);
-  }
-
   return (
     <div className="grid grid-cols-11">
       <div className="col-span-2 border-r border-neutral-200 relative">

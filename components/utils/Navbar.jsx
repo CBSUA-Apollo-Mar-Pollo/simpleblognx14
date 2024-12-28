@@ -82,7 +82,7 @@ const Navbar = () => {
           </ToolTipComp>
 
           <ToolTipComp content="Communities" className="cursor-pointer">
-            {pathname === "/communities" ? (
+            {pathname.startsWith("/communities") ? (
               <Link
                 href="/communities"
                 className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5"

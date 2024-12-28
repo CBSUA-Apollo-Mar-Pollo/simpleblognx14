@@ -32,6 +32,7 @@ const CommunityBanner = ({ communityDetails, session }) => {
       return res;
     },
   });
+  console.log(communityDetails);
 
   return (
     <div
@@ -43,7 +44,12 @@ const CommunityBanner = ({ communityDetails, session }) => {
             : `linear-gradient(to bottom, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
       }}
     >
-      <div className="mx-10">
+      <div
+        className={cn("mx-10", {
+          "mx-52":
+            session === null || session?.user.id !== communityDetails.creatorId,
+        })}
+      >
         <div className="relative">
           <div>
             {/* if the user has uploaded a cover photo display it */}
@@ -107,19 +113,31 @@ const CommunityBanner = ({ communityDetails, session }) => {
         <Separator className="bg-neutral-200" />
       </div>
 
-      <ul className="flex justify-start text-neutral-800 dark:text-neutral-100 pt-2 gap-x-2 ml-32">
-        <Link
-          href={`/communities/${communityDetails.id}/about`}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100  py-5 dark:hover:bg-neutral-700 ${
-              pathname === `/communities/${communityDetails.id}/about` &&
-              "border-b-4 rounded-none border-blue-600 text-blue-600 dark:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-700"
-            }`
-          )}
-        >
-          About
-        </Link>
+      <ul
+        className={cn(
+          "flex justify-start text-neutral-800 dark:text-neutral-100 pt-2 gap-x-2 ml-36",
+          {
+            "ml-60":
+              session === null ||
+              session?.user.id !== communityDetails.creatorId,
+          }
+        )}
+      >
+        {session !== null &&
+        session?.user.id === communityDetails.creatorId ? null : (
+          <Link
+            href={`/communities/${communityDetails.id}/about`}
+            className={cn(
+              buttonVariants({ variant: "ghost" }),
+              `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100  py-5 dark:hover:bg-neutral-700 ${
+                pathname === `/communities/${communityDetails.id}/about` &&
+                "border-b-4 rounded-none border-blue-600 text-blue-600 dark:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-700"
+              }`
+            )}
+          >
+            About
+          </Link>
+        )}
         <Link
           href={`/communities/${communityDetails.id}`}
           className={cn(
@@ -132,30 +150,34 @@ const CommunityBanner = ({ communityDetails, session }) => {
         >
           Discussion
         </Link>
-        <Button
-          variant="ghost"
-          className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-        >
-          Members
-        </Button>
-        <Button
-          variant="ghost"
-          className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-        >
-          Events
-        </Button>
-        <Button
-          variant="ghost"
-          className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-        >
-          Media
-        </Button>
-        <Button
-          variant="ghost"
-          className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-        >
-          Files
-        </Button>
+        {session !== null && (
+          <div>
+            <Button
+              variant="ghost"
+              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+            >
+              Members
+            </Button>
+            <Button
+              variant="ghost"
+              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+            >
+              Events
+            </Button>
+            <Button
+              variant="ghost"
+              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+            >
+              Media
+            </Button>
+            <Button
+              variant="ghost"
+              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+            >
+              Files
+            </Button>
+          </div>
+        )}
       </ul>
     </div>
   );

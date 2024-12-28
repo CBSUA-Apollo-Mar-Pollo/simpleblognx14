@@ -79,7 +79,7 @@ const CommunitySideBar = ({ communityDetails }) => {
           </Button>
         </div>
 
-        <div className="mt-2 space-y-2">
+        <div className="mt-2 space-y-1">
           <Button
             variant="ghost"
             className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
@@ -135,7 +135,7 @@ const CommunitySideBar = ({ communityDetails }) => {
           </Button>
         </div>
 
-        <div className="mt-2 space-y-2">
+        <div className="mt-2">
           <Button
             variant="ghost"
             className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
@@ -189,7 +189,7 @@ const CommunitySideBar = ({ communityDetails }) => {
           </Button>
         </div>
 
-        <div className="mt-2 space-y-2">
+        <div className="mt-2">
           <Button
             variant="ghost"
             className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
