@@ -3,6 +3,7 @@ import CommunitySideBar from "@/components/community/community-content/community
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { cn } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -34,11 +35,20 @@ const CommunityPage = async ({ params }) => {
   });
 
   return (
-    <div className="grid grid-cols-11">
-      <div className="col-span-2 border-r border-neutral-200 relative">
-        <CommunitySideBar {...{ communityDetails }} />
-      </div>
-      <div className="col-span-9">
+    <div className={cn("grid grid-cols-11")}>
+      {session?.user.id && session?.user.id === communityDetails.creatorId && (
+        <div className="col-span-2 border-r border-neutral-200 relative">
+          <CommunitySideBar {...{ communityDetails }} />
+        </div>
+      )}
+
+      <div
+        className={cn("col-span-9", {
+          "col-span-11":
+            !session?.user.id ||
+            session?.user.id !== communityDetails.creatorId,
+        })}
+      >
         <CommunityContent {...{ communityDetails }} />
       </div>
     </div>

@@ -4,7 +4,7 @@ import UserAvatar from "@/components/utils/UserAvatar";
 import { CakeSlice, Lock, Pencil, Plus } from "lucide-react";
 import React from "react";
 
-const CommunityDetails = ({ communityDetails }) => {
+const CommunityDetails = ({ communityDetails, session }) => {
   const date = new Date(communityDetails.createdAt);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short", // "Nov"
@@ -15,12 +15,14 @@ const CommunityDetails = ({ communityDetails }) => {
     <div className="bg-white border mr-32  py-2 rounded-xl">
       <div className="flex items-center justify-between px-5">
         <h4 className="font-semibold text-2xl mt-2">{communityDetails.name}</h4>
-        <Button
-          variant="icon"
-          className="bg-neutral-300 rounded-full py-2 px-3"
-        >
-          <Pencil className="h-4 w-4 " />
-        </Button>
+        {session?.user.id === communityDetails.creatorId && (
+          <Button
+            variant="icon"
+            className="bg-neutral-300 rounded-full py-2 px-3"
+          >
+            <Pencil className="h-4 w-4 " />
+          </Button>
+        )}
       </div>
 
       <div className="mt-4 px-5">
@@ -37,15 +39,17 @@ const CommunityDetails = ({ communityDetails }) => {
           </div>
         </div>
 
-        <div className="flex justify-center mt-2">
-          <Button
-            variant="ghost"
-            className="border px-8 rounded-full gap-x-2 text-xs "
-          >
-            <Plus className="h-4 w-4" />
-            Add a community guide
-          </Button>
-        </div>
+        {session?.user.id === communityDetails.creatorId && (
+          <div className="flex justify-center mt-2">
+            <Button
+              variant="ghost"
+              className="border px-8 rounded-full gap-x-2 text-xs "
+            >
+              <Plus className="h-4 w-4" />
+              Add a community guide
+            </Button>
+          </div>
+        )}
 
         <div className="flex items-center justify-center gap-x-10 my-5">
           {/* members */}
@@ -85,31 +89,39 @@ const CommunityDetails = ({ communityDetails }) => {
         </div>
       </div>
 
-      <Separator />
-
       {/* Community settings */}
-      <div className="px-5 my-3">
-        <h4 className="font-semibold text-neutral-700">COMMUNITY SETTINGS</h4>
+      {session?.user.id === communityDetails.creatorId && (
+        <>
+          <Separator />
 
-        <div className="flex items-center justify-between">
-          <span className="text-sm">Community appearance</span>
-          <Button
-            variant="icon"
-            className="bg-neutral-300 rounded-full py-2 px-3"
-          >
-            <Pencil className="h-4 w-4 " />
-          </Button>
-        </div>
+          <div className="px-5 my-3">
+            <h4 className="font-semibold text-neutral-700">
+              COMMUNITY SETTINGS
+            </h4>
 
-        <div className="flex justify-center mt-4">
-          <Button
-            variant="ghost"
-            className="border px-8 rounded-full gap-x-2 text-xs w-full"
-          >
-            Edit Widgets
-          </Button>
-        </div>
-      </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Community appearance</span>
+              {session?.user.id === communityDetails.creatorId && (
+                <Button
+                  variant="icon"
+                  className="bg-neutral-300 rounded-full py-2 px-3"
+                >
+                  <Pencil className="h-4 w-4 " />
+                </Button>
+              )}
+            </div>
+
+            <div className="flex justify-center mt-4">
+              <Button
+                variant="ghost"
+                className="border px-8 rounded-full gap-x-2 text-xs w-full"
+              >
+                Edit Widgets
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

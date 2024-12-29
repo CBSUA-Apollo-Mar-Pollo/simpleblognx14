@@ -97,13 +97,23 @@ const CommunityBanner = ({ communityDetails, session }) => {
                 </h1>
               </div>
 
-              <div className="flex items-center gap-x-2 mr-4">
-                <CommunityDropdownInvite />
-                <Button className="px-5 py-2 rounded-full text-white bg-blue-700">
-                  Admin tools
+              {session?.user.id === communityDetails.creatorId && (
+                <div className="flex items-center gap-x-2 mr-4">
+                  <CommunityDropdownInvite />
+                  <Button className="px-5 py-2 rounded-full text-white bg-blue-700">
+                    Admin tools
+                  </Button>
+                  <CommunityDropdownOptions />
+                </div>
+              )}
+
+              {communityDetails.members.some(
+                (member) => member.userId !== session?.user.id
+              ) && (
+                <Button className="bg-blue-600 hover:bg-blue-500 rounded-full">
+                  Join
                 </Button>
-                <CommunityDropdownOptions />
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -150,34 +160,37 @@ const CommunityBanner = ({ communityDetails, session }) => {
         >
           Discussion
         </Link>
-        {session !== null && (
-          <div>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-            >
-              Members
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-            >
-              Events
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-            >
-              Media
-            </Button>
-            <Button
-              variant="ghost"
-              className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-            >
-              Files
-            </Button>
-          </div>
-        )}
+        {session !== null &&
+          communityDetails.members.some(
+            (member) => member.userId === session?.user.id
+          ) && (
+            <div>
+              <Button
+                variant="ghost"
+                className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+              >
+                Members
+              </Button>
+              <Button
+                variant="ghost"
+                className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+              >
+                Events
+              </Button>
+              <Button
+                variant="ghost"
+                className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+              >
+                Media
+              </Button>
+              <Button
+                variant="ghost"
+                className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+              >
+                Files
+              </Button>
+            </div>
+          )}
       </ul>
     </div>
   );

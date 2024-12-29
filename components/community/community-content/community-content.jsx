@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/Card";
+import { Icons } from "@/components/utils/Icons";
 
 const CommunityContent = ({ communityDetails, communityId }) => {
   const { data: session } = useSession();
@@ -29,6 +30,8 @@ const CommunityContent = ({ communityDetails, communityId }) => {
     day: "numeric",
     year: "numeric",
   });
+
+  console.log(communityDetails, "communityDetails");
 
   return (
     <div>
@@ -74,6 +77,33 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        ) : !session?.user.id ||
+          communityDetails.members.some(
+            (member) => member.userId !== session?.user.id
+          ) ? (
+          <div className="grid grid-cols-8 pt-8">
+            <div className="col-span-5 mb-4 ml-64 mr-1">
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <Icons.LockPrivate className="fill-violet-600 h-36 w-36" />
+
+                  <div className="">
+                    <h2 className="text-center font-bold text-2xl text-neutral-700">
+                      This group is private
+                    </h2>
+
+                    <span className="text-neutral-600">
+                      Join this community to view or participate in discussions.
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            {/* community info */}
+            <div className="col-span-3 mb-4 mr-20 ml-8">
+              <CommunityDetails {...{ communityDetails, session }} />
             </div>
           </div>
         ) : (
@@ -134,7 +164,7 @@ const CommunityContent = ({ communityDetails, communityId }) => {
 
             {/* community info */}
             <div className="col-span-3 mb-4">
-              <CommunityDetails {...{ communityDetails }} />
+              <CommunityDetails {...{ communityDetails, session }} />
             </div>
           </div>
         )}
