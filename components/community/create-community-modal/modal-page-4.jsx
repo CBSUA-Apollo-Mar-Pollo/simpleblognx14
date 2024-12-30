@@ -5,9 +5,15 @@ import {
   DialogTitle,
 } from "@/components/ui/Dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
-import { Eye, Globe, Lock, WholeWord } from "lucide-react";
+import { Eye, EyeOff, Globe, Lock, WholeWord } from "lucide-react";
 
-const ModalPage4 = ({ selectedVisibility, setSelectedVisibility }) => {
+const ModalPage4 = ({
+  selectedPrivacy,
+  setSelectedPrivacy,
+  selectedVisibility,
+  setSelectedVisibility,
+}) => {
+  console.log(selectedVisibility, "selectedVisibility");
   return (
     <div>
       <DialogHeader className="ml-4 mt-4">
@@ -22,12 +28,14 @@ const ModalPage4 = ({ selectedVisibility, setSelectedVisibility }) => {
         </DialogDescription>
       </DialogHeader>
 
-      <div className="mb-20">
+      <div className=" mt-4">
+        <h2 className="font-bold text-black ml-8">Choose Privacy </h2>
+
         <RadioGroup
-          value={selectedVisibility}
-          onValueChange={setSelectedVisibility}
-          className="ml-8 mr-14 mt-5"
-          defaultValue="public"
+          value={selectedPrivacy}
+          onValueChange={setSelectedPrivacy}
+          className="ml-8 mr-14 mt-1"
+          defaultValue="Public"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-6">
@@ -39,20 +47,7 @@ const ModalPage4 = ({ selectedVisibility, setSelectedVisibility }) => {
                 </span>
               </div>
             </div>
-            <RadioGroupItem value="public" />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-x-6">
-              <Eye className="h-6 w-6" />
-              <div className="flex flex-col">
-                <p className="font-bold">Restricted</p>
-                <span className="text-[13px] -mt-1">
-                  Anyone can view, But only approved users can contribute.
-                </span>
-              </div>
-            </div>
-            <RadioGroupItem value="restricted" />
+            <RadioGroupItem value="Public" />
           </div>
 
           <div className="flex items-center justify-between">
@@ -65,10 +60,53 @@ const ModalPage4 = ({ selectedVisibility, setSelectedVisibility }) => {
                 </span>
               </div>
             </div>
-            <RadioGroupItem value="private" />
+            <RadioGroupItem value="Private" />
           </div>
         </RadioGroup>
       </div>
+
+      {selectedPrivacy === "Private" && (
+        <div className="mb-8 mt-4">
+          <h2 className="font-bold text-black ml-8">Visibility </h2>
+          <p className="text-[13px] ml-8">
+            to protect the privacy of community members, private communities
+            can't change to public.
+          </p>
+
+          <RadioGroup
+            value={selectedVisibility}
+            onValueChange={setSelectedVisibility}
+            className="ml-8 mr-14 mt-1"
+            defaultValue="Visible"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-x-6">
+                <Eye className="h-6 w-6" />
+                <div className="flex flex-col">
+                  <p className="font-bold">Visible</p>
+                  <span className="text-[13px] -mt-1">
+                    Anyone can find this community.
+                  </span>
+                </div>
+              </div>
+              <RadioGroupItem value="Visible" />
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-x-6">
+                <EyeOff className="h-6 w-6" />
+                <div className="flex flex-col">
+                  <p className="font-bold">Private</p>
+                  <span className="text-[13px] -mt-1">
+                    Only members can find this group.
+                  </span>
+                </div>
+              </div>
+              <RadioGroupItem value="Private" />
+            </div>
+          </RadioGroup>
+        </div>
+      )}
     </div>
   );
 };

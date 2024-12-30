@@ -12,6 +12,7 @@ import {
   Clock,
   Diamond,
   Gavel,
+  Globe,
   LineChart,
   List,
   Lock,
@@ -56,9 +57,14 @@ const CommunitySideBar = ({ communityDetails }) => {
             {communityDetails.name}
           </span>
           <div className="flex items-center gap-x-1  text-neutral-600 -mt-1">
-            <Lock className="h-3 w-3" />
+            {communityDetails.accessType === "Public" ? (
+              <Globe className="h-3 w-3" />
+            ) : (
+              <Lock className="h-3 w-3" />
+            )}
+
             <p className="text-[13px] font-medium">
-              {communityDetails.visibility} group
+              {communityDetails.accessType} group
             </p>
           </div>
         </div>
@@ -70,47 +76,47 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-800 text-lg ml-2">Overview</h3>
+          <h3 className="font-bold text-neutral-950 text-lg ml-2">Overview</h3>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <ChevronDown className="h-6 w-6" />
           </Button>
         </div>
 
-        <div className="mt-2 space-y-1">
+        <div className="">
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <ScrollText className="h-6 w-6" />
             Post queue
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Calendar className="h-6 w-6" />
             Scheduled Posts and Events
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Gavel className="h-6 w-6" />
             Restricted Users
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Users className="h-6 w-6" />
             Admins and Members
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <LineChart className="h-6 w-6" />
             Insights
@@ -124,49 +130,49 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-800 text-lg ml-2">
+          <h3 className="font-bold text-neutral-950 text-lg ml-2">
             Moderation
           </h3>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <ChevronDown className="h-6 w-6" />
           </Button>
         </div>
 
-        <div className="mt-2">
+        <div className="">
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <List className="h-6 w-6" />
             Community Rules
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <ShieldAlert className="h-6 w-6" />
             Community Status
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <MessageSquareWarning className="h-6 w-6" />
             Member reported content
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Clock className="h-6 w-6" />
             Activity log
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Diamond className="h-6 w-6" />
             Community Roles
@@ -180,47 +186,47 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-800 text-lg ml-2">Settings</h3>
+          <h3 className="font-bold text-neutral-950 text-lg ml-2">Settings</h3>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <ChevronDown className="h-6 w-6" />
           </Button>
         </div>
 
-        <div className="mt-2">
+        <div className="">
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Settings className="h-6 w-6" />
             General Settings
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950  gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <MenuSquare className="h-6 w-6" />
             Posts and Comments
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Brush className="h-6 w-6" />
             Look and Feel
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Book className="h-6 w-6" />
             Community Guide
           </Button>
           <Button
             variant="ghost"
-            className="text-neutral-700 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
+            className="text-neutral-950 gap-x-3 w-full flex justify-start text-[13px]  dark:text-neutral-50 dark:font-light"
           >
             <Bell className="h-6 w-6" />
             Notifications

@@ -48,12 +48,12 @@ const ModalPage1 = ({
                         <div className="space-y-2">
                           <label
                             htmlFor="name"
-                            className="text-sm font-semibold text-neutral-700"
+                            className="text-sm font-semibold text-neutral-800"
                           >
                             Community name
                           </label>
                           <Input
-                            className="bg-neutral-100 rounded-2xl dark:bg-neutral-700 dark:text-neutral-100 dark:placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
+                            className="bg-neutral-100 rounded-md dark:bg-neutral-700 dark:text-neutral-100 dark:placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
                             {...field}
                           />
                         </div>
@@ -73,13 +73,13 @@ const ModalPage1 = ({
                         <div className="space-y-2">
                           <label
                             htmlFor="description"
-                            className="text-sm font-semibold text-neutral-700"
+                            className="text-sm font-semibold text-neutral-800"
                           >
                             Description
                           </label>
                           <Textarea
                             id="auto-resize-textarea"
-                            className="h-44 rounded-2xl border border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 dark:placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
+                            className="h-44 rounded-md border border-neutral-200 bg-neutral-100 dark:bg-neutral-700 dark:text-neutral-100 dark:placeholder:text-neutral-100 placeholder:text-xs resize-none py-3"
                             {...field}
                           />
                         </div>
@@ -97,7 +97,7 @@ const ModalPage1 = ({
             <div className="py-4 px-4">
               <h3 className="font-semibold text-xl">
                 {watchedFieldCommunityName
-                  ? "c/" + watchedFieldCommunityName
+                  ? watchedFieldCommunityName
                   : "Community name"}
               </h3>
               <div className="flex items-center text-xs font-medium">
@@ -105,7 +105,7 @@ const ModalPage1 = ({
                 <Dot />
                 <span>1 online</span>
               </div>
-              <p className="text-xs font-semibold text-neutral-600 mt-1">
+              <p className="text-xs font-medium text-neutral-600 mt-1">
                 {watchedFieldCommunityDescription
                   ? watchedFieldCommunityDescription
                   : "Community description"}

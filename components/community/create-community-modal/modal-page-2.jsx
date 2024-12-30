@@ -93,7 +93,7 @@ const ModalPage2 = ({
                 <div className="mt-2">
                   <h3 className="font-semibold text-xl">
                     {watchedFieldCommunityName
-                      ? "c/" + watchedFieldCommunityName
+                      ? watchedFieldCommunityName
                       : "Community name"}
                   </h3>
                   <div className="flex items-center text-xs font-medium">

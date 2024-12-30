@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { CakeSlice, Lock, Pencil, Plus } from "lucide-react";
+import { CakeSlice, Globe, Lock, Pencil, Plus } from "lucide-react";
 import React from "react";
 
 const CommunityDetails = ({ communityDetails, session }) => {
@@ -34,8 +34,12 @@ const CommunityDetails = ({ communityDetails, session }) => {
             <p className="text-[13px]">Created {formattedDate}</p>
           </div>
           <div className="flex items-center gap-x-2 ">
-            <Lock className="h-5 w-5" />
-            <p className="text-[13px]">{communityDetails.visibility}</p>
+            {communityDetails.accessType === "Public" ? (
+              <Globe className="h-5 w-5" />
+            ) : (
+              <Lock className="h-5 w-5" />
+            )}
+            <p className="text-[13px]">{communityDetails.accessType}</p>
           </div>
         </div>
 

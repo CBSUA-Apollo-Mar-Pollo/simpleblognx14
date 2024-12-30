@@ -11,7 +11,8 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const { name, description, banner, icon, topics, visibility } = body;
+    const { name, description, banner, icon, topics, visibility, accessType } =
+      body;
 
     const communityExists = await db.community.findFirst({
       where: {
@@ -32,6 +33,7 @@ export async function POST(req) {
         icon: icon.url,
         topics,
         visibility,
+        accessType,
       },
     });
 

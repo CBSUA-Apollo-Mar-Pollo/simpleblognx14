@@ -43,7 +43,9 @@ const CommunityContent = ({ communityDetails, communityId }) => {
             <div className="py-4 w-[40vw]">
               <Card>
                 <CardContent>
-                  <h2 className="font-semibold mt-4">About this community</h2>
+                  <h2 className="font-semibold mt-4 text-xl">
+                    About this community
+                  </h2>
 
                   <Separator className="mt-2 bg-neutral-300 h-[2px]" />
 
@@ -54,14 +56,14 @@ const CommunityContent = ({ communityDetails, communityId }) => {
 
                     <div className="flex items-start gap-x-3 mt-2">
                       <Lock className="mt-1.5 text-gray-700 h-6 w-6" />
-                      <div className="">
+                      <div className="relative">
                         <h3 className="font-semibold">
                           {communityDetails.visibility}
                         </h3>
-                        <span className="text-[13px]">
+                        <p className="text-[13px] -mt-0.5">
                           Only members can see who's in the group and what they
                           post.
-                        </span>
+                        </p>
                       </div>
                     </div>
 
@@ -69,9 +71,9 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                       <Clock className="mt-1.5 text-gray-700 h-6 w-6" />
                       <div className="">
                         <h3 className="font-semibold">History</h3>
-                        <span className="text-[13px]">
+                        <p className="text-[13px] -mt-0.5">
                           Community created on {formattedDate}.
-                        </span>
+                        </p>
                       </div>
                     </div>
                   </div>

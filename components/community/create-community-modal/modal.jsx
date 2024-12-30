@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Dot, Plus } from "lucide-react";
@@ -21,22 +21,25 @@ import ModalPage2 from "./modal-page-2";
 import ModalPage3 from "./modal-page-3";
 import ModalPage4 from "./modal-page-4";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useRouter } from "next/navigation";
+import useCustomHooks from "@/hooks/use-custom-hooks";
+import { LoaderContext } from "@/context/LoaderContext";
+import { toast } from "@/hooks/use-toast";
 
 const CreateCommunityModal = () => {
   const router = useRouter();
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const [page, setPage] = useState(1);
   const [topicsSelected, setTopicsSelected] = useState([]);
-
   const [previewBanner, setPreviewBanner] = useState(null);
   const [previewIcon, setPreviewIcon] = useState(null);
-
   const [bannerFile, setBannerFile] = useState(null);
   const [iconFile, setIconFile] = useState(null);
-
-  const [selectedVisibility, setSelectedVisibility] = useState("public");
+  const [selectedPrivacy, setSelectedPrivacy] = useState("Public");
+  const [selectedVisibility, setSelectedVisibility] = useState("Visible");
+  const { signinToast } = useCustomHooks();
 
   const handleBannerFileSelect = (event) => {
     const banner = event.target.files[0];
@@ -111,15 +114,40 @@ const CreateCommunityModal = () => {
         icon: images[1],
         topics: topicsSelected,
         visibility: selectedVisibility,
+        accessType: selectedPrivacy,
       };
 
       const data = await axios.post("/api/community", payload);
       return data;
     },
     onError: (err) => {
+      setIsLoading(false);
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
+          return signinToast();
+        }
+
+        if (err.response?.status === 409) {
+          return toast({
+            title: "Error",
+            description: "Community already exists",
+            variant: "destructive",
+          });
+        }
+
+        if (err.response?.status === 500) {
+          return toast({
+            title: "Error",
+            description: "Could not create community! Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+
       console.log(err);
     },
     onSuccess: ({ data }) => {
+      setIsLoading(false);
       return router.push(`/communities/${data}`);
     },
   });
@@ -173,7 +201,14 @@ const CreateCommunityModal = () => {
         )}
 
         {page === 4 && (
-          <ModalPage4 {...{ selectedVisibility, setSelectedVisibility }} />
+          <ModalPage4
+            {...{
+              selectedPrivacy,
+              setSelectedPrivacy,
+              selectedVisibility,
+              setSelectedVisibility,
+            }}
+          />
         )}
 
         <DialogFooter className="mx-4 mb-4">
@@ -219,7 +254,11 @@ const CreateCommunityModal = () => {
 
               {page === 4 ? (
                 <Button
-                  onClick={() => onSubmit()}
+                  onClick={() => {
+                    onSubmit();
+                    setIsLoading(true);
+                    setLoaderDescription("Creating community");
+                  }}
                   className="bg-blue-600 text-white hover:bg-blue-600/80 hover:text-white font-semibold rounded-full"
                 >
                   Create Community
