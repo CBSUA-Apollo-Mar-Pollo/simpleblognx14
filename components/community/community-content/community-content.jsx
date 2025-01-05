@@ -37,7 +37,8 @@ const CommunityContent = ({ communityDetails, communityId }) => {
     <div>
       <CommunityBanner {...{ communityDetails, session }} />
 
-      <div className="bg-neutral-100">
+      <div className="bg-neutral-100 dark:bg-neutral-900">
+        {/* about page */}
         {pathname === `/communities/${communityId}/about` ? (
           <div className="flex flex-col items-center justify-center">
             <div className="py-4 w-[40vw]">
@@ -133,23 +134,23 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                 <div className="mb-1">
                   <Button
                     variant="ghost"
-                    className="text-neutral-700 font-semibold gap-x-1"
+                    className="text-neutral-700 dark:text-neutral-100 font-semibold gap-x-1"
                   >
                     Popular
                     <ChevronDown className="h-5 w-5" />
                   </Button>
                 </div>
 
-                <Separator className="bg-neutral-200" />
+                <Separator className="bg-neutral-200 dark:bg-neutral-800" />
               </div>
               {/* todo: user posts */}
 
               {communityDetails?.posts.length === 0 && (
                 <div className="flex flex-col items-center justify-center w-full mt-10">
-                  <h2 className="font-bold text-2xl">
+                  <h2 className="font-bold text-2xl dark:text-white">
                     This community doesn't have any posts yet
                   </h2>
-                  <span className="text-neutral-600">
+                  <span className="text-neutral-600 dark:text-neutral-400">
                     make one and get this feed started.
                   </span>
                 </div>

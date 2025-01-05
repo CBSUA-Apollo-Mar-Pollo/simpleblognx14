@@ -39,24 +39,24 @@ const CommunitySideBar = ({ communityDetails }) => {
     <div
       className={`sticky top-[7vh]  z-0  max-h-[93vh] pb-3 sidebarContainer ${
         toggleScrollBar ? "overflow-auto" : "overflow-hidden"
-      }  dark:bg-neutral-900 dark:text-neutral-100`}
+      }  dark:bg-neutral-800 dark:text-neutral-100`}
       onMouseEnter={handleScrollBar}
       onMouseLeave={handleMouseLeave}
     >
       {/* community icon */}
       <div className="flex items-center gap-x-2 ml-4 mt-3">
         <UserAvatar
-          className="h-12 w-12 "
+          className="h-12 w-12 dark:border dark:border-neutral-400 dark:bg-white"
           user={{
             image: communityDetails.icon || null,
           }}
         />
 
         <div className="flex flex-col">
-          <span className="text-neutral-700 text-[18px] font-bold">
+          <span className="text-neutral-700 text-[18px] font-bold dark:text-white">
             {communityDetails.name}
           </span>
-          <div className="flex items-center gap-x-1  text-neutral-600 -mt-1">
+          <div className="flex items-center gap-x-1  text-neutral-600 dark:text-white -mt-1">
             {communityDetails.accessType === "Public" ? (
               <Globe className="h-3 w-3" />
             ) : (
@@ -76,7 +76,9 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-950 text-lg ml-2">Overview</h3>
+          <h3 className="font-bold text-neutral-950 text-lg ml-2 dark:text-white">
+            Overview
+          </h3>
           <Button
             variant="ghost"
             className="text-neutral-950 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"
@@ -130,7 +132,7 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-950 text-lg ml-2">
+          <h3 className="font-bold text-neutral-950 dark:text-white text-lg ml-2">
             Moderation
           </h3>
           <Button
@@ -186,7 +188,9 @@ const CommunitySideBar = ({ communityDetails }) => {
 
       <div className="mx-3 mt-2">
         <div className="flex items-center justify-between w-full">
-          <h3 className="font-bold text-neutral-950 text-lg ml-2">Settings</h3>
+          <h3 className="font-bold text-neutral-950 dark:text-white text-lg ml-2">
+            Settings
+          </h3>
           <Button
             variant="ghost"
             className="text-neutral-950 gap-x-3   text-[13px]  dark:text-neutral-50 dark:font-light"

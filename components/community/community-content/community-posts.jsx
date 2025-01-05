@@ -20,8 +20,6 @@ export default function CommunityPosts({ initialPosts, session, communityId }) {
     threshold: 0.01,
   });
 
-  console.log(initialPosts, "initial posts ");
-
   const fetchPosts = async ({ pageParam }) => {
     const query = `/api/community/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}&communityId=${communityId}`;
 

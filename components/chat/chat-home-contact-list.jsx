@@ -20,8 +20,6 @@ const ChatHomeContactList = ({ conversationList, session }) => {
     if (!socket) return;
 
     const handleUserOnline = (data) => {
-      console.log("User is online:", data);
-
       const userId = data.id;
       const hasAlreadyStored = userData.some((item) => item?.id === userId);
       const isAFriend = conversationList.some(

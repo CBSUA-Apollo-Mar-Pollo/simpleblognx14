@@ -43,22 +43,30 @@ const LogoVideoAndIcon = ({
   const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play().catch((error) => {
-          console.error("Error trying to play the video:", error);
-        });
-      }
-    };
+    if (isPlaying === false) {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === "hidden") {
+          videoRef.current.pause();
+          setIsPlaying(false);
+        } else {
+          videoRef.current.play().catch((error) => {
+            console.error("Error trying to play the video:", error);
+          });
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+          setIsPlaying(true);
+        }
+      };
 
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+
+      return () => {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
+      };
+    }
+  }, [isPlaying]);
 
   useEffect(() => {
     if (videoRef?.current) {

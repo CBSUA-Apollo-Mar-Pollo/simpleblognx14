@@ -131,10 +131,7 @@ const ShortsVPostCard = ({
   };
 
   return (
-    <Card
-      className="rounded-2xl shadow-md dark:border-none"
-      onClick={() => handleClick()}
-    >
+    <Card className="rounded-2xl shadow-md dark:border-none">
       <CardContent className="p-0">
         <div
           className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative rounded-2xl overflow-clip"
@@ -258,6 +255,7 @@ const ShortsVPostCard = ({
               />
             </button>
             <button
+              onClick={handleClick}
               aria-label="upvote"
               className="p-3 bg-neutral-800/40  rounded-full"
             >

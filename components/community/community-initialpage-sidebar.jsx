@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
   const pathname = usePathname();
   return (
-    <div className="border-r border-neutral-300 dark:border-neutral-800 h-screen">
+    <div className="border-r border-neutral-300 dark:border-neutral-800 dark:bg-neutral-800 min-h-screen pb-4">
       <div className="pt-2">
         <div className="flex items-center justify-between px-3 p-2">
           <h1 className="text-2xl font-bold text-neutral-800 dark:text-white">
@@ -118,10 +118,10 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
                     />
 
                     <div className="flex flex-col">
-                      <p className="font-bold text-neutral-700">
+                      <p className="font-bold text-neutral-700 dark:text-white">
                         {community.name}
                       </p>
-                      <span className="text-[12px] text-neutral-700">
+                      <span className="text-[12px] text-neutral-700 dark:text-white">
                         Last active{" "}
                         {community.posts.length === 0
                           ? moment(community.createdAt).fromNow()
@@ -153,7 +153,7 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
             height={800}
             className="h-72 w-72 rounded-3xl"
           />
-          <p className="mt-3 text-sm mx-10 text-justify dark:text-white">
+          <p className="mt-3 text-sm mx-10 text-justify dark:text-white ">
             "Ready to make a difference? Join or start a community that inspires
             and empowers".
           </p>

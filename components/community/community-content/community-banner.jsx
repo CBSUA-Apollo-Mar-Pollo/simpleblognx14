@@ -6,14 +6,7 @@ import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import {
-  CircleEllipsis,
-  Dot,
-  Lock,
-  LucideCircleEllipsis,
-  MoreHorizontal,
-  Plus,
-} from "lucide-react";
+
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -81,7 +74,7 @@ const CommunityBanner = ({ communityDetails, session }) => {
               <div className="absolute -bottom-1 left-[3vw] z-10">
                 <div className="relative">
                   <UserAvatar
-                    className="h-36 w-36 border-4 border-neutral-50 dark:border-neutral-800"
+                    className="h-36 w-36 border-4 border-neutral-50 dark:border-neutral-800 bg-white"
                     user={{
                       image: communityDetails.icon || null,
                     }}
@@ -120,7 +113,7 @@ const CommunityBanner = ({ communityDetails, session }) => {
       </div>
 
       <div className="mt-4 mx-10">
-        <Separator className="bg-neutral-200" />
+        <Separator className="bg-neutral-200 dark:bg-neutral-700" />
       </div>
 
       <ul
