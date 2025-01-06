@@ -75,80 +75,92 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
+  console.log(
+    data?.pages?.flatMap((page) => page),
+    "posts from server"
+  );
+
   return (
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
-        {posts.map((blog, index) => {
-          // votes for post cards
-          const votesAmt = blog?.votes?.reduce((acc, vote) => {
-            if (vote.type === "UP") return acc + 1;
-            if (vote.type === "DOWN") return acc - 1;
-            return acc;
-          }, 0);
+        {posts
+          .filter(
+            (item) =>
+              !item.community?.members.find(
+                (member) => member.userId !== session.user.id
+              )
+          )
+          .map((blog, index) => {
+            // votes for post cards
+            const votesAmt = blog?.votes?.reduce((acc, vote) => {
+              if (vote.type === "UP") return acc + 1;
+              if (vote.type === "DOWN") return acc - 1;
+              return acc;
+            }, 0);
 
-          const currentVote = blog?.votes?.find(
-            (vote) => vote.userId === session?.user.id
-          );
-          // votes for shorts video post cards
-          const shortsvVotesAmt = blog?.shortsVotes?.reduce((acc, vote) => {
-            if (vote.type === "UP") return acc + 1;
-            if (vote.type === "DOWN") return acc - 1;
-            return acc;
-          }, 0);
+            const currentVote = blog?.votes?.find(
+              (vote) => vote.userId === session?.user.id
+            );
+            // votes for shorts video post cards
+            const shortsvVotesAmt = blog?.shortsVotes?.reduce((acc, vote) => {
+              if (vote.type === "UP") return acc + 1;
+              if (vote.type === "DOWN") return acc - 1;
+              return acc;
+            }, 0);
 
-          const currentShortsvVote = blog?.shortsVotes?.find(
-            (vote) => vote.userId === session?.user.id
-          );
+            const currentShortsvVote = blog?.shortsVotes?.find(
+              (vote) => vote.userId === session?.user.id
+            );
 
-          // Check if the blog post is a video or an image
-          const isVideo = Boolean(blog.videoUrl);
-          const isImage = Boolean(blog.image);
+            // Check if the blog post is a video or an image
+            const isVideo = Boolean(blog.videoUrl);
+            const isImage = Boolean(blog.image);
 
-          if (isVideo) {
-            return (
-              <li key={blog.id} className="list-none z-10" ref={ref}>
-                <ShortsVPostCard
-                  videoData={blog}
-                  session={session}
-                  shortsvVotesAmt={shortsvVotesAmt}
-                  currentShortsvVote={currentShortsvVote?.type}
-                />
-                <div className="mt-3">
+            if (isVideo) {
+              return (
+                <li key={blog.id} className="list-none z-10" ref={ref}>
+                  <ShortsVPostCard
+                    videoData={blog}
+                    session={session}
+                    shortsvVotesAmt={shortsvVotesAmt}
+                    currentShortsvVote={currentShortsvVote?.type}
+                  />
+                  <div className="mt-3">
+                    {index === randNumber && <ReelsHomeCard />}
+                  </div>
+                </li>
+              );
+            }
+
+            if (index === posts.length - 1 && isImage) {
+              return (
+                <li key={blog.id} className="list-none z-40" ref={ref}>
+                  <PostCard
+                    blog={blog}
+                    session={session}
+                    deleteImage={deleteImage}
+                    votesAmt={votesAmt}
+                    currentVote={currentVote}
+                  />
                   {index === randNumber && <ReelsHomeCard />}
-                </div>
-              </li>
-            );
-          }
-
-          if (index === posts.length - 1 && isImage) {
-            return (
-              <li key={blog.id} className="list-none z-40" ref={ref}>
-                <PostCard
-                  blog={blog}
-                  session={session}
-                  deleteImage={deleteImage}
-                  votesAmt={votesAmt}
-                  currentVote={currentVote}
-                />
-                {index === randNumber && <ReelsHomeCard />}
-              </li>
-            );
-          } else {
-            return (
-              <li key={index} className="z-0" ref={ref}>
-                {index === randNumber && <ReelsHomeCard />}
-                <PostCard
-                  blog={blog}
-                  key={blog.id}
-                  session={session}
-                  deleteImage={deleteImage}
-                  votesAmt={votesAmt}
-                  currentVote={currentVote}
-                />
-              </li>
-            );
-          }
-        })}
+                </li>
+              );
+            } else {
+              return (
+                <li key={index} className="z-0" ref={ref}>
+                  {index === randNumber && <ReelsHomeCard />}
+                  <PostCard
+                    blog={blog}
+                    key={blog.id}
+                    session={session}
+                    deleteImage={deleteImage}
+                    votesAmt={votesAmt}
+                    currentVote={currentVote}
+                  />
+                </li>
+              );
+            }
+          })}
 
         {isFetchingNextPage && (
           <li className="flex justify-center my-20">

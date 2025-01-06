@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/Dropdown-menu";
-import { Link, Plus, Search, Triangle, User } from "lucide-react";
+import { Link, Plus, Search, Triangle, User, X } from "lucide-react";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -16,14 +16,26 @@ import {
 } from "@/components/ui/Dialog";
 import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAllFriends } from "@/actions/getAllFriends";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { Checkbox } from "@/components/ui/Checkbox";
+import { cn } from "@/lib/utils";
 
 const CommunityDropdownInvite = () => {
   const [showInviteFriendModal, setShowInviteFriendModal] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [selectedFriends, setSelectedFriends] = useState([]);
+
+  const handleCheckboxChange = (friend, checked) => {
+    if (checked) {
+      // Add friend if checked
+      setSelectedFriends((prev) => [...prev, friend]);
+    } else {
+      // Remove friend if unchecked
+      setSelectedFriends((prev) => prev.filter((f) => f.id !== friend.id));
+    }
+  };
+
   const { data: allFriends } = useQuery({
     queryKey: "getAllFriends",
     queryFn: async () => {
@@ -32,7 +44,12 @@ const CommunityDropdownInvite = () => {
     },
   });
 
-  console.log(allFriends, "All friends");
+  const { mutate: handleSendInvite } = useMutation({
+    mutationFn: async () => {
+      console.log(selectedFriends, "selected friends in mutate");
+    },
+  });
+
   return (
     <>
       <DropdownMenu modal={false}>
@@ -87,7 +104,7 @@ const CommunityDropdownInvite = () => {
 
       {/* invite friends modal */}
       {/* dev message: i have put modal here instead of creating a component*/}
-      {/* because dialog is not rendering as a modal if put in a component because of dropdown    */}
+      {/* because dialog is not rendering as a modal if put in a component inside of dropdownmenu    */}
 
       <Dialog
         open={showInviteFriendModal}
@@ -112,14 +129,14 @@ const CommunityDropdownInvite = () => {
 
               {/* friends list */}
               <div className=" mt-4">
-                {allFriends.length === 0 && (
+                {allFriends?.length === 0 && (
                   <p className="font-semibold text-center">
                     No friends to invite
                   </p>
                 )}
 
                 <div className="flex flex-col space-y-1">
-                  {allFriends.map((friend) => (
+                  {allFriends?.map((friend) => (
                     <div className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer">
                       <div className="flex items-center gap-x-2">
                         <UserAvatar
@@ -133,22 +150,74 @@ const CommunityDropdownInvite = () => {
                         <p className="font-semibold">{friend.name}</p>
                       </div>
 
-                      <Checkbox className="tborder border-neutral-50 h-5 w-5 mr-4 " />
+                      <Checkbox
+                        checked={selectedFriends.some(
+                          (f) => f.id === friend.id
+                        )}
+                        onCheckedChange={(checked) =>
+                          handleCheckboxChange(friend, checked)
+                        }
+                        className="border-2 dark:border-neutral-50 h-5 w-5 mr-4 "
+                      />
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="col-span-2 dark:bg-neutral-900 px-4">
+            <div className="col-span-2 bg-neutral-100 dark:bg-neutral-900 px-4">
               <div className="pt-4">
-                <p>0 friends selected</p>
+                <p className="text-sm">
+                  {selectedFriends.length}{" "}
+                  {selectedFriends.length > 1 ? "friends" : "friend"} selected
+                </p>
+
+                {selectedFriends.map((sf) => (
+                  <div className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer">
+                    <div className="flex items-center gap-x-2">
+                      <UserAvatar
+                        className="h-10 w-10"
+                        user={{
+                          name: sf.name || null,
+                          image: sf.image || null,
+                        }}
+                      />
+
+                      <p className="font-semibold text-sm">{sf.name}</p>
+                    </div>
+
+                    <Button
+                      onClick={() =>
+                        setSelectedFriends((prev) =>
+                          prev.filter((f) => f.id !== sf.id)
+                        )
+                      }
+                      variant="icon"
+                      className="hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full px-3"
+                    >
+                      <X className="h-4 w-4 dark:text-neutral-200" />
+                    </Button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
           <div className="flex justify-end gap-x-2 mr-2 mb-3">
-            <Button variant="ghost">Cancel</Button>
-            <Button>Send Invites</Button>
+            <Button
+              onClick={() => setShowInviteFriendModal(false)}
+              variant="ghost"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSendInvite}
+              className={cn("bg-blue-600 hover:bg-blue-500", {
+                "bg-neutral-300 hover:bg-neutral-300 dark:bg-neutral-600 cursor-not-allowed":
+                  selectedFriends.length === 0,
+              })}
+            >
+              Send Invites
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

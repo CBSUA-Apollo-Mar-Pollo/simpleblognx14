@@ -25,7 +25,6 @@ const CommunityBanner = ({ communityDetails, session }) => {
       return res;
     },
   });
-  console.log(communityDetails);
 
   return (
     <div

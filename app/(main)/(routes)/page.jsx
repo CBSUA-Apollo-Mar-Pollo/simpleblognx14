@@ -28,7 +28,11 @@ export default async function HomePage() {
       author: true,
       comments: true,
       votes: true,
-      community: true,
+      community: {
+        include: {
+          members: true,
+        },
+      },
     },
 
     orderBy: {
