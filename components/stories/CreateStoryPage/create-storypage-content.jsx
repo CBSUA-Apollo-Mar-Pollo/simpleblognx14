@@ -15,79 +15,68 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+import Draggable from "react-draggable";
 
 const CraeateStoryPageContent = ({ session }) => {
-  const [storyPreview, setStoryPreview] = useState(null);
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setStoryPreview(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const dragStart = useRef({ x: 0, y: 0 });
-  const dragging = useRef(false);
-  const containerRef = useRef(null);
+  const [storyPreview, setStoryPreview] = useState(false);
+  const [image, setImage] = useState(null);
+  const imageRef = useRef(null);
+  const cropRef = useRef(null);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
 
-  // Function to handle mouse down
-  const handleMouseDown = (e) => {
-    e.preventDefault();
-    dragging.current = true;
-    dragStart.current = {
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    };
-  };
-
-  // Function to handle mouse move
-  const handleMouseMove = (e) => {
-    if (dragging.current) {
-      const container = containerRef.current.getBoundingClientRect();
-      const imageWidth = 480; // Replace with actual image width
-      const imageHeight = 480; // Replace with actual image height
-
-      // Calculate new positions
-      const newX = e.clientX - dragStart.current.x;
-      const newY = e.clientY - dragStart.current.y;
-
-      // Constrain movement to container bounds
-      const clampedX = Math.max(
-        0,
-        Math.min(container.width - imageWidth, newX)
-      );
-      const clampedY = Math.max(
-        0,
-        Math.min(container.height - imageHeight, newY)
-      );
-
-      setPosition({ x: clampedX, y: clampedY });
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setStoryPreview(true);
+      setImage(URL.createObjectURL(file));
     }
   };
 
-  // Function to handle mouse up
-  const handleMouseUp = () => {
-    dragging.current = false;
-  };
+  //  for cropping the image
+  const handleCrop = () => {
+    const cropRect = cropRef.current.getBoundingClientRect();
+    const img = imageRef.current;
+    const imgRect = img.getBoundingClientRect();
 
-  // Add/remove event listeners
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
+    // Create a canvas to draw the cropped image
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Set canvas dimensions to match the crop area size
+    canvas.width = cropRect.width;
+    canvas.height = cropRect.height;
+
+    // Calculate the position and dimensions of the image to be cropped
+    const scaleX = img.naturalWidth / imgRect.width; // Image scaling in x direction
+    const scaleY = img.naturalHeight / imgRect.height; // Image scaling in y direction
+
+    // Calculate the cropping coordinates (relative to the crop area)
+    const offsetX = (cropRect.left - imgRect.left) * scaleX;
+    const offsetY = (cropRect.top - imgRect.top) * scaleY;
+
+    // Draw the portion of the image within the crop area to the canvas
+    ctx.drawImage(
+      img,
+      offsetX, // Starting x coordinate of the image to be cropped
+      offsetY, // Starting y coordinate of the image to be cropped
+      cropRect.width * scaleX, // Width of the portion of the image to be cropped
+      cropRect.height * scaleY, // Height of the portion of the image to be cropped
+      0, // X coordinate on the canvas
+      0, // Y coordinate on the canvas
+      canvas.width, // Width on the canvas (match crop area size)
+      canvas.height // Height on the canvas (match crop area size)
+    );
+
+    // Get cropped image as a data URL
+    const croppedImage = canvas.toDataURL("image/jpeg");
+
+    // Create a download link for the cropped image
+    const downloadLink = document.createElement("a");
+    downloadLink.href = croppedImage;
+    downloadLink.download = "cropped-image.jpg";
+    downloadLink.click();
+  };
 
   const zoomIn = () => setScale((prevScale) => prevScale + 0.1);
   const zoomOut = () =>
@@ -122,54 +111,63 @@ const CraeateStoryPageContent = ({ session }) => {
             <h1 className="text-2xl font-bold text-start">Preview</h1>
 
             <div>
-              <div
-                ref={containerRef}
-                className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden"
-              >
-                {/* This div represents the crop area */}
-                <div
-                  className="absolute inset-0 z-50 grid grid-cols-12 "
-                  onMouseDown={handleMouseDown}
-                >
-                  <div className="col-span-3 bg-neutral-950 opacity-95"></div>
-                  <div className="col-span-6 flex flex-col ">
-                    <div className="basis-[40px] bg-neutral-950 opacity-95 z-40 border-b"></div>
-                    <div className="basis-full z-40 border-x"></div>
-                    <div className="basis-[20px] bg-neutral-950 opacity-95 z-40 border-t"></div>
-                  </div>
-                  <div className="col-span-3 bg-neutral-950 opacity-95"></div>
-                </div>
-
+              <div className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300">
                 {/* Draggable image */}
                 <div
-                  className="absolute cursor-pointer"
+                  className="w-full bg-neutral-200"
                   style={{
-                    left: `${position.x}px`,
-                    top: `${position.y}px`,
-                    zIndex: 20,
+                    position: "relative",
+                    // Background color outside the crop area
+                    padding: "20px", // Add padding to create spacing around the crop area
+                    borderRadius: "16px", // Optional: make the outer container rounded
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                  onMouseDown={handleMouseDown}
                 >
-                  <Image
-                    width={480}
-                    height={480}
-                    src={storyPreview}
-                    alt="Draggable image"
+                  <div
+                    className="rounded-xl bg-white"
                     style={{
-                      transform: `scale(${scale}) rotate(${rotation}deg)`,
-                      transformOrigin: "center",
-                      transition: "transform 0.3s ease",
+                      position: "relative",
+                      width: "360px", // Width of the crop area
+                      height: "630px", // Height of the crop area
+                      margin: "20px auto",
+                      border: "2px dashed #ccc",
+                      overflow: "hidden",
+                      // Ensures the image is clipped to this area
                     }}
-                  />
+                    ref={cropRef}
+                  >
+                    {image && (
+                      <div
+                        style={{
+                          transform: `scale(${scale}) rotate(${rotation}deg)`,
+                          transformOrigin: "center",
+                        }}
+                      >
+                        <Draggable>
+                          <img
+                            ref={imageRef}
+                            src={image}
+                            alt="To be cropped"
+                            style={{
+                              position: "absolute",
+                              cursor: "grab",
+                            }}
+                          />
+                        </Draggable>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* footer for rotating image and zoom in and out the image */}
-              <div className="w-[48vw] h-[6vh] bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-3">
+              <div className="w-[48vw] min-h-[6vh] border-2 border-neutral-300 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
                   <Minus
                     onClick={zoomOut}
-                    className="text-white cursor-pointer"
+                    className="dark:text-white cursor-pointer"
                   />
                   <div className="mb-2 w-full max-w-xs">
                     <input
@@ -185,7 +183,7 @@ const CraeateStoryPageContent = ({ session }) => {
                   </div>
                   <Plus
                     onClick={zoomIn}
-                    className="text-white cursor-pointer"
+                    className="dark:text-white cursor-pointer"
                   />
                 </div>
 
@@ -196,6 +194,10 @@ const CraeateStoryPageContent = ({ session }) => {
                   <RotateCw className="h-5 w-5 text-black" />
                   <span className="text-black ">Rotate Image</span>
                 </Button>
+
+                <button onClick={handleCrop} style={{ marginTop: "10px" }}>
+                  Crop Image
+                </button>
               </div>
             </div>
           </div>

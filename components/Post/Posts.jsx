@@ -87,7 +87,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
           .filter(
             (item) =>
               !item.community?.members.find(
-                (member) => member.userId !== session.user.id
+                (member) => member.userId !== session?.user.id
               )
           )
           .map((blog, index) => {
