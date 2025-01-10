@@ -3,6 +3,7 @@
 import NotificationMenu from "@/components/Notification/NotificationMenu";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
 import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
 import {
@@ -17,13 +18,19 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 
-const CraeateStoryPageContent = ({ session }) => {
+const CraeateStoryPageContent = ({
+  session,
+  toggleAddText,
+  image,
+  setImage,
+}) => {
   const [storyPreview, setStoryPreview] = useState(false);
-  const [image, setImage] = useState(null);
+  const [text, setText] = useState("Start typing"); // Initial text
   const imageRef = useRef(null);
   const cropRef = useRef(null);
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
+  const textRef = useRef(null); // Reference for draggable text
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -33,13 +40,14 @@ const CraeateStoryPageContent = ({ session }) => {
     }
   };
 
-  //  for cropping the image
+  // for cropping the image
   const handleCrop = () => {
     const cropRect = cropRef.current.getBoundingClientRect();
     const img = imageRef.current;
     const imgRect = img.getBoundingClientRect();
+    const textElement = textRef.current;
 
-    // Create a canvas to draw the cropped image
+    // Create a canvas to draw the cropped image and text
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -55,6 +63,9 @@ const CraeateStoryPageContent = ({ session }) => {
     const offsetX = (cropRect.left - imgRect.left) * scaleX;
     const offsetY = (cropRect.top - imgRect.top) * scaleY;
 
+    // Clear the canvas to ensure transparency
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // Draw the portion of the image within the crop area to the canvas
     ctx.drawImage(
       img,
@@ -68,13 +79,20 @@ const CraeateStoryPageContent = ({ session }) => {
       canvas.height // Height on the canvas (match crop area size)
     );
 
-    // Get cropped image as a data URL
-    const croppedImage = canvas.toDataURL("image/jpeg");
+    // Draw the draggable text onto the canvas
+    if (textElement) {
+      ctx.font = "30px Arial"; // Customize font size and family
+      ctx.fillStyle = "black"; // Customize text color
+      ctx.fillText(text, 50, 50); // Draw text at the specified position
+    }
+
+    // Get cropped image with text as a data URL (use "image/png" for transparency support)
+    const croppedImage = canvas.toDataURL("image/png");
 
     // Create a download link for the cropped image
     const downloadLink = document.createElement("a");
     downloadLink.href = croppedImage;
-    downloadLink.download = "cropped-image.jpg";
+    downloadLink.download = "cropped-image-with-text.png"; // Save as PNG for transparency
     downloadLink.click();
   };
 
@@ -117,7 +135,6 @@ const CraeateStoryPageContent = ({ session }) => {
                   className="w-full bg-neutral-200"
                   style={{
                     position: "relative",
-                    // Background color outside the crop area
                     padding: "20px", // Add padding to create spacing around the crop area
                     borderRadius: "16px", // Optional: make the outer container rounded
                     display: "flex",
@@ -126,7 +143,7 @@ const CraeateStoryPageContent = ({ session }) => {
                   }}
                 >
                   <div
-                    className="rounded-xl bg-white"
+                    className="rounded-xl bg-white "
                     style={{
                       position: "relative",
                       width: "360px", // Width of the crop area
@@ -134,7 +151,6 @@ const CraeateStoryPageContent = ({ session }) => {
                       margin: "20px auto",
                       border: "2px dashed #ccc",
                       overflow: "hidden",
-                      // Ensures the image is clipped to this area
                     }}
                     ref={cropRef}
                   >
@@ -143,19 +159,69 @@ const CraeateStoryPageContent = ({ session }) => {
                         style={{
                           transform: `scale(${scale}) rotate(${rotation}deg)`,
                           transformOrigin: "center",
+                          position: "relative",
                         }}
                       >
                         <Draggable>
                           <img
                             ref={imageRef}
                             src={image}
+                            draggable="false"
                             alt="To be cropped"
                             style={{
                               position: "absolute",
                               cursor: "grab",
+                              top: "180px",
+                              left: "50px",
                             }}
                           />
                         </Draggable>
+                      </div>
+                    )}
+                    {/* 
+                    {toggleAddText && (
+                      <Draggable>
+                        <div
+                          ref={textRef}
+                          style={{
+                            position: "absolute",
+                            top: "120px", // Set initial position of the text
+                            left: "120px", // Set initial position of the text
+                            cursor: "grab",
+                            color: "red", // Text color
+                            fontSize: "20px", // Text size
+                            fontWeight: "bolder",
+                          }}
+                        >
+                          {text}
+                        </div>
+                      </Draggable>
+                    )} */}
+
+                    {toggleAddText && (
+                      <div
+                        className="h-full w-auto backdrop-opacity-5 "
+                        style={{
+                          backgroundColor: "rgba(50, 50, 50, 0.5)", // Semi-transparent white background
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "120px", // Set initial position of the text
+                            left: "70px", // Set initial position of the text
+                            cursor: "grab",
+                            color: "black", // Text color
+                            fontSize: "100px", // Text size
+                            fontWeight: "bolder",
+                          }}
+                        >
+                          <Input
+                            className="border-0 text-2xl bg-neutral-500/10 placeholder:text-black "
+                            placeholder="Start typing"
+                            onChange={(e) => setText(e.target.value)}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>

@@ -1,13 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
+import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { Settings, X } from "lucide-react";
+import { ALargeSmall, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const CreateStoryPageSidebar = ({ session }) => {
+const CreateStoryPageSidebar = ({ session, setToggleAddText, image }) => {
   const router = useRouter();
 
   return (
@@ -27,7 +28,7 @@ const CreateStoryPageSidebar = ({ session }) => {
           </Link>
         </div>
 
-        <div className="mx-4">
+        <div className="px-4">
           <div className="flex items-center justify-between  mt-3">
             <h1 className="text-2xl font-bold">Your Story</h1>
             <Button
@@ -53,6 +54,21 @@ const CreateStoryPageSidebar = ({ session }) => {
           </div>
         </div>
       </div>
+
+      <Separator className="mt-4" />
+
+      {image && (
+        <div className="mx-2">
+          <Button
+            onClick={() => setToggleAddText(true)}
+            size="icon"
+            className="w-full bg-neutral-50 hover:bg-neutral-300 flex justify-start pl-6 py-7 gap-x-3 mt-2"
+          >
+            <ALargeSmall className="text-neutral-700 h-10 w-10 p-2 bg-neutral-200 rounded-full" />
+            <span className="text-neutral-700 font-semibold">Add text</span>
+          </Button>
+        </div>
+      )}
 
       <div className="absolute bottom-0 pb-4 w-full">
         <div className="flex justify-center gap-x-2 mx-4">
