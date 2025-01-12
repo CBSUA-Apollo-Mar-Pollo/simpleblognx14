@@ -11,6 +11,11 @@ import React from "react";
 const CreateStoryPageSidebar = ({ session, setToggleAddText, image }) => {
   const router = useRouter();
 
+  const handleButtonClick = (e) => {
+    e.stopPropagation(); // Prevent the event from propagating to the document
+    setToggleAddText(true);
+  };
+
   return (
     <div className="relative h-full">
       <div>
@@ -60,7 +65,7 @@ const CreateStoryPageSidebar = ({ session, setToggleAddText, image }) => {
       {image && (
         <div className="mx-2">
           <Button
-            onClick={() => setToggleAddText(true)}
+            onClick={handleButtonClick}
             size="icon"
             className="w-full bg-neutral-50 hover:bg-neutral-300 flex justify-start pl-6 py-7 gap-x-3 mt-2"
           >

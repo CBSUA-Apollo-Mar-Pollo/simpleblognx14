@@ -21,6 +21,7 @@ const CreateStoryPage = ({ session }) => {
         <CraeateStoryPageContent
           session={session}
           toggleAddText={toggleAddText}
+          setToggleAddText={setToggleAddText}
           image={image}
           setImage={setImage}
         />

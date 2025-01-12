@@ -21,16 +21,20 @@ import Draggable from "react-draggable";
 const CraeateStoryPageContent = ({
   session,
   toggleAddText,
+  setToggleAddText,
   image,
   setImage,
 }) => {
   const [storyPreview, setStoryPreview] = useState(false);
-  const [text, setText] = useState("Start typing"); // Initial text
-  const imageRef = useRef(null);
-  const cropRef = useRef(null);
+  const [text, setText] = useState("");
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
+  const [resizeTextToggle, setResizeTextToggle] = useState(false);
+
+  const imageRef = useRef(null);
+  const cropRef = useRef(null);
   const textRef = useRef(null); // Reference for draggable text
+  const inputRef = useRef();
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -39,6 +43,13 @@ const CraeateStoryPageContent = ({
       setImage(URL.createObjectURL(file));
     }
   };
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (input) {
+      input.focus();
+    }
+  }, [toggleAddText]);
 
   // for cropping the image
   const handleCrop = () => {
@@ -79,11 +90,17 @@ const CraeateStoryPageContent = ({
       canvas.height // Height on the canvas (match crop area size)
     );
 
+    const textPosition = textElement.getBoundingClientRect();
+
     // Draw the draggable text onto the canvas
     if (textElement) {
-      ctx.font = "30px Arial"; // Customize font size and family
+      ctx.font = "bold 30px Arial"; // Customize font size and family
       ctx.fillStyle = "black"; // Customize text color
-      ctx.fillText(text, 50, 50); // Draw text at the specified position
+      ctx.fillText(
+        text,
+        textPosition.left - cropRect.left,
+        textPosition.top - cropRect.top
+      ); // Draw text at the specified position
     }
 
     // Get cropped image with text as a data URL (use "image/png" for transparency support)
@@ -96,7 +113,16 @@ const CraeateStoryPageContent = ({
     downloadLink.click();
   };
 
-  const zoomIn = () => setScale((prevScale) => prevScale + 0.1);
+  const zoomIn = () => {
+    setScale((prevScale) => {
+      // Only increase the scale if it is less than the max value (1)
+      if (prevScale < 1) {
+        return prevScale + 0.1;
+      }
+      return prevScale; // Return the previous scale if it already exceeds the max value
+    });
+  };
+
   const zoomOut = () =>
     setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
 
@@ -115,6 +141,14 @@ const CraeateStoryPageContent = ({
 
   const rotateClockwise = () => setRotation((prev) => prev + 90);
 
+  const handleBlur = () => {
+    setToggleAddText(false);
+  };
+
+  const handleMouseEnterOnText = () => {
+    setResizeTextToggle(true);
+  };
+
   return (
     <div className="relative">
       <div className="absolute top-4 right-7 flex items-center justify-end  gap-x-2">
@@ -130,7 +164,6 @@ const CraeateStoryPageContent = ({
 
             <div>
               <div className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300">
-                {/* Draggable image */}
                 <div
                   className="w-full bg-neutral-200"
                   style={{
@@ -154,6 +187,7 @@ const CraeateStoryPageContent = ({
                     }}
                     ref={cropRef}
                   >
+                    {/* Draggable image */}
                     {image && (
                       <div
                         style={{
@@ -178,10 +212,13 @@ const CraeateStoryPageContent = ({
                         </Draggable>
                       </div>
                     )}
-                    {/* 
-                    {toggleAddText && (
+
+                    {text.length !== 0 && toggleAddText === false && (
                       <Draggable>
                         <div
+                          onMouseEnter={handleMouseEnterOnText}
+                          // onMouseLeave={handleMouseLeaveOnText}
+                          onDoubleClick={() => setToggleAddText(true)}
                           ref={textRef}
                           style={{
                             position: "absolute",
@@ -193,10 +230,23 @@ const CraeateStoryPageContent = ({
                             fontWeight: "bolder",
                           }}
                         >
-                          {text}
+                          <div className="relative">
+                            {/* Circles at the corners */}
+                            <div className="absolute top-0 left-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
+                            {/* Top-left corner */}
+                            <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
+                            {/* Top-right corner */}
+                            <div className="absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
+                            {/* Bottom-left corner */}
+                            <div className="absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
+                            {/* Bottom-right corner */}{" "}
+                            <div className="flex items-center justify-center h-full text-center border">
+                              {text}
+                            </div>
+                          </div>
                         </div>
                       </Draggable>
-                    )} */}
+                    )}
 
                     {toggleAddText && (
                       <div
@@ -209,7 +259,7 @@ const CraeateStoryPageContent = ({
                           style={{
                             position: "absolute",
                             top: "120px", // Set initial position of the text
-                            left: "70px", // Set initial position of the text
+                            left: "0px", // Set initial position of the text
                             cursor: "grab",
                             color: "black", // Text color
                             fontSize: "100px", // Text size
@@ -217,15 +267,24 @@ const CraeateStoryPageContent = ({
                           }}
                         >
                           <Input
-                            className="border-0 text-2xl bg-neutral-500/10 placeholder:text-black "
+                            ref={inputRef}
+                            value={text}
+                            className="border-0 text-2xl bg-transparent placeholder:text-black text-center"
                             placeholder="Start typing"
                             onChange={(e) => setText(e.target.value)}
+                            onBlur={handleBlur}
                           />
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
+
+                {toggleAddText && (
+                  <div className="absolute top-0 right-0">
+                    <span>wew</span>
+                  </div>
+                )}
               </div>
 
               {/* footer for rotating image and zoom in and out the image */}
