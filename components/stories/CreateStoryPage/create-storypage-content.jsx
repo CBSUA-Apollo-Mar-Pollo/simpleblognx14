@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
+import { cn } from "@/lib/utils";
 import {
   ALargeSmall,
   Minus,
@@ -13,6 +14,7 @@ import {
   Rotate3d,
   Rotate3D,
   RotateCw,
+  X,
 } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -30,6 +32,10 @@ const CraeateStoryPageContent = ({
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [resizeTextToggle, setResizeTextToggle] = useState(false);
+  const [textFontSize, setTextFontSize] = useState(2);
+  const [textColor, setTextColor] = useState("black");
+  const [size, setSize] = useState({ x: 100, y: 60 });
+  const [isDraggableDisabled, setIsDraggableDisabled] = useState(false);
 
   const imageRef = useRef(null);
   const cropRef = useRef(null);
@@ -149,6 +155,34 @@ const CraeateStoryPageContent = ({
     setResizeTextToggle(true);
   };
 
+  const handleMouseLeaveOnText = () => {
+    setResizeTextToggle(false);
+  };
+
+  const handler = (mouseDownEvent) => {
+    const startSize = size;
+    const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
+    setIsDraggableDisabled(true);
+
+    const onMouseMove = (mouseMoveEvent) => {
+      setIsDraggableDisabled(true);
+      setSize((currentSize) => ({
+        x: startSize.x - startPosition.x + mouseMoveEvent.pageX,
+        y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
+      }));
+      // setTextFontSize((prev) => (prev += 0.1));
+    };
+
+    const onMouseUp = () => {
+      setIsDraggableDisabled(false);
+      document.body.removeEventListener("mousemove", onMouseMove);
+      document.body.removeEventListener("mouseup", onMouseUp);
+    };
+
+    document.body.addEventListener("mousemove", onMouseMove);
+    document.body.addEventListener("mouseup", onMouseUp, { once: true });
+  };
+
   return (
     <div className="relative">
       <div className="absolute top-4 right-7 flex items-center justify-end  gap-x-2">
@@ -214,10 +248,10 @@ const CraeateStoryPageContent = ({
                     )}
 
                     {text.length !== 0 && toggleAddText === false && (
-                      <Draggable>
+                      <Draggable disabled={isDraggableDisabled}>
                         <div
                           onMouseEnter={handleMouseEnterOnText}
-                          // onMouseLeave={handleMouseLeaveOnText}
+                          onMouseLeave={handleMouseLeaveOnText}
                           onDoubleClick={() => setToggleAddText(true)}
                           ref={textRef}
                           style={{
@@ -232,16 +266,43 @@ const CraeateStoryPageContent = ({
                         >
                           <div className="relative">
                             {/* Circles at the corners */}
-                            <div className="absolute top-0 left-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
-                            {/* Top-left corner */}
-                            <div className="absolute top-0 right-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
-                            {/* Top-right corner */}
-                            <div className="absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
-                            {/* Bottom-left corner */}
-                            <div className="absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full bg-gray-500"></div>{" "}
-                            {/* Bottom-right corner */}{" "}
-                            <div className="flex items-center justify-center h-full text-center border">
-                              {text}
+                            {resizeTextToggle && (
+                              <div
+                                onClick={() => setText("")}
+                                className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
+                              >
+                                <X className="w-[13px] h-[13px] text-white" />
+                              </div>
+                            )}
+                            {resizeTextToggle && (
+                              <div className="absolute -top-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-ne-resize"></div>
+                            )}
+                            {resizeTextToggle && (
+                              <div className="absolute -bottom-[2px] -left-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-sw-resize"></div>
+                            )}
+                            {resizeTextToggle && (
+                              <div
+                                onMouseDown={handler}
+                                className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-se-resize"
+                              ></div>
+                            )}
+
+                            <div
+                              className={`px-2 py-1 flex items-center justify-center h-full text-center 
+                                  ${
+                                    resizeTextToggle
+                                      ? `border border-neutral-400`
+                                      : `border-0`
+                                  }
+                                `}
+                              style={{
+                                width: size.x,
+                                height: size.y,
+                              }}
+                            >
+                              <span style={{ fontSize: `${textFontSize}rem` }}>
+                                {text}
+                              </span>
                             </div>
                           </div>
                         </div>
