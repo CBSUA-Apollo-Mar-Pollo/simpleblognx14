@@ -85,8 +85,8 @@ const PostVoteDetails = ({ votesAmt, postId }) => {
 
         {/* list of users who voted the post */}
         <div className="mt-2 mx-4">
-          {votedUsers?.map((item) => (
-            <div key={item.id} className="flex items-center gap-x-2 ">
+          {votedUsers?.map((item, index) => (
+            <div key={index} className="flex items-center gap-x-2 ">
               <div className="relative">
                 <UserAvatar
                   className="h-9 w-9 m-2"

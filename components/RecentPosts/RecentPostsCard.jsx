@@ -31,8 +31,6 @@ const RecentPostsCard = async () => {
     return recPostDate.getDate() === today.getDate();
   });
 
-  // console.log(todayPosts[2].blog.image[0].url, "todays posts");
-
   return (
     <div>
       {session?.user && todayPosts.length !== 0 && (

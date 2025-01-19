@@ -75,11 +75,6 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
-  console.log(
-    data?.pages?.flatMap((page) => page),
-    "posts from server"
-  );
-
   return (
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>

@@ -13,7 +13,6 @@ const ModalPage4 = ({
   selectedVisibility,
   setSelectedVisibility,
 }) => {
-  console.log(selectedVisibility, "selectedVisibility");
   return (
     <div>
       <DialogHeader className="ml-4 mt-4">

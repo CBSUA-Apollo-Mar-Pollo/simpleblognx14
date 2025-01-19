@@ -123,8 +123,6 @@ export async function PATCH(req) {
 
     const { description, images } = await req.json();
 
-    console.log(images, "patch image");
-
     const { searchParams } = new URL(req.url);
 
     const postId = searchParams.get("postId");

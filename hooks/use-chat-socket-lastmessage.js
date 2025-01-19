@@ -12,7 +12,6 @@ export const useChatSocketLastMessage = ({ addKey, queryKey, userProfile }) => {
     }
     // watch for new messages
     socket.on(addKey, (message) => {
-      console.log(message, "message in last message socket");
       if (message.user.id !== userProfile.id) {
         queryClient.setQueryData([queryKey], (oldData) => {
           if (!oldData || !oldData.pages || oldData.pages.length === 0) {

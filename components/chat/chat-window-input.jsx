@@ -60,7 +60,6 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
 
   const { mutate: onSubmit } = useMutation({
     mutationFn: async (values) => {
-      console.log(values, "chat window");
       let sessionId = session?.user.id;
       const url = qs.stringifyUrl({
         url: "/api/socket/direct-messages",

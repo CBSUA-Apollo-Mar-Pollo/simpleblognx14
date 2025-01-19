@@ -7,7 +7,6 @@ import { sendVerificationEmail } from "@/lib/mail";
 
 export async function POST(req) {
   try {
-    console.log("nag agi sa sign up");
     const body = await req.json();
 
     const { name, email, password } = signUpFormValidator.parse(body);

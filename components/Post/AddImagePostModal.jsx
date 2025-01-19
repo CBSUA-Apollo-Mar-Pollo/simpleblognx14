@@ -108,7 +108,6 @@ const AddGalleryPostModal = ({ session, user, communityId }) => {
       return data;
     },
     onError: (err) => {
-      console.log(err);
       setIsLoading(false);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
@@ -223,9 +222,6 @@ const AddGalleryPostModal = ({ session, user, communityId }) => {
   const handleMouseLeave = () => {
     setToggleButton(false);
   };
-
-  console.log(imagePreviews, "preview image");
-  console.log(videoPreviews, "preview video");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -35,7 +35,6 @@ export const setupSocketEvents = (io) => {
     });
 
     socket.on("sign-out", async (data) => {
-      console.log("sign-out", data);
       await dbPages.user.update({
         where: {
           id: data,
@@ -48,7 +47,6 @@ export const setupSocketEvents = (io) => {
     });
 
     socket.on("getUserOnline", async (data) => {
-      console.log("getUserOnline", data);
       const userId = data.user.id;
 
       const results = await dbPages.friend.findMany({
@@ -92,11 +90,8 @@ export const setupSocketEvents = (io) => {
 
     socket.on("disconnect", async () => {
       const userId = userMap[socket.id];
-      console.log(userMap, "userMap");
 
       if (userId) {
-        console.log(`User ${userId} disconnected`);
-
         connectionCount[userId] -= 1;
 
         if (connectionCount[userId] === 0) {
@@ -116,7 +111,6 @@ export const setupSocketEvents = (io) => {
 
         delete userMap[socket.id]; // Clean up the user map
       }
-      console.log("A user disconnected");
     });
   });
 };

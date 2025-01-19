@@ -1,5 +1,6 @@
 "use client";
 
+import { getDominantColor } from "@/actions/getDominantColor";
 import NotificationMenu from "@/components/Notification/NotificationMenu";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/Input";
 import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import {
   ALargeSmall,
   Minus,
@@ -16,10 +18,16 @@ import {
   RotateCw,
   X,
 } from "lucide-react";
+import { Poppins } from "next/font/google";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins", // Optionally set a custom CSS variable
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 const CraeateStoryPageContent = ({
   session,
   toggleAddText,
@@ -27,12 +35,13 @@ const CraeateStoryPageContent = ({
   image,
   setImage,
 }) => {
+  const fontFamily = poppins.style.fontFamily;
   const [storyPreview, setStoryPreview] = useState(false);
   const [text, setText] = useState("");
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [resizeTextToggle, setResizeTextToggle] = useState(false);
-  const [textFontSize, setTextFontSize] = useState(2);
+  const [textFontSize, setTextFontSize] = useState(30);
   const [textColor, setTextColor] = useState("black");
   const [size, setSize] = useState({ x: 100, y: 60 });
   const [isDraggableDisabled, setIsDraggableDisabled] = useState(false);
@@ -57,6 +66,14 @@ const CraeateStoryPageContent = ({
     }
   }, [toggleAddText]);
 
+  const { data: dominantColor, error } = useQuery({
+    queryKey: ["dominantColor", image],
+    queryFn: async () => {
+      const res = await getDominantColor(image);
+      return res;
+    },
+  });
+
   // for cropping the image
   const handleCrop = () => {
     const cropRect = cropRef.current.getBoundingClientRect();
@@ -72,6 +89,20 @@ const CraeateStoryPageContent = ({
     canvas.width = cropRect.width;
     canvas.height = cropRect.height;
 
+    // Create a linear gradient for the background
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(
+      0,
+      `rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 1)`
+    ); // Starting color (dominant color)
+    gradient.addColorStop(1, "rgba(255, 255, 255, 1)"); // Ending color (white)
+
+    // Apply the gradient as the background fill style
+    ctx.fillStyle = gradient;
+
+    // Fill the entire canvas with the gradient background
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
     // Calculate the position and dimensions of the image to be cropped
     const scaleX = img.naturalWidth / imgRect.width; // Image scaling in x direction
     const scaleY = img.naturalHeight / imgRect.height; // Image scaling in y direction
@@ -79,9 +110,6 @@ const CraeateStoryPageContent = ({
     // Calculate the cropping coordinates (relative to the crop area)
     const offsetX = (cropRect.left - imgRect.left) * scaleX;
     const offsetY = (cropRect.top - imgRect.top) * scaleY;
-
-    // Clear the canvas to ensure transparency
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the portion of the image within the crop area to the canvas
     ctx.drawImage(
@@ -96,18 +124,31 @@ const CraeateStoryPageContent = ({
       canvas.height // Height on the canvas (match crop area size)
     );
 
+    // Calculate the text position relative to the crop area
     const textPosition = textElement.getBoundingClientRect();
+    const textOffsetX = textPosition.left - cropRect.left;
+    const textOffsetY = textPosition.top - cropRect.top;
+
+    // Apply the scale and rotation to the text position
+    const transformedX = textOffsetX * scale; // Apply scale transformation
+    const transformedY = textOffsetY * scale; // Apply scale transformation
+
+    // Apply rotation to the text
+    ctx.save(); // Save the current canvas state
+    ctx.translate(canvas.width / 2, canvas.height / 2); // Move the origin to the center of the canvas
+    ctx.translate(-canvas.width / 2, -canvas.height / 2); // Move back to the original origin
 
     // Draw the draggable text onto the canvas
     if (textElement) {
-      ctx.font = "bold 30px Arial"; // Customize font size and family
-      ctx.fillStyle = "black"; // Customize text color
+      ctx.font = `bolder ${textFontSize + 1}px ${fontFamily}`; // Customize font size and family
+      ctx.fillStyle = textColor; // Set text color from state
       ctx.fillText(
         text,
-        textPosition.left - cropRect.left,
-        textPosition.top - cropRect.top
-      ); // Draw text at the specified position
+        transformedX, // Draw text at the transformed position
+        transformedY // Draw text at the transformed position
+      );
     }
+    ctx.restore(); // Restore the canvas state after rotation
 
     // Get cropped image with text as a data URL (use "image/png" for transparency support)
     const croppedImage = canvas.toDataURL("image/png");
@@ -166,11 +207,24 @@ const CraeateStoryPageContent = ({
 
     const onMouseMove = (mouseMoveEvent) => {
       setIsDraggableDisabled(true);
-      setSize((currentSize) => ({
-        x: startSize.x - startPosition.x + mouseMoveEvent.pageX,
-        y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
-      }));
-      // setTextFontSize((prev) => (prev += 0.1));
+      setSize((currentSize) => {
+        // Calculate new size
+        const newSize = {
+          x: startSize.x - startPosition.x + mouseMoveEvent.pageX,
+          y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
+        };
+
+        // Determine if the size is increasing or decreasing
+        const isGettingBigger =
+          newSize.x > currentSize.x || newSize.y > currentSize.y;
+
+        // Adjust font size accordingly
+        setTextFontSize((prevFontSize) =>
+          isGettingBigger ? prevFontSize + 0.3 : prevFontSize - 0.3
+        );
+
+        return newSize;
+      });
     };
 
     const onMouseUp = () => {
@@ -182,6 +236,8 @@ const CraeateStoryPageContent = ({
     document.body.addEventListener("mousemove", onMouseMove);
     document.body.addEventListener("mouseup", onMouseUp, { once: true });
   };
+
+  console.log(dominantColor, "dominantColor");
 
   return (
     <div className="relative">
@@ -210,7 +266,7 @@ const CraeateStoryPageContent = ({
                   }}
                 >
                   <div
-                    className="rounded-xl bg-white "
+                    className="rounded-xl"
                     style={{
                       position: "relative",
                       width: "360px", // Width of the crop area
@@ -218,6 +274,7 @@ const CraeateStoryPageContent = ({
                       margin: "20px auto",
                       border: "2px dashed #ccc",
                       overflow: "hidden",
+                      backgroundImage: `linear-gradient(to bottom,  rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.9) 0%, rgba(255, 255, 255, 1) 100%)`,
                     }}
                     ref={cropRef}
                   >
@@ -253,7 +310,6 @@ const CraeateStoryPageContent = ({
                           onMouseEnter={handleMouseEnterOnText}
                           onMouseLeave={handleMouseLeaveOnText}
                           onDoubleClick={() => setToggleAddText(true)}
-                          ref={textRef}
                           style={{
                             position: "absolute",
                             top: "120px", // Set initial position of the text
@@ -268,27 +324,32 @@ const CraeateStoryPageContent = ({
                             {/* Circles at the corners */}
                             {resizeTextToggle && (
                               <div
-                                onClick={() => setText("")}
+                                onClick={() => {
+                                  setText("");
+                                  setSize({ x: 100, y: 60 });
+                                  setTextFontSize(30);
+                                }}
                                 className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
                               >
                                 <X className="w-[13px] h-[13px] text-white" />
                               </div>
                             )}
-                            {resizeTextToggle && (
-                              <div className="absolute -top-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-ne-resize"></div>
-                            )}
-                            {resizeTextToggle && (
-                              <div className="absolute -bottom-[2px] -left-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-sw-resize"></div>
-                            )}
+
                             {resizeTextToggle && (
                               <div
+                                onMouseEnter={() => {
+                                  setIsDraggableDisabled(true);
+                                }}
+                                onMouseLeave={() => {
+                                  setIsDraggableDisabled(false);
+                                }}
                                 onMouseDown={handler}
                                 className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-se-resize"
                               ></div>
                             )}
 
                             <div
-                              className={`px-2 py-1 flex items-center justify-center h-full text-center 
+                              className={`px-2 py-1 flex items-center justify-center h-auto w-auto text-center 
                                   ${
                                     resizeTextToggle
                                       ? `border border-neutral-400`
@@ -296,11 +357,19 @@ const CraeateStoryPageContent = ({
                                   }
                                 `}
                               style={{
-                                width: size.x,
+                                width: size.x + textFontSize,
                                 height: size.y,
+                                boxSizing: "border-box", // Ensures padding and border are included in the size
                               }}
                             >
-                              <span style={{ fontSize: `${textFontSize}rem` }}>
+                              <span
+                                className="text-black"
+                                ref={textRef}
+                                style={{
+                                  fontSize: `${textFontSize}px`,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
                                 {text}
                               </span>
                             </div>
@@ -373,13 +442,13 @@ const CraeateStoryPageContent = ({
                   />
                 </div>
 
-                <Button
+                {/* <Button
                   onClick={rotateClockwise}
                   className="flex gap-x-2 bg-neutral-200 hover:bg-neutral-100"
                 >
                   <RotateCw className="h-5 w-5 text-black" />
                   <span className="text-black ">Rotate Image</span>
-                </Button>
+                </Button> */}
 
                 <button onClick={handleCrop} style={{ marginTop: "10px" }}>
                   Crop Image

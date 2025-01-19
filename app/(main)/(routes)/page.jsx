@@ -64,7 +64,6 @@ export default async function HomePage() {
     "use server";
     const utapi = new UTApi();
     await utapi.deleteFiles(image.key);
-    console.log(image);
   };
 
   const getAllConversationsByLogInUser = await db.conversation.findMany({

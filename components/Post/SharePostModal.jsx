@@ -77,8 +77,6 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
     },
   });
 
-  console.log(blog, "share post modal");
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full hover:bg-neutral-100 py-3 dark:text-neutral-200 dark:hover:bg-neutral-600 rounded">

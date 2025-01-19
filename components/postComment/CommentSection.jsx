@@ -51,8 +51,6 @@ const CommentSection = ({
 
   const comments = data?.pages?.flatMap((page) => page) ?? initialComments;
 
-  console.log(initialComments, "shorts v comments");
-
   return (
     <>
       <div className="mt-2 pl-4 pr-1 overflow-auto">

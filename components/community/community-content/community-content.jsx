@@ -31,8 +31,6 @@ const CommunityContent = ({ communityDetails, communityId }) => {
     year: "numeric",
   });
 
-  console.log(communityDetails, "communityDetails");
-
   return (
     <div>
       <CommunityBanner {...{ communityDetails, session }} />

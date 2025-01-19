@@ -81,7 +81,6 @@ const UserProfilePage = async ({ params }) => {
     "use server";
     const utapi = new UTApi();
     await utapi.deleteFiles(image[0].key);
-    console.log(image);
   };
 
   return (

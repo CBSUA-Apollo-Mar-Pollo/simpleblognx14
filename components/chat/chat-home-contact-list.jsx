@@ -60,7 +60,6 @@ const ChatHomeContactList = ({ conversationList, session }) => {
         // Check if the requesterUser or user has onlineStatus set to true
         return item.requesterUser?.onlineStatus || item.user?.onlineStatus;
       });
-      console.log(filteredData, "friendsOnlineStatus");
 
       const hasAlreadyStored = filteredData.some((item) =>
         data.some(
@@ -87,8 +86,6 @@ const ChatHomeContactList = ({ conversationList, session }) => {
       socket.off("friendsOnlineStatus");
     };
   }, [socket]);
-
-  console.log(userData, "user data");
 
   return (
     <div className="mt-2 mx-1">

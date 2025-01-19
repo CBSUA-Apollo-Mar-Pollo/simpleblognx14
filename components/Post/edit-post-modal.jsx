@@ -35,7 +35,6 @@ import MultipleImageRender from "./multiple-image-render";
 import Link from "next/link";
 
 const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
-  console.log(blog, "edit post blog");
   const { data: session } = useSession();
   const [description, setDescription] = useState(blog?.description || "");
   const [open, setOpen] = useState(false);
@@ -61,7 +60,6 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
           files: file,
         })
           .then(async (response) => {
-            console.log(response, "response from image uploader");
             images = response;
           })
           .catch((error) => {
