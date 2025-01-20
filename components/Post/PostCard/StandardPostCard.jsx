@@ -66,7 +66,12 @@ const StandardPostCard = ({
         videoRef.current.pause();
       } else {
         videoRef.current.currentTime = currentTime;
-        videoRef.current.play();
+        videoRef.current
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => console.error(error));
       }
     }
   }, [isVideoPaused]);
@@ -74,8 +79,17 @@ const StandardPostCard = ({
   useEffect(() => {
     if (videoRef.current) {
       if (entry?.isIntersecting) {
-        videoRef.current.play();
-        setIsPlaying(true);
+        let playPromise = videoRef.current.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then((_) => {
+              setIsPlaying(true);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       } else {
         setIsVolumeHovered(false);
         videoRef.current.pause();
@@ -186,7 +200,7 @@ const StandardPostCard = ({
             <video
               ref={videoRef}
               className="object-cover border-0 max-h-[55vh]"
-              preload="metadata"
+              preload="none"
               playsInline
               loop
               onTimeUpdate={handleTimeUpdate}

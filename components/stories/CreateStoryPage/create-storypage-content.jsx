@@ -9,15 +9,7 @@ import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import {
-  ALargeSmall,
-  Minus,
-  Plus,
-  Rotate3d,
-  Rotate3D,
-  RotateCw,
-  X,
-} from "lucide-react";
+import { ALargeSmall, Minus, Plus, X } from "lucide-react";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -38,7 +30,7 @@ const CraeateStoryPageContent = ({
   const fontFamily = poppins.style.fontFamily;
   const [storyPreview, setStoryPreview] = useState(false);
   const [text, setText] = useState("");
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(2.5);
   const [rotation, setRotation] = useState(0);
   const [resizeTextToggle, setResizeTextToggle] = useState(false);
   const [textFontSize, setTextFontSize] = useState(30);
@@ -130,8 +122,8 @@ const CraeateStoryPageContent = ({
     const textOffsetY = textPosition.top - cropRect.top;
 
     // Apply the scale and rotation to the text position
-    const transformedX = textOffsetX * scale; // Apply scale transformation
-    const transformedY = textOffsetY * scale; // Apply scale transformation
+    const transformedX = textOffsetX; // Apply scale transformation
+    const transformedY = textOffsetY; // Apply scale transformation
 
     // Apply rotation to the text
     ctx.save(); // Save the current canvas state
@@ -162,16 +154,21 @@ const CraeateStoryPageContent = ({
 
   const zoomIn = () => {
     setScale((prevScale) => {
-      // Only increase the scale if it is less than the max value (1)
-      if (prevScale < 1) {
-        return prevScale + 0.1;
-      }
-      return prevScale; // Return the previous scale if it already exceeds the max value
+      // Increment the scale value by 0.1 and round to one decimal place
+
+      const nextScale = Math.round((parseFloat(prevScale) + 0.1) * 10) / 10;
+
+      // Return the next scale, ensuring it does not exceed the max value of 2.5
+      return nextScale <= 2.5 ? nextScale : prevScale;
     });
   };
 
   const zoomOut = () =>
-    setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
+    setScale((prevScale) =>
+      parseFloat(prevScale) > 0.1
+        ? parseFloat(prevScale) - 0.1
+        : parseFloat(prevScale)
+    );
 
   const handleSliderClick = (e) => {
     const slider = e.target;
@@ -181,12 +178,15 @@ const CraeateStoryPageContent = ({
 
     const min = parseFloat(slider.min);
     const max = parseFloat(slider.max);
+
+    // Calculate the new value and ensure it's a number
     const newValue = min + (clickX / sliderWidth) * (max - min);
 
-    setScale(newValue.toFixed(2)); // Set value with precision
+    // Set scale as a number
+    setScale(Number(newValue));
   };
 
-  const rotateClockwise = () => setRotation((prev) => prev + 90);
+  // const rotateClockwise = () => setRotation((prev) => prev + 90);
 
   const handleBlur = () => {
     setToggleAddText(false);
@@ -236,8 +236,6 @@ const CraeateStoryPageContent = ({
     document.body.addEventListener("mousemove", onMouseMove);
     document.body.addEventListener("mouseup", onMouseUp, { once: true });
   };
-
-  console.log(dominantColor, "dominantColor");
 
   return (
     <div className="relative">
@@ -296,8 +294,8 @@ const CraeateStoryPageContent = ({
                             style={{
                               position: "absolute",
                               cursor: "grab",
-                              top: "180px",
-                              left: "50px",
+                              top: "10px",
+                              left: "100px",
                             }}
                           />
                         </Draggable>
@@ -428,8 +426,9 @@ const CraeateStoryPageContent = ({
                     <input
                       type="range"
                       min="0.1"
-                      max="1"
+                      max="2.5"
                       step="0.1"
+                      draggable="false"
                       className="w-full h-1 rounded-none border-0 cursor-pointer  transition-all duration-300 ease-in-out"
                       value={scale}
                       onChange={(e) => setScale(e.target.value)}

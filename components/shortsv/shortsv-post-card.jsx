@@ -11,6 +11,8 @@ import {
   Globe,
   MessageCircle,
   MoreHorizontal,
+  Pause,
+  Play,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -29,7 +31,8 @@ const ShortsVPostCard = ({
   shortsvVotesAmt,
   currentShortsvVote,
 }) => {
-  const videoRef = useRef(null);
+  const mainVideoRef = useRef(null);
+  const backgroundVideoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const { signinToast } = useCustomHooks();
   const [votesAmt, setVotesAmt] = useState(shortsvVotesAmt);
@@ -38,20 +41,37 @@ const ShortsVPostCard = ({
   const prevVote = usePrevious(currentVote);
 
   const { ref, entry } = useIntersection({
-    threshold: 1, // Adjust this value as needed
+    threshold: 0.4, // Adjust this value as needed
   });
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (mainVideoRef.current) {
       if (entry?.isIntersecting) {
-        videoRef.current.play();
-        setIsPlaying(true);
+        let playPromise = mainVideoRef.current.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then((_) => {
+              setIsPlaying(true);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       } else {
-        videoRef.current.pause();
+        mainVideoRef.current.pause();
         setIsPlaying(false);
       }
     }
   }, [entry]);
+
+  // useEffect(() => {
+  //   if (mainVideoRef.current && isPlaying) {
+  //     mainVideoRef.current.play().catch((err) => {
+  //       console.error("Error playing video:", err);
+  //     });
+  //   }
+  // }, [isPlaying]);
 
   useEffect(() => {
     setCurrentVote(currentShortsvVote);
@@ -130,15 +150,26 @@ const ShortsVPostCard = ({
     setIsMuted((prev) => !prev);
   };
 
+  const handlePauseOrPlay = () => {
+    if (isPlaying === true) {
+      mainVideoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      mainVideoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
   return (
     <Card className="rounded-2xl shadow-md dark:border-none">
       <CardContent className="p-0">
         <div
+          onClick={handlePauseOrPlay}
           className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative rounded-2xl overflow-clip"
           ref={ref}
         >
           <video
-            ref={videoRef}
+            ref={backgroundVideoRef}
             key={videoData?.videoUrl}
             playsInline
             muted={true}
@@ -185,6 +216,17 @@ const ShortsVPostCard = ({
               </div>
             </div>
             <div className="flex items-center gap-x-3 mr-2">
+              {isPlaying ? (
+                <Play
+                  onClick={handlePauseOrPlay}
+                  className="stroke-white flex items-start justify-start z-20 cursor-pointer w-5 h-5"
+                />
+              ) : (
+                <Pause
+                  onClick={handlePauseOrPlay}
+                  className="stroke-white flex items-start justify-start z-20 cursor-pointer w-5 h-5"
+                />
+              )}
               {isMuted ? (
                 <Volume2
                   onClick={toggleVolume}
@@ -204,12 +246,12 @@ const ShortsVPostCard = ({
           {/* video content */}
           <div className="max-w-[25vw] z-[2]">
             <video
-              ref={videoRef}
+              ref={mainVideoRef}
               key={videoData?.videoUrl}
               loop
               playsInline
               muted={!isMuted}
-              preload="metadata"
+              preload="none"
               className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
               style={{
                 backgroundBlendMode: "overlay",
