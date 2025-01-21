@@ -67,6 +67,7 @@ model User {
   Vote              Vote[]
   CommentVote       CommentVote[]
   ShortsVidVote     ShortsVidVote[]
+  Story             Story[]
 }
 
 model Blog {
@@ -334,4 +335,16 @@ model CommentVote {
   type      VoteType
 
   @@id([userId, commentId])
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  image     Json
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  @@index([authorId])
 }

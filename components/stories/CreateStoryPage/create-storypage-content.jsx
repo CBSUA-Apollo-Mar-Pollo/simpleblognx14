@@ -5,21 +5,51 @@ import NotificationMenu from "@/components/Notification/NotificationMenu";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/Select";
 import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
 import { cn } from "@/lib/utils";
+import { SelectTrigger } from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
-import { ALargeSmall, Minus, Plus, X } from "lucide-react";
-import { Poppins } from "next/font/google";
+import { ALargeSmall, ArrowDown, Minus, Plus, Triangle, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
+
+import { Poppins, Caveat, Playfair, Lexend, Teko } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins", // Optionally set a custom CSS variable
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
+const caveat = Caveat({
+  subsets: ["latin"], // Choose subsets you need
+  variable: "--font-caveat",
+  weight: ["400", "700"], // Optional: Specify weights
+});
+const playfair = Playfair({
+  subsets: ["latin"], // Choose subsets you need
+  variable: "--font-playfair",
+  weight: ["400", "700"], // Optional: Specify weights
+});
+const lexend = Lexend({
+  subsets: ["latin"], // Choose subsets you need
+  variable: "--font-lexend",
+  weight: ["400", "700"], // Optional: Specify weights
+});
+const teko = Teko({
+  subsets: ["latin"], // Choose subsets you need
+  variable: "--font-teko",
+  weight: ["400", "700"], // Optional: Specify weights
+});
+
 const CraeateStoryPageContent = ({
   session,
   toggleAddText,
@@ -27,16 +57,40 @@ const CraeateStoryPageContent = ({
   image,
   setImage,
 }) => {
-  const fontFamily = poppins.style.fontFamily;
   const [storyPreview, setStoryPreview] = useState(false);
   const [text, setText] = useState("");
   const [scale, setScale] = useState(2.5);
   const [rotation, setRotation] = useState(0);
   const [resizeTextToggle, setResizeTextToggle] = useState(false);
   const [textFontSize, setTextFontSize] = useState(30);
-  const [textColor, setTextColor] = useState("black");
   const [size, setSize] = useState({ x: 100, y: 60 });
   const [isDraggableDisabled, setIsDraggableDisabled] = useState(false);
+  const [isMouseInsideTextEditor, setIsMouseInsideTextEditor] = useState(false);
+  const [chosenColor, setChosenColor] = useState("black");
+  const [fontStyle, setFontStyle] = useState("Headline");
+
+  const colors = [
+    "#000000", // black
+    "#14b8a6", // teal-600
+    "#f59e0b", // amber-600
+    "#0ea5e9", // sky-600
+    "#fbbf24", // yellow-600
+    "#4b5563", // gray-600
+    "#84cc16", // lime-600
+    "#8b5cf6", // purple-600
+    "#f43f5e", // rose-600
+    "#ef4444", // red-600
+    "#ffffff", // white
+    "#7c3aed", // violet-600
+  ];
+
+  const fontFamilies = {
+    Headline: poppins,
+    Casual: caveat,
+    Fancy: playfair,
+    Simple: lexend,
+    Clean: teko,
+  };
 
   const imageRef = useRef(null);
   const cropRef = useRef(null);
@@ -117,9 +171,9 @@ const CraeateStoryPageContent = ({
     );
 
     // Calculate the text position relative to the crop area
-    const textPosition = textElement.getBoundingClientRect();
-    const textOffsetX = textPosition.left - cropRect.left;
-    const textOffsetY = textPosition.top - cropRect.top;
+    const textPosition = textElement?.getBoundingClientRect();
+    const textOffsetX = textPosition?.left - cropRect.left;
+    const textOffsetY = textPosition?.top - cropRect.top;
 
     // Apply the scale and rotation to the text position
     const transformedX = textOffsetX; // Apply scale transformation
@@ -132,8 +186,8 @@ const CraeateStoryPageContent = ({
 
     // Draw the draggable text onto the canvas
     if (textElement) {
-      ctx.font = `bolder ${textFontSize + 1}px ${fontFamily}`; // Customize font size and family
-      ctx.fillStyle = textColor; // Set text color from state
+      ctx.font = `bolder ${textFontSize + 1}px --font-caveat`; // Customize font size and family
+      ctx.fillStyle = chosenColor; // Set text color from state
       ctx.fillText(
         text,
         transformedX, // Draw text at the transformed position
@@ -188,7 +242,7 @@ const CraeateStoryPageContent = ({
 
   // const rotateClockwise = () => setRotation((prev) => prev + 90);
 
-  const handleBlur = () => {
+  const handleCloseTextEditor = () => {
     setToggleAddText(false);
   };
 
@@ -236,6 +290,12 @@ const CraeateStoryPageContent = ({
     document.body.addEventListener("mousemove", onMouseMove);
     document.body.addEventListener("mouseup", onMouseUp, { once: true });
   };
+
+  const handleChangeFontStyle = (value) => {
+    setFontStyle(value);
+  };
+
+  console.log(fontStyle);
 
   return (
     <div className="relative">
@@ -361,11 +421,12 @@ const CraeateStoryPageContent = ({
                               }}
                             >
                               <span
-                                className="text-black"
+                                className={`${fontFamilies[fontStyle].className}`}
                                 ref={textRef}
                                 style={{
                                   fontSize: `${textFontSize}px`,
                                   whiteSpace: "nowrap",
+                                  color: chosenColor,
                                 }}
                               >
                                 {text}
@@ -389,7 +450,7 @@ const CraeateStoryPageContent = ({
                             top: "120px", // Set initial position of the text
                             left: "0px", // Set initial position of the text
                             cursor: "grab",
-                            color: "black", // Text color
+                            color: chosenColor, // Text color
                             fontSize: "100px", // Text size
                             fontWeight: "bolder",
                           }}
@@ -397,10 +458,9 @@ const CraeateStoryPageContent = ({
                           <Input
                             ref={inputRef}
                             value={text}
-                            className="border-0 text-2xl bg-transparent placeholder:text-black text-center"
+                            className={`border-0 text-2xl bg-transparent placeholder:text-black text-center ${fontFamilies[fontStyle].className}`}
                             placeholder="Start typing"
                             onChange={(e) => setText(e.target.value)}
-                            onBlur={handleBlur}
                           />
                         </div>
                       </div>
@@ -409,8 +469,59 @@ const CraeateStoryPageContent = ({
                 </div>
 
                 {toggleAddText && (
-                  <div className="absolute top-0 right-0">
-                    <span>wew</span>
+                  <div className="absolute top-40 right-2">
+                    <div
+                      onMouseEnter={() => setIsMouseInsideTextEditor(true)}
+                      onMouseLeave={() => setIsMouseInsideTextEditor(false)}
+                      className="bg-white h-auto w-56 rounded-md relative px-2 pt-3 pb-2 space-y-2"
+                    >
+                      <div>
+                        <Select
+                          defaultValue="Headline"
+                          onValueChange={(value) =>
+                            handleChangeFontStyle(value)
+                          }
+                        >
+                          <SelectTrigger className="py-2 px-3 w-[12vw] border border-neutral-300 rounded-md flex items-center justify-between">
+                            <div className="flex items-center gap-x-2">
+                              <span>
+                                <ALargeSmall />
+                              </span>
+                              <SelectValue placeholder="Headline" />
+                            </div>
+
+                            <Triangle className="rotate-180 h-3 w-3 fill-black" />
+                          </SelectTrigger>
+
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="Headline">Headline</SelectItem>
+                              <SelectItem value="Casual">Casual</SelectItem>
+                              <SelectItem value="Fancy">Fancy</SelectItem>
+                              <SelectItem value="Simple">Simple</SelectItem>
+                              <SelectItem value="Clean">Clean</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="grid grid-cols-7 gap-y-2">
+                        {colors.map((color, index) => (
+                          <div
+                            style={{ backgroundColor: color }}
+                            onClick={() => setChosenColor(color)}
+                            className="h-5 w-5 rounded-full border-2 border-neutral-300"
+                          />
+                        ))}
+                      </div>
+
+                      <Button
+                        className="w-full bg-blue-600 hover:bg-blue-500"
+                        onClick={handleCloseTextEditor}
+                      >
+                        Close
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
