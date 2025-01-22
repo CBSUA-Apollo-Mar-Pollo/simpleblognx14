@@ -32,22 +32,22 @@ const poppins = Poppins({
 const caveat = Caveat({
   subsets: ["latin"], // Choose subsets you need
   variable: "--font-caveat",
-  weight: ["400", "700"], // Optional: Specify weights
+  weight: ["700"], // Optional: Specify weights
 });
 const playfair = Playfair({
   subsets: ["latin"], // Choose subsets you need
   variable: "--font-playfair",
-  weight: ["400", "700"], // Optional: Specify weights
+  weight: ["700"], // Optional: Specify weights
 });
 const lexend = Lexend({
   subsets: ["latin"], // Choose subsets you need
   variable: "--font-lexend",
-  weight: ["400", "700"], // Optional: Specify weights
+  weight: ["700"], // Optional: Specify weights
 });
 const teko = Teko({
   subsets: ["latin"], // Choose subsets you need
   variable: "--font-teko",
-  weight: ["400", "700"], // Optional: Specify weights
+  weight: ["700"], // Optional: Specify weights
 });
 
 const CraeateStoryPageContent = ({
@@ -96,6 +96,7 @@ const CraeateStoryPageContent = ({
   const cropRef = useRef(null);
   const textRef = useRef(null); // Reference for draggable text
   const inputRef = useRef();
+  const textBorderRef = useRef(null);
 
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
@@ -126,6 +127,7 @@ const CraeateStoryPageContent = ({
     const img = imageRef.current;
     const imgRect = img.getBoundingClientRect();
     const textElement = textRef.current;
+    const textBorderElement = textBorderRef.current;
 
     // Create a canvas to draw the cropped image and text
     const canvas = document.createElement("canvas");
@@ -172,12 +174,13 @@ const CraeateStoryPageContent = ({
 
     // Calculate the text position relative to the crop area
     const textPosition = textElement?.getBoundingClientRect();
+
     const textOffsetX = textPosition?.left - cropRect.left;
     const textOffsetY = textPosition?.top - cropRect.top;
 
     // Apply the scale and rotation to the text position
     const transformedX = textOffsetX; // Apply scale transformation
-    const transformedY = textOffsetY; // Apply scale transformation
+    const transformedY = textOffsetY - 20; // Apply scale transformation
 
     // Apply rotation to the text
     ctx.save(); // Save the current canvas state
@@ -186,7 +189,9 @@ const CraeateStoryPageContent = ({
 
     // Draw the draggable text onto the canvas
     if (textElement) {
-      ctx.font = `bolder ${textFontSize + 1}px --font-caveat`; // Customize font size and family
+      ctx.font = `bolder ${textFontSize + 1}px ${
+        fontFamilies[fontStyle].style.fontFamily
+      }`; // Customize font size and family
       ctx.fillStyle = chosenColor; // Set text color from state
       ctx.fillText(
         text,
@@ -194,6 +199,7 @@ const CraeateStoryPageContent = ({
         transformedY // Draw text at the transformed position
       );
     }
+
     ctx.restore(); // Restore the canvas state after rotation
 
     // Get cropped image with text as a data URL (use "image/png" for transparency support)
@@ -295,7 +301,7 @@ const CraeateStoryPageContent = ({
     setFontStyle(value);
   };
 
-  console.log(fontStyle);
+  console.log(textRef.current, "text ref");
 
   return (
     <div className="relative">
@@ -378,59 +384,61 @@ const CraeateStoryPageContent = ({
                             fontWeight: "bolder",
                           }}
                         >
-                          <div className="relative">
-                            {/* Circles at the corners */}
-                            {resizeTextToggle && (
-                              <div
-                                onClick={() => {
-                                  setText("");
-                                  setSize({ x: 100, y: 60 });
-                                  setTextFontSize(30);
-                                }}
-                                className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
-                              >
-                                <X className="w-[13px] h-[13px] text-white" />
-                              </div>
-                            )}
+                          <div>
+                            <div className="relative">
+                              {/* Circles at the corners */}
+                              {resizeTextToggle && (
+                                <div
+                                  onClick={() => {
+                                    setText("");
+                                    setSize({ x: 100, y: 60 });
+                                    setTextFontSize(30);
+                                  }}
+                                  className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
+                                >
+                                  <X className="w-[13px] h-[13px] text-white" />
+                                </div>
+                              )}
 
-                            {resizeTextToggle && (
-                              <div
-                                onMouseEnter={() => {
-                                  setIsDraggableDisabled(true);
-                                }}
-                                onMouseLeave={() => {
-                                  setIsDraggableDisabled(false);
-                                }}
-                                onMouseDown={handler}
-                                className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-se-resize"
-                              ></div>
-                            )}
+                              {resizeTextToggle && (
+                                <div
+                                  onMouseEnter={() => {
+                                    setIsDraggableDisabled(true);
+                                  }}
+                                  onMouseLeave={() => {
+                                    setIsDraggableDisabled(false);
+                                  }}
+                                  onMouseDown={handler}
+                                  className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-se-resize"
+                                ></div>
+                              )}
 
-                            <div
-                              className={`px-2 py-1 flex items-center justify-center h-auto w-auto text-center 
+                              <div
+                                style={{
+                                  width: size.x,
+                                  height: size.y,
+
+                                  whiteSpace: "nowrap",
+                                  color: chosenColor,
+                                }}
+                                className={`flex  items-center justify-center h-auto w-auto text-center 
                                   ${
                                     resizeTextToggle
                                       ? `border border-neutral-400`
                                       : `border-0`
                                   }
+                                  ${fontFamilies[fontStyle].className}
+
                                 `}
-                              style={{
-                                width: size.x + textFontSize,
-                                height: size.y,
-                                boxSizing: "border-box", // Ensures padding and border are included in the size
-                              }}
-                            >
-                              <span
-                                className={`${fontFamilies[fontStyle].className}`}
-                                ref={textRef}
-                                style={{
-                                  fontSize: `${textFontSize}px`,
-                                  whiteSpace: "nowrap",
-                                  color: chosenColor,
-                                }}
                               >
-                                {text}
-                              </span>
+                                <p
+                                  style={{ fontSize: `${textFontSize}px` }}
+                                  className="flex flex-col"
+                                >
+                                  {text}
+                                  <span ref={textRef}></span>
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
