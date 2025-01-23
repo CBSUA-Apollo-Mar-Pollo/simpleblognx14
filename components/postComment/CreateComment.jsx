@@ -116,6 +116,8 @@ const CreateComment = ({
   function handleFileChange(event) {
     setImageLoading(true);
     const file = event.target.files[0];
+
+    console.log(file);
     uploadFiles("imageUploader", {
       files: [file],
     })

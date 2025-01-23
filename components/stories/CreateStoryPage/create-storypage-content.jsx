@@ -56,8 +56,10 @@ const CraeateStoryPageContent = ({
   setToggleAddText,
   image,
   setImage,
+  storyPreview,
+  setStoryPreview,
+  setCropImageLink,
 }) => {
-  const [storyPreview, setStoryPreview] = useState(false);
   const [text, setText] = useState("");
   const [scale, setScale] = useState(2.5);
   const [rotation, setRotation] = useState(0);
@@ -68,6 +70,7 @@ const CraeateStoryPageContent = ({
   const [isMouseInsideTextEditor, setIsMouseInsideTextEditor] = useState(false);
   const [chosenColor, setChosenColor] = useState("black");
   const [fontStyle, setFontStyle] = useState("Headline");
+  const [imageName, setImageName] = useState("cropped-image-with-text.png");
 
   const colors = [
     "#000000", // black
@@ -103,6 +106,7 @@ const CraeateStoryPageContent = ({
     if (file) {
       setStoryPreview(true);
       setImage(URL.createObjectURL(file));
+      setImageName(file.name);
     }
   };
 
@@ -205,11 +209,27 @@ const CraeateStoryPageContent = ({
     // Get cropped image with text as a data URL (use "image/png" for transparency support)
     const croppedImage = canvas.toDataURL("image/png");
 
-    // Create a download link for the cropped image
-    const downloadLink = document.createElement("a");
-    downloadLink.href = croppedImage;
-    downloadLink.download = "cropped-image-with-text.png"; // Save as PNG for transparency
-    downloadLink.click();
+    // Extract MIME type from the base64 string
+    const [metadata, base64Data] = croppedImage.split(",");
+    const mimeType = metadata.match(/:(.*?);/)[1]; // Extract the MIME type
+
+    // Decode the base64 string
+    const binaryString = atob(base64Data);
+    const byteNumbers = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      byteNumbers[i] = binaryString.charCodeAt(i);
+    }
+
+    // Create a Blob from the binary data
+    const fileBlob = new Blob([byteNumbers], { type: mimeType });
+
+    // Create a File object
+    const file = new File([fileBlob], imageName, {
+      type: mimeType,
+      lastModified: Date.now(),
+    });
+
+    setCropImageLink(file);
   };
 
   const zoomIn = () => {
@@ -301,25 +321,29 @@ const CraeateStoryPageContent = ({
     setFontStyle(value);
   };
 
-  console.log(textRef.current, "text ref");
+  const handleOnMouseLeaveCropArea = () => {
+    handleCrop();
+  };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <div className="absolute top-4 right-7 flex items-center justify-end  gap-x-2">
         <Menu contentClassName="-mr-32" />
         <NotificationMenu />
         <UserAccountNav user={session.user} />
       </div>
 
-      {storyPreview ? (
+      {storyPreview && (
         <div className="flex items-center justify-center h-screen gap-x-4">
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-start">Preview</h1>
+            <h1 className="text-2xl font-bold text-start dark:text-white">
+              Preview
+            </h1>
 
             <div>
-              <div className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300">
+              <div className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300 dark:border-neutral-800">
                 <div
-                  className="w-full bg-neutral-200"
+                  className="w-full bg-neutral-200 dark:bg-neutral-800"
                   style={{
                     position: "relative",
                     padding: "20px", // Add padding to create spacing around the crop area
@@ -330,6 +354,7 @@ const CraeateStoryPageContent = ({
                   }}
                 >
                   <div
+                    onMouseLeave={handleOnMouseLeaveCropArea}
                     className="rounded-xl"
                     style={{
                       position: "relative",
@@ -409,7 +434,7 @@ const CraeateStoryPageContent = ({
                                     setIsDraggableDisabled(false);
                                   }}
                                   onMouseDown={handler}
-                                  className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-gray-500 cursor-se-resize"
+                                  className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-white cursor-se-resize"
                                 ></div>
                               )}
 
@@ -424,7 +449,7 @@ const CraeateStoryPageContent = ({
                                 className={`flex  items-center justify-center h-auto w-auto text-center 
                                   ${
                                     resizeTextToggle
-                                      ? `border border-neutral-400`
+                                      ? `border border-neutral-50`
                                       : `border-0`
                                   }
                                   ${fontFamilies[fontStyle].className}
@@ -458,15 +483,18 @@ const CraeateStoryPageContent = ({
                             top: "120px", // Set initial position of the text
                             left: "0px", // Set initial position of the text
                             cursor: "grab",
-                            color: chosenColor, // Text color
+
                             fontSize: "100px", // Text size
                             fontWeight: "bolder",
                           }}
                         >
                           <Input
+                            style={{
+                              color: chosenColor, // Text color
+                            }}
                             ref={inputRef}
                             value={text}
-                            className={`border-0 text-2xl bg-transparent placeholder:text-black text-center ${fontFamilies[fontStyle].className}`}
+                            className={`border-0 text-2xl bg-transparent placeholder:text-black text-center dark:bg-transparent ${fontFamilies[fontStyle].className}`}
                             placeholder="Start typing"
                             onChange={(e) => setText(e.target.value)}
                           />
@@ -513,12 +541,12 @@ const CraeateStoryPageContent = ({
                         </Select>
                       </div>
 
-                      <div className="grid grid-cols-7 gap-y-2">
+                      <div className="grid grid-cols-7 gap-y-2 border border-neutral-300 rounded-md p-3">
                         {colors.map((color, index) => (
                           <div
                             style={{ backgroundColor: color }}
                             onClick={() => setChosenColor(color)}
-                            className="h-5 w-5 rounded-full border-2 border-neutral-300"
+                            className="h-5 w-5 rounded-full border-2 border-neutral-300 cursor-pointer"
                           />
                         ))}
                       </div>
@@ -535,7 +563,7 @@ const CraeateStoryPageContent = ({
               </div>
 
               {/* footer for rotating image and zoom in and out the image */}
-              <div className="w-[48vw] min-h-[6vh] border-2 border-neutral-300 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
+              <div className="w-[48vw] min-h-[6vh] border-2 border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
                   <Minus
                     onClick={zoomOut}
@@ -575,9 +603,11 @@ const CraeateStoryPageContent = ({
             </div>
           </div>
         </div>
-      ) : (
+      )}
+
+      {!storyPreview && (
         <div className="flex items-center justify-center h-screen gap-x-4">
-          <Card className="border-0">
+          <Card className="border-0 dark:bg-neutral-800">
             <CardContent className=" flex items-center justify-center h-[50vh] min-w-[15vw] bg-gradient-to-tl from-purple-300 to-blue-600 rounded-2xl hover:opacity-85 hover:cursor-pointer">
               <div
                 onClick={() => document.getElementById("fileInput").click()}
@@ -601,7 +631,7 @@ const CraeateStoryPageContent = ({
             </CardContent>
           </Card>
 
-          <Card className="border-0">
+          <Card className="border-0 dark:bg-neutral-800">
             <CardContent className=" flex items-center justify-center h-[50vh] min-w-[15vw] bg-gradient-to-br from-rose-300 to-pink-500 rounded-2xl hover:opacity-85 hover:cursor-pointer">
               <div className="flex flex-col items-center space-y-3">
                 <ALargeSmall className="h-12 w-12 bg-white text-neutral-600 p-2 rounded-full  drop-shadow-[0px_0px_7px_rgba(0,0,0,0.5)]" />
