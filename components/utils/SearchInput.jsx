@@ -118,8 +118,8 @@ const SearchInput = () => {
 
   return (
     <DropdownMenu modal={false} open={active} onOpenChange={setActive}>
-      <DropdownMenuTrigger>
-        <div className="relative flex items-center">
+      <DropdownMenuTrigger asChild>
+        <div className="relative  items-center hidden xl:flex">
           <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
           <Input
             onClick={() => setActive(true)}

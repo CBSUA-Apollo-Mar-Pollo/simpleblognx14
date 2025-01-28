@@ -48,7 +48,9 @@ const SearchFilter = () => {
               <Checkbox className="rounded-full dark:border-white" />
             </div>
             <div className="flex justify-between">
-              <p className="dark:text-white text-[15px]">Post you've seen</p>
+              <p className="dark:text-white text-[15px]">
+                Post you`&apos;ve seen
+              </p>
               <Checkbox className="rounded-full dark:border-white" />
             </div>
 

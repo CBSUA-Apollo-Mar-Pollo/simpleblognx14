@@ -153,16 +153,16 @@ const ChatWindowInput = ({ session, conversationId, userProfile }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="relative">
+                    <div className="relative flex items-center">
                       <Textarea
                         disabled={isLoading}
                         onKeyDown={handleKeyDown}
                         id="auto-resize-textarea"
                         placeholder="Aa"
-                        className="rounded-3xl bg-gray-200 dark:text-neutral-50 dark:placeholder:text-neutral-200 dark:bg-neutral-700 pl-5 min-h-[5vh] h-[4.7vh] resize-none pr-8 max-h-[15vh] mb-[2px] overflow-y-auto "
+                        className="rounded-3xl bg-gray-200 dark:text-neutral-50 dark:placeholder:text-neutral-200 dark:bg-neutral-700 pl-3 min-h-[4.5vh] h-[4.7vh] resize-none pr-8 max-h-[12vh] mb-[2px]  "
                         {...field}
                       />
-                      <div className="absolute bottom-[2px] right-2">
+                      <div className="absolute right-3">
                         <EmojiPickerChat />
                       </div>
                     </div>

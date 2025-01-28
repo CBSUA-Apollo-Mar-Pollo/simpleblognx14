@@ -18,6 +18,7 @@ import {
   Pause,
   Play,
   Volume2,
+  VolumeX,
 } from "lucide-react";
 import UserAvatar from "../utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";

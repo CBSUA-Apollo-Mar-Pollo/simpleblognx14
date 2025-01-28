@@ -122,7 +122,7 @@ const CommunityDropdownOptions = () => {
 
           <div className="px-4 pb-3 ">
             <p className="text-justify font-medium text-neutral-900">
-              are you sure you want to leave? Since you're the last member,
+              are you sure you want to leave? Since you&apos;re the last member,
               leaving now will also delete this group.
             </p>
 

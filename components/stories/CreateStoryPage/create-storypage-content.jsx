@@ -544,6 +544,7 @@ const CraeateStoryPageContent = ({
                       <div className="grid grid-cols-7 gap-y-2 border border-neutral-300 rounded-md p-3">
                         {colors.map((color, index) => (
                           <div
+                            key={index}
                             style={{ backgroundColor: color }}
                             onClick={() => setChosenColor(color)}
                             className="h-5 w-5 rounded-full border-2 border-neutral-300 cursor-pointer"

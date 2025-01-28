@@ -37,8 +37,11 @@ const ModalPage3 = ({ topicsSelected, setTopicsSelected }) => {
               Topics {topicsSelected.length}/3
             </h4>
             <div className="flex flex-wrap items-center gap-x-2 mt-3 gap-y-2 mb-2">
-              {topicsSelected.map((topic) => (
-                <span className="text-xs bg-neutral-200 text-neutral-700 px-4 py-2 rounded-full hover:bg-neutral-300 hover:cursor-pointer">
+              {topicsSelected.map((topic, index) => (
+                <span
+                  key={index}
+                  className="text-xs bg-neutral-200 text-neutral-700 px-4 py-2 rounded-full hover:bg-neutral-300 hover:cursor-pointer"
+                >
                   {topic}
                 </span>
               ))}
@@ -48,13 +51,14 @@ const ModalPage3 = ({ topicsSelected, setTopicsSelected }) => {
           {/* list of topics */}
           <div className="max-h-[35vh] overflow-y-auto space-y-5 mt-2">
             {TopicLists.map((item, index) => (
-              <div className="mt-2">
+              <div key={index} className="mt-2">
                 <span className="text-xs bg-yellow-600 text-white px-4 py-2 rounded-full">
                   {item.label}
                 </span>
                 <div className="flex flex-wrap items-center gap-x-2 mt-3 gap-y-2">
-                  {item.topics.map((topic) => (
+                  {item.topics.map((topic, index) => (
                     <span
+                      key={index}
                       onClick={() => {
                         if (
                           !topicsSelected.includes(topic) &&

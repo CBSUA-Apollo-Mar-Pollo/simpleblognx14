@@ -71,7 +71,7 @@ const ShortsVCardOptions = () => {
             >
               <Bug className="mt-1 h-5 w-5" />
               <span className="text-sm font-semibold">
-                Something isn't working
+                Something isn&apos;t working
               </span>
             </Button>
 

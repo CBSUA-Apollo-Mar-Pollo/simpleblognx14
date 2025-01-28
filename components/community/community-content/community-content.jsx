@@ -60,8 +60,8 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                           {communityDetails.visibility}
                         </h3>
                         <p className="text-[13px] -mt-0.5">
-                          Only members can see who's in the group and what they
-                          post.
+                          Only members can see who&apos;s in the group and what
+                          they post.
                         </p>
                       </div>
                     </div>
@@ -146,7 +146,7 @@ const CommunityContent = ({ communityDetails, communityId }) => {
               {communityDetails?.posts.length === 0 && (
                 <div className="flex flex-col items-center justify-center w-full mt-10">
                   <h2 className="font-bold text-2xl dark:text-white">
-                    This community doesn't have any posts yet
+                    This community doesn&apos;t have any posts yet
                   </h2>
                   <span className="text-neutral-600 dark:text-neutral-400">
                     make one and get this feed started.

@@ -30,7 +30,7 @@ const HomePageStoryCards = ({ session }) => {
         className="relative border dark:border-0 w-44 rounded-2xl bg-white dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
       >
         {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
-        <div className="relative w-44 h-52 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+        <div className="relative md:w-44 md:h-52 w-40 h-40 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
           <Image
             sizes="100vw"
             width={0}

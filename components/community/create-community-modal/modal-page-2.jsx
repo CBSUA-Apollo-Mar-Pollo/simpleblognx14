@@ -23,7 +23,7 @@ const ModalPage2 = ({
         </DialogTitle>
         <DialogDescription className="text-neutral-600">
           Add visual flair will catch potential members attention and help
-          establish your community's culture!
+          establish your community&apos;s culture!
         </DialogDescription>
         <DialogDescription className="text-neutral-600">
           You can edit this anytime.

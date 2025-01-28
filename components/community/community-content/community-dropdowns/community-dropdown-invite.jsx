@@ -19,8 +19,9 @@ import { Separator } from "@/components/ui/Separator";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getAllFriends } from "@/actions/getAllFriends";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { Checkbox } from "@/components/ui/Checkbox";
+
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const CommunityDropdownInvite = () => {
   const [showInviteFriendModal, setShowInviteFriendModal] = useState(false);
@@ -78,7 +79,7 @@ const CommunityDropdownInvite = () => {
                       Invite friends
                     </span>
                     <span className="text-xs text-neutral-600 dark:text-neutral-300">
-                      Invite people you're connected to
+                      Invite people you&apos;re connected to
                     </span>
                   </div>
                 </Button>
@@ -136,8 +137,11 @@ const CommunityDropdownInvite = () => {
                 )}
 
                 <div className="flex flex-col space-y-1">
-                  {allFriends?.map((friend) => (
-                    <div className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer">
+                  {allFriends?.map((friend, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer"
+                    >
                       <div className="flex items-center gap-x-2">
                         <UserAvatar
                           className="h-10 w-10"
@@ -171,8 +175,11 @@ const CommunityDropdownInvite = () => {
                   {selectedFriends.length > 1 ? "friends" : "friend"} selected
                 </p>
 
-                {selectedFriends.map((sf) => (
-                  <div className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer">
+                {selectedFriends.map((sf, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between gap-x-2 dark:hover:bg-neutral-700 py-1 pl-2 rounded-lg hover:cursor-pointer"
+                  >
                     <div className="flex items-center gap-x-2">
                       <UserAvatar
                         className="h-10 w-10"

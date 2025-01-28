@@ -69,7 +69,7 @@ const ModalPage4 = ({
           <h2 className="font-bold text-black ml-8">Visibility </h2>
           <p className="text-[13px] ml-8">
             to protect the privacy of community members, private communities
-            can't change to public.
+            can&apos;t change to public.
           </p>
 
           <RadioGroup

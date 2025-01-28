@@ -134,8 +134,8 @@ const SearchPageContent = ({
               </h1>
 
               <div className="space-y-3">
-                {people.map((item) => (
-                  <div className="flex items-start gap-x-2">
+                {people.map((item, index) => (
+                  <div key={index} className="flex items-start gap-x-2">
                     <Link href={`/user/${item.id}`}>
                       <UserAvatar
                         className="h-12 w-12 "
@@ -240,7 +240,7 @@ const SearchPageContent = ({
         {people.length === 0 && posts.length === 0 && (
           <div className="flex justify-center mt-12">
             <h1 className="dark:text-white font-bold text-3xl">
-              ! No Results found for "{searchQuery}"
+              ! No Results found for &quot;{searchQuery}&quot;
             </h1>
           </div>
         )}

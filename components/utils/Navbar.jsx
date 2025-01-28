@@ -14,7 +14,7 @@ import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
 import { Skeleton } from "../ui/Skeleton";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 
@@ -41,9 +41,9 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
-      <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 grid grid-cols-4">
+      <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 md:grid md:grid-cols-4 flex justify-between py-1">
         {/* logo and search bar  */}
-        <div className="flex items-center gap-x-2 col-span-1">
+        <div className="flex items-center gap-x-2 col-span-1 ">
           <Link href="/" className="font-bold">
             <span className=" px-3.5 py-[2px] rounded-full bg-yellow-500/80 text-[27px] ">
               E
@@ -51,9 +51,14 @@ const Navbar = () => {
           </Link>
           {/* search input */}
           <SearchInput />
+          <div className="xl:hidden ">
+            <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
+              <Search className="text-gray-500 z-20 dark:text-neutral-300" />
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-3 text-neutral-600 dark:text-neutral-300 col-span-2 px-[3vw] mr-10">
+        <div className="md:grid grid-cols-3 hidden text-neutral-600 dark:text-neutral-300 col-span-2 px-[3vw] mr-10">
           <ToolTipComp content="Home">
             {pathname === "/" ? (
               <div className="flex justify-center border-b-[4px] border-blue-600 rounded py-2.5">

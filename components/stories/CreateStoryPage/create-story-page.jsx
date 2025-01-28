@@ -103,8 +103,8 @@ const CreateStoryPage = ({ session }) => {
 
           <div className="mx-5 mb-4">
             <p>
-              Are you sure you want to discard this story? Your story won't be
-              saved.
+              Are you sure you want to discard this story? Your story won&apos;t
+              be saved.
             </p>
 
             <div className="flex justify-end gap-x-2 mt-5">

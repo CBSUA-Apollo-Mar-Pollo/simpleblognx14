@@ -102,12 +102,13 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
 
             <div className="mx-3">
               <h1 className=" text-neutral-800 font-bold dark:text-white">
-                Communities you've created
+                Communities you&apos;ve created
               </h1>
 
               <div className="mt-2">
-                {communitiesCreated.map((community) => (
+                {communitiesCreated.map((community, index) => (
                   <Link
+                    key={index}
                     href={`/communities/${community.id}`}
                     className="flex items-center gap-x-3 hover:bg-neutral-200 pl-2 rounded-lg"
                   >
@@ -141,7 +142,7 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
 
         <div className="mx-3">
           <h1 className=" text-neutral-800 font-bold dark:text-white">
-            Communities you've joined
+            Communities you&apos;ve joined
           </h1>
         </div>
 
@@ -154,8 +155,8 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
             className="h-72 w-72 rounded-3xl"
           />
           <p className="mt-3 text-sm mx-10 text-justify dark:text-white ">
-            "Ready to make a difference? Join or start a community that inspires
-            and empowers".
+            `&quot;Ready to make a difference? Join or start a community that
+            inspires and empowers`&quot;.
           </p>
         </div>
       </div>

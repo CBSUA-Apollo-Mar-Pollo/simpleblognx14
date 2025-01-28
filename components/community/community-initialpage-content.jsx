@@ -31,8 +31,8 @@ const CommunityInitialPageContent = ({ communitiesCreated }) => {
             className="h-[60-vh] w-[70vw] rounded-3xl"
           />
           <p className="text-xl mt-2 dark:text-white">
-            "Discover shared interests and passions by joining a community or
-            creating your own".
+            &quot;Discover shared interests and passions by joining a community
+            or creating your own&quot;.
           </p>
         </div>
       </div>

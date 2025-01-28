@@ -46,8 +46,9 @@ const ChatWindow = () => {
         ))}
       </div>
       <div className="flex flex-col items-center gap-y-1">
-        {minimizedChats.map((user) => (
+        {minimizedChats.map((user, index) => (
           <Button
+            key={index}
             onMouseEnter={() => handleMouseEnter(user.id)}
             onMouseLeave={handleMouseLeave}
             onClick={() => onMinimizeOpen(user.id)}
@@ -159,7 +160,7 @@ const ChatWindowBox = ({ chat }) => {
       <div className="flex-1 bg-white dark:bg-neutral-800 max-h-[50vh] overflow-y-auto">
         <div className="flex  h-full">
           <div className="flex-1 flex  justify-center items-end ">
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full px-2">
               <ChatWindowMessages
                 currentUser={currentUser}
                 userProfile={userProfile}
