@@ -35,5 +35,13 @@ export const getStoryData = async (authorId) => {
     },
   });
 
-  return getAllStoryData;
+  const now = new Date();
+  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  // Filter objects created within the last 24 hours
+  const stories = getAllStoryData.filter(
+    (item) => new Date(item.createdAt) >= twentyFourHoursAgo
+  );
+
+  return stories;
 };
