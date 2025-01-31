@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { ALargeSmall, Settings, X } from "lucide-react";
+import { ALargeSmall, Loader2, Settings, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -15,6 +15,7 @@ const CreateStoryPageSidebar = ({
   setIsDiscarding,
   storyPreview,
   createStory,
+  isLoading,
 }) => {
   const router = useRouter();
 
@@ -22,6 +23,8 @@ const CreateStoryPageSidebar = ({
     e.stopPropagation(); // Prevent the event from propagating to the document
     setToggleAddText(true);
   };
+
+  console.log(isLoading);
 
   return (
     <div className="relative h-screen">
@@ -90,15 +93,27 @@ const CreateStoryPageSidebar = ({
         <div className="absolute bottom-0 pb-4 w-full">
           <div className="flex justify-center gap-x-2 mx-4">
             <Button
+              disabled={isLoading}
               onClick={() => setIsDiscarding(true)}
-              className="w-full bg-neutral-200 text-black"
+              className={`w-full bg-neutral-200 text-black ${
+                isLoading && "cursor-not-allowed"
+              } `}
             >
               Discard
             </Button>
             <Button
+              disabled={isLoading}
               onClick={() => createStory()}
-              className="w-full bg-blue-600"
+              className={`w-full bg-blue-600 flex items-center gap-x-2 ${
+                isLoading && "cursor-not-allowed"
+              }`}
             >
+              {isLoading && (
+                <span>
+                  {" "}
+                  <Loader2 className="h-5 w-5 text-whit5 animate-spin my-4" />
+                </span>
+              )}
               Share to story
             </Button>
           </div>

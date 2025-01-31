@@ -43,5 +43,26 @@ export const getStoryData = async (authorId) => {
     (item) => new Date(item.createdAt) >= twentyFourHoursAgo
   );
 
-  return stories;
+  // Group stories by the author's image and add images to an array
+  const groupedStories = stories.reduce((acc, story) => {
+    const authorId = story.authorId;
+
+    // Find or create an array for the current author's image
+    const authorGroup = acc.find((group) => group.authorId === authorId);
+    if (authorGroup) {
+      // If the author's group exists, add the story's image to the image array
+      authorGroup.images.push(story.image);
+    } else {
+      // If the author's group does not exist, create a new entry
+      acc.push({
+        authorId: authorId,
+        images: [story.image], // Initialize with the first image
+        author: story.author, // Include the author data
+      });
+    }
+
+    return acc;
+  }, []);
+
+  return groupedStories;
 };

@@ -24,6 +24,7 @@ const CreateStoryPage = ({ session }) => {
   const [isDiscarding, setIsDiscarding] = useState(false);
   const [storyPreview, setStoryPreview] = useState(false);
   const [cropImageLink, setCropImageLink] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -34,28 +35,24 @@ const CreateStoryPage = ({ session }) => {
     setIsDiscarding(false);
   };
 
-  const {
-    mutate: createStory,
-    isLoading,
-    isError,
-  } = useMutation({
+  const { mutate: createStory, isError } = useMutation({
     mutationFn: async () => {
+      setIsLoading(true);
       // Upload the image in upload thing
       let file = cropImageLink;
       const response = await uploadFiles("imageUploader", {
         files: [file],
       });
-
       const payload = {
         image: response[0].url,
         authorId: session.user.id,
       };
-
       const { data } = await axios.post("/api/story/create", payload);
       return data;
     },
     onError: (err) => {
       console.log(err);
+      setIsLoading(false);
       return toast({
         title: "There was a problem",
         description: "Something went wrong. Please try again.",
@@ -63,6 +60,7 @@ const CreateStoryPage = ({ session }) => {
       });
     },
     onSuccess: () => {
+      setIsLoading(false);
       router.push("/");
     },
   });
@@ -77,6 +75,7 @@ const CreateStoryPage = ({ session }) => {
           setIsDiscarding={setIsDiscarding}
           storyPreview={storyPreview}
           createStory={createStory}
+          isLoading={isLoading}
         />
       </div>
 

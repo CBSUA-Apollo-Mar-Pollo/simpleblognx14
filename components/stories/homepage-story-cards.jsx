@@ -5,15 +5,65 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import UserAvatar from "../utils/UserAvatar";
 import { Skeleton } from "../ui/Skeleton";
 
 const HomePageStoryCards = ({ session }) => {
+  const storyCardContainer = useRef(null);
   const [scale, setScale] = useState(1);
   const [hoveredStory, setHoveredStory] = useState(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isAtTheEndOfScrolled, setIsAtTheEndOfScrolled] = useState(true);
+
   const router = useRouter();
+
+  const RightScroll = () => {
+    if (storyCardContainer.current) {
+      storyCardContainer.current.scrollBy({
+        left: 230,
+        behavior: "smooth",
+      });
+      setIsScrolled(true);
+
+      const container = storyCardContainer.current;
+      const atBeginning = container.scrollLeft === 0;
+      const atEnd =
+        container.scrollLeft + container.clientWidth >= container.scrollWidth;
+
+      if (atBeginning) {
+        setIsAtTheEndOfScrolled(true); // Correcting the state update to indicate it's at the end
+      }
+
+      if (atEnd) {
+        setIsAtTheEndOfScrolled(false); // Set false if not at the end
+      }
+    }
+  };
+
+  const LeftScroll = () => {
+    if (storyCardContainer.current) {
+      storyCardContainer.current.scrollBy({
+        left: -230,
+        behavior: "smooth",
+      });
+
+      setIsAtTheEndOfScrolled(true);
+
+      const container = storyCardContainer.current;
+      const atBeginning = container.scrollLeft === 0;
+      const atEnd =
+        container.scrollLeft + container.clientWidth >= container.scrollWidth;
+      if (atBeginning) {
+        setIsScrolled(false);
+      }
+
+      if (atEnd) {
+        setIsScrolled(false);
+      }
+    }
+  };
 
   const handleNavigate = () => {
     return router.push("/stories/create");
@@ -53,97 +103,121 @@ const HomePageStoryCards = ({ session }) => {
     },
   });
 
+  console.log(stories);
+
   return (
-    <div className="overflow-x-hidden pb-1 flex items-center gap-x-2 relative">
-      <button
-        onClick={() => handleNavigate()}
-        onMouseEnter={() => handleMouseHover()}
-        onMouseLeave={() => handleMouseLeave()}
-        className="relative border dark:border-0 w-44 rounded-2xl bg-white dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
-      >
-        {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
-        <div className="relative md:w-44 md:h-52 w-40 h-40 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
-          <Image
-            sizes="100vw"
-            width={0}
-            height={0}
-            src={session?.user.image}
-            alt="profile image"
-            className="w-full h-full object-cover"
-            style={{
-              transform: hoveredStory === null ? `scale(${scale})` : null, // Apply zoom effect to the image itself
-              transformOrigin: "center", // Keep the zoom centered
-              transition: "transform 0.3s ease", // Smooth transition for zoom effect
-            }}
-          />
-        </div>
-
-        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <Plus className="bg-blue-700 text-white h-10 w-10 rounded-full border-4 dark:border-neutral-800" />
-        </div>
-
-        <div className="pt-8 pb-2 border-t dark:border-neutral-700">
-          <p className="text-[14px] font-semibold text-center dark:text-white">
-            Create story
-          </p>
-        </div>
-      </button>
-
-      {isLoading &&
-        [...Array(7)].map((_, index) => (
-          <div key={index}>
-            <Skeleton className="md:w-44 md:h-[31.5vh] bg-neutral-400 rounded-2xl" />
-          </div>
-        ))}
-
-      {isLoading === false &&
-        stories?.map((story) => (
-          <button
-            onClick={() => handleNavigateToStoryPage(story.id)}
-            onMouseEnter={() => handleMouseHover(story.id)}
-            onMouseLeave={() => handleMouseLeave(story.id)}
-            className="relative border dark:border-0 w-44 rounded-2xl bg-white dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
+    <div className=" flex items-center relative">
+      {isScrolled && (
+        <div className="absolute left-4 z-20">
+          <Button
+            onClick={() => LeftScroll()}
+            className="rounded-full py-6 px-1 bg-white hover:bg-neutral-200"
           >
-            {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
-            <div className="relative md:w-44 md:h-[31.5vh] w-40 h-40 overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
-              <div className="absolute top-3 left-2 z-10">
-                <UserAvatar
-                  className="h-12 w-12 border-[3px] border-blue-600"
-                  user={{
-                    name: story.author.name || null,
-                    image: story.author?.image || null,
-                  }}
-                />
-              </div>
+            <ChevronLeft className="h-10 w-10 text-black" />
+          </Button>
+        </div>
+      )}
+      <div
+        ref={storyCardContainer}
+        className="overflow-x-hidden pb-1 flex items-center gap-x-2 "
+      >
+        <button
+          onClick={() => handleNavigate()}
+          onMouseEnter={() => handleMouseHover()}
+          onMouseLeave={() => handleMouseLeave()}
+          className="relative border dark:border-0  rounded-2xl  dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
+        >
+          {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
+          <div className="relative md:w-40 md:h-48 w-40 h-40 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+            <Image
+              sizes="100vw"
+              width={0}
+              height={0}
+              src={session?.user.image}
+              alt="profile image"
+              className="w-full h-full object-cover"
+              style={{
+                transform: hoveredStory === null ? `scale(${scale})` : null, // Apply zoom effect to the image itself
+                transformOrigin: "center", // Keep the zoom centered
+                transition: "transform 0.3s ease", // Smooth transition for zoom effect
+              }}
+            />
+          </div>
 
-              <div className="relative w-full h-full">
-                <Image
-                  sizes="100vw"
-                  width={0}
-                  height={0}
-                  src={story?.image}
-                  alt="profile image"
-                  className="w-full h-full object-cover"
-                  style={{
-                    transform:
-                      hoveredStory === story.id ? `scale(${scale})` : null, // Apply zoom effect to the image itself
-                    transformOrigin: "center", // Keep the zoom centered
-                    transition: "transform 0.3s ease", // Smooth transition for zoom effect
-                  }}
-                />
-                <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-black to-transparent"></div>
-              </div>
+          <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Plus className="bg-blue-700 text-white h-10 w-10 rounded-full border-4 dark:border-neutral-800" />
+          </div>
 
-              <div className="absolute bottom-4 left-2 z-10">
-                <p className="text-white font-semibold">{story.author.name}</p>
-              </div>
+          <div className="pt-8 pb-2 border-t dark:border-neutral-700">
+            <p className="text-[14px] font-semibold text-center dark:text-white">
+              Create story
+            </p>
+          </div>
+        </button>
+
+        {isLoading &&
+          [...Array(7)].map((_, index) => (
+            <div key={index}>
+              <Skeleton className="md:w-44 md:h-[29.5vh] bg-neutral-400 rounded-2xl" />
             </div>
-          </button>
-        ))}
+          ))}
 
-      {stories?.length === 4 && (
-        <div className="absolute right-4">
-          <Button className="rounded-full py-6 px-1 bg-white">
+        <div className="flex items-center gap-x-2 ">
+          {isLoading === false &&
+            stories?.map((story) => (
+              <button
+                onClick={() => handleNavigateToStoryPage(story.authorId)}
+                onMouseEnter={() => handleMouseHover(story.id)}
+                onMouseLeave={() => handleMouseLeave(story.id)}
+                className="relative border dark:border-0 rounded-2xl  dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
+              >
+                {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
+                <div className="relative md:w-40 md:h-[29.5vh] w-40 h-40 overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
+                  <div className="absolute top-3 left-2 z-10">
+                    <UserAvatar
+                      className="h-10 w-10 border-[3px] border-blue-600"
+                      user={{
+                        name: story.author.name || null,
+                        image: story.author?.image || null,
+                      }}
+                    />
+                  </div>
+
+                  <div className="relative w-full h-full">
+                    <Image
+                      sizes="100vw"
+                      width={0}
+                      height={0}
+                      src={story?.images[0]}
+                      alt="profile image"
+                      className="w-full h-full object-cover"
+                      style={{
+                        transform:
+                          hoveredStory === story.id ? `scale(${scale})` : null, // Apply zoom effect to the image itself
+                        transformOrigin: "center", // Keep the zoom centered
+                        transition: "transform 0.3s ease", // Smooth transition for zoom effect
+                      }}
+                    />
+                    <div className="absolute bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-black to-transparent"></div>
+                  </div>
+
+                  <div className="absolute bottom-4 left-2 z-10">
+                    <p className="text-white font-medium text-sm">
+                      {story.author.name}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            ))}
+        </div>
+      </div>
+
+      {stories?.length >= 3 && isAtTheEndOfScrolled && (
+        <div className="absolute right-4 z-20">
+          <Button
+            onClick={() => RightScroll()}
+            className="rounded-full py-6 px-1 bg-white hover:bg-neutral-200"
+          >
             <ChevronRight className="h-10 w-10 text-black" />
           </Button>
         </div>

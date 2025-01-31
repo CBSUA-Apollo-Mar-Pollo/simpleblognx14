@@ -111,17 +111,16 @@ export default function Posts({ initialPosts, session, deleteImage }) {
             const isVideo = Boolean(blog.videoUrl);
             const isImage = Boolean(blog.image);
 
-            if (isVideo) {
+            if (isVideo && session?.user) {
               return (
                 <li key={blog.id} className="list-none z-10" ref={ref}>
-                  {session?.user && (
-                    <ShortsVPostCard
-                      videoData={blog}
-                      session={session}
-                      shortsvVotesAmt={shortsvVotesAmt}
-                      currentShortsvVote={currentShortsvVote?.type}
-                    />
-                  )}
+                  <ShortsVPostCard
+                    videoData={blog}
+                    session={session}
+                    shortsvVotesAmt={shortsvVotesAmt}
+                    currentShortsvVote={currentShortsvVote?.type}
+                  />
+
                   <div className="mt-3">
                     {index === randNumber && <ReelsHomeCard />}
                   </div>
