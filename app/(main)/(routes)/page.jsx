@@ -120,8 +120,8 @@ export default async function HomePage() {
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className=" xl:col-span-6 lg:col-span-5 lg:pl-5 lg:pr-3   dark:bg-neutral-900">
-        <div className="mt-5 2xl:mx-[5vw] xl:mx-[8rem]  md:mx-[3rem] space-y-3 ">
+      <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3   dark:bg-neutral-900">
+        <div className="mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
           {session?.user && (
             <>
               <div className=" pt-3 pb-1 px-5 rounded-lg bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">

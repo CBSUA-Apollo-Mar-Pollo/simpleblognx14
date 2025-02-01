@@ -17,14 +17,16 @@ export const getStoryData = async (authorId) => {
     },
   });
 
-  // Extract userIds and requesterUserIds into a single array of friend IDs
+  let getAllStoryData = null;
+
+if (friends && friends.length > 0) {
+  // If friends exist, fetch stories for the friends' author IDs
   const friendIds = [
     ...friends.map((friend) => friend.userId),
     ...friends.map((friend) => friend.requesterUserId),
   ];
 
-  // Fetch all stories where the authorId is in the list of friendIds
-  const getAllStoryData = await db.story.findMany({
+  getAllStoryData = await db.story.findMany({
     where: {
       authorId: {
         in: friendIds,
@@ -34,6 +36,18 @@ export const getStoryData = async (authorId) => {
       author: true, // Include the author's details if you need
     },
   });
+} else {
+  // If no friends exist, fetch stories for the given authorId
+  getAllStoryData = await db.story.findMany({
+    where: {
+      authorId,
+    },
+    include: {
+      author: true, // Include the author's details if you need
+    },
+  });
+}
+
 
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);

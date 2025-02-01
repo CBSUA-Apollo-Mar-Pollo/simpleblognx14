@@ -103,7 +103,7 @@ const HomePageStoryCards = ({ session }) => {
     },
   });
 
-  console.log(stories);
+  console.log(stories, "stories");
 
   return (
     <div className=" flex items-center relative">
