@@ -188,7 +188,7 @@ const HomePageStoryCards = ({ session }) => {
                       sizes="100vw"
                       width={0}
                       height={0}
-                      src={story?.images[0]}
+                      src={story?.images[0].img}
                       alt="profile image"
                       className="w-full h-full object-cover"
                       style={{

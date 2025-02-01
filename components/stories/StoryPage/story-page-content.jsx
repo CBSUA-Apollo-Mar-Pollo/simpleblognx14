@@ -15,6 +15,10 @@ const StoryPageContent = ({ session }) => {
         <NotificationMenu />
         <UserAccountNav user={session.user} />
       </div>
+
+      <div className="flex items-center justify-center w-full mt-4 ">
+        <div className="min-h-[93vh] min-w-[25vw] bg-blue-600 rounded-lg"></div>
+      </div>
     </div>
   );
 };

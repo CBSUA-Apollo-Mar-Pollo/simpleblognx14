@@ -8,8 +8,28 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const StoryPageSidebar = ({ session }) => {
+const StoryPageSidebar = ({ session, stories }) => {
   const router = useRouter();
+  let isUserPostedAStory = stories.find(
+    (story) => story.author.id === session.user.id
+  );
+
+  const getTimeDifference = (createdAt) => {
+    const now = new Date();
+    const createdTime = new Date(createdAt);
+    const diffInMinutes = Math.floor((now - createdTime) / (1000 * 60)); // Convert ms to minutes
+
+    return diffInMinutes < 60
+      ? `${diffInMinutes}m`
+      : `${Math.floor(diffInMinutes / 60)}h`;
+  };
+
+  const latestImage = isUserPostedAStory.images.reduce((latest, image) =>
+    new Date(image.createdAt) > new Date(latest.createdAt) ? image : latest
+  );
+
+  console.log(isUserPostedAStory, "isUserPostedAStory");
+
   return (
     <div className="relative">
       <div>
@@ -43,18 +63,44 @@ const StoryPageSidebar = ({ session }) => {
           <div className="mt-4">
             <h2 className="font-semibold text-lg">Your Story</h2>
 
-            <div className="flex items-center  w-full gap-x-3 mt-3">
-              <div className="">
-                <Plus className="text-blue-600 bg-neutral-100 p-5 h-16 w-16 rounded-full" />
-              </div>
+            {isUserPostedAStory ? (
+              <div className="flex items-center justify-between  w-full gap-x-3 mt-3">
+                <div className="flex items-center gap-x-3">
+                  <UserAvatar
+                    className="h-14 w-14 border-2 border-neutral-500"
+                    user={{
+                      name: session?.user.name || null || user?.name,
+                      image: session?.user.image || null || user?.image,
+                    }}
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-[0.9rem] font-semibold ">
+                      {session.user.name}
+                    </span>
+                    <span className="text-sm font-light">
+                      {getTimeDifference(latestImage.createdAt)}
+                    </span>
+                  </div>
+                </div>
 
-              <div className="flex flex-col">
-                <h3 className="font-semibold">Create a story</h3>
-                <span className="text-xs text-neutral-600">
-                  Share a photo or write something.
-                </span>
+                <div className="">
+                  <Plus className="text-blue-600 bg-neutral-100 p-5 h-16 w-16 rounded-full" />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center  w-full gap-x-3 mt-3">
+                <div className="">
+                  <Plus className="text-blue-600 bg-neutral-100 p-5 h-16 w-16 rounded-full" />
+                </div>
+
+                <div className="flex flex-col">
+                  <h3 className="font-semibold">Create a story</h3>
+                  <span className="text-xs text-neutral-600">
+                    Share a photo or write something.
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-4">
