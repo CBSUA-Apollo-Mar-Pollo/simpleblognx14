@@ -16,12 +16,13 @@ import { Button } from "../ui/Button";
 import { Icons } from "../utils/Icons";
 import ToolTipComp from "../utils/ToolTipComp";
 import Link from "next/link";
+import { Skeleton } from "../ui/Skeleton";
 
 const ReelsHomeCard = () => {
   const videoContainerRef = useRef(null);
   const videoRefs = useRef([]);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { data: reels } = useQuery({
+  const { data: reels, isLoading } = useQuery({
     queryKey: ["getReels"],
     queryFn: async () => {
       const res = await getAllReels();
@@ -134,29 +135,41 @@ const ReelsHomeCard = () => {
             <ChevronLeft className="h-9 w-9 text-neutral-800 dark:text-neutral-300 stroke-[1.6px]" />
           </Button>
         )}
+
+        {isLoading && (
+          <div className="overflow-x-hidden pb-1 flex items-center gap-x-2">
+            {[...Array(7)].map((_, index) => (
+              <div key={index}>
+                <Skeleton className="flex-shrink-0 w-[17vw] h-[60vh] bg-neutral-400 rounded-lg" />
+              </div>
+            ))}
+          </div>
+        )}
+
         <div ref={videoContainerRef} className="overflow-x-hidden">
           <div className="flex space-x-2">
-            {reels?.map((reel, index) => (
-              <Link
-                onMouseEnter={() => onMouseHoverVideoPlay(index)}
-                onMouseLeave={() => onMouseHoverVideoStop(index)}
-                href={`/shortsv/${reel.id}`}
-                key={index}
-                className="flex-shrink-0 w-[17vw] h-[60vh] hover:opacity-70 cursor-pointer"
-              >
-                <video
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  className="object-cover w-full h-full rounded-lg z-20"
-                  preload="metadata"
-                  playsInline
-                  loop
-                  autoPlay={index === 0 && true}
-                  muted
+            {isLoading === false &&
+              reels?.map((reel, index) => (
+                <Link
+                  onMouseEnter={() => onMouseHoverVideoPlay(index)}
+                  onMouseLeave={() => onMouseHoverVideoStop(index)}
+                  href={`/shortsv/${reel.id}`}
+                  key={index}
+                  className="flex-shrink-0 w-[17vw] h-[60vh] hover:opacity-70 cursor-pointer"
                 >
-                  <source src={reel.videoUrl} type="video/mp4" />
-                </video>
-              </Link>
-            ))}
+                  <video
+                    ref={(el) => (videoRefs.current[index] = el)}
+                    className="object-cover w-full h-full rounded-lg z-20"
+                    preload="metadata"
+                    playsInline
+                    loop
+                    autoPlay={index === 0 && true}
+                    muted
+                  >
+                    <source src={reel.videoUrl} type="video/mp4" />
+                  </video>
+                </Link>
+              ))}
           </div>
         </div>
         <Button
