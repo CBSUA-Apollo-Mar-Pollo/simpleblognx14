@@ -24,7 +24,7 @@ const StoryPageSidebar = ({ session, stories }) => {
       : `${Math.floor(diffInMinutes / 60)}h`;
   };
 
-  const latestImage = isUserPostedAStory.images.reduce((latest, image) =>
+  const latestImage = isUserPostedAStory?.images.reduce((latest, image) =>
     new Date(image.createdAt) > new Date(latest.createdAt) ? image : latest
   );
 

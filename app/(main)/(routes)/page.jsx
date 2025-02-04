@@ -16,6 +16,7 @@ import PopularCommunities from "@/components/community/popular-communities";
 import Image from "next/image";
 import { Plus } from "lucide-react";
 import HomePageStoryCards from "@/components/stories/homepage-story-cards";
+import { Button } from "@/components/ui/Button";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -186,6 +187,17 @@ export default async function HomePage() {
               />
             </>
           )}
+
+          <Separator className="my-2" />
+
+          <div className="mt-2 ml-2">
+            <h1 className="font-semibold dark:text-neutral-50">Group chats</h1>
+
+            <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 w-full py-7 my-2">
+              <Plus className="text-black bg-neutral-100 p-2 h-9 w-9 rounded-full" />
+              <span className="text-black">Create group chat</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

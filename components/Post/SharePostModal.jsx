@@ -21,7 +21,16 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { Dot, Globe, ImagePlus, PenSquare, X } from "lucide-react";
+import {
+  BookOpen,
+  Dot,
+  Flag,
+  Globe,
+  ImagePlus,
+  LinkIcon,
+  PenSquare,
+  X,
+} from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import { formatTimeToNow } from "@/lib/utils";
@@ -31,6 +40,7 @@ import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import ToolTipComp from "../utils/ToolTipComp";
+import { Icons } from "../utils/Icons";
 
 const SharePostModal = ({ session, user, blog, sharedPost }) => {
   const [description, setDescription] = useState("");
@@ -85,10 +95,10 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
           <span>Share to Feed</span>
         </div>
       </DialogTrigger>
-      <DialogContent className=" min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className=" min-w-[35vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-2xl font-bold text-center">
-            Share post
+            Share
           </DialogTitle>
         </DialogHeader>
 
@@ -99,14 +109,14 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
             <SimpleBar style={{ maxHeight: "60vh" }}>
               <div className="flex items-center gap-2 px-4">
                 <UserAvatar
-                  className="h-10 w-10 "
+                  className="h-12 w-12 "
                   user={{
                     name: session?.user.name || null || user?.name,
                     image: session?.user.image || null || user?.image,
                   }}
                 />
                 <div className="space-y-1">
-                  <p className="font-semibold text-gray-700 text-base pl-1 dark:text-neutral-200">
+                  <p className="font-semibold text-neutral-900 text-base pl-1 dark:text-neutral-200">
                     {session?.user.name || user?.name}
                   </p>
                   <Select>
@@ -128,7 +138,7 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
                 </div>
               </div>
 
-              <div className="grid items-center">
+              <div className="mx-2 mb-2">
                 <div className="flex items-center">
                   <Textarea
                     id="desc"
@@ -145,15 +155,29 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
                   />
                 </div>
 
-                {blog.sharedPostId ? (
+                <div className="flex justify-end">
+                  <Button
+                    className=" bg-blue-600 hover:bg-blue-500 mt-4 px-10 "
+                    type="submit"
+                    onClick={() => {
+                      sharePost(blog ? blog.id : sharedPost.id);
+                      setIsLoading(true);
+                      setLoaderDescription("Posting");
+                    }}
+                  >
+                    Share now
+                  </Button>
+                </div>
+
+                {/* {blog.sharedPostId ? (
                   <div className=" mx-1 mb-2">
                     <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 px-2 pt-1 mt-2 mb-3 mr-1">
                       {sharedPost?.image && (
                         <MultipleImageRender blog={sharedPost} />
                       )}
-                      {/* shared post description */}
+                 
                       <div className=" gap-1 my-2 mx-4">
-                        {/* profile image  */}
+                 
                         <Link href={`/user/${sharedPost?.author.id}`}>
                           <div className="flex items-center gap-1">
                             <UserAvatar
@@ -203,9 +227,8 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
                     <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 px-2 pt-1 mt-2 mb-3 mr-1">
                       {blog.image && <MultipleImageRender blog={blog} />}
 
-                      {/* shared post description */}
+                  
                       <div className=" gap-1 my-2 mx-4">
-                        {/* profile image  */}
                         <Link href={`/user/${blog?.author.id}`}>
                           <div className="flex items-center gap-1">
                             <UserAvatar
@@ -250,45 +273,52 @@ const SharePostModal = ({ session, user, blog, sharedPost }) => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
 
-              {sharedPost ? null : (
-                <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-1 flex justify-between items-center py-1 ">
-                  <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
-                    Add to your post
-                  </h1>
-                  <div>
-                    <ToolTipComp content="Add Photo/Video">
-                      <Button
-                        variant="ghost"
-                        className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                        onClick={() =>
-                          setToggleImageUpload((prevState) => !prevState)
-                        }
-                      >
-                        <ImagePlus className="text-green-600 " />
+              <Separator className="bg-neutral-300 dark:bg-neutral-700 border-1 " />
+
+              <div className="mx-6 my-4">
+                <h2 className="font-semibold">Share to</h2>
+
+                <div className="flex items-center gap-x-4 mt-2">
+                  <div className="space-y-2 flex flex-col items-center">
+                    <Button className="py-7 rounded-full bg-neutral-300">
+                      <Icons.Messager className="h-7 w-6" />
+                    </Button>
+                    <p className="text-xs">Chatbox</p>
+                  </div>
+                  {blog.author.id === session?.user.id && (
+                    <div className="space-y-2 flex flex-col items-center">
+                      <Button className="py-7 rounded-full bg-neutral-300">
+                        <BookOpen className="h-7 w-6 fill-black" />
                       </Button>
-                    </ToolTipComp>
+                      <p className="text-xs">Your story</p>
+                    </div>
+                  )}
+                  <div className="space-y-2 flex flex-col items-center">
+                    <Button className="py-7 rounded-full bg-neutral-300">
+                      <LinkIcon className="h-7 w-6 text-black" />
+                    </Button>
+                    <p className="text-xs">Link</p>
+                  </div>
+                  <div className="space-y-2 flex flex-col items-center">
+                    <Button className="py-7 rounded-full bg-neutral-300">
+                      <Icons.Group className="h-7 w-6 text-black" />
+                    </Button>
+                    <p className="text-xs">Group</p>
+                  </div>
+                  <div className="space-y-2 flex flex-col items-center">
+                    <Button className="py-7 rounded-full bg-neutral-300">
+                      <Flag className="h-7 w-6 text-black fill-black" />
+                    </Button>
+                    <p className="text-xs">Page</p>
                   </div>
                 </div>
-              )}
+              </div>
             </SimpleBar>
           </div>
         </div>
-        <DialogFooter className="pt-1 pb-3 mx-4 ">
-          <Button
-            className="w-full bg-blue-600 hover:bg-blue-500"
-            type="submit"
-            onClick={() => {
-              sharePost(blog ? blog.id : sharedPost.id);
-              setIsLoading(true);
-              setLoaderDescription("Posting");
-            }}
-          >
-            Share
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

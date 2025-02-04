@@ -55,7 +55,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
             >
               {/* Background Container */}
               <div
-                className="absolute inset-0 z-[-1] bg-cover bg-center"
+                className="absolute inset-0 z-[-1]  bg-center"
                 style={{
                   backgroundImage: `url(${blog.image[0].url})`,
                   filter: "blur(10px)", // Adjust the blur amount as needed
