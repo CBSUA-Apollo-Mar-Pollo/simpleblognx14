@@ -7,19 +7,18 @@ import StoryPageContent from "./story-page-content";
 const StoryPage = ({ id, session, stories }) => {
   console.log(stories, "stories in story page");
 
-  // Find the story that matches the provided ID
   const currentStory = stories.find((story) => story.author.id === id);
 
   const [currentStoryBeingShown, setCurrentStoryBeingShown] = useState({
-    Image: currentStory?.images[0]?.img, // Initial image
+    Image: currentStory?.images[0]?.img,
     Author: currentStory?.author,
     imgLength: currentStory?.images.length,
-    currentIndex: 0, // Start with the first image
-    imageIndex: 0, // Start with the first image
+    currentIndex: 0,
+    imageIndex: 0,
   });
 
   useEffect(() => {
-    // Reset currentStoryBeingShown when the story changes (due to the dynamic `id`)
+    // Reset currentStoryBeingShown when the story changes
     if (currentStory) {
       setCurrentStoryBeingShown({
         Image: currentStory?.images[0]?.img,
@@ -31,7 +30,6 @@ const StoryPage = ({ id, session, stories }) => {
     }
   }, [id, currentStory]);
 
-  // Go to the next image
   const goToNextImage = () => {
     setCurrentStoryBeingShown((prevState) => {
       const { currentIndex, imageIndex } = prevState;
@@ -59,7 +57,6 @@ const StoryPage = ({ id, session, stories }) => {
     });
   };
 
-  // Go to the previous image
   const goToPreviousImage = () => {
     setCurrentStoryBeingShown((prevState) => {
       const { currentIndex, imageIndex } = prevState;

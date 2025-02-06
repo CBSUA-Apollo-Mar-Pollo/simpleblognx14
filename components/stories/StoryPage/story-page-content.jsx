@@ -19,7 +19,7 @@ const StoryPageContent = ({
   const getTimeDifference = (createdAt) => {
     const now = new Date();
     const createdTime = new Date(createdAt);
-    const diffInMinutes = Math.floor((now - createdTime) / (1000 * 60)); // Convert ms to minutes
+    const diffInMinutes = Math.floor((now - createdTime) / (1000 * 60));
 
     return diffInMinutes < 60
       ? `${diffInMinutes}m`
@@ -55,11 +55,10 @@ const StoryPageContent = ({
         }
         return prevProgress + 100 / timerDuration; // Increment progress
       });
-    }, 1000); // Update every second
+    }, 1000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, [isPaused, goToNextImage, timerDuration]); // Ensure goToNextImage and timerDuration are included in dependencies
+  }, [isPaused, goToNextImage, timerDuration]);
 
   const togglePause = () => setIsPaused((prev) => !prev);
 
@@ -86,7 +85,7 @@ const StoryPageContent = ({
             height={0}
             src={stories.Image}
             alt="Story image"
-            objectFit="cover" // Ensures the image covers the entire div without distortion
+            objectFit="cover"
             className="min-h-[90vh] min-w-[24vw] rounded-xl"
           />
 
