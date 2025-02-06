@@ -19,35 +19,34 @@ export const getStoryData = async (authorId) => {
 
   let getAllStoryData = null;
 
-if (friends && friends.length > 0) {
-  // If friends exist, fetch stories for the friends' author IDs
-  const friendIds = [
-    ...friends.map((friend) => friend.userId),
-    ...friends.map((friend) => friend.requesterUserId),
-  ];
+  if (friends && friends.length > 0) {
+    // If friends exist, fetch stories for the friends' author IDs
+    const friendIds = [
+      ...friends.map((friend) => friend.userId),
+      ...friends.map((friend) => friend.requesterUserId),
+    ];
 
-  getAllStoryData = await db.story.findMany({
-    where: {
-      authorId: {
-        in: friendIds,
+    getAllStoryData = await db.story.findMany({
+      where: {
+        authorId: {
+          in: friendIds,
+        },
       },
-    },
-    include: {
-      author: true, // Include the author's details if you need
-    },
-  });
-} else {
-  // If no friends exist, fetch stories for the given authorId
-  getAllStoryData = await db.story.findMany({
-    where: {
-      authorId,
-    },
-    include: {
-      author: true, // Include the author's details if you need
-    },
-  });
-}
-
+      include: {
+        author: true, // Include the author's details if you need
+      },
+    });
+  } else {
+    // If no friends exist, fetch stories for the given authorId
+    getAllStoryData = await db.story.findMany({
+      where: {
+        authorId,
+      },
+      include: {
+        author: true, // Include the author's details if you need
+      },
+    });
+  }
 
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -72,6 +71,7 @@ if (friends && friends.length > 0) {
     } else {
       // If the author's group does not exist, create a new entry
       acc.push({
+        id: story.id,
         authorId: authorId,
         images: [
           {

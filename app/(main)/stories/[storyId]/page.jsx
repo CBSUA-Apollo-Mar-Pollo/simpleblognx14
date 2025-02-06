@@ -8,6 +8,7 @@ import { getAuthSession } from "@/lib/auth";
 const StoryHomePage = async ({ params }) => {
   const session = await getAuthSession();
   const stories = await getStoryData(session?.user.id);
+
   if (!session?.user) {
     return redirect("/");
   }

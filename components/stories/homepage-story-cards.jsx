@@ -70,21 +70,16 @@ const HomePageStoryCards = ({ session }) => {
   };
 
   const handleMouseHover = (id) => {
-    if (id === null) {
-      setScale((prevScale) => prevScale + 0.1);
-    } else {
+    console.log(id);
+    if (id) {
       setHoveredStory(id);
       setScale((prevScale) => prevScale + 0.1);
     }
   };
 
   const handleMouseLeave = (id) => {
-    if (id === null) {
-      setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
-    } else {
-      setHoveredStory(null);
-      setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
-    }
+    setHoveredStory(null);
+    setScale((prevScale) => (prevScale > 0.1 ? prevScale - 0.1 : prevScale));
   };
 
   const handleNavigateToStoryPage = (id) => {
@@ -103,7 +98,7 @@ const HomePageStoryCards = ({ session }) => {
     },
   });
 
-  console.log(stories, "stories");
+  console.log(stories);
 
   return (
     <div className=" flex items-center relative">
@@ -123,11 +118,9 @@ const HomePageStoryCards = ({ session }) => {
       >
         <button
           onClick={() => handleNavigate()}
-          onMouseEnter={() => handleMouseHover()}
-          onMouseLeave={() => handleMouseLeave()}
           className="relative border dark:border-0  rounded-2xl  dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
         >
-          {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
+          {/* create story */}
           <div className="relative md:w-40 md:h-48 w-40 h-40 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
             <Image
               sizes="100vw"
@@ -136,11 +129,6 @@ const HomePageStoryCards = ({ session }) => {
               src={session?.user.image}
               alt="profile image"
               className="w-full h-full object-cover"
-              style={{
-                transform: hoveredStory === null ? `scale(${scale})` : null, // Apply zoom effect to the image itself
-                transformOrigin: "center", // Keep the zoom centered
-                transition: "transform 0.3s ease", // Smooth transition for zoom effect
-              }}
             />
           </div>
 
@@ -162,6 +150,7 @@ const HomePageStoryCards = ({ session }) => {
             </div>
           ))}
 
+        {/* stories */}
         <div className="flex items-center gap-x-2 ">
           {isLoading === false &&
             stories?.map((story) => (

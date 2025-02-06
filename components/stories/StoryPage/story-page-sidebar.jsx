@@ -24,11 +24,21 @@ const StoryPageSidebar = ({ session, stories }) => {
       : `${Math.floor(diffInMinutes / 60)}h`;
   };
 
-  const latestImage = isUserPostedAStory?.images.reduce((latest, image) =>
-    new Date(image.createdAt) > new Date(latest.createdAt) ? image : latest
+  const latestImageForUser = isUserPostedAStory?.images.reduce(
+    (latest, image) =>
+      new Date(image.createdAt) > new Date(latest.createdAt) ? image : latest
   );
 
-  console.log(isUserPostedAStory, "isUserPostedAStory");
+  const getLatestImageTimeStamp = (story) => {
+    const latestImage = story?.images.reduce((latest, image) => {
+      if (!latest) return image; // handle the case when it's the first iteration
+      return new Date(image.createdAt) > new Date(latest.createdAt)
+        ? image
+        : latest;
+    }, null); // initialize with null or any valid fallback value
+
+    return latestImage?.createdAt; // return only the createdAt value
+  };
 
   return (
     <div className="relative">
@@ -64,7 +74,7 @@ const StoryPageSidebar = ({ session, stories }) => {
             <h2 className="font-semibold text-lg">Your Story</h2>
 
             {isUserPostedAStory ? (
-              <div className="flex items-center justify-between  w-full gap-x-3 mt-3">
+              <div className="flex items-center justify-between  w-full gap-x-3 mt-1 hover:bg-neutral-200 p-2 rounded-lg">
                 <div className="flex items-center gap-x-3">
                   <UserAvatar
                     className="h-14 w-14 border-2 border-neutral-500"
@@ -78,7 +88,7 @@ const StoryPageSidebar = ({ session, stories }) => {
                       {session.user.name}
                     </span>
                     <span className="text-sm font-light">
-                      {getTimeDifference(latestImage.createdAt)}
+                      {getTimeDifference(latestImageForUser.createdAt)}
                     </span>
                   </div>
                 </div>
@@ -105,6 +115,30 @@ const StoryPageSidebar = ({ session, stories }) => {
 
           <div className="mt-4">
             <h2 className="font-semibold text-lg">All Stories</h2>
+
+            <div className="space-y-2">
+              {stories
+                .filter((item) => item.author.id !== session.user.id)
+                .map((story) => (
+                  <div className="flex items-center gap-x-3 hover:bg-neutral-200 p-2 rounded-lg">
+                    <UserAvatar
+                      className="h-14 w-14 border-2 border-neutral-500"
+                      user={{
+                        name: story.author.name || null,
+                        image: story.author.image || null,
+                      }}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-[0.9rem] font-semibold ">
+                        {story.author.name}
+                      </span>
+                      <span className="text-sm font-light">
+                        {getTimeDifference(getLatestImageTimeStamp(story))}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </div>
