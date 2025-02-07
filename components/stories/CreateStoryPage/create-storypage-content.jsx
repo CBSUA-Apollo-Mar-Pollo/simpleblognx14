@@ -597,9 +597,9 @@ const CraeateStoryPageContent = ({
                   <span className="text-black ">Rotate Image</span>
                 </Button> */}
 
-                <button onClick={handleCrop} style={{ marginTop: "10px" }}>
+                {/* <button onClick={handleCrop} style={{ marginTop: "10px" }}>
                   Crop Image
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

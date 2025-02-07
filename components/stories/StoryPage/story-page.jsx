@@ -98,6 +98,7 @@ const StoryPage = ({ id, session, stories }) => {
             Image: currentStoryBeingShown.Image,
             Author: currentStoryBeingShown.Author,
             imgLength: currentStoryBeingShown.imgLength,
+            imgIndex: currentStoryBeingShown.imageIndex,
           }}
           goToNextImage={goToNextImage}
           goToPreviousImage={goToPreviousImage}

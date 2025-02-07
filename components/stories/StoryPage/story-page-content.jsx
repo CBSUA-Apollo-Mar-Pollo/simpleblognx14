@@ -6,7 +6,13 @@ import ChatBoxMenu from "@/components/utils/ChatBoxMenu";
 import Menu from "@/components/utils/Menu";
 import UserAccountNav from "@/components/utils/UserAccountNav";
 import UserAvatar from "@/components/utils/UserAvatar";
-import { ChevronRight, MoreHorizontal, Pause, Play } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+  Pause,
+  Play,
+} from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -16,6 +22,7 @@ const StoryPageContent = ({
   goToNextImage,
   goToPreviousImage,
 }) => {
+  console.log(stories, "story page content");
   const getTimeDifference = (createdAt) => {
     const now = new Date();
     const createdTime = new Date(createdAt);
@@ -72,6 +79,17 @@ const StoryPageContent = ({
       </div>
 
       <div className="flex items-center justify-center w-full mt-4 relative">
+        {stories.imgIndex === 1 && (
+          <div className="absolute top-1/2 left-[23vw]">
+            <Button
+              onClick={() => handleNextImage()}
+              className=" bg-neutral-200 hover:bg-neutral-400 rounded-full py-7 px-2 "
+            >
+              <ChevronLeft className="h-10 w-10 text-neutral-800" />
+            </Button>
+          </div>
+        )}
+
         <div className="relative">
           <div
             className="absolute top-0 left-0 w-full h-[4vh] bg-gradient-to-t "
@@ -96,13 +114,15 @@ const StoryPageContent = ({
                   key={index}
                   className="flex-1 h-[0.5vh]  bg-neutral-300 rounded-full"
                 >
-                  <div
-                    className="bg-blue-500 h-full rounded-full"
-                    style={{
-                      width: `${progress}%`,
-                      transition: progress === 0 ? "none" : "1s linear",
-                    }}
-                  ></div>
+                  {stories.imgIndex === index && (
+                    <div
+                      className="bg-blue-500 h-full rounded-full"
+                      style={{
+                        width: `${progress}%`,
+                        transition: progress === 0 ? "none" : "1s linear",
+                      }}
+                    ></div>
+                  )}
                 </div>
               ))}
             </div>

@@ -93,9 +93,12 @@ const StoryPageSidebar = ({ session, stories }) => {
                   </div>
                 </div>
 
-                <div className="">
+                <Link
+                  href="/stories/create"
+                  className="bg-transparent hover:bg-transparent"
+                >
                   <Plus className="text-blue-600 bg-neutral-100 p-5 h-16 w-16 rounded-full" />
-                </div>
+                </Link>
               </div>
             ) : (
               <div className="flex items-center  w-full gap-x-3 mt-3">
