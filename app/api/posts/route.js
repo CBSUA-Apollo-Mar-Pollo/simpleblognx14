@@ -48,7 +48,12 @@ export async function GET(req) {
       },
     });
 
-    const mergeData = [...blogs, ...shortVideos];
+    const updatedShortVideos = shortVideos.map((item) => ({
+      ...item,
+      isShortsV: true,
+    }));
+
+    const mergeData = [...blogs, ...updatedShortVideos];
 
     const sortedData = mergeData.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)

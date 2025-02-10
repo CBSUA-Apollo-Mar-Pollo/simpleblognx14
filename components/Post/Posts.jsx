@@ -75,6 +75,8 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
+  console.log(posts, " from posts ");
+
   return (
     <div className="z-2 space-y-3">
       <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
@@ -128,33 +130,35 @@ export default function Posts({ initialPosts, session, deleteImage }) {
               );
             }
 
-            if (index === posts.length - 1 && isImage) {
-              return (
-                <li key={blog.id} className="list-none z-40" ref={ref}>
-                  <PostCard
-                    blog={blog}
-                    session={session}
-                    deleteImage={deleteImage}
-                    votesAmt={votesAmt}
-                    currentVote={currentVote}
-                  />
-                  {index === randNumber && <ReelsHomeCard />}
-                </li>
-              );
-            } else {
-              return (
-                <li key={index} className="z-0" ref={ref}>
-                  {index === randNumber && <ReelsHomeCard />}
-                  <PostCard
-                    blog={blog}
-                    key={blog.id}
-                    session={session}
-                    deleteImage={deleteImage}
-                    votesAmt={votesAmt}
-                    currentVote={currentVote}
-                  />
-                </li>
-              );
+            if (!blog.isShortsV) {
+              if (index === posts.length - 1 && isImage) {
+                return (
+                  <li key={blog.id} className="list-none z-40" ref={ref}>
+                    <PostCard
+                      blog={blog}
+                      session={session}
+                      deleteImage={deleteImage}
+                      votesAmt={votesAmt}
+                      currentVote={currentVote}
+                    />
+                    {index === randNumber && <ReelsHomeCard />}
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={index} className="z-0" ref={ref}>
+                    {index === randNumber && <ReelsHomeCard />}
+                    <PostCard
+                      blog={blog}
+                      key={blog.id}
+                      session={session}
+                      deleteImage={deleteImage}
+                      votesAmt={votesAmt}
+                      currentVote={currentVote}
+                    />
+                  </li>
+                );
+              }
             }
           })}
 

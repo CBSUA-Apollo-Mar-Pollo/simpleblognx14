@@ -55,7 +55,13 @@ export default async function HomePage() {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
-  const mergeData = [...posts, ...shortVideos];
+  // added a boolean key value
+  const updatedShortVideos = shortVideos.map((item) => ({
+    ...item,
+    isShortsV: true,
+  }));
+
+  const mergeData = [...posts, ...updatedShortVideos];
 
   const sortedData = mergeData.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)

@@ -22,6 +22,7 @@ const ReelsHomeCard = () => {
   const videoContainerRef = useRef(null);
   const videoRefs = useRef([]);
   const [isScrolled, setIsScrolled] = useState(false);
+
   const { data: reels, isLoading } = useQuery({
     queryKey: ["getReels"],
     queryFn: async () => {
