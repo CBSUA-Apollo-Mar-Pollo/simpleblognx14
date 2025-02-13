@@ -89,6 +89,7 @@ model Blog {
   community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)
   communityId String?
   votes       Vote[]
+  History     History[]
 
   @@index([authorId])
   @@index([communityId])
@@ -347,4 +348,15 @@ model Story {
   authorId String
 
   @@index([authorId])
+}
+
+model History {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post   Blog   @relation(fields: [postId], references: [id])
+  postId String
+
+  @@index([postId])
 }

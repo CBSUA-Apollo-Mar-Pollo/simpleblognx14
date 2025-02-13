@@ -75,7 +75,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
-  console.log(posts, " from posts ");
+  // console.log(posts, " from posts ");
 
   return (
     <div className="z-2 space-y-3">

@@ -9,6 +9,7 @@ import {
   Dot,
   Forward,
   Globe,
+  Loader2,
   MessageCircle,
   MoreHorizontal,
   Pause,
@@ -34,6 +35,7 @@ const ShortsVPostCard = ({
   const mainVideoRef = useRef(null);
   const backgroundVideoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
   const { signinToast } = useCustomHooks();
   const [votesAmt, setVotesAmt] = useState(shortsvVotesAmt);
   const [currentVote, setCurrentVote] = useState(currentShortsvVote);
@@ -63,7 +65,40 @@ const ShortsVPostCard = ({
         setIsPlaying(false);
       }
     }
-  }, [entry]);
+  }, [entry, mainVideoRef.current]);
+
+  useEffect(() => {
+    if (!mainVideoRef.current) return;
+
+    const onPlay = () => {
+      if (isWaiting) setIsWaiting(false);
+      setIsPlaying(true);
+    };
+
+    const onPause = () => {
+      if (isWaiting) setIsWaiting(false);
+      setIsPlaying(false);
+    };
+
+    const onWaiting = () => {
+      if (isPlaying) setIsPlaying(false);
+      setIsWaiting(true);
+    };
+
+    const element = mainVideoRef.current;
+
+    element.addEventListener("play", onPlay);
+    element.addEventListener("playing", onPlay);
+    element.addEventListener("pause", onPause);
+    element.addEventListener("waiting", onWaiting);
+
+    return () => {
+      element.removeEventListener("play", onPlay);
+      element.removeEventListener("playing", onPlay);
+      element.removeEventListener("pause", onPause);
+      element.removeEventListener("waiting", onWaiting);
+    };
+  }, [mainVideoRef.currentm, isPlaying, isWaiting]);
 
   // useEffect(() => {
   //   if (mainVideoRef.current && isPlaying) {
@@ -151,13 +186,14 @@ const ShortsVPostCard = ({
   };
 
   const handlePauseOrPlay = () => {
-    if (isPlaying === true) {
-      mainVideoRef.current.pause();
-      setIsPlaying(false);
+    if (!mainVideoRef.current) return;
+    const video = mainVideoRef.current;
+    if (isPlaying) {
+      video.pause();
     } else {
-      mainVideoRef.current.play();
-      setIsPlaying(true);
+      video.play();
     }
+    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -174,9 +210,8 @@ const ShortsVPostCard = ({
             playsInline
             muted={true}
             className="absolute inset-0 w-full h-full object-cover  blur-[25px] z-[1] rounded-2xl "
-          >
-            <source src={videoData?.videoUrl} type="video/mp4" />
-          </video>
+            src={videoData?.videoUrl}
+          />
 
           <div
             className="absolute top-0 flex justify-between w-full px-5 rounded-2xl z-[3]"
@@ -243,6 +278,10 @@ const ShortsVPostCard = ({
             </div>
           </div>
 
+          {isWaiting && (
+            <Loader2 className="absolute top-1/2 left-1/2  h-10 w-10 text-neutral-200 animate-spin my-4 z-30 " />
+          )}
+
           {/* video content */}
           <div className="max-w-[25vw] z-[2]">
             <video
@@ -251,14 +290,13 @@ const ShortsVPostCard = ({
               loop
               playsInline
               muted={!isMuted}
-              preload="none"
+              autoPlay
               className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
               style={{
                 backgroundBlendMode: "overlay",
               }}
-            >
-              <source src={videoData?.videoUrl} type="video/mp4" />
-            </video>
+              src={videoData?.videoUrl}
+            />
           </div>
 
           {/* Interactable buttons */}
