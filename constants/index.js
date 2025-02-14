@@ -40,7 +40,7 @@ export const SideBarFirstLinks = [
       />
     ),
     label: "History",
-    link: "/e/popular",
+    link: "/history/feed",
   },
   {
     Icon: (
@@ -67,7 +67,7 @@ export const SideBarFirstLinks = [
       />
     ),
     label: "Pages",
-    link: "/e/pages/feed",
+    link: "/pages/feed",
   },
 ];
 
