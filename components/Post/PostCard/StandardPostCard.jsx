@@ -242,6 +242,7 @@ const StandardPostCard = ({
                 className="object-cover border-0 max-h-[55vh]"
                 playsInline
                 loop
+                crossOrigin="anonymous"
                 onTimeUpdate={handleTimeUpdate}
                 src={blog.video[0].url}
               />

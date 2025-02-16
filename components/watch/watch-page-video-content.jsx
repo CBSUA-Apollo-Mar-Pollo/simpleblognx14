@@ -157,6 +157,7 @@ const WatchPageVideoContent = ({
               className="object-cover border-0 min-h-[55vh] max-h-[55vh]"
               preload="metadata"
               playsInline
+              crossOrigin="anonymous"
               loop
               onTimeUpdate={handleTimeUpdate}
               src={blog.video[0].url}

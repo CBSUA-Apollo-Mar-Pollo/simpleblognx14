@@ -153,8 +153,9 @@ const HomePageStoryCards = ({ session }) => {
         {/* stories */}
         <div className="flex items-center gap-x-2 ">
           {isLoading === false &&
-            stories?.map((story) => (
+            stories?.map((story, index) => (
               <button
+                key={index}
                 onClick={() => handleNavigateToStoryPage(story.authorId)}
                 onMouseEnter={() => handleMouseHover(story.id)}
                 onMouseLeave={() => handleMouseLeave(story.id)}

@@ -122,8 +122,11 @@ const StoryPageSidebar = ({ session, stories }) => {
             <div className="space-y-2">
               {stories
                 .filter((item) => item.author.id !== session.user.id)
-                .map((story) => (
-                  <div className="flex items-center gap-x-3 hover:bg-neutral-200 p-2 rounded-lg">
+                .map((story, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-x-3 hover:bg-neutral-200 p-2 rounded-lg"
+                  >
                     <UserAvatar
                       className="h-14 w-14 border-2 border-neutral-500"
                       user={{

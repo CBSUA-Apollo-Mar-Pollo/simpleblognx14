@@ -170,6 +170,7 @@ const LogoVideoAndIcon = ({
             onClick={handlePlayClick}
             ref={videoRef}
             loop
+            crossOrigin="anonymous"
             playsInline
             autoPlay
             preload="metadata"

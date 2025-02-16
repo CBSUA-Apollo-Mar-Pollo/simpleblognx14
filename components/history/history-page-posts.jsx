@@ -1,16 +1,13 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import { useIntersection } from "@mantine/hooks";
-import { Loader2 } from "lucide-react";
-import PostCard from "./PostCard/PostCard";
-import ReelsHomeCard from "../reels/reels-home-card";
 import { useScrollTracker } from "@/hooks/use-scroll-tracker";
+import { useIntersection } from "@mantine/hooks";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import React, { useEffect, useRef, useState } from "react";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
+import ReelsHomeCard from "../reels/reels-home-card";
+import PostCard from "../Post/PostCard/PostCard";
+import { Loader2 } from "lucide-react";
 
-export default function Posts({ initialPosts, session, deleteImage }) {
+const HistoryPagePosts = ({ initialPosts, session, deleteImage }) => {
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
@@ -20,14 +17,14 @@ export default function Posts({ initialPosts, session, deleteImage }) {
   });
 
   const fetchPosts = async ({ pageParam }) => {
-    const query = `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}`;
+    const query = `/api/history/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}`;
 
     const res = await fetch(query);
     return res.json();
   };
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["get-posts-infinite-query"],
+    queryKey: ["get-history-posts-infinite-query"],
     queryFn: fetchPosts,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
@@ -43,14 +40,6 @@ export default function Posts({ initialPosts, session, deleteImage }) {
   }, [entry, fetchNextPage]);
 
   const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
-
-  const [randNumber, setRandNumber] = useState(null);
-
-  useEffect(() => {
-    const numbers = [1, 2, 3];
-    const randomIndex = Math.floor(Math.random() * numbers.length);
-    setRandNumber(numbers[randomIndex]);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,7 +64,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
-  // console.log(posts, " from posts ");
+  console.log(posts, "history from posts ");
 
   return (
     <div className="z-2 space-y-3">
@@ -83,74 +72,71 @@ export default function Posts({ initialPosts, session, deleteImage }) {
         {posts
           .filter(
             (item) =>
-              !item.community?.members.find(
+              !item.post.community?.members.find(
                 (member) => member.userId !== session?.user.id
               )
           )
           .map((blog, index) => {
             // votes for post cards
-            const votesAmt = blog?.votes?.reduce((acc, vote) => {
+            const votesAmt = blog.post?.votes?.reduce((acc, vote) => {
               if (vote.type === "UP") return acc + 1;
               if (vote.type === "DOWN") return acc - 1;
               return acc;
             }, 0);
 
-            const currentVote = blog?.votes?.find(
+            const currentVote = blog.post?.votes?.find(
               (vote) => vote.userId === session?.user.id
             );
             // votes for shorts video post cards
-            const shortsvVotesAmt = blog?.shortsVotes?.reduce((acc, vote) => {
-              if (vote.type === "UP") return acc + 1;
-              if (vote.type === "DOWN") return acc - 1;
-              return acc;
-            }, 0);
+            const shortsvVotesAmt = blog.post?.shortsVotes?.reduce(
+              (acc, vote) => {
+                if (vote.type === "UP") return acc + 1;
+                if (vote.type === "DOWN") return acc - 1;
+                return acc;
+              },
+              0
+            );
 
-            const currentShortsvVote = blog?.shortsVotes?.find(
+            const currentShortsvVote = blog.post?.shortsVotes?.find(
               (vote) => vote.userId === session?.user.id
             );
 
             // Check if the blog post is a video or an image
-            const isVideo = Boolean(blog.videoUrl);
-            const isImage = Boolean(blog.image);
+            const isVideo = Boolean(blog.post.videoUrl);
+            const isImage = Boolean(blog.post.image);
 
             if (isVideo && session?.user) {
               return (
-                <li key={blog.id} className="list-none z-10" ref={ref}>
+                <li key={blog.post.id} className="list-none z-10" ref={ref}>
                   <ShortsVPostCard
-                    videoData={blog}
+                    videoData={blog.post}
                     session={session}
                     shortsvVotesAmt={shortsvVotesAmt}
                     currentShortsvVote={currentShortsvVote?.type}
                   />
-
-                  <div className="mt-3">
-                    {index === randNumber && <ReelsHomeCard />}
-                  </div>
                 </li>
               );
             }
 
-            if (!blog.isShortsV) {
+            if (!blog.post.isShortsV) {
               if (index === posts.length - 1 && isImage) {
                 return (
-                  <li key={blog.id} className="list-none z-40" ref={ref}>
+                  <li key={blog.post.id} className="list-none z-40" ref={ref}>
                     <PostCard
-                      blog={blog}
+                      blog={blog.post}
                       session={session}
                       deleteImage={deleteImage}
                       votesAmt={votesAmt}
                       currentVote={currentVote}
                     />
-                    {index === randNumber && <ReelsHomeCard />}
                   </li>
                 );
               } else {
                 return (
                   <li key={index} className="z-0" ref={ref}>
-                    {index === randNumber && <ReelsHomeCard />}
                     <PostCard
-                      blog={blog}
-                      key={blog.id}
+                      blog={blog.post}
+                      key={blog.post.id}
                       session={session}
                       deleteImage={deleteImage}
                       votesAmt={votesAmt}
@@ -170,4 +156,6 @@ export default function Posts({ initialPosts, session, deleteImage }) {
       </ul>
     </div>
   );
-}
+};
+
+export default HistoryPagePosts;

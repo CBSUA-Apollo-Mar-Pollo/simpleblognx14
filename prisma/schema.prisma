@@ -68,6 +68,7 @@ model User {
   CommentVote       CommentVote[]
   ShortsVidVote     ShortsVidVote[]
   Story             Story[]
+  History           History[]
 }
 
 model Blog {
@@ -351,12 +352,14 @@ model Story {
 }
 
 model History {
-  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   post   Blog   @relation(fields: [postId], references: [id])
   postId String
 
-  @@index([postId])
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@id([postId, userId])
 }

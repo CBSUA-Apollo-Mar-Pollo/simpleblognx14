@@ -259,6 +259,7 @@ const CreateShortsv = ({ session }) => {
                     loop
                     playsInline
                     autoPlay
+                    crossOrigin="anonymous"
                     preload="metadata"
                     muted={!isMuted}
                     className="h-[70vh] w-[18vw] rounded-2xl z-10 bg-black"

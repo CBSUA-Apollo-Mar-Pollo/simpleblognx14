@@ -164,6 +164,7 @@ const ReelsHomeCard = () => {
                     preload="metadata"
                     playsInline
                     loop
+                    crossOrigin="anonymous"
                     autoPlay={index === 0 && true}
                     muted
                   >

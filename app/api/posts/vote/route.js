@@ -39,6 +39,22 @@ export async function PATCH(req) {
       return new Response("Post not found", { status: 404 });
     }
 
+    if (post.authorId !== session.user.id) {
+      await db.history.upsert({
+        where: {
+          postId_userId: {
+            postId,
+            userId: session.user.id,
+          },
+        },
+        update: {}, // No changes needed, just refresh the record
+        create: {
+          postId,
+          userId: session.user.id,
+        },
+      });
+    }
+
     if (existingVote) {
       // delete the vote from the database if the user is click again the same vote type
       if (existingVote.type === voteType) {

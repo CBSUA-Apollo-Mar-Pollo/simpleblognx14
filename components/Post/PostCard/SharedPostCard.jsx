@@ -242,6 +242,7 @@ const SharedPostCard = ({
                 preload="metadata"
                 playsInline
                 loop
+                crossOrigin="anonymous"
                 onTimeUpdate={handleTimeUpdate}
                 src={sharedPost.video[0].url}
               />

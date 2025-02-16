@@ -9,6 +9,7 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Plus } from "lucide-react";
 import React from "react";
+import { UTApi } from "uploadthing/server";
 
 const HistoryPage = async () => {
   const session = await getAuthSession();
@@ -57,6 +58,33 @@ const HistoryPage = async () => {
       userTwo,
     };
   });
+
+  const initialHistoryData = await db.history.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      post: {
+        include: {
+          author: true,
+          comments: true,
+          votes: true,
+          community: {
+            include: {
+              members: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const deleteImage = async (image) => {
+    "use server";
+    const utapi = new UTApi();
+    await utapi.deleteFiles(image.key);
+  };
+
   return (
     <div className="grid grid-cols-12 dark:bg-neutral-900">
       <div className="  xl:col-span-3 xl:block hidden relative border-r border-neutral-200 dark:border-neutral-800 mr-[5vw] ">
@@ -64,8 +92,12 @@ const HistoryPage = async () => {
       </div>
 
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3   dark:bg-neutral-900">
-        <div className="mt-5  space-y-3 ">
-          <HistoryPageComponent />
+        <div className="mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
+          <HistoryPageComponent
+            posts={initialHistoryData}
+            session={session}
+            deleteImage={deleteImage}
+          />
         </div>
       </div>
 

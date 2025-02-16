@@ -276,6 +276,7 @@ const PostDescriptionCard = ({
                     preload="metadata"
                     playsInline
                     loop
+                    crossOrigin="anonymous"
                     onTimeUpdate={handleTimeUpdate}
                     src={blog.video[0].url}
                   />
@@ -420,6 +421,7 @@ const PostDescriptionCard = ({
                           preload="metadata"
                           playsInline
                           loop
+                          crossOrigin="anonymous"
                           onTimeUpdate={handleTimeUpdate}
                           src={sharedPost.video[0].url}
                         />
