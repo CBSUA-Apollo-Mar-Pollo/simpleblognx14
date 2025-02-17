@@ -17,6 +17,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getFriendRequestData } from "@/actions/getFriendRequestData";
 import UserAvatar from "../utils/UserAvatar";
 import axios from "axios";
+import { getNotificationData } from "@/actions/getNotificationData";
 
 const NotificationMenu = () => {
   const { data: session } = useSession();
@@ -26,6 +27,14 @@ const NotificationMenu = () => {
     queryKey: ["getFriendRequestData"],
     queryFn: async () => {
       const res = await getFriendRequestData(session.user.id);
+      return res;
+    },
+  });
+
+  const { data: notificationData } = useQuery({
+    queryKey: ["notificationData"],
+    queryFn: async () => {
+      const res = await getNotificationData(session.user.id);
       return res;
     },
   });
@@ -46,6 +55,8 @@ const NotificationMenu = () => {
       console.log("Success");
     },
   });
+
+  console.log(notificationData, "notification data");
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
@@ -149,6 +160,23 @@ const NotificationMenu = () => {
           <p className="text-[14px] font-semibold my-2 dark:text-white">
             Earlier
           </p>
+
+          {notificationData?.map((item, index) => (
+            <DropdownMenuItem key={index} className="flex items-center gap-x-5">
+              <UserAvatar
+                post="user"
+                className="h-14 w-14 border"
+                user={{
+                  name: item?.fromUser.name || null,
+                  image: item.fromUser?.image || null,
+                }}
+              />
+
+              <div className="max-w-[10vw]">
+                <p>{item.text}</p>
+              </div>
+            </DropdownMenuItem>
+          ))}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -10,6 +10,7 @@ import UserAvatar from "./UserAvatar";
 import DarkMode from "./DarkMode";
 import DropDownMenuContentComp from "./DropDownMenuContentComp";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 const UserAccountNav = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -18,11 +19,12 @@ const UserAccountNav = ({ user }) => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger className="drop-shadow">
+      <DropdownMenuTrigger className="drop-shadow relative">
         <UserAvatar
           className="h-10 w-10 "
           user={{ name: user.name || null, image: user?.image || null }}
         />
+        <ChevronDown className="absolute bottom-0 right-0 text-white bg-neutral-800 h-3 w-3 rounded-full" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent

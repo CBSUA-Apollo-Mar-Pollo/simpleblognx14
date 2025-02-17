@@ -94,6 +94,16 @@ export async function PATCH(req) {
       },
     });
 
+    await db.notification.create({
+      data: {
+        userId: post.author.id,
+        text: `${session.user.name} upvoted your post ${
+          post.description.length !== 0 ? post.description : ""
+        }.`,
+        fromUserId: session.user.id,
+      },
+    });
+
     return new Response("OK");
   } catch (error) {
     console.log(error);
