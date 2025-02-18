@@ -201,7 +201,9 @@ export default async function HomePage() {
 
             <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 w-full py-7 my-2">
               <Plus className="text-black bg-neutral-100 p-2 h-9 w-9 rounded-full" />
-              <span className="text-black">Create group chat</span>
+              <span className="text-black dark:text-white">
+                Create group chat
+              </span>
             </Button>
           </div>
         </div>

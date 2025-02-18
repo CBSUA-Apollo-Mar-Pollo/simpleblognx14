@@ -33,6 +33,19 @@ export const SideBarFirstLinks = [
     Icon: (
       <Image
         sizes="100vw"
+        src={"/ImageIcons/friends.png"}
+        width="0"
+        height="0"
+        className="w-6 h-6"
+      />
+    ),
+    label: "Friends",
+    link: "/friends",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
         src={"/ImageIcons/history.png"}
         width="0"
         height="0"
@@ -68,6 +81,32 @@ export const SideBarFirstLinks = [
     ),
     label: "Pages",
     link: "/pages/feed",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/event.png"}
+        width="0"
+        height="0"
+        className="w-6 h-6"
+      />
+    ),
+    label: "Events",
+    link: "/events",
+  },
+  {
+    Icon: (
+      <Image
+        sizes="100vw"
+        src={"/ImageIcons/clapper.png"}
+        width="0"
+        height="0"
+        className="w-6 h-6"
+      />
+    ),
+    label: "Shortsv",
+    link: "/shortsv",
   },
 ];
 

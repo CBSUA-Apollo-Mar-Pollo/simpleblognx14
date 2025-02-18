@@ -25,10 +25,12 @@ const HistoryPageComponent = ({ posts, session, deleteImage }) => {
     <div>
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="font-bold text-4xl ml-3">History Feed</h1>
+          <h1 className="font-bold text-4xl ml-3 dark:text-white">
+            History Feed
+          </h1>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <MoreHorizontal />
+              <MoreHorizontal className="dark:text-white" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="mr-32">
@@ -43,8 +45,8 @@ const HistoryPageComponent = ({ posts, session, deleteImage }) => {
         <div className="mt-1 flex items-center">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center hover:bg-neutral-200 px-4 py-1 rounded-full">
-              <span className="font-light text-sm">Recent</span>
-              <ChevronDown className="stroke-[1px] h-5 w-5" />
+              <span className="font-light text-sm dark:text-white">Recent</span>
+              <ChevronDown className="stroke-[1px] h-5 w-5 dark:text-white" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="ml-24 min-w-[10vw]">
