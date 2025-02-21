@@ -47,7 +47,14 @@ const SideBarSettings = () => {
     setToggleScrollBar(false);
   };
   return (
-    <div className="">
+    <div
+      className={cn(
+        "sticky top-[7vh] max-h-[90vh] sidebarContainer pr-4",
+        toggleScrollBar ? "overflow-auto" : "overflow-hidden"
+      )}
+      onMouseEnter={handleScrollBar}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="pt-2 pl-2">
         <h1 className="font-bold text-2xl dark:text-white">
           Settings & Privacy
@@ -62,387 +69,382 @@ const SideBarSettings = () => {
         />
       </div>
 
-      <div
-        className={cn(
-          "max-h-[90vh] sidebarContainer",
-          toggleScrollBar ? "overflow-auto" : "overflow-hidden"
-        )}
-        onMouseEnter={handleScrollBar}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="flex flex-col space-y-1">
-          <Link
-            href="/settings/profile"
-            className={cn(
-              pathname === "/settings/profile"
-                ? "bg-gray-100 dark:bg-neutral-700"
-                : "hover:bg-gray-100  hover:dark:bg-neutral-700",
-              " pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-200 flex items-center"
-            )}
-          >
-            <UserCircle className="h-6 w-6 mr-3" />
-            Profile details
-          </Link>
-
-          <div className="pt-2">
-            <Separator className="bg-neutral-300 dark:bg-neutral-600" />
-          </div>
-
-          {/* ---------------- ACCOUNT SETTINGS -------------- */}
-
-          <>
-            <div>
-              <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
-                Account settings
-              </h1>
-              <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
-                Manage your password and personal info.
-              </p>
-            </div>
+      <div className="relative h-full">
+        <div>
+          <div className="flex flex-col space-y-1">
+            <Link
+              href="/settings/profile"
+              className={cn(
+                pathname === "/settings/profile"
+                  ? "bg-gray-100 dark:bg-neutral-700"
+                  : "hover:bg-gray-100  hover:dark:bg-neutral-700",
+                " pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-200 flex items-center"
+              )}
+            >
+              <UserCircle className="h-6 w-6 mr-3" />
+              Profile details
+            </Link>
 
             <div className="pt-2">
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Shield className="h-6 w-6 mr-3" />
-                Password & Security
-              </Link>
-              <Link
-                href="/settings/account/details"
-                className={cn(
-                  pathname === "/settings/account/details"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <SquareUserRound className="h-6 w-6 mr-3" />
-                Personal details
-              </Link>
-              <Link
-                href="/settings/account/info&permissions"
-                className={cn(
-                  pathname === "/settings/account/info&permissions"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <div className="relative mr-3">
-                  <FileText className="h-6 w-6" />
-                  <User className="h-3 w-3 absolute bottom-0 right-0 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
-                </div>
-                Information and Permission
-              </Link>
-              <Link
-                href="/settings/account/info&permissions"
-                className={cn(
-                  pathname === "/settings/account/info&permissions"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Settings className="h-6 w-6 mr-3" />
-                Default audience settings
-              </Link>
+              <Separator className="bg-neutral-300 dark:bg-neutral-600" />
             </div>
-          </>
 
-          <div className="py-2">
-            <Separator className="bg-neutral-300 dark:bg-neutral-600" />
+            {/* ---------------- ACCOUNT SETTINGS -------------- */}
+
+            <>
+              <div>
+                <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
+                  Account settings
+                </h1>
+                <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
+                  Manage your password and personal info.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Shield className="h-6 w-6 mr-3" />
+                  Password & Security
+                </Link>
+                <Link
+                  href="/settings/account/details"
+                  className={cn(
+                    pathname === "/settings/account/details"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <SquareUserRound className="h-6 w-6 mr-3" />
+                  Personal details
+                </Link>
+                <Link
+                  href="/settings/account/info&permissions"
+                  className={cn(
+                    pathname === "/settings/account/info&permissions"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <div className="relative mr-3">
+                    <FileText className="h-6 w-6" />
+                    <User className="h-3 w-3 absolute bottom-0 right-0 bg-neutral-200 dark:bg-neutral-800 rounded-full" />
+                  </div>
+                  Information and Permission
+                </Link>
+                <Link
+                  href="/settings/account/info&permissions"
+                  className={cn(
+                    pathname === "/settings/account/info&permissions"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Settings className="h-6 w-6 mr-3" />
+                  Default audience settings
+                </Link>
+              </div>
+            </>
+
+            <div className="py-2">
+              <Separator className="bg-neutral-300 dark:bg-neutral-600" />
+            </div>
+
+            {/* ------------------------------- USER PREFERENCE ------------------------ */}
+            <>
+              <div>
+                <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
+                  Preferences
+                </h1>
+                <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
+                  Customize your experience.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Bell className="h-6 w-6 mr-3" />
+                  Notifications
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <PersonStanding className="h-6 w-6 mr-3 border rounded-full" />
+                  Accessibility
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Globe className="h-6 w-6 mr-3" />
+                  Language and Region
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <PlaySquare className="h-6 w-6 mr-3" />
+                  Media
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Moon className="h-6 w-6 mr-3" />
+                  Dark Mode
+                </Link>
+              </div>
+            </>
+
+            <div className="py-2">
+              <Separator className="bg-neutral-300 dark:bg-neutral-600" />
+            </div>
+
+            {/* ------------------------------- AUDIENCE AND VISIBILITY  ------------------------ */}
+            <>
+              <div>
+                <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
+                  Audience and visibility
+                </h1>
+                <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
+                  Control who can see and what you share.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Lock className="h-6 w-6 mr-3" />
+                  Profile locking
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <UserSearch className="h-6 w-6 mr-3" />
+                  How People find and contact you
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <GalleryVertical className="h-6 w-6 mr-3" />
+                  Posts
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <BookOpen className="h-6 w-6 mr-3" />
+                  Stories
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-2 rounded-md py-2 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Icons.reelsIcon className="h-8 w-8 mr-2 dark:fill-white" />
+                  Reels
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <CopyPlus className="h-6 w-6 mr-3" />
+                  Followers and public content
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Tag className="h-6 w-6 mr-3" />
+                  Profile and tagging
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <UserRoundX className="h-6 w-6 mr-3" />
+                  User blocking
+                </Link>
+              </div>
+            </>
+
+            <div className="py-2">
+              <Separator className="bg-neutral-300 dark:bg-neutral-600" />
+            </div>
+
+            {/* ------------------------------- USER ACTIVITY ------------------------ */}
+            <>
+              <div>
+                <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
+                  Your activity
+                </h1>
+                <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
+                  Review your activity and content you&apos;re tagged in.
+                </p>
+              </div>
+
+              <div className="pt-2">
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <List className="h-6 w-6 mr-3" />
+                  Activity log
+                </Link>
+              </div>
+            </>
+
+            <div className="py-2">
+              <Separator className="bg-neutral-300 dark:bg-neutral-600" />
+            </div>
+
+            {/* ------------------------------- COMMUNITY STANDARDS AND LEGAL POLICIES ------------------------ */}
+            <>
+              <div>
+                <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
+                  Community Standards and legal policies
+                </h1>
+              </div>
+
+              <div className="">
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Book className="h-6 w-6 mr-3" />
+                  Terms of Services
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <Database className="h-6 w-6 mr-3" />
+                  Privacy policy
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <ArrowDownUp className="h-6 w-6 mr-3" />
+                  Cookies policy
+                </Link>
+                <Link
+                  href="/settings/account/pass&sec"
+                  className={cn(
+                    pathname === "/settings/account/pass&sec"
+                      ? "bg-gray-200 dark:bg-neutral-700"
+                      : "hover:bg-gray-100 hover:dark:bg-neutral-700",
+                    "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
+                  )}
+                >
+                  <HeartHandshake className="h-6 w-6 mr-3" />
+                  Community standards
+                </Link>
+              </div>
+            </>
           </div>
-
-          {/* ------------------------------- USER PREFERENCE ------------------------ */}
-          <>
-            <div>
-              <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
-                Preferences
-              </h1>
-              <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
-                Customize your experience.
-              </p>
-            </div>
-
-            <div className="pt-2">
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Bell className="h-6 w-6 mr-3" />
-                Notifications
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <PersonStanding className="h-6 w-6 mr-3 border rounded-full" />
-                Accessibility
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Globe className="h-6 w-6 mr-3" />
-                Language and Region
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <PlaySquare className="h-6 w-6 mr-3" />
-                Media
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Moon className="h-6 w-6 mr-3" />
-                Dark Mode
-              </Link>
-            </div>
-          </>
-
-          <div className="py-2">
-            <Separator className="bg-neutral-300 dark:bg-neutral-600" />
-          </div>
-
-          {/* ------------------------------- AUDIENCE AND VISIBILITY  ------------------------ */}
-          <>
-            <div>
-              <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
-                Audience and visibility
-              </h1>
-              <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
-                Control who can see and what you share.
-              </p>
-            </div>
-
-            <div className="pt-2">
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Lock className="h-6 w-6 mr-3" />
-                Profile locking
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <UserSearch className="h-6 w-6 mr-3" />
-                How People find and contact you
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <GalleryVertical className="h-6 w-6 mr-3" />
-                Posts
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <BookOpen className="h-6 w-6 mr-3" />
-                Stories
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-2 rounded-md py-2 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Icons.reelsIcon className="h-8 w-8 mr-2 dark:fill-white" />
-                Reels
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <CopyPlus className="h-6 w-6 mr-3" />
-                Followers and public content
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Tag className="h-6 w-6 mr-3" />
-                Profile and tagging
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <UserRoundX className="h-6 w-6 mr-3" />
-                User blocking
-              </Link>
-            </div>
-          </>
-
-          <div className="py-2">
-            <Separator className="bg-neutral-300 dark:bg-neutral-600" />
-          </div>
-
-          {/* ------------------------------- USER ACTIVITY ------------------------ */}
-          <>
-            <div>
-              <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
-                Your activity
-              </h1>
-              <p className="text-neutral-700 dark:text-neutral-200 text-xs pl-1">
-                Review your activity and content you're tagged in.
-              </p>
-            </div>
-
-            <div className="pt-2">
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <List className="h-6 w-6 mr-3" />
-                Activity log
-              </Link>
-            </div>
-          </>
-
-          <div className="py-2">
-            <Separator className="bg-neutral-300 dark:bg-neutral-600" />
-          </div>
-
-          {/* ------------------------------- COMMUNITY STANDARDS AND LEGAL POLICIES ------------------------ */}
-          <>
-            <div>
-              <h1 className="font-bold text-lg text-neutral-700 dark:text-neutral-200 p-1">
-                Community Standards and legal policies
-              </h1>
-            </div>
-
-            <div className="">
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Book className="h-6 w-6 mr-3" />
-                Terms of Services
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <Database className="h-6 w-6 mr-3" />
-                Privacy policy
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <ArrowDownUp className="h-6 w-6 mr-3" />
-                Cookies policy
-              </Link>
-              <Link
-                href="/settings/account/pass&sec"
-                className={cn(
-                  pathname === "/settings/account/pass&sec"
-                    ? "bg-gray-200 dark:bg-neutral-700"
-                    : "hover:bg-gray-100 hover:dark:bg-neutral-700",
-                  "pl-3 rounded-md py-3 font-semibold text-neutral-800 dark:text-neutral-100 flex items-center text-sm"
-                )}
-              >
-                <HeartHandshake className="h-6 w-6 mr-3" />
-                Community standards
-              </Link>
-            </div>
-          </>
         </div>
       </div>
     </div>

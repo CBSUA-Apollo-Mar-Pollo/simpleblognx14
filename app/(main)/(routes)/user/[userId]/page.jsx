@@ -67,10 +67,16 @@ const UserProfilePage = async ({ params }) => {
 
   const getCoverPhoto = await db.blog.findMany({
     where: {
-      image: {
-        path: "$.url",
-        equals: user?.backgroundImage,
-      },
+      AND: [
+        { image: { not: null } }, // Ensure `image` is not null
+        {
+          image: {
+            equals: {
+              url: user?.backgroundImage, // Correctly reference the JSON key
+            },
+          },
+        },
+      ],
     },
   });
 
