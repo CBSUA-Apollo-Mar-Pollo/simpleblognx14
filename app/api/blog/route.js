@@ -13,19 +13,31 @@ export async function POST(req) {
     }
 
     const body = await req.json();
-    const { description, userStatus, images, videos, communityId } = body;
+    const {
+      description = "",
+      userStatus,
+      images = [],
+      videos = [],
+      communityId,
+    } = body;
 
-    if (!description.length && images.length === 0 && videos.length === 0) {
+    if (
+      description?.length === 0 &&
+      images.length === 0 &&
+      videos.length === 0
+    ) {
       return new NextResponse(
         "For you to create a post you need to put a description or upload an image or video",
         { status: 400 }
       );
     }
 
+    console.log(body);
+
     if (
-      description.length !== 0 &&
-      images.length === 0 &&
-      videos.length === 0
+      description?.length !== 0 &&
+      images?.length === 0 &&
+      videos?.length === 0
     ) {
       await db.blog.create({
         data: {

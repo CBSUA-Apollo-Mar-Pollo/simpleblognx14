@@ -1,6 +1,7 @@
 import ShortsvCard from "@/components/shortsv/ShortsvCard";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export const metadata = {
@@ -19,7 +20,7 @@ const shortsVPage = async () => {
   // Ensure we have IDs to work with
   if (shortsVideoIds.length === 0) {
     // Handle case when there are no video IDs
-    return <div>No videos available</div>;
+    return redirect("/shorstv/create");
   }
 
   // Function to get a random index

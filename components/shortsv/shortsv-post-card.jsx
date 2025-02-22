@@ -205,7 +205,6 @@ const ShortsVPostCard = ({
           ref={ref}
         >
           <video
-            crossOrigin="anonymous"
             ref={backgroundVideoRef}
             key={videoData?.videoUrl}
             playsInline
@@ -292,7 +291,6 @@ const ShortsVPostCard = ({
               playsInline
               muted={!isMuted}
               autoPlay
-              crossOrigin="anonymous"
               className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
               style={{
                 backgroundBlendMode: "overlay",

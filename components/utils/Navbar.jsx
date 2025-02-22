@@ -40,7 +40,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-20 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
+    <div className="sticky top-0 inset-x-0 h-fit z-50 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 md:grid md:grid-cols-4 flex justify-between py-1">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1 ">

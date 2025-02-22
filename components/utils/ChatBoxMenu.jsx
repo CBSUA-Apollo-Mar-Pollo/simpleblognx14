@@ -166,13 +166,13 @@ const ChatBoxMenu = () => {
                       <span className="font-semibold text-neutral-700 dark:text-neutral-100">
                         {friend?.user.name}
                       </span>
-                      {friend?.lastMessage.userId === session?.user.id ? (
+                      {friend?.lastMessage?.userId === session?.user.id ? (
                         <span className="text-xs dark:text-neutral-100">
-                          You : {friend?.lastMessage.content}
+                          You : {friend?.lastMessage?.content}
                         </span>
                       ) : (
                         <span className="text-xs dark:text-neutral-100">
-                          {friend?.lastMessage.content}
+                          {friend?.lastMessage?.content}
                         </span>
                       )}
                     </div>

@@ -98,7 +98,7 @@ const CreateShortsv = ({ session }) => {
             </span>
           </Link>
         </div>
-        {/* enter fullscreen */}
+
         <div className="z-20">
           <ProfileImageAndIcons session={session} />
         </div>
@@ -107,7 +107,7 @@ const CreateShortsv = ({ session }) => {
       <div className="h-screen relative grid grid-cols-4">
         <div className="col-span-1 bg-neutral-800 relative border-r border-neutral-700">
           <div className="absolute top-20 w-full px-4">
-            <h3 className="dark:text-white text-sm">Create a shortsv</h3>
+            <h3 className="text-white text-sm">Create a shortsv</h3>
 
             {toggleNext ? (
               <div>
@@ -122,7 +122,7 @@ const CreateShortsv = ({ session }) => {
               </div>
             ) : (
               <>
-                <h1 className="text-2xl dark:text-white font-semibold">
+                <h1 className="text-2xl text-white font-semibold">
                   Upload video
                 </h1>
 
@@ -137,6 +137,7 @@ const CreateShortsv = ({ session }) => {
                     className="border-none w-full cursor-pointer"
                     endpoint="videoUploader"
                     onClientUploadComplete={(res) => {
+                      console.log(res, "shorstv result of upload");
                       setVideoUrl(res[0].url);
                     }}
                     onUploadError={(error) => {
