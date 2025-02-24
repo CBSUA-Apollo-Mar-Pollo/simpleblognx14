@@ -227,7 +227,9 @@ const AddGalleryPostModal = ({ session, user, communityId }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-3">
         <img src="/ImageIcons/gallery.png" className="h-8 w-8" />
-        <span className="dark:text-neutral-100 text-sm">Photo/Video</span>
+        <span className="dark:text-neutral-100 text-sm lg:block hidden">
+          Photo/Video
+        </span>
       </DialogTrigger>
       <DialogContent className=" min-w-[39vw] min-h-auto  dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">

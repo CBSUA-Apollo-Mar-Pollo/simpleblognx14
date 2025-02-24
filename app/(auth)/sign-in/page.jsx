@@ -15,7 +15,7 @@ const SignInPage = async () => {
   }
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute lg:inset-0 ">
       <SignInForm />
     </div>
   );

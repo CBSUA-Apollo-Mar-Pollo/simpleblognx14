@@ -111,8 +111,8 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="h-full w-screen grid grid-cols-2 items-center justify-center gap-20">
-      <div className="bg-gray-900 h-full">
+    <div className="grid lg:grid-cols-2 grid-cols-1 lg:h-full items-center justify-center gap-20">
+      <div className="bg-gray-900 h-full lg:block hidden ">
         <div className="absolute top-6 left-7">
           <Link href="/" className="text-4xl font-bold text-white">
             EStoryaMo
@@ -127,10 +127,10 @@ const SignInForm = () => {
         </div>
       </div>
       {/* sign in form */}
-      <div className=" mx-auto  flex flex-col items-center py-14 gap-5">
+      <div className=" lg:mx-auto flex flex-col items-center lg:py-14 py-2 gap-5 lg:w-full w-screen px-7 mt-12">
         <h1 className="text-3xl font-bold text-slate-800">Sign in</h1>
         <form
-          className="my-1 w-96 space-y-4"
+          className="my-1 md:w-96 w-full space-y-4"
           onSubmit={handleSubmit((e) => {
             loginInCredential(e);
           })}
@@ -138,15 +138,17 @@ const SignInForm = () => {
           <Input
             type="email"
             placeholder="Email"
-            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
+            className="lg:h-[5vh] h-[6vh] focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
             {...register("email")}
           />
-          <PasswordInput
-            type="password"
-            placeholder="Password"
-            className="focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
-            {...register("password")}
-          />
+          <div className="">
+            <PasswordInput
+              type="password"
+              placeholder="Password"
+              className="lg:h-[5vh] h-[6vh] focus-visible:ring-transparent border border-gray-300 focus:border-gray-400 focus:border-2 py-5 dark:bg-white dark:text-neutral-800"
+              {...register("password")}
+            />
+          </div>
 
           {urlError && (
             <p className="text-xs text-red-700 bg-red-200 py-3 px-4 rounded flex items-center">

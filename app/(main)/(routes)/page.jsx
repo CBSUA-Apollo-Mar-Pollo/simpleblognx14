@@ -14,9 +14,10 @@ import { UTApi } from "uploadthing/server";
 import ChatHomeContactList from "@/components/chat/chat-home-contact-list";
 import PopularCommunities from "@/components/community/popular-communities";
 import Image from "next/image";
-import { Plus } from "lucide-react";
+import { Home, Plus } from "lucide-react";
 import HomePageStoryCards from "@/components/stories/homepage-story-cards";
 import { Button } from "@/components/ui/Button";
+import { Icons } from "@/components/utils/Icons";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -128,11 +129,30 @@ export default async function HomePage() {
 
       {/* middle section all posts and adding posts */}
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3   dark:bg-neutral-900">
-        <div className="mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
+        <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
+          <div className="xl:hidden ">
+            <div className="xl:bg-neutral-200 xl:dark:bg-neutral-900 bg-neutral-800 grid grid-cols-5">
+              <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
+                <Home className="  h-6 w-6 dark:text-neutral-100 " />
+              </div>
+              <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
+                <Icons.Play className="fill-neutral-600 dark:fill-neutral-300 h-7 w-7 " />
+              </div>
+              <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
+                <Icons.Group className="fill-neutral-600 dark:fill-neutral-300 h-7 w-7 " />
+              </div>
+              <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
+                <Icons.Messager className="h-5 w-5 fill-neutral-800 dark:fill-neutral-50" />
+              </div>
+              <div className="flex items-center justify-center  py-3">
+                <Icons.bell className="fill-neutral-600 dark:fill-neutral-300 dark:text-neutral-50 h-6 w-6 " />
+              </div>
+            </div>
+          </div>
           {session?.user && (
             <>
-              <div className=" pt-3 pb-1 px-5 rounded-lg bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">
-                <div className="flex flex-row items-center space-x-4">
+              <div className=" lg:pt-3 lg:pb-1 lg:px-5 lg:rounded-lg rounded-none bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">
+                <div className="flex flex-row items-center lg:space-x-4 gap-x-2 lg:px-0 lg:py-0 px-2 py-3">
                   <Link href={`/user/${session?.user.id}`}>
                     <UserAvatar
                       className="h-10 w-10 "
@@ -143,11 +163,14 @@ export default async function HomePage() {
                     />
                   </Link>
                   <AddPostModal session={session} />
+                  <div className="lg:hidden block">
+                    <AddGalleryPostModal session={session} />
+                  </div>
                 </div>
 
-                <Separator className="mt-3 dark:bg-neutral-700" />
+                <Separator className="mt-3 dark:bg-neutral-700 lg:block hidden" />
 
-                <div className="flex items-center justify-center my-1 ">
+                <div className="lg:flex items-center justify-center my-1 hidden">
                   <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
                     <img src="/ImageIcons/live.png" className="h-8 w-8" />
                     <span className="dark:text-neutral-100 text-sm">
@@ -194,18 +217,24 @@ export default async function HomePage() {
             </>
           )}
 
-          <Separator className="my-2" />
+          {session?.user && (
+            <>
+              <Separator className="my-2" />
 
-          <div className="mt-2 ml-2">
-            <h1 className="font-semibold dark:text-neutral-50">Group chats</h1>
+              <div className="mt-2 ml-2">
+                <h1 className="font-semibold dark:text-neutral-50">
+                  Group chats
+                </h1>
 
-            <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 w-full py-7 my-2">
-              <Plus className="text-black bg-neutral-100 p-2 h-9 w-9 rounded-full" />
-              <span className="text-black dark:text-white">
-                Create group chat
-              </span>
-            </Button>
-          </div>
+                <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 w-full py-7 my-2">
+                  <Plus className="text-black bg-neutral-100 p-2 h-9 w-9 rounded-full" />
+                  <span className="text-black dark:text-white">
+                    Create group chat
+                  </span>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

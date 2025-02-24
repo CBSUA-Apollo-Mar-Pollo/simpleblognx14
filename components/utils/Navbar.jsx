@@ -14,7 +14,7 @@ import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
 import { Skeleton } from "../ui/Skeleton";
-import { Moon, Search, Sun } from "lucide-react";
+import { AlignJustify, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 
@@ -40,7 +40,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-50 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800">
+    <div className="sticky top-0 inset-x-0 h-fit z-50 xl:bg-white xl:dark:bg-neutral-900 bg-neutral-800  border-b xl:border-neutral-200 xl:dark:border-neutral-800 border-neutral-700">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 md:grid md:grid-cols-4 flex justify-between py-1">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1 ">
@@ -50,12 +50,8 @@ const Navbar = () => {
             </span>
           </Link>
           {/* search input */}
+
           <SearchInput />
-          <div className="xl:hidden ">
-            <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
-              <Search className="text-gray-500 z-20 dark:text-neutral-300" />
-            </div>
-          </div>
         </div>
 
         <div className="md:grid grid-cols-3 hidden text-neutral-600 dark:text-neutral-300 col-span-2 px-[3vw] mr-10">
@@ -109,11 +105,21 @@ const Navbar = () => {
         <div className=" flex items-center justify-end  gap-x-2 col-span-1">
           {session ? (
             <>
+              <div className="xl:hidden ">
+                <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
+                  <Search className="text-gray-500 z-20 dark:text-neutral-300" />
+                </div>
+              </div>
               <Menu contentClassName="-mr-32" />
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
               <UserAccountNav user={session.user} />
+              <div className="xl:hidden ">
+                <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
+                  <AlignJustify className="text-gray-500 z-20 dark:text-neutral-300" />
+                </div>
+              </div>
             </>
           ) : isLoader ? (
             <div className="flex items-center gap-x-2">

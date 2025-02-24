@@ -60,7 +60,7 @@ const NotificationMenu = () => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
-      <DropdownMenuTrigger className="focus-visible:outline-none drop-shadow">
+      <DropdownMenuTrigger className="focus-visible:outline-none drop-shadow xl:block hidden">
         <ToolTipComp content="Notification">
           <div
             className={`  ${
