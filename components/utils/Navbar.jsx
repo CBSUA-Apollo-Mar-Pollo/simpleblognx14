@@ -40,7 +40,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="sticky top-0 inset-x-0 h-fit z-50 xl:bg-white xl:dark:bg-neutral-900 bg-neutral-800  border-b xl:border-neutral-200 xl:dark:border-neutral-800 border-neutral-700">
+    <div className="sticky top-0 inset-x-0 h-fit z-50 xl:bg-white xl:dark:bg-neutral-900 bg-white  dark:bg-neutral-800  border-b xl:border-neutral-200 xl:dark:border-neutral-800 border-neutral-300 dark:border-neutral-700">
       <div className="container max-w-full h-full mx-auto pl-[20px] pr-[10px] gap-2 md:grid md:grid-cols-4 flex justify-between py-1">
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1 ">
@@ -105,9 +105,10 @@ const Navbar = () => {
         <div className=" flex items-center justify-end  gap-x-2 col-span-1">
           {session ? (
             <>
+              {/* show in mobile */}
               <div className="xl:hidden ">
                 <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
-                  <Search className="text-gray-500 z-20 dark:text-neutral-300" />
+                  <Search className="text-neutral-900 z-20 dark:text-neutral-300" />
                 </div>
               </div>
               <Menu contentClassName="-mr-32" />
@@ -115,10 +116,15 @@ const Navbar = () => {
               <NotificationMenu />
               {/* user profile */}
               <UserAccountNav user={session.user} />
+
+              {/* show in mobile */}
               <div className="xl:hidden ">
-                <div className="bg-neutral-200 dark:bg-neutral-700 p-2 rounded-full">
-                  <AlignJustify className="text-gray-500 z-20 dark:text-neutral-300" />
-                </div>
+                <Link
+                  href="/m/profile_menu"
+                  className="bg-neutral-200 dark:bg-neutral-700 rounded-full flex items-center p-2"
+                >
+                  <AlignJustify className="text-gray-900 z-20 dark:text-neutral-300" />
+                </Link>
               </div>
             </>
           ) : isLoader ? (

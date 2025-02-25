@@ -128,10 +128,11 @@ export default async function HomePage() {
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3   dark:bg-neutral-900">
+      <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-100">
         <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
+          {/* show in mobile */}
           <div className="xl:hidden ">
-            <div className="xl:bg-neutral-200 xl:dark:bg-neutral-900 bg-neutral-800 grid grid-cols-5">
+            <div className="xl:bg-neutral-200 xl:dark:bg-neutral-900 bg-white dark:bg-neutral-800 xl:border-none border-b grid grid-cols-5">
               <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
                 <Home className="  h-6 w-6 dark:text-neutral-100 " />
               </div>
