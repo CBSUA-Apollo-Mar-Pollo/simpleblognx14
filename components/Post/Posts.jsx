@@ -78,8 +78,8 @@ export default function Posts({ initialPosts, session, deleteImage }) {
   // console.log(posts, " from posts ");
 
   return (
-    <div className="z-2 space-y-3">
-      <ul className={"flex flex-col col-span-2 space-y-3 pb-2"}>
+    <div className="z-2 xl:space-y-3 space-y-1">
+      <ul className={"flex flex-col col-span-2 xl:space-y-3 space-y-1 pb-2"}>
         {posts
           .filter(
             (item) =>
@@ -123,7 +123,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                     currentShortsvVote={currentShortsvVote?.type}
                   />
 
-                  <div className="mt-3">
+                  <div className="xl:mt-3 my-1">
                     {index === randNumber && <ReelsHomeCard />}
                   </div>
                 </li>

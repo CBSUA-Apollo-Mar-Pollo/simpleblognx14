@@ -75,7 +75,7 @@ const ChatWindow = () => {
           </Button>
         ))}
 
-        {session?.user && (
+        {/* {session?.user && (
           <Button
             variant="ghost"
             size="icon"
@@ -83,7 +83,7 @@ const ChatWindow = () => {
           >
             <PenSquare className="h-6 w-6  text-neutral-800 fill-neutral-200" />
           </Button>
-        )}
+        )} */}
       </div>
     </div>
   );

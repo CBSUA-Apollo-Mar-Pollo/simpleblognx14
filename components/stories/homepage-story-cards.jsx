@@ -101,7 +101,7 @@ const HomePageStoryCards = ({ session }) => {
   console.log(stories);
 
   return (
-    <div className=" flex items-center relative">
+    <div className=" flex items-center relative xl:bg-none bg-white xl:my-3 my-1">
       {isScrolled && (
         <div className="absolute left-4 z-20">
           <Button
@@ -114,14 +114,14 @@ const HomePageStoryCards = ({ session }) => {
       )}
       <div
         ref={storyCardContainer}
-        className="overflow-x-hidden pb-1 flex items-center gap-x-2 "
+        className="overflow-x-hidden  flex items-center gap-x-2 xl:pl-0 xl:py-0 pl-2 py-2 "
       >
         <button
           onClick={() => handleNavigate()}
-          className="relative border dark:border-0  rounded-2xl  dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
+          className="relative bg-white border dark:border-0 xl:rounded-2xl rounded-xl  dark:bg-neutral-800 xl:drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
         >
           {/* create story */}
-          <div className="relative md:w-40 md:h-48 w-40 h-40 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+          <div className="relative md:w-40 md:h-48 w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
             <Image
               sizes="100vw"
               width={0}
@@ -137,7 +137,7 @@ const HomePageStoryCards = ({ session }) => {
           </div>
 
           <div className="pt-8 pb-2 border-t dark:border-neutral-700">
-            <p className="text-[14px] font-semibold text-center dark:text-white">
+            <p className="text-[14px] font-semibold text-center xl:dark:text-white  ">
               Create story
             </p>
           </div>
@@ -146,7 +146,7 @@ const HomePageStoryCards = ({ session }) => {
         {isLoading &&
           [...Array(7)].map((_, index) => (
             <div key={index}>
-              <Skeleton className="md:w-44 md:h-[29.5vh] bg-neutral-400 rounded-2xl" />
+              <Skeleton className="xl:md:w-44 xl:md:h-[29.5vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
             </div>
           ))}
 

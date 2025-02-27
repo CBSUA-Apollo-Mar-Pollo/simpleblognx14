@@ -107,7 +107,7 @@ const ReelsHomeCard = () => {
   };
 
   return (
-    <Card className="dark:bg-neutral-800 dark:border-0 rounded-xl mb-3">
+    <Card className="dark:bg-neutral-800 dark:border-0 xl:rounded-xl rounded-none mb-3  ">
       <CardHeader className="px-4 pt-4">
         <CardTitle className="text-[16px] font-bold flex justify-between dark:text-neutral-100">
           <div className="flex items-center gap-x-2">
@@ -149,14 +149,14 @@ const ReelsHomeCard = () => {
 
         <div ref={videoContainerRef} className="overflow-x-hidden">
           <div className="flex space-x-2">
-            {isLoading === false &&
+            {!isLoading &&
               reels?.map((reel, index) => (
                 <Link
                   onMouseEnter={() => onMouseHoverVideoPlay(index)}
                   onMouseLeave={() => onMouseHoverVideoStop(index)}
                   href={`/shortsv/${reel.id}`}
                   key={index}
-                  className="flex-shrink-0 w-[17vw] h-[60vh] hover:opacity-70 cursor-pointer"
+                  className="flex-shrink-0 xl:w-[17vw] xl:h-[60vh] h-[40vh] max-h-[40vh] w-[45vw]  hover:opacity-70 cursor-pointer"
                 >
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}

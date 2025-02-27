@@ -197,11 +197,11 @@ const ShortsVPostCard = ({
   };
 
   return (
-    <Card className="rounded-2xl shadow-md dark:border-none">
+    <Card className="xl:rounded-2xl rounded-none shadow-md dark:border-none">
       <CardContent className="p-0">
         <div
           onClick={handlePauseOrPlay}
-          className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative rounded-2xl overflow-clip"
+          className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative xl:rounded-2xl rounded-none overflow-clip"
           ref={ref}
         >
           <video
@@ -214,12 +214,12 @@ const ShortsVPostCard = ({
           />
 
           <div
-            className="absolute top-0 flex justify-between w-full px-5 rounded-2xl z-[3]"
+            className="absolute top-0 flex justify-between w-full xl:px-5 px-1 xl:rounded-2xl rounded-none z-[3]"
             style={{
               background: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0))`,
             }}
           >
-            <div className="gap-x-2 flex items-start mt-4">
+            <div className="gap-x-2  flex items-start mt-4">
               <UserAvatar
                 className="h-10 w-10 cursor-pointer"
                 post="post"
@@ -283,7 +283,7 @@ const ShortsVPostCard = ({
           )}
 
           {/* video content */}
-          <div className="max-w-[25vw] z-[2]">
+          <div className="xl:max-w-[25vw] z-[2]">
             <video
               ref={mainVideoRef}
               key={videoData?.videoUrl}
@@ -291,7 +291,7 @@ const ShortsVPostCard = ({
               playsInline
               muted={!isMuted}
               autoPlay
-              className="max-h-[70vh] h-[70vh]  z-10 cursor-pointer object-cover"
+              className="max-h-[70vh] h-[70vh] z-10 cursor-pointer object-cover"
               style={{
                 backgroundBlendMode: "overlay",
               }}

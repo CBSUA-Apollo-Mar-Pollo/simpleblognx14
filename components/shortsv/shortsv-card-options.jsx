@@ -26,7 +26,7 @@ const ShortsVCardOptions = () => {
       <DropdownMenuTrigger asChild>
         <Button
           onClick={(e) => handleTriggerClick(e)}
-          className="px-3 py-2 text-black bg-transparent hover:bg-neutral-800/65 rounded-full"
+          className="p-0 text-black bg-transparent hover:bg-neutral-800/65 rounded-full"
         >
           <MoreHorizontal className="stroke-white" />
         </Button>

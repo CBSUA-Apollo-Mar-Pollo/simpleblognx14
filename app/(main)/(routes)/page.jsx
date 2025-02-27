@@ -128,13 +128,13 @@ export default async function HomePage() {
       </div>
 
       {/* middle section all posts and adding posts */}
-      <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-100">
-        <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[1rem]  space-y-3 ">
+      <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-300">
+        <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[1rem]">
           {/* show in mobile */}
           <div className="xl:hidden ">
             <div className="xl:bg-neutral-200 xl:dark:bg-neutral-900 bg-white dark:bg-neutral-800 xl:border-none border-b grid grid-cols-5">
               <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
-                <Home className="  h-6 w-6 dark:text-neutral-100 " />
+                <Home className="  h-6 w-6 dark:text-neutral-100 text-neutral-700" />
               </div>
               <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
                 <Icons.Play className="fill-neutral-600 dark:fill-neutral-300 h-7 w-7 " />
@@ -143,10 +143,10 @@ export default async function HomePage() {
                 <Icons.Group className="fill-neutral-600 dark:fill-neutral-300 h-7 w-7 " />
               </div>
               <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">
-                <Icons.Messager className="h-5 w-5 fill-neutral-800 dark:fill-neutral-50" />
+                <Icons.Messager className="h-5 w-5 fill-neutral-600 dark:fill-neutral-50" />
               </div>
               <div className="flex items-center justify-center  py-3">
-                <Icons.bell className="fill-neutral-600 dark:fill-neutral-300 dark:text-neutral-50 h-6 w-6 " />
+                <Icons.bell className="fill-neutral-600 dark:fill-neutral-300 dark:text-neutral-50 text-neutral-600 h-6 w-6 " />
               </div>
             </div>
           </div>
