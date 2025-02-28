@@ -35,7 +35,6 @@ const CreateComment = ({
   const { toast } = useToast();
   const router = useRouter();
 
-  // sssas
   const { mutate: comment, isLoading } = useMutation({
     mutationFn: async ({ postId, text, replyToId }) => {
       const payload = {
