@@ -1,6 +1,5 @@
-import { Grip } from "lucide-react";
 import React from "react";
-import { Icons } from "../utils/Icons";
+
 import UserAccountNav from "../utils/UserAccountNav";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
