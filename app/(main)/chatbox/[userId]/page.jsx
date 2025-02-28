@@ -2,7 +2,7 @@ import { getOrCreateConversation } from "@/actions/conversation";
 import ChatInput from "@/components/chat/chat-input";
 import ChatMessages from "@/components/chat/chat-messages";
 import ChatSideBar from "@/components/chat/chat-sidebar";
-import { SocketIndicator } from "@/components/socket-indicator";
+
 import UserAvatar from "@/components/utils/UserAvatar";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -96,7 +96,7 @@ const ChatBoxPage = async ({ params }) => {
                     </h2>
                   </div>
                   <div className="flex items-center gap-x-2">
-                    <SocketIndicator />
+                    {/* <SocketIndicator /> */}
                     <MoreHorizontal className="dark:text-white" />
                   </div>
                 </div>
