@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Checkbox } from "../ui/checkbox";
+import { Checkbox } from "../ui/Checkbox";
 import { cn } from "@/lib/utils";
 
 const SearchFilter = () => {

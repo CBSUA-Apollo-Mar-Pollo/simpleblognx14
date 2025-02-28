@@ -21,7 +21,7 @@ import { getAllFriends } from "@/actions/getAllFriends";
 import UserAvatar from "@/components/utils/UserAvatar";
 
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 const CommunityDropdownInvite = () => {
   const [showInviteFriendModal, setShowInviteFriendModal] = useState(false);

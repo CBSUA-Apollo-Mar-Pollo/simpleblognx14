@@ -1,6 +1,6 @@
 import SearchFilter from "@/components/search/search-filter";
 import SearchPageContent from "@/components/search/search-page-content";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
