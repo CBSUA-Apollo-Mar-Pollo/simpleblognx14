@@ -30,26 +30,31 @@ import { Teko } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
+  display: "swap",
   variable: "--font-poppins", // Optionally set a custom CSS variable
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 const caveat = Caveat({
   subsets: ["latin"], // Choose subsets you need
+  display: "swap",
   variable: "--font-caveat",
   weight: ["700"], // Optional: Specify weights
 });
 const playfair = Playfair({
   subsets: ["latin"], // Choose subsets you need
+  display: "swap",
   variable: "--font-playfair",
   weight: ["700"], // Optional: Specify weights
 });
 const lexend = Lexend({
   subsets: ["latin"], // Choose subsets you need
+  display: "swap",
   variable: "--font-lexend",
   weight: ["700"], // Optional: Specify weights
 });
 const teko = Teko({
   subsets: ["latin"], // Choose subsets you need
+  display: "swap",
   variable: "--font-teko",
   weight: ["700"], // Optional: Specify weights
 });
