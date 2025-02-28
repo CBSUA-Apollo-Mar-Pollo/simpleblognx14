@@ -22,11 +22,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 
-import { Poppins } from "next/font/google";
-import { Caveat } from "next/font/google";
-import { Playfair_Display as Playfair } from "next/font/google";
-import { Lexend } from "next/font/google";
-import { Teko } from "next/font/google";
+import { Poppins, Caveat, Playfair_Display, Lexend, Teko } from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
