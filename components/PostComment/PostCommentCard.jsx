@@ -66,7 +66,6 @@ const PostCommentCard = ({ post, index, session, comments }) => {
         )}
       </div>
 
-      {/* comment side */}
       {isFullScreen && (
         <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">
           <ProfileImageAndIcons session={session} />

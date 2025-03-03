@@ -14,7 +14,7 @@ const BeforeUnload = ({ children }) => {
       return;
     }
     const handleBeforeUnload = async () => {
-      socket.emit("sign-out", session.user.id);
+      socket.emit("sign-out", session?.user?.id);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);

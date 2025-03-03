@@ -1,25 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <>
       {blog.image && (
         <div className="w-full ">
-          {/* render the this post when the user change his/her cover photo */}
-
-          {/* render any of this image that meet the requirement */}
+          {/* render if the user updated their cover photo */}
           {blog.userStatus === "updated his cover photo" && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
             >
               <Image
-                sizes="100vw"
-                width={0}
-                height={0}
-                priority="true"
+                sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
+                width={1200} // Example width, adjust based on design
+                height={800} // Example height, adjust based on design
+                priority={true}
                 src={blog.image.url}
                 alt="profile image"
                 referrerPolicy="no-referrer"
@@ -27,68 +26,48 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
               />
             </Link>
           )}
-          {/* 
-          {blog.image.length === 1 && blog.userStatus === "edited" && (
-            <Link
-              href={`/postComment/${blog.id}/${0}`}
-              className="relative overflow-clip w-full flex flex-col"
-            >
-              <Image
-                sizes="100vw"
-                width={0}
-                height={0}
-                priority="true"
-                src={blog.image[0].url}
-                alt="profile image"
-                referrerPolicy="no-referrer"
-                className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
-              />
-            </Link>
-          )} */}
 
-          {/* render if it has 1 image */}
+          {/* Render single image */}
           {blog.image.length === 1 && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
               shallow
             >
-              {/* Background Container */}
               <div
-                className="absolute inset-0 z-[-1]  bg-center"
+                className="absolute inset-0 z-[-1] bg-center"
                 style={{
-                  backgroundImage: `url(${blog.image[0].url})`,
-                  filter: "blur(10px)", // Adjust the blur amount as needed
-                  zIndex: "-1", // Ensures the background is behind other content
+                  backgroundColor: "black",
+                  backgroundImage: imageLoaded
+                    ? `url(${blog.image[0].url})`
+                    : "none",
+                  filter: imageLoaded ? "blur(4px)" : "none",
+                  zIndex: "-1",
                 }}
               />
-              {/* Main Content */}
               <div className="relative w-full flex flex-col">
                 <Image
-                  sizes="100vw"
-                  width={0}
-                  height={0}
-                  priority="true"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  width={1200}
+                  height={800}
+                  priority={true}
                   src={blog.image[0].url}
                   alt="profile image"
                   referrerPolicy="no-referrer"
                   className="object-contain w-full transition max-h-[30rem]"
                   style={{
                     backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.1) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.2) 100%)`,
-                    backgroundBlendMode: "overlay", // This will blend the gradient with the image
+                    backgroundBlendMode: "overlay",
                   }}
+                  onLoad={() => setImageLoaded(true)}
                 />
               </div>
             </Link>
           )}
 
-          {/* render if there are 2 image */}
+          {/* Render 2 images */}
           {blog.image.length === 2 && (
-            <div
-              className={`${
-                blog.image.length === 2 && "grid grid-cols-2 gap-x-1"
-              }`}
-            >
+            <div className="grid grid-cols-2 gap-x-1">
               {blog.image.map((imageUrl, index) => (
                 <Link
                   href={`/postComment/${blog.id}/${index}`}
@@ -96,46 +75,40 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="relative hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
                     src={imageUrl.url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "6  /10" }} // Example aspect ratio (adjust as needed)
+                    style={{ aspectRatio: "6/10" }}
                   />
                 </Link>
               ))}
             </div>
           )}
 
-          {/* render if there are 3 image */}
+          {/* Render 3 images */}
           {blog.image.length === 3 && (
-            <div
-              className={`${
-                blog.image.length === 3 && "grid grid-cols-8 gap-x-1"
-              }`}
-            >
+            <div className="grid grid-cols-8 gap-x-1">
               <Link
                 href={`/postComment/${blog.id}/${0}`}
                 className="relative col-span-5 hover:opacity-80"
               >
                 <Image
-                  sizes="100vw"
-                  width={0}
-                  height={0}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  width={1200}
+                  height={800}
                   src={blog.image[0].url}
+                  priority={true}
                   alt="profile image"
                   className="w-full h-auto object-cover my-1"
-                  style={{ aspectRatio: "14/17" }} // Example aspect ratio (adjust as needed)
+                  style={{ aspectRatio: "14/17" }}
                 />
               </Link>
-              <div className="mt-[2px] flex flex-col  col-span-3">
+              <div className="mt-[2px] flex flex-col col-span-3">
                 {blog.image.map((imageUrl, index) => {
-                  if (index === 0) {
-                    return null;
-                  }
-
+                  if (index === 0) return null;
                   return (
                     <Link
                       href={`/postComment/${blog.id}/${index}`}
@@ -144,12 +117,12 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                     >
                       <Image
                         src={imageUrl.url}
-                        sizes="100vw"
-                        width={0}
-                        height={0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={1200}
+                        height={800}
                         alt="profile image"
                         className="w-full h-auto object-cover mt-[1px]"
-                        style={{ aspectRatio: "13/13" }} // Example aspect ratio (adjust as needed)
+                        style={{ aspectRatio: "13/13" }}
                       />
                     </Link>
                   );
@@ -158,7 +131,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
             </div>
           )}
 
-          {/* render if there are 4 image */}
+          {/* Render 4 images */}
           {blog.image.length === 4 && (
             <div className="flex flex-col">
               <div className="relative grid grid-cols-2 gap-x-[2px]">
@@ -167,9 +140,10 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
+                    priority={true}
                     src={blog.image[0].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -181,10 +155,11 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
                     src={blog.image[1].url}
+                    priority={true}
                     alt="profile image"
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
@@ -208,9 +183,9 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                       className="relative hover:opacity-80"
                     >
                       <Image
-                        sizes="100vw"
-                        width={0}
-                        height={0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={1200}
+                        height={800}
                         src={imageUrl.url}
                         alt="profile image"
                         className="w-full h-auto object-cover px-[1px]"
@@ -232,9 +207,10 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="relative hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
+                    priority={true}
                     src={blog.image[0].url}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -246,11 +222,12 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="relative hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
                     src={blog.image[1].url}
                     alt="profile image"
+                    priority={true}
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
                   />
@@ -273,9 +250,9 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                       className="relative hover:opacity-80"
                     >
                       <Image
-                        sizes="100vw"
-                        width={0}
-                        height={0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={1200}
+                        height={800}
                         src={imageUrl.url}
                         alt="profile image"
                         className="w-full h-auto object-cover px-[1px]"
@@ -297,10 +274,11 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="relative hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
                     src={blog.image[0].url}
+                    priority={true}
                     alt="profile image"
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
@@ -311,10 +289,11 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   className="relative hover:opacity-80"
                 >
                   <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    width={1200}
+                    height={800}
                     src={blog.image[1].url}
+                    priority={true}
                     alt="profile image"
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
@@ -342,9 +321,9 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                       className="relative hover:opacity-80"
                     >
                       <Image
-                        sizes="100vw"
-                        width={0}
-                        height={0}
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        width={1200}
+                        height={800}
                         src={imageUrl.url}
                         alt="profile image"
                         className={`w-full h-auto object-cover px-[1px] ${

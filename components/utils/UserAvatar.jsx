@@ -16,9 +16,12 @@ const UserAvatar = ({ post, user, ...props }) => {
         {user?.image ? (
           <div className="relative aspect-square h-full w-full outline-none">
             <Image
-              fill
               src={user.image}
               alt="profile image"
+              width={100}
+              height={100}
+              layout="intrinsic"
+              priority={true}
               referrerPolicy="no-referrer"
             />
           </div>

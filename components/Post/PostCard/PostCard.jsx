@@ -19,7 +19,6 @@ import PostVote from "@/components/PostVote/PostVote";
 import { getSharedAmount } from "@/actions/getSharedAmount";
 
 const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
-  console.log(blog);
   const [isVideoPaused, setVideoPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
