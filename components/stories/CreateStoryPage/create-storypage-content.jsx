@@ -22,7 +22,14 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 
-import { Poppins, Caveat, Playfair_Display, Lexend, Teko } from "next/font/google";
+import {
+  Poppins,
+  Caveat,
+  Playfair_Display,
+  Lexend,
+  Teko,
+  Playfair,
+} from "next/font/google";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,7 +43,7 @@ const caveat = Caveat({
   variable: "--font-caveat",
   weight: ["700"], // Optional: Specify weights
 });
-const playfair = Playfair({
+const playfair = Playfair_Display({
   subsets: ["latin"], // Choose subsets you need
   display: "swap",
   variable: "--font-playfair",

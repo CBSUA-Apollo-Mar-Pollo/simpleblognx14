@@ -1,6 +1,7 @@
 import UserAvatar from "@/components/utils/UserAvatar";
 import React from "react";
 import UpdateProfilePicModal from "./UpdateProfilePicModal";
+import Image from "next/image";
 
 const ProfilePic = ({ user, session }) => {
   return (

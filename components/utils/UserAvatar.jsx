@@ -18,9 +18,7 @@ const UserAvatar = ({ post, user, ...props }) => {
             <Image
               src={user.image}
               alt="profile image"
-              width={100}
-              height={100}
-              layout="intrinsic"
+              fill
               priority={true}
               referrerPolicy="no-referrer"
             />
