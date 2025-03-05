@@ -47,25 +47,29 @@ const ShortsVPostCard = ({
   });
 
   useEffect(() => {
+    // Handle video play/pause based on visibility
     if (mainVideoRef.current) {
       if (entry?.isIntersecting) {
-        let playPromise = mainVideoRef.current.play();
-
-        if (playPromise !== undefined) {
-          playPromise
-            .then((_) => {
-              setIsPlaying(true);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        if (!isPlaying) {
+          let playPromise = mainVideoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
         }
       } else {
-        mainVideoRef.current.pause();
-        setIsPlaying(false);
+        if (isPlaying) {
+          mainVideoRef.current.pause();
+          setIsPlaying(false);
+        }
       }
     }
-  }, [entry, mainVideoRef.current]);
+  }, [entry, isPlaying]);
 
   useEffect(() => {
     if (!mainVideoRef.current) return;
@@ -98,22 +102,13 @@ const ShortsVPostCard = ({
       element.removeEventListener("pause", onPause);
       element.removeEventListener("waiting", onWaiting);
     };
-  }, [mainVideoRef.currentm, isPlaying, isWaiting]);
-
-  // useEffect(() => {
-  //   if (mainVideoRef.current && isPlaying) {
-  //     mainVideoRef.current.play().catch((err) => {
-  //       console.error("Error playing video:", err);
-  //     });
-  //   }
-  // }, [isPlaying]);
+  }, [mainVideoRef.current, isPlaying, isWaiting]);
 
   useEffect(() => {
     setCurrentVote(currentShortsvVote);
   }, [currentShortsvVote]);
 
   const router = useRouter();
-
   const date = new Date(videoData.createdAt);
   const options = { month: "short", day: "numeric" };
   const formattedDate = date.toLocaleDateString("en-US", options);
@@ -290,7 +285,6 @@ const ShortsVPostCard = ({
               loop
               playsInline
               muted={!isMuted}
-              autoPlay
               className="max-h-[70vh] h-[70vh] z-10 cursor-pointer object-cover"
               style={{
                 backgroundBlendMode: "overlay",

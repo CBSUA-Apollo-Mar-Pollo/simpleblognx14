@@ -156,7 +156,7 @@ const ReelsHomeCard = () => {
                   onMouseLeave={() => onMouseHoverVideoStop(index)}
                   href={`/shortsv/${reel.id}`}
                   key={index}
-                  className="flex-shrink-0 xl:w-[17vw] xl:h-[60vh] h-[40vh] max-h-[40vh] w-[45vw]  hover:opacity-70 cursor-pointer"
+                  className="flex-shrink-0 xl:w-[17vw] xl:h-[60vh] xl:max-h-[60vh] h-[40vh] max-h-[40vh] w-[45vw]  hover:opacity-70 cursor-pointer"
                 >
                   <video
                     ref={(el) => (videoRefs.current[index] = el)}
