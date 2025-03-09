@@ -46,7 +46,7 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
   });
 
   return (
-    <Card className=" dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-none md:rounded-xl">
+    <Card className="  dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-none md:rounded-xl">
       <CardHeader className="pt-2 pb-1 px-0">
         <PostCardHeader
           blog={blog}

@@ -51,7 +51,7 @@ const Sidebar = ({ session }) => {
         {/* different side bar depends if the user is log in or not */}
         {session?.user && (
           <div className="flex items-center gap-x-3 ml-[14px]">
-            <div className="border dark:border-neutral-700 rounded-full">
+            <div className="border  dark:border-neutral-700 rounded-full">
               <UserAvatar
                 className="h-8 w-8"
                 user={{

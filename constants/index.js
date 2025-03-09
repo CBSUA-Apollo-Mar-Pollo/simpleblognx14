@@ -133,19 +133,21 @@ export const SideBarSecondLinks = [
 
 export const AnotherLinks = [
   {
-    Icon: <Flame className="mr-4 w-6 h-6 fill-white" />,
+    Icon: (
+      <Flame className="mr-4 w-6 h-6 fill-white stroke-1 text-neutral-600" />
+    ),
     label: "Best Posts",
     link: "/explore/personal",
   },
   {
     Icon: (
-      <Icons.Group className="mr-4 w-6 h-6 fill-neutral-600 dark:fill-white" />
+      <Icons.Group className="mr-4 w-6 h-6 fill-neutral-700 dark:fill-white" />
     ),
     label: "Communities",
     link: "/communities",
   },
   {
-    Icon: <MonitorPlay className="mr-4 w-6 h-6 " />,
+    Icon: <MonitorPlay className="mr-4 w-6 h-6 text-neutral-600" />,
     label: "Watch Videos",
     link: "/explore/personal",
   },
@@ -153,97 +155,103 @@ export const AnotherLinks = [
 
 export const SideBarExploreLinks = [
   {
-    Icon: <Cat className="mr-4  h-6" />,
+    Icon: <Cat className="mr-4  h-6 text-neutral-600" />,
     label: "Internet Culture",
     link: "/explore/personal",
   },
   {
-    Icon: <Gamepad2 className="mr-4  h-6 " />,
+    Icon: <Gamepad2 className="mr-4  h-6 text-neutral-600" />,
     label: "Games",
     link: "/explore/personal",
   },
   {
-    Icon: <Music className="mr-4  h-6" />,
+    Icon: <Music className="mr-4  h-6 text-neutral-600" />,
     label: "Music",
     link: "/explore/personal",
   },
   {
-    Icon: <Sparkles className="mr-4  h-6" />,
+    Icon: <Sparkles className="mr-4  h-6 text-neutral-600" />,
     label: "Pop culture",
     link: "/explore/personal",
   },
   {
-    Icon: <User className="mr-4  h-6" />,
+    Icon: <User className="mr-4  h-6 text-neutral-600" />,
     label: "Personal",
     link: "/explore/personal",
   },
   {
-    Icon: <Newspaper className="mr-4  h-5" />,
+    Icon: <Newspaper className="mr-4  h-5 text-neutral-600" />,
     label: "News & Politics",
     link: "/explore/personal",
   },
   {
-    Icon: <Icons.Anime className="w-6 h-6 dark:fill-neutral-50 mr-3" />,
+    Icon: (
+      <Icons.Anime className="w-6 h-6 dark:fill-neutral-50 mr-3 text-neutral-600" />
+    ),
     label: "Anime",
     link: "/explore/personal",
   },
   {
-    Icon: <LineChart className="mr-4  h-6" />,
+    Icon: <LineChart className="mr-4  h-6 text-neutral-600" />,
     label: "Business",
     link: "/explore/business",
   },
   {
-    Icon: <Clapperboard className="mr-4  h-6" />,
+    Icon: <Clapperboard className="mr-4  h-6 text-neutral-600" />,
     label: "Movies & Tv",
     link: "/explore/television",
   },
   {
-    Icon: <Wrench className="mr-4  h-6" />,
+    Icon: <Wrench className="mr-4  h-6 text-neutral-600" />,
     label: "Education & Careers",
     link: "/explore/television",
   },
   {
-    Icon: <Icons.PottedPlant className="mr-4 w-6 h-6 fill-white" />,
+    Icon: (
+      <Icons.PottedPlant className="mr-4 w-6 h-6 fill-white text-neutral-600" />
+    ),
     label: "Garden & Home",
     link: "/explore/television",
   },
   {
-    Icon: <Icons.Cosmetics className="mr-4 w-6 h-6 fill-white" />,
+    Icon: (
+      <Icons.Cosmetics className="mr-4 w-6 h-6 fill-white text-neutral-600" />
+    ),
     label: "Fashion & Beauty",
     link: "/explore/television",
   },
   {
-    Icon: <Palette className="mr-4  h-6" />,
+    Icon: <Palette className="mr-4  h-6 text-neutral-600" />,
     label: "Art",
     link: "/explore/art",
   },
   {
-    Icon: <Church className="mr-4  h-6" />,
+    Icon: <Church className="mr-4  h-6 text-neutral-600" />,
     label: "Culture,Race and Ethnicity",
     link: "/explore/culture-race-and-ethnicity",
   },
   {
-    Icon: <Book className="mr-4  h-6" />,
+    Icon: <Book className="mr-4  h-6 text-neutral-600" />,
     label: "Reading,Writing, Literature",
     link: "/explore/reading-writing-and-literature",
   },
   {
-    Icon: <UtensilsCrossed className="mr-4  h-6" />,
+    Icon: <UtensilsCrossed className="mr-4  h-6 text-neutral-600" />,
     label: "Food & Drinks",
     link: "/explore/food",
   },
   {
-    Icon: <FlaskConical className="mr-4  h-6" />,
+    Icon: <FlaskConical className="mr-4  h-6 text-neutral-600" />,
     label: "Science",
     link: "/explore/science",
   },
   {
-    Icon: <Plane className="mr-4  h-6" />,
+    Icon: <Plane className="mr-4  h-6 text-neutral-600" />,
     label: "Travel & Places",
     link: "/explore/travel",
   },
   {
-    Icon: <Cpu className="mr-4  h-6" />,
+    Icon: <Cpu className="mr-4  h-6 text-neutral-600" />,
     label: "Technology",
     link: "/explore/technology",
   },

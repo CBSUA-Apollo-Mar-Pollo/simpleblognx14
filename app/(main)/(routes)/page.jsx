@@ -123,7 +123,7 @@ export default async function HomePage() {
   return (
     <div className="grid  xl:grid-cols-12 lg:grid-cols-7 grid-cols-1 dark:bg-neutral-900">
       {/* first column the side bar */}
-      <div className="  xl:col-span-3 xl:block hidden relative border-r border-neutral-200 dark:border-neutral-800 mr-[5vw] ">
+      <div className="  xl:col-span-3 xl:block hidden relative border-r border-neutral-300 dark:border-neutral-800 mr-[5vw] ">
         <Sidebar session={session} />
       </div>
 
@@ -203,7 +203,7 @@ export default async function HomePage() {
         </div>
       </div>
       {/* third section recent posts and who to follow */}
-      <div className="   lg:flex lg:col-span-3 hidden relative  flex-col border-l dark:border-neutral-800 px-2 ml-[5vw]">
+      <div className="   lg:flex lg:col-span-3 hidden relative  flex-col border-l border-neutral-300 dark:border-neutral-800 px-2 ml-[5vw]">
         <div className="sticky top-16">
           <RecentPostsCard />
 
