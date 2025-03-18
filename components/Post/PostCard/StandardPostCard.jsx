@@ -244,7 +244,7 @@ const StandardPostCard = ({
                 loop
                 crossOrigin="anonymous"
                 onTimeUpdate={handleTimeUpdate}
-                src={blog.video[0].url}
+                src={blog?.video[0]?.url}
               />
             </div>
 

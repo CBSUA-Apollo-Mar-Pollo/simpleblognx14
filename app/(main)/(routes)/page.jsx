@@ -130,7 +130,7 @@ export default async function HomePage() {
       {/* middle section all posts and adding posts */}
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-300">
         <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[1rem]">
-          {/* show in mobile */}
+          {/*  ----------------------------------- show in mobile ------------------------------------------------ */}
           <div className="xl:hidden ">
             <div className="xl:bg-neutral-200 xl:dark:bg-neutral-900 bg-white dark:bg-neutral-800 xl:border-none border-b grid grid-cols-5">
               <div className="flex items-center justify-center border-r dark:border-neutral-700 py-2.5">

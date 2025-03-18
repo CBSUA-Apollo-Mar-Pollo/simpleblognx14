@@ -1,6 +1,7 @@
 import React from "react";
 
 const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
+  console.log(imagePreviews, "image previews in edit post");
   return (
     <>
       {imagePreviews.length === 1 && (
@@ -110,7 +111,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               return (
                 <div key={index} className="relative">
                   <img
-                    src={imageUrl && imageUrl.url}
+                    src={imageUrl || imageUrl.url}
                     alt={imageUrl.name}
                     className="w-full h-auto object-cover"
                     style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)

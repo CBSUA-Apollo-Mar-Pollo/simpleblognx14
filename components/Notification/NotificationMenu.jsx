@@ -56,8 +56,6 @@ const NotificationMenu = () => {
     },
   });
 
-  console.log(notificationData, "notification data");
-
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="focus-visible:outline-none drop-shadow xl:block hidden">

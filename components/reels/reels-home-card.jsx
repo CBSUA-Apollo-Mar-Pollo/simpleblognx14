@@ -21,7 +21,8 @@ import { Skeleton } from "../ui/Skeleton";
 const ReelsHomeCard = () => {
   const videoContainerRef = useRef(null);
   const videoRefs = useRef([]);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [showLeftScroll, setShowLeftScroll] = useState(false);
+  const [showRightScroll, setShowRightScroll] = useState(true);
 
   const { data: reels, isLoading } = useQuery({
     queryKey: ["getReels"],
@@ -50,31 +51,63 @@ const ReelsHomeCard = () => {
 
   const RightScroll = () => {
     if (videoContainerRef.current) {
-      videoContainerRef.current.scrollBy({
-        left: 230,
+      const container = videoContainerRef.current;
+
+      // Scroll to the right by 230px
+      container.scrollBy({
+        left: 240,
         behavior: "smooth",
       });
-      setIsScrolled(true);
+
+      // Check if the container is scrolled to the end
+      const atBeginning = container.scrollLeft === 0;
+      const atEnd =
+        Math.round(container.scrollLeft + container.clientWidth) >=
+        container.scrollWidth;
+
+      // Hide the right scroll button if we're at the end
+      if (atEnd) {
+        setShowRightScroll(false);
+      } else {
+        setShowRightScroll(true); // Show the button if we are not at the end
+      }
+
+      // Always show the left button unless we're at the beginning
+      if (atBeginning) {
+        setShowLeftScroll(false);
+      } else {
+        setShowLeftScroll(true);
+      }
     }
   };
 
   const LeftScroll = () => {
     if (videoContainerRef.current) {
-      videoContainerRef.current.scrollBy({
+      const container = videoContainerRef.current;
+
+      // Scroll to the left by 230px
+      container.scrollBy({
         left: -230,
         behavior: "smooth",
       });
 
-      const container = videoContainerRef.current;
+      // Check if the container is scrolled to the beginning
       const atBeginning = container.scrollLeft === 0;
       const atEnd =
         container.scrollLeft + container.clientWidth >= container.scrollWidth;
+
+      // Hide the left scroll button if we're at the beginning
       if (atBeginning) {
-        setIsScrolled(false);
+        setShowLeftScroll(false);
+      } else {
+        setShowLeftScroll(true); // Show the button if we are not at the beginning
       }
 
+      // Always show the right button unless we're at the end
       if (atEnd) {
-        setIsScrolled(false);
+        setShowRightScroll(false);
+      } else {
+        setShowRightScroll(true);
       }
     }
   };
@@ -126,7 +159,7 @@ const ReelsHomeCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-3 pb-2 relative">
-        {isScrolled && (
+        {showLeftScroll && (
           <Button
             onClick={() => LeftScroll()}
             size="icon"
@@ -174,14 +207,16 @@ const ReelsHomeCard = () => {
               ))}
           </div>
         </div>
-        <Button
-          onClick={() => RightScroll()}
-          size="icon"
-          variant="ghost"
-          className="absolute top-[25vh] right-[2vw] z-10 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"
-        >
-          <ChevronRight className="h-9 w-9 text-neutral-800 dark:text-neutral-300 stroke-[1.6px]" />
-        </Button>
+        {showRightScroll && (
+          <Button
+            onClick={() => RightScroll()}
+            size="icon"
+            variant="ghost"
+            className="absolute top-[25vh] right-[2vw] z-10 bg-white dark:bg-neutral-700 dark:hover:bg-neutral-500 h-12 w-12  rounded-full"
+          >
+            <ChevronRight className="h-9 w-9 text-neutral-800 dark:text-neutral-300 stroke-[1.6px]" />
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

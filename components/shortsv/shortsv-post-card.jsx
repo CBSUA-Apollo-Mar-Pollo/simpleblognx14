@@ -69,7 +69,7 @@ const ShortsVPostCard = ({
         }
       }
     }
-  }, [entry, isPlaying]);
+  }, [entry]);
 
   useEffect(() => {
     if (!mainVideoRef.current) return;
@@ -281,14 +281,11 @@ const ShortsVPostCard = ({
           <div className="xl:max-w-[25vw] z-[2]">
             <video
               ref={mainVideoRef}
-              key={videoData?.videoUrl}
               loop
               playsInline
               muted={!isMuted}
-              className="max-h-[70vh] h-[70vh] z-10 cursor-pointer object-cover"
-              style={{
-                backgroundBlendMode: "overlay",
-              }}
+              crossOrigin="anonymous"
+              className="max-h-[70vh] h-[70vh] z-10 cursor-poiter object-cover"
               src={videoData?.videoUrl}
             />
           </div>

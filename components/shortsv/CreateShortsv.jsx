@@ -130,7 +130,7 @@ const CreateShortsv = ({ session }) => {
                   onClick={() => {
                     videoUrl.length && setVideoUrl("");
                   }}
-                  className=" border border-gray-300 dark:border-neutral-700 rounded-md mt-4 py-5"
+                  className=" border  border-neutral-700 rounded-md mt-4 py-5"
                 >
                   {/* video upload button */}
                   <UploadDropzone
