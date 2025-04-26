@@ -6,9 +6,9 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <>
+      {/* render if the user updated their cover photo */}
       {blog.image && (
         <div className="w-full ">
-          {/* render if the user updated their cover photo */}
           {blog.userStatus === "updated his cover photo" && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
