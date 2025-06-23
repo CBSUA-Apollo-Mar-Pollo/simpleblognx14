@@ -199,6 +199,7 @@ const ShortsVPostCard = ({
           className="flex justify-center bg-neutral-500 dark:bg-neutral-950 relative xl:rounded-2xl rounded-none overflow-clip"
           ref={ref}
         >
+          {/* background video  */}
           <video
             ref={backgroundVideoRef}
             key={videoData?.videoUrl}
@@ -285,7 +286,7 @@ const ShortsVPostCard = ({
               playsInline
               muted={!isMuted}
               crossOrigin="anonymous"
-              className="max-h-[70vh] h-[70vh] z-10 cursor-poiter object-cover"
+              className=" h-[90vh]  z-10 cursor-poiter object-cover"
               src={videoData?.videoUrl}
             />
           </div>

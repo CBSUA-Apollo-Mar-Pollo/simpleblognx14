@@ -101,7 +101,7 @@ const HomePageStoryCards = ({ session }) => {
   console.log(stories);
 
   return (
-    <div className=" flex items-center relative xl:bg-none bg-white xl:my-3 my-1">
+    <div className=" flex items-center relative xl:bg-none bg-white dark:bg-neutral-900 xl:my-3 my-1">
       {isScrolled && (
         <div className="absolute left-4 z-20">
           <Button
