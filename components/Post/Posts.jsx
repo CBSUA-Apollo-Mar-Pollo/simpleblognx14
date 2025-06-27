@@ -42,7 +42,8 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, [entry, fetchNextPage]);
 
-  const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
+  const posts =
+    data?.pages.flatMap((page) => page.filter((post) => !post.trashed)) ?? [];
 
   const [randNumber, setRandNumber] = useState(null);
 
@@ -75,7 +76,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
-  // console.log(posts, " from posts ");
+  console.log(posts, " from posts ");
 
   return (
     <div className="z-2 xl:space-y-3 space-y-1">
@@ -115,7 +116,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
 
             if (isVideo && session?.user) {
               return (
-                <li key={blog.id} className="list-none z-10" ref={ref}>
+                <li key={blog.id} className="list-none z-10">
                   <ShortsVPostCard
                     videoData={blog}
                     session={session}
@@ -133,7 +134,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
             if (!blog.isShortsV) {
               if (index === posts.length - 1 && isImage) {
                 return (
-                  <li key={blog.id} className="list-none z-40" ref={ref}>
+                  <li key={blog.id} className="list-none z-40">
                     <PostCard
                       blog={blog}
                       session={session}
@@ -146,7 +147,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                 );
               } else {
                 return (
-                  <li key={index} className="z-0" ref={ref}>
+                  <li key={index} className="z-0">
                     {index === randNumber && <ReelsHomeCard />}
                     <PostCard
                       blog={blog}
@@ -167,6 +168,10 @@ export default function Posts({ initialPosts, session, deleteImage }) {
             <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
           </li>
         )}
+
+        <li>
+          <div ref={ref} className="h-1 w-full" />
+        </li>
       </ul>
     </div>
   );

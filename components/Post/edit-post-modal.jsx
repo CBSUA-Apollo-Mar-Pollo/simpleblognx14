@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -215,11 +216,14 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
           Edit post
         </span>
       </DialogTrigger>
-      <DialogContent className=" min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
-        <DialogHeader className="pt-4 px-4">
+      <DialogContent className="[&>button]:hidden drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] min-w-[39vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+        <DialogHeader className="pt-4 px-4 relative">
           <DialogTitle className="text-2xl font-bold text-center">
             Edit post
           </DialogTitle>
+          <DialogClose asChild>
+            <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 rounded-full" />
+          </DialogClose>
         </DialogHeader>
 
         <Separator className="dark:bg-neutral-700 border-1" />
@@ -588,7 +592,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
             </SimpleBar>
           </div>
         </div>
-        <DialogFooter className="py-1 mx-4 ">
+        <DialogFooter className="pt-1 pb-4 mx-4 ">
           <Button
             className="w-full bg-blue-600 hover:bg-blue-500"
             type="submit"

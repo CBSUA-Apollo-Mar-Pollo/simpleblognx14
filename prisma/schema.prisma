@@ -90,6 +90,7 @@ model Blog {
   authorId String
 
   sharedPostId String?
+  trashed      Boolean @default(false)
 
   comments    Comment[]
   RecentPosts RecentPosts[]

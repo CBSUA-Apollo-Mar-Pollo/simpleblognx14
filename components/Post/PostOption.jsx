@@ -20,6 +20,7 @@ import { useSession } from "next-auth/react";
 import EditPostModal from "./edit-post-modal";
 import { getSharedPost } from "@/actions/getSharedPost";
 import { useQuery } from "@tanstack/react-query";
+import MoveToTrashModal from "./move-to-trash-modal";
 
 const PostOption = ({ blog, deleteImage }) => {
   const authorId = blog.author.id;
@@ -80,19 +81,8 @@ const PostOption = ({ blog, deleteImage }) => {
                 Move to archive
               </h6>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer gap-x-2 py-2 flex items-start dark:hover:bg-neutral-600">
-              <span className="mt-0.5">
-                <Trash2 className="h-6 w-6 dark:text-neutral-300" />
-              </span>
-              <div>
-                <h6 className="font-bold dark:text-neutral-300">
-                  Move to trash
-                </h6>
-                <span className="text-xs dark:text-neutral-300">
-                  Items in your trash are deleted after 30 days{" "}
-                </span>
-              </div>
-            </DropdownMenuItem>
+
+            <MoveToTrashModal blog={blog} session={session} />
           </>
         )}
 
