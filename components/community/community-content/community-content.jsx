@@ -24,7 +24,7 @@ import { Icons } from "@/components/utils/Icons";
 const CommunityContent = ({ communityDetails, communityId }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const date = new Date(communityDetails.createdAt);
+  const date = new Date(communityDetails?.createdAt);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",

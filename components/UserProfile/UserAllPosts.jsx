@@ -40,7 +40,8 @@ const UserAllPosts = ({ initialPosts, userId, session }) => {
     }
   }, [entry, fetchNextPage]);
 
-  const posts = data?.pages?.flatMap((page) => page) ?? initialPosts;
+  const posts =
+    data?.pages.flatMap((page) => page.filter((post) => !post.trashed)) ?? [];
 
   return (
     <div className="z-2 space-y-3">

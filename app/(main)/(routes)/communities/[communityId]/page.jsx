@@ -36,7 +36,7 @@ const CommunityPage = async ({ params }) => {
 
   return (
     <div className={cn("grid grid-cols-11")}>
-      {session?.user.id && session?.user.id === communityDetails.creatorId && (
+      {session?.user.id && session?.user.id === communityDetails?.creatorId && (
         <div className="col-span-2 border-r border-neutral-200 dark:border-neutral-800 relative">
           <CommunitySideBar {...{ communityDetails }} />
         </div>
@@ -46,7 +46,7 @@ const CommunityPage = async ({ params }) => {
         className={cn("col-span-9", {
           "col-span-11":
             !session?.user.id ||
-            session?.user.id !== communityDetails.creatorId,
+            session?.user.id !== communityDetails?.creatorId,
         })}
       >
         <CommunityContent {...{ communityDetails }} />
