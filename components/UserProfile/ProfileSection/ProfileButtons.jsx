@@ -118,7 +118,7 @@ const ProfileButtons = ({ userId }) => {
                     <span className="font-semibold">Profile Status</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => router.push("/allactivity")}
+                    onClick={() => router.push("/allactivity/archive")}
                     className="cursor-pointer dark:text-white flex-row items-center gap-x-4"
                   >
                     <Archive className="h-6 w-6 text-neutral-800" />
