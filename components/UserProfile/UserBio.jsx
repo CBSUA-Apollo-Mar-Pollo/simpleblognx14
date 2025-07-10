@@ -23,21 +23,25 @@ const UserBio = async ({ user, session }) => {
     select: {
       image: true,
       id: true,
+      trashed: true,
     },
   });
 
   const mergedImages = userImages
+    .filter(({ trashed }) => !trashed) // Filter out trashed items first
     .flatMap(({ id, image }) => {
       if (image) {
         return (Array.isArray(image) ? image : [image]).map((img, index) => ({
           image: img,
           postId: id,
-          index, // Store the index of the image
+          index,
         }));
       }
       return [];
     })
     .filter((item) => item.image !== null);
+
+  console.log(mergedImages, "mergedImages");
 
   return (
     <div className="space-y-3">

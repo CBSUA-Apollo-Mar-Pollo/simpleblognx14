@@ -187,7 +187,7 @@ const AddPostModal = ({ session, user, communityId }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full ">
         <Input
-          className="rounded-full dark:border-0 dark:bg-neutral-700 hover:cursor-pointer hover:bg-neutral-100"
+          className="rounded-full bg-neutral-50 dark:border-0 dark:bg-neutral-700 hover:cursor-pointer hover:bg-neutral-100"
           placeholder={`What's on your mind, ${
             session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
           } ?`}

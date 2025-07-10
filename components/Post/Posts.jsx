@@ -127,6 +127,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                   <div className="xl:mt-3 my-1">
                     {index === randNumber && <ReelsHomeCard />}
                   </div>
+                  <div ref={ref} className="h-1 w-full" />
                 </li>
               );
             }
@@ -143,6 +144,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                       currentVote={currentVote}
                     />
                     {index === randNumber && <ReelsHomeCard />}
+                    <div ref={ref} className="h-1 w-full" />
                   </li>
                 );
               } else {
@@ -157,6 +159,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                       votesAmt={votesAmt}
                       currentVote={currentVote}
                     />
+                    <div ref={ref} className="h-1 w-full" />
                   </li>
                 );
               }
