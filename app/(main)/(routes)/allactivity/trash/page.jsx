@@ -26,10 +26,10 @@ const TrashPage = async () => {
     },
 
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
   });
-
+  
   return (
     <div className="flex">
       <AllActivitySideBar />

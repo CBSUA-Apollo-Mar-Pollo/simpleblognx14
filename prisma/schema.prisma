@@ -92,7 +92,7 @@ model Blog {
   sharedPostId String?
   trashed      Boolean   @default(false)
   trashedAt    DateTime?
-
+  
   comments    Comment[]
   RecentPosts RecentPosts[]
   community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)
