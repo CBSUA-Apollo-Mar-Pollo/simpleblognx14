@@ -29,7 +29,7 @@ const TrashPage = async () => {
       createdAt: "asc",
     },
   });
-  
+
   return (
     <div className="flex">
       <AllActivitySideBar />

@@ -9,6 +9,7 @@ export const trashPost = async (postId, session) => {
     },
     data: {
       trashed: true,
+      trashedAt: new Date(),
     },
   });
 };
