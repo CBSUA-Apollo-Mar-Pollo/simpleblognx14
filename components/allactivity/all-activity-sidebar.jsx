@@ -8,6 +8,7 @@ import {
   ChevronUp,
   CircleEllipsisIcon,
   List,
+  MoreHorizontal,
   RotateCcw,
   Search,
   Trash2,
@@ -79,7 +80,7 @@ const AllActivitySideBar = () => {
           >
             <div className="flex items-center gap-x-3">
               <div className="bg-neutral-200 p-2 rounded-full">
-                <CircleEllipsisIcon className="h-6 w-6" />
+                <MoreHorizontal className="h-6 w-6" />
               </div>
               <div className="relative flex flex-col gap-0.2">
                 <p className="font-semibold m-0 text-base">Archive</p>

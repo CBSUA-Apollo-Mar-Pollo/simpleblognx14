@@ -32,6 +32,7 @@ import {
 import { Separator } from "../ui/Separator";
 import { useMutation } from "@tanstack/react-query";
 import { deletePosts } from "@/actions/deletePosts";
+import Link from "next/link";
 
 const TrashPosts = ({ trashPosts }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -39,15 +40,9 @@ const TrashPosts = ({ trashPosts }) => {
   // Helper function to format date as Month Day, Year (e.g., "June 27, 2025")
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-
-    // Get the full month name
     const month = date.toLocaleString("default", { month: "long" });
-
-    // Get the day and year
     const day = date.getDate();
     const year = date.getFullYear();
-
-    // Return in the format: "Month Day, Year"
     return `${month} ${day}, ${year}`;
   };
 
@@ -69,9 +64,9 @@ const TrashPosts = ({ trashPosts }) => {
 
   // Sort groups by trashedAt date in descending order
   formattedTrashPosts.sort((a, b) => {
-    const dateA = new Date(a.trashedAt); // Convert the trashedAt date to Date object
-    const dateB = new Date(b.trashedAt); // Convert the trashedAt date to Date object
-    return dateB - dateA; // Compare dates to sort in descending order
+    const dateA = new Date(a.trashedAt);
+    const dateB = new Date(b.trashedAt);
+    return dateB - dateA;
   });
 
   const [groupedPostsByTrashedAt, setGroupedPostsByTrashedAt] =
@@ -141,15 +136,9 @@ const TrashPosts = ({ trashPosts }) => {
     setIsDeleteModalOpen(false);
 
     try {
-      // Call your function to delete posts in the backend
       await deletePosts(checkedItems);
-
-      // Step 3: If successful, no need to do anything. We already updated the UI optimistically.
     } catch (error) {
-      // Step 4: If there's an error, revert the state update to the original data
       console.error("Failed to delete posts:", error);
-
-      // Revert to the original posts data (restore the posts)
       setGroupedPostsByTrashedAt(formattedTrashPosts);
     }
   };
@@ -268,7 +257,11 @@ const TrashPosts = ({ trashPosts }) => {
               <p className="px-4 pb-2 ">items you delete can't be restored.</p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
-                <Button variant="ghost" className="text-blue-600">
+                <Button
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  variant="ghost"
+                  className="text-blue-600"
+                >
                   Cancel
                 </Button>
                 <Button
@@ -374,7 +367,9 @@ const TrashPosts = ({ trashPosts }) => {
                           <span className="font-semibold">
                             {post?.author?.name}{" "}
                           </span>
-                          added a new photo.
+                          {post.image.length > 1
+                            ? `added ${post.image.length} new photos.`
+                            : "added a new photo."}
                         </p>
                         <p className="text-[13px]">{post.description}</p>
                         <div className="flex items-center justify-between gap-x-1 mt-1">
@@ -390,9 +385,14 @@ const TrashPosts = ({ trashPosts }) => {
                         <span className="text-[13px] mt-0.5">
                           {trashedTime}
                         </span>
-                        <Button className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black ">
+                        <Link
+                          href={`/${post.author.name
+                            .replace(/\s/g, "")
+                            .toLowerCase()}/posts/${post.id}`}
+                          className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black rounded-md "
+                        >
                           View
-                        </Button>
+                        </Link>
                         <ArchiveOrTrashPostOption />
                       </div>
                     </div>
