@@ -33,9 +33,11 @@ import { Separator } from "../ui/Separator";
 import { useMutation } from "@tanstack/react-query";
 import { deletePosts } from "@/actions/deletePosts";
 import Link from "next/link";
+import { restorePosts } from "@/actions/restorePosts";
 
 const TrashPosts = ({ trashPosts }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isRestorePostModalOpen, setIsRestorePostModalOpen] = useState(false);
 
   // Helper function to format date as Month Day, Year (e.g., "June 27, 2025")
   const formatDate = (dateString) => {
@@ -85,7 +87,12 @@ const TrashPosts = ({ trashPosts }) => {
 
     // If "Select All" is checked, select all posts
     if (isChecked) {
-      const allPostIds = trashPosts.map((post) => post.id); // Get all post IDs
+      const allPostIds = trashPosts.map((post) => {
+        return {
+          postId: post.id,
+          imageInfo: post.image?.length >= 1 ? post.image : null,
+        };
+      }); // Get all post IDs
       setCheckedItems(allPostIds); // Add all post IDs to checkedItems
     } else {
       // If "Select All" is unchecked, clear checkedItems array
@@ -94,15 +101,15 @@ const TrashPosts = ({ trashPosts }) => {
   };
 
   // Handle individual post checkbox change
-  const handlePostChange = (postId, e) => {
+  const handlePostChange = (postId, postImage, e) => {
     const isChecked = e;
     setCheckedItems((prev) => {
       if (isChecked) {
         // Add postId to checkedItems array if checked
-        return [...prev, postId];
+        return [...prev, { postId, imageInfo: postImage }];
       } else {
         // Remove postId from checkedItems array if unchecked
-        return prev.filter((id) => id !== postId);
+        return prev.filter((item) => item.postId !== postId);
       }
     });
   };
@@ -121,14 +128,56 @@ const TrashPosts = ({ trashPosts }) => {
     setCheckedItems([]);
   };
 
-  const handleDeletePost = async () => {
+  const handleRestoreToProfileCheckedPost = async () => {
+    const updatedGroups = groupedPostsByTrashedAt.map((group) => {
+      return {
+        trashedAt: group.trashedAt,
+        posts: group.posts.filter(
+          (post) => !checkedItems.some((item) => item.postId === post.id)
+        ),
+      };
+    });
+
+    setGroupedPostsByTrashedAt(updatedGroups);
+    setIsRestorePostModalOpen(false);
+
+    try {
+      await restorePosts(checkedItems);
+    } catch (error) {
+      console.error("Failed to restore posts:", error);
+      setGroupedPostsByTrashedAt(formattedTrashPosts);
+    }
+  };
+
+  const handleRestoreSinglePost = async (id) => {
+    const updatedGroups = groupedPostsByTrashedAt.map((group) => {
+      return {
+        trashedAt: group.trashedAt,
+        posts: group.posts.filter((post) => post.id !== id), // Remove posts based on checkedItems
+      };
+    });
+
+    setGroupedPostsByTrashedAt(updatedGroups);
+    setIsRestorePostModalOpen(false);
+
+    try {
+      await restorePosts([{ postId: id }]);
+    } catch (error) {
+      console.error("Failed to restore posts:", error);
+      setGroupedPostsByTrashedAt(formattedTrashPosts);
+    }
+  };
+
+  const handleDeleteCheckedPost = async () => {
     const postsToDelete = checkedItems;
 
     // Filter out posts that are selected for deletion from grouped posts
     const updatedGroups = groupedPostsByTrashedAt.map((group) => {
       return {
         trashedAt: group.trashedAt,
-        posts: group.posts.filter((post) => !checkedItems.includes(post.id)), // Remove posts based on checkedItems
+        posts: group.posts.filter(
+          (post) => !checkedItems.some((item) => item.postId === post.id)
+        ),
       };
     });
 
@@ -137,6 +186,25 @@ const TrashPosts = ({ trashPosts }) => {
 
     try {
       await deletePosts(checkedItems);
+    } catch (error) {
+      console.error("Failed to delete posts:", error);
+      setGroupedPostsByTrashedAt(formattedTrashPosts);
+    }
+  };
+
+  const handleDeleteSinglePost = async (id, image) => {
+    const updatedGroups = groupedPostsByTrashedAt.map((group) => {
+      return {
+        trashedAt: group.trashedAt,
+        posts: group.posts.filter((post) => post.id !== id), // Remove posts based on checkedItems
+      };
+    });
+
+    setGroupedPostsByTrashedAt(updatedGroups);
+    setIsDeleteModalOpen(false);
+
+    try {
+      await deletePosts([{ postId: id, imageInfo: image }]);
     } catch (error) {
       console.error("Failed to delete posts:", error);
       setGroupedPostsByTrashedAt(formattedTrashPosts);
@@ -184,7 +252,10 @@ const TrashPosts = ({ trashPosts }) => {
             <Archive className="w-5 h-5" />
             <p>Archive</p>
           </Button>
-          <Dialog>
+          <Dialog
+            open={isRestorePostModalOpen}
+            onOpenChange={setIsRestorePostModalOpen}
+          >
             <DialogTrigger asChild>
               <Button
                 disabled={
@@ -217,10 +288,17 @@ const TrashPosts = ({ trashPosts }) => {
               </p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
-                <Button variant="ghost" className="text-blue-600">
+                <Button
+                  onClick={() => setIsRestorePostModalOpen(false)}
+                  variant="ghost"
+                  className="text-blue-600"
+                >
                   Cancel
                 </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 px-10">
+                <Button
+                  onClick={handleRestoreToProfileCheckedPost}
+                  className="bg-blue-600 hover:bg-blue-700 px-10"
+                >
                   Restore
                 </Button>
               </div>
@@ -265,7 +343,7 @@ const TrashPosts = ({ trashPosts }) => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleDeletePost}
+                  onClick={handleDeleteCheckedPost}
                   className="bg-blue-600 hover:bg-blue-700 px-10"
                 >
                   Delete
@@ -299,8 +377,10 @@ const TrashPosts = ({ trashPosts }) => {
             return (
               <div className="mx-1 flex items-center my-3 gap-x-4">
                 <Checkbox
-                  checked={checkedItems.includes(post.id)}
-                  onCheckedChange={(e) => handlePostChange(post.id, e)}
+                  checked={checkedItems.some((item) => item.postId === post.id)}
+                  onCheckedChange={(e) =>
+                    handlePostChange(post.id, post.image, e)
+                  }
                   className="border dark:border-neutral-50 h-5 w-5 mr-4 "
                 />
                 {/* if post is only text */}
@@ -339,7 +419,16 @@ const TrashPosts = ({ trashPosts }) => {
                         <Button className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black ">
                           View
                         </Button>
-                        <ArchiveOrTrashPostOption />
+                        <ArchiveOrTrashPostOption
+                          postId={post.id}
+                          postImage={post.image}
+                          handleDeleteSinglePost={handleDeleteSinglePost}
+                          isDeleteModalOpen={isDeleteModalOpen}
+                          setIsDeleteModalOpen={setIsDeleteModalOpen}
+                          handleRestoreSinglePost={handleRestoreSinglePost}
+                          isRestorePostModalOpen={isRestorePostModalOpen}
+                          setIsRestorePostModalOpen={setIsRestorePostModalOpen}
+                        />
                       </div>
                     </div>
                   </div>
@@ -393,7 +482,16 @@ const TrashPosts = ({ trashPosts }) => {
                         >
                           View
                         </Link>
-                        <ArchiveOrTrashPostOption />
+                        <ArchiveOrTrashPostOption
+                          postId={post.id}
+                          postImage={post.image}
+                          handleDeleteSinglePost={handleDeleteSinglePost}
+                          isDeleteModalOpen={isDeleteModalOpen}
+                          setIsDeleteModalOpen={setIsDeleteModalOpen}
+                          handleRestoreSinglePost={handleRestoreSinglePost}
+                          isRestorePostModalOpen={isRestorePostModalOpen}
+                          setIsRestorePostModalOpen={setIsRestorePostModalOpen}
+                        />
                       </div>
                     </div>
                   </div>

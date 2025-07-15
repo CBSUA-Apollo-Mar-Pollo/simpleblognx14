@@ -16,10 +16,25 @@ import {
 } from "@/components/ui/Dropdown-menu";
 import { Separator } from "@/components/ui/Separator";
 import { Archive, MoreHorizontal, Trash2, Undo2, X } from "lucide-react";
+import { useState } from "react";
 
-const ArchiveOrTrashPostOption = () => {
+const ArchiveOrTrashPostOption = ({
+  postId,
+  postImage,
+  handleDeleteSinglePost,
+  isDeleteModalOpen,
+  setIsDeleteModalOpen,
+  handleRestoreSinglePost,
+  isRestorePostModalOpen,
+  setIsRestorePostModalOpen,
+}) => {
+  const [isDropDownMenuOptionsOpen, setIsDropDownMenuOptionsOpen] =
+    useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={isDropDownMenuOptionsOpen}
+      onOpenChange={setIsDropDownMenuOptionsOpen}
+    >
       <DropdownMenuTrigger asChild>
         <Button className="rounded-full px-2 bg-neutral-200 hover:bg-neutral-300 text-black ">
           <MoreHorizontal className="h-6 w-6" />
@@ -32,7 +47,10 @@ const ArchiveOrTrashPostOption = () => {
             <Archive className="w-6 h-6" />
             <span className="font-semibold">Move to archive</span>
           </Button>
-          <Dialog>
+          <Dialog
+            open={isRestorePostModalOpen}
+            onOpenChange={setIsRestorePostModalOpen}
+          >
             <DialogTrigger asChild>
               <Button className="w-full flex items-center justify-start gap-x-2 bg-white text-black hover:bg-neutral-200">
                 <Undo2 className="w-6 h-6" />
@@ -58,17 +76,27 @@ const ArchiveOrTrashPostOption = () => {
               </p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
-                <Button variant="ghost" className="text-blue-600">
+                <Button
+                  onClick={() => setIsRestorePostModalOpen(false)}
+                  variant="ghost"
+                  className="text-blue-600"
+                >
                   Cancel
                 </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 px-10">
+                <Button
+                  onClick={() => {
+                    handleRestoreSinglePost(postId),
+                      setIsDropDownMenuOptionsOpen(false);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 px-10"
+                >
                   Restore
                 </Button>
               </div>
             </DialogContent>
           </Dialog>
 
-          <Dialog>
+          <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
             <DialogTrigger asChild>
               <Button className="w-full flex items-center justify-start gap-x-2 bg-white text-black hover:bg-neutral-200">
                 <Trash2 className="w-6 h-6" />
@@ -91,10 +119,20 @@ const ArchiveOrTrashPostOption = () => {
               <p className="px-4 pb-2 ">items you delete can't be restored.</p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
-                <Button variant="ghost" className="text-blue-600">
+                <Button
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  variant="ghost"
+                  className="text-blue-600"
+                >
                   Cancel
                 </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700 px-10">
+                <Button
+                  onClick={() => {
+                    handleDeleteSinglePost(postId, postImage),
+                      setIsDropDownMenuOptionsOpen(false);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 px-10"
+                >
                   Delete
                 </Button>
               </div>
