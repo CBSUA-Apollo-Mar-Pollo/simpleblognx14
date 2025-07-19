@@ -35,14 +35,14 @@ const CommunityContent = ({ communityDetails, communityId }) => {
     <div>
       <CommunityBanner {...{ communityDetails, session }} />
 
-      <div className="bg-neutral-100 dark:bg-neutral-900">
+      <div className=" flex flex-col items-center justify-center h-full">
         {/* about page */}
         {pathname === `/communities/${communityId}/about` ? (
-          <div className="flex flex-col items-center justify-center">
-            <div className="py-4 w-[40vw]">
-              <Card>
-                <CardContent>
-                  <h2 className="font-semibold mt-4 text-xl">
+          <div className="flex-1 mt-10 bg-neutral-100 dark:bg-neutral-900">
+            <div className="w-[40vw] h-[40vh]">
+              <Card className="dark:bg-neutral-800 dark:border-0">
+                <CardContent className="px-6 pt-2">
+                  <h2 className="font-semibold mt-4 text-xl dark:text-white">
                     About this community
                   </h2>
 
@@ -54,12 +54,12 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                     </p>
 
                     <div className="flex items-start gap-x-3 mt-2">
-                      <Lock className="mt-1.5 text-gray-700 h-6 w-6" />
+                      <Lock className="mt-1.5 text-gray-700 dark:text-white h-6 w-6" />
                       <div className="relative">
-                        <h3 className="font-semibold">
+                        <h3 className="font-semibold dark:text-white">
                           {communityDetails.visibility}
                         </h3>
-                        <p className="text-[13px] -mt-0.5">
+                        <p className="text-[13px] -mt-0.5 dark:text-white">
                           Only members can see who&apos;s in the group and what
                           they post.
                         </p>
@@ -67,10 +67,12 @@ const CommunityContent = ({ communityDetails, communityId }) => {
                     </div>
 
                     <div className="flex items-start gap-x-3 mt-2">
-                      <Clock className="mt-1.5 text-gray-700 h-6 w-6" />
+                      <Clock className="mt-1.5 text-gray-700 dark:text-white h-6 w-6" />
                       <div className="">
-                        <h3 className="font-semibold">History</h3>
-                        <p className="text-[13px] -mt-0.5">
+                        <h3 className="font-semibold dark:text-white">
+                          History
+                        </h3>
+                        <p className="text-[13px] -mt-0.5 dark:text-white">
                           Community created on {formattedDate}.
                         </p>
                       </div>
@@ -86,16 +88,16 @@ const CommunityContent = ({ communityDetails, communityId }) => {
           ) ? (
           <div className="grid grid-cols-8 pt-8">
             <div className="col-span-5 mb-4 ml-64 mr-1">
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center py-12">
+              <Card className="dark:border-0 dark:bg-neutral-800">
+                <CardContent className="flex flex-col items-center justify-center rounded-xl py-12 dark:bg-neutral-800 ">
                   <Icons.LockPrivate className="fill-violet-600 h-36 w-36" />
 
                   <div className="">
-                    <h2 className="text-center font-bold text-2xl text-neutral-700">
+                    <h2 className="text-center font-bold text-2xl text-neutral-700 dark:text-white">
                       This group is private
                     </h2>
 
-                    <span className="text-neutral-600">
+                    <span className="text-neutral-600 dark:text-white">
                       Join this community to view or participate in discussions.
                     </span>
                   </div>

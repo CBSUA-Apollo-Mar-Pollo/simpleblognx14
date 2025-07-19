@@ -2,24 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { Checkbox } from "../ui/Checkbox";
-import {
-  Archive,
-  Dot,
-  MoreHorizontal,
-  Trash,
-  Trash2,
-  Undo2,
-  X,
-} from "lucide-react";
+import { Archive, Trash2, Undo2, X } from "lucide-react";
 import { Button } from "../ui/Button";
 import UserAvatar from "../utils/UserAvatar";
-import { data } from "autoprefixer";
 import Image from "next/image";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/Dropdown-menu";
 import ArchiveOrTrashPostOption from "./interactives/archive-or-trash-post-option";
 import {
   Dialog,
@@ -30,7 +16,6 @@ import {
   DialogTrigger,
 } from "../ui/Dialog";
 import { Separator } from "../ui/Separator";
-import { useMutation } from "@tanstack/react-query";
 import { deletePosts } from "@/actions/deletePosts";
 import Link from "next/link";
 import { restorePosts } from "@/actions/restorePosts";
@@ -215,29 +200,31 @@ const TrashPosts = ({ trashPosts }) => {
 
   return (
     <div className="mx-20 w-full">
-      <h1 className="text-center bg-neutral-300 py-2">
+      <h1 className="text-center bg-neutral-300 dark:bg-neutral-600 dark:text-white text-sm py-2">
         Items in your trash are only visible to you.
       </h1>
 
-      <div className="bg-white drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex items-center justify-between p-4 rounded-md mt-4">
+      <div className="bg-white dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex items-center justify-between p-4 rounded-md mt-4">
         <div className="flex items-center">
           <Checkbox
             checked={selectAll}
             onCheckedChange={(e) => handleSelectAllChange(e)}
             className="border-2 dark:border-neutral-50 h-5 w-5 mr-4 "
           />
-          <p>All</p>
+          <p className="dark:text-white">All</p>
         </div>
 
         {checkedItems.length !== 0 && (
-          <p className="font-semibold">{checkedItems.length}</p>
+          <p className="font-semibold dark:text-neutral-200">
+            {checkedItems.length}
+          </p>
         )}
 
         <div className="flex gap-x-4">
           {checkedItems.length !== 0 && (
             <Button
               onClick={handleDeselect}
-              className=" bg-zinc-300 hover:bg-zinc-400 text-black"
+              className=" bg-zinc-300 dark:bg-neutral-700 hover:bg-zinc-400 text-black dark:text-white"
             >
               Deselect
             </Button>
@@ -247,7 +234,7 @@ const TrashPosts = ({ trashPosts }) => {
             disabled={
               selectAll === false && checkedItems.length === 0 ? true : false
             }
-            className="flex gap-x-2 items-center bg-zinc-300 hover:bg-zinc-400 text-black "
+            className="flex gap-x-2 items-center bg-zinc-300 dark:bg-neutral-700 hover:bg-zinc-400 text-black dark:text-white "
           >
             <Archive className="w-5 h-5" />
             <p>Archive</p>
@@ -263,26 +250,26 @@ const TrashPosts = ({ trashPosts }) => {
                     ? true
                     : false
                 }
-                className="flex gap-x-2 items-center bg-zinc-300 hover:bg-zinc-400 text-black"
+                className="flex gap-x-2 items-center bg-zinc-300 dark:bg-neutral-700 hover:bg-zinc-400 text-black dark:text-white"
               >
                 <Undo2 className="w-5 h-5" />
                 <p>Restore</p>
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="[&>button]:hidden p-0">
+            <DialogContent className="[&>button]:hidden p-0  dark:bg-neutral-900 dark:border-0 min-w-[35vw]">
               <DialogHeader className="pt-4 relative">
-                <DialogTitle className="text-center font-bold text-xl">
+                <DialogTitle className="text-center font-bold text-xl dark:text-neutral-200">
                   Restore to Profile?
                 </DialogTitle>
                 <DialogClose asChild>
-                  <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 rounded-full" />
+                  <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
                 </DialogClose>
               </DialogHeader>
 
               <Separator className="dark:bg-neutral-700  h-[1px] bg-neutral-400" />
 
-              <p className="px-8 text-[15px] pb-2 text-justify">
+              <p className="px-8 text-[15px] pb-2 text-justify dark:text-neutral-200">
                 Items you restore to your profile can be seen by the audience
                 that was selected before they were moved to trash.
               </p>
@@ -291,13 +278,13 @@ const TrashPosts = ({ trashPosts }) => {
                 <Button
                   onClick={() => setIsRestorePostModalOpen(false)}
                   variant="ghost"
-                  className="text-blue-600"
+                  className="text-blue-600 dark:hover:bg-neutral-600 dark:hover:text-white"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleRestoreToProfileCheckedPost}
-                  className="bg-blue-600 hover:bg-blue-700 px-10"
+                  className="bg-blue-600 hover:bg-blue-700 px-10 "
                 >
                   Restore
                 </Button>
@@ -313,32 +300,34 @@ const TrashPosts = ({ trashPosts }) => {
                     ? true
                     : false
                 }
-                className="flex gap-x-2 items-center bg-zinc-300 hover:bg-zinc-400 text-black"
+                className="flex gap-x-2 items-center bg-zinc-300 dark:bg-neutral-700 hover:bg-zinc-400 text-black dark:text-white"
               >
                 <Trash2 className="w-5 h-5" />
                 <p>Delete</p>
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="[&>button]:hidden p-0">
+            <DialogContent className="[&>button]:hidden p-0 dark:bg-neutral-900 dark:border-0 min-w-[35vw]">
               <DialogHeader className="pt-4 relative">
-                <DialogTitle className="text-center font-bold text-xl">
+                <DialogTitle className="text-center font-bold text-xl dark:text-neutral-200">
                   Delete?
                 </DialogTitle>
                 <DialogClose asChild>
-                  <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 rounded-full" />
+                  <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
                 </DialogClose>
               </DialogHeader>
 
               <Separator className="dark:bg-neutral-700  h-[1px] bg-neutral-400" />
 
-              <p className="px-4 pb-2 ">items you delete can't be restored.</p>
+              <p className="px-4 pb-2 dark:text-neutral-200">
+                items you delete can't be restored.
+              </p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
                 <Button
                   onClick={() => setIsDeleteModalOpen(false)}
                   variant="ghost"
-                  className="text-blue-600"
+                  className="text-blue-600 dark:hover:bg-neutral-600 dark:hover:text-white"
                 >
                   Cancel
                 </Button>
@@ -355,18 +344,21 @@ const TrashPosts = ({ trashPosts }) => {
       </div>
 
       {groupedPostsByTrashedAt.map((item) => (
-        <div className="bg-white drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex-col items-center justify-between p-4 rounded-md mt-4 mb-4">
-          <h1 className="font-medium mb-2">{item.trashedAt}</h1>
+        <div className="bg-white dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex-col items-center justify-between p-4 rounded-md mt-4 mb-4">
+          <h1 className="font-medium mb-2 dark:text-neutral-200">
+            {item.trashedAt}
+          </h1>
           {item.posts.map((post) => {
             // Function to calculate the deletion date (30 days after trashedAt)
             const trashedDate = new Date(post.trashedAt);
             trashedDate.setDate(trashedDate.getDate() + 30); // Add 30 days
 
-            // Calculate the difference in days
+            // Calculate the 30 days difference between the post post trashedAt date
             const currentDate = new Date();
             const timeDifference = trashedDate - currentDate;
             const daysLeft = Math.ceil(timeDifference / (1000 * 3600 * 24)); // Convert milliseconds to days
 
+            // get the time of the post when it was move to trashed
             const hours = trashedDate.getHours();
             const minutes = trashedDate.getMinutes();
             const ampm = hours >= 12 ? "PM" : "AM";
@@ -395,25 +387,27 @@ const TrashPosts = ({ trashPosts }) => {
 
                     <div className="flex-1 flex items-center justify-between">
                       <div>
-                        <p className="text-[15px]">
+                        <p className="text-[15px] dark:text-neutral-200 ">
                           {" "}
                           <span className="font-semibold">
                             {post?.author?.name}{" "}
                           </span>
                           updated his status.
                         </p>
-                        <p className="text-[13px]">{post?.description}</p>
+                        <p className="text-[13px] dark:text-neutral-200">
+                          {post?.description}
+                        </p>
                         <div className="flex items-center justify-between gap-x-1 mt-1">
                           <div className="flex items-center gap-x-2">
-                            <Trash2 className="h-4 w-4" />
-                            <span className="text-[13px]">
+                            <Trash2 className="h-4 w-4 dark:text-neutral-200" />
+                            <span className="text-[13px] dark:text-neutral-200">
                               {daysLeft} days left
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-end gap-x-2">
-                        <span className="text-[13px] mt-0.5">
+                        <span className="text-[13px] mt-0.5 dark:text-neutral-200">
                           {trashedTime}
                         </span>
                         <Button className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black ">
@@ -451,7 +445,7 @@ const TrashPosts = ({ trashPosts }) => {
 
                     <div className="flex-1 flex items-center justify-between mt-2">
                       <div>
-                        <p className="text-[15px]">
+                        <p className="text-[15px] dark:text-neutral-200">
                           {" "}
                           <span className="font-semibold">
                             {post?.author?.name}{" "}
@@ -460,25 +454,27 @@ const TrashPosts = ({ trashPosts }) => {
                             ? `added ${post.image.length} new photos.`
                             : "added a new photo."}
                         </p>
-                        <p className="text-[13px]">{post.description}</p>
+                        <p className="text-[13px] dark:text-neutral-200">
+                          {post.description}
+                        </p>
                         <div className="flex items-center justify-between gap-x-1 mt-1">
                           <div className="flex items-center gap-x-2">
-                            <Trash2 className="h-4 w-4" />
-                            <span className="text-[13px]">
+                            <Trash2 className="h-4 w-4 dark:text-neutral-200" />
+                            <span className="text-[13px] dark:text-neutral-200">
                               {daysLeft} days left
                             </span>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-end gap-x-2">
-                        <span className="text-[13px] mt-0.5">
+                        <span className="text-[13px] mt-0.5 dark:text-neutral-200">
                           {trashedTime}
                         </span>
                         <Link
                           href={`/${post.author.name
                             .replace(/\s/g, "")
                             .toLowerCase()}/posts/${post.id}`}
-                          className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black rounded-md "
+                          className="p-2 bg-neutral-200 dark:bg-neutral-700 dark:text-white hover:bg-neutral-300 text-black rounded-md "
                         >
                           View
                         </Link>

@@ -43,8 +43,8 @@ const WatchPageSideBar = () => {
           href="/shortsv"
           className="flex items-center gap-x-3  p-2 rounded-lg pl-4 dark:hover:bg-neutral-700"
         >
-          <div className="p-2 bg-neutral-200 rounded-full">
-            <Icons.reelsIcon className="text-white  h-6 w-6" />
+          <div className="p-1.5 bg-neutral-200 rounded-full">
+            <Icons.reelsIcon className="text-white  h-7 w-7" />
           </div>
           <span className="font-semibold text-sm dark:text-white">Shortsv</span>
         </Link>

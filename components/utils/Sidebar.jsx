@@ -157,9 +157,7 @@ const Sidebar = ({ session }) => {
                 "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent"
               )}
             >
-              <div className="text-gray-500 dark:text-neutral-300">
-                {item.Icon}
-              </div>
+              <div className="text-gray-500 dark:text-white">{item.Icon}</div>
               <span className="text-[13px] text-neutral-700 dark:text-neutral-50 dark:font-light">
                 {item.label}
               </span>

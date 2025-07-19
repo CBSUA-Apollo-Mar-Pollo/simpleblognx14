@@ -34,6 +34,7 @@ const StandardPostCard = ({
   const [isWaiting, setIsWaiting] = useState(false);
   const [volume, setVolume] = useState(1);
   const [isVolumeHovered, setIsVolumeHovered] = useState(false);
+  const [toggleVideoButton, setToggleVideoButton] = useState(false);
   const { ref, entry } = useIntersection({
     threshold: 1, // Adjust this value as needed
   });
@@ -217,7 +218,11 @@ const StandardPostCard = ({
       {/* if video render this */}
       {blog.video && (
         <>
-          <div className="bg-neutral-950 relative">
+          <div
+            onMouseLeave={() => setToggleVideoButton(false)}
+            onMouseEnter={() => setToggleVideoButton(true)}
+            className="bg-neutral-950 relative "
+          >
             {isPlaying === false && progress === 0 && (
               <Button
                 onClick={() => togglePlayPause()}
@@ -239,7 +244,7 @@ const StandardPostCard = ({
             >
               <video
                 ref={videoRef}
-                className="object-cover border-0 max-h-[55vh]"
+                className="object-fit border-0 max-h-[60vh] h-[40vh]"
                 playsInline
                 loop
                 crossOrigin="anonymous"
@@ -250,7 +255,7 @@ const StandardPostCard = ({
 
             {/* custom control buttons */}
 
-            {progress !== 0 && (
+            {progress !== 0 && toggleVideoButton === true && (
               <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4 ">
                 <div className="flex items-center">
                   <button
@@ -295,7 +300,7 @@ const StandardPostCard = ({
 
                   <div
                     onMouseEnter={handleVolumeHovered}
-                    className="flex items-center relative"
+                    className="flex items-center relative space-y-2"
                   >
                     {volume === 0 ? (
                       <VolumeX
@@ -304,32 +309,46 @@ const StandardPostCard = ({
                       />
                     ) : (
                       <Volume2
+                        onMouseLeave={handleVolumeUnhovered}
+                        onMouseEnter={handleVolumeHovered}
                         onClick={() => handleClickMute()}
-                        className="text-white h-7 w-7 cursor-pointer"
+                        className="text-white h-7 w-7 cursor-pointer my-1"
                       />
                     )}
 
                     {isVolumeHovered && (
-                      <input
-                        onMouseEnter={handleVolumeHovered}
+                      <div
                         onMouseLeave={handleVolumeUnhovered}
-                        id="volume-slider"
-                        type="range"
-                        value={volume}
-                        min="0"
-                        max="1"
-                        step="0.05"
-                        onChange={handleVolumeChange}
-                        style={{
-                          background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${
-                            volume * 100
-                          }%, #7a7a7a ${volume * 100}%, #7a7a7a 100%)`,
-                        }}
-                        className="transform -rotate-90  cursor-pointer absolute bottom-20 -right-9 rounded-full"
-                      />
+                        onMouseEnter={handleVolumeHovered}
+                        className="transform -rotate-90  cursor-pointer absolute bottom-[8vh] -right-14 rounded-full mx-6"
+                      >
+                        <input
+                          id="volume-slider"
+                          type="range"
+                          value={volume}
+                          min="0"
+                          max="1"
+                          step="0.05"
+                          onChange={handleVolumeChange}
+                          style={{
+                            background: `linear-gradient(to right, #4a90e2 0%, #4a90e2 ${
+                              volume * 100
+                            }%, #7a7a7a ${volume * 100}%, #7a7a7a 100%)`,
+                          }}
+                          className=""
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
+              </div>
+            )}
+            {volume === 0 && toggleVideoButton === false && (
+              <div className="absolute bottom-2 right-4">
+                <VolumeX
+                  onClick={() => handleClickMute()}
+                  className="text-white h-7 w-7 cursor-pointer"
+                />
               </div>
             )}
           </div>

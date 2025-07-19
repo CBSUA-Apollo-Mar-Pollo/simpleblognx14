@@ -36,19 +36,19 @@ const PostDetailPage = async ({ params }) => {
   const dominantColorPost = getDominantColor(post.image[0].url);
 
   return (
-    <div className="bg-neutral-200 w-full h-screen flex justify-center ">
+    <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-screen flex justify-center ">
       <Card className="dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-none md:rounded-xl mt-4 h-fit pb-10 min-w-[40vw] max-w-[40vw]">
         <CardHeader className="pt-2 pb-1 px-0 flex items-center justify-center w-full relative">
           <p className="mt-2.5 font-bold text-xl">{post.author.name}'s post</p>
           <Link
             href="/"
-            className="absolute top-1 right-4 p-2 rounded-full bg-neutral-200 hover:bg-neutral-300"
+            className="absolute top-1 right-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-700  hover:bg-neutral-300 dark:hover:bg-neutral-600"
           >
-            <X className="text-black" />
+            <X className="text-black dark:text-white" />
           </Link>
         </CardHeader>
 
-        <Separator className="mt-4" />
+        <Separator className="mt-4 dark:bg-neutral-700" />
 
         <div className="flex items-center gap-x-1 px-3 mt-2">
           <UserAvatar
@@ -86,8 +86,8 @@ const PostDetailPage = async ({ params }) => {
                     <TooltipTrigger asChild>
                       <Settings className="h-4 w-4 text-gray-600 dark:text-neutral-200" />
                     </TooltipTrigger>
-                    <TooltipContent className="bg-black/85 border-0">
-                      <p className="text-white text-xs p-1 rounded-xl">
+                    <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                      <p className="text-white dark:text-black text-xs p-1 rounded-xl">
                         Only you can see posts in your trash.
                       </p>
                     </TooltipContent>
