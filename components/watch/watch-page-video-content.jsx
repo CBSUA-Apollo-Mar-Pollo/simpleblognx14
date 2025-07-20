@@ -154,7 +154,7 @@ const WatchPageVideoContent = ({
           >
             <video
               ref={videoRef}
-              className="object-cover border-0 min-h-[55vh] max-h-[55vh]"
+              className="object-fit border-0 min-h-[55vh] max-h-[55vh]"
               preload="metadata"
               playsInline
               crossOrigin="anonymous"

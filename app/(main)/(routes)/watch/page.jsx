@@ -31,7 +31,7 @@ const WatchPage = async () => {
       <div className="col-span-2 border-r border-neutral-200 dark:border-neutral-800 relative">
         <WatchPageSideBar />
       </div>
-      <div className="col-span-8 mx-[18vw] mt-5">
+      <div className="col-span-8 pt-5 bg-neutral-200 ">
         <WatchPageVideos initialVideos={videos} session={session} />
       </div>
     </div>

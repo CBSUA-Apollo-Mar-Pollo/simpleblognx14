@@ -1,23 +1,22 @@
 "use client";
 
 import { getDominantColor } from "@/actions/getDominantColor";
-import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
+
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import MultipleImageRender from "../multiple-image-render";
 import {
   Loader2,
-  Maximize,
   Maximize2,
   Pause,
   Play,
-  Settings,
   Volume2,
   VolumeX,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/utils/Icons";
 import { useIntersection } from "@mantine/hooks";
+import Link from "next/link";
 
 const StandardPostCard = ({
   blog,
@@ -294,7 +293,9 @@ const StandardPostCard = ({
                 <div className="flex items-center gap-x-4 pl-4">
                   <Icons.SettingIcon className="h-5 w-5 fill-white" />
 
-                  <Maximize2 className="text-white  h-5 w-5" />
+                  <Link href={`/postComment/${blog.id}/0`}>
+                    <Maximize2 className="text-white  h-5 w-5" />
+                  </Link>
 
                   <Icons.Minimize className="h-7 w-7 fill-white text-white" />
 

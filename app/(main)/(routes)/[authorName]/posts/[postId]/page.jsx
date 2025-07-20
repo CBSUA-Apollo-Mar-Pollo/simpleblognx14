@@ -1,7 +1,6 @@
 import { getDominantColor } from "@/actions/getDominantColor";
 import MultipleImageRender from "@/components/Post/multiple-image-render";
-import PostCardHeader from "@/components/Post/PostCard/PostCardHeader";
-import { Button } from "@/components/ui/Button";
+
 import { Card, CardHeader } from "@/components/ui/Card";
 import { Separator } from "@/components/ui/Separator";
 import {
@@ -10,15 +9,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import UserAvatar from "@/components/utils/UserAvatar";
+import VideoRenderer from "@/components/utils/video-renderer";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatTimeToNow } from "@/lib/utils";
 
-import { Dot, Globe, Settings, X } from "lucide-react";
+import { Dot, Settings, X } from "lucide-react";
 
 import Link from "next/link";
-import React from "react";
 import { UTApi } from "uploadthing/server";
 
 const PostDetailPage = async ({ params }) => {
@@ -33,7 +33,9 @@ const PostDetailPage = async ({ params }) => {
     },
   });
 
-  const dominantColorPost = getDominantColor(post.image[0].url);
+  const dominantColorPost = post?.image?.[0]?.url
+    ? getDominantColor(post.image[0].url)
+    : null;
 
   return (
     <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-screen flex justify-center ">
@@ -101,6 +103,8 @@ const PostDetailPage = async ({ params }) => {
         <div className="px-3 mt-1">
           <p className="">{post.description}</p>
         </div>
+
+        {post.video && <VideoRenderer post={post} />}
 
         {post.image && (
           <MultipleImageRender

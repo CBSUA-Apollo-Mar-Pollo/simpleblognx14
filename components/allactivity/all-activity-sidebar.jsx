@@ -117,7 +117,7 @@ const AllActivitySideBar = () => {
                 className="flex items-center justify-start gap-x-3 mt-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md cursor-pointer w-full py-6"
               >
                 <div className="bg-neutral-200 dark:bg-neutral-800 p-2 rounded-full">
-                  <Archive className="h-5 w-5 text-neutral-200" />
+                  <Archive className="h-5 w-5 dark:text-neutral-200" />
                 </div>
                 <div className="relative flex flex-col gap-0.2">
                   <p className="font-semibold m-0 dark:text-neutral-200">
@@ -130,7 +130,7 @@ const AllActivitySideBar = () => {
                 className="flex items-center justify-start gap-x-3 mt-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md cursor-pointer w-full py-6"
               >
                 <div className="bg-neutral-200 dark:bg-neutral-800 p-2 rounded-full">
-                  <RotateCcw className="h-5 w-5 text-neutral-200" />
+                  <RotateCcw className="h-5 w-5 dark:text-neutral-200" />
                 </div>
                 <div className="relative flex flex-col gap-0.2">
                   <p className="font-semibold m-0 dark:text-neutral-200">

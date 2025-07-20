@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Checkbox } from "../ui/Checkbox";
 import { Archive, Trash2, Undo2, X } from "lucide-react";
 import { Button } from "../ui/Button";
@@ -375,61 +375,17 @@ const TrashPosts = ({ trashPosts }) => {
                   }
                   className="border dark:border-neutral-50 h-5 w-5 mr-4 "
                 />
-                {/* if post is only text */}
-                {post.image === null && (
-                  <div className="flex items-start gap-x-2 w-full">
+
+                <div className="flex items-start gap-x-2 w-full">
+                  {post.image === null && post.video === null && (
                     <UserAvatar
                       className="h-14 w-14 hover:bg-slate-100"
                       user={{
                         image: post?.author?.image || null,
                       }}
                     />
-
-                    <div className="flex-1 flex items-center justify-between">
-                      <div>
-                        <p className="text-[15px] dark:text-neutral-200 ">
-                          {" "}
-                          <span className="font-semibold">
-                            {post?.author?.name}{" "}
-                          </span>
-                          updated his status.
-                        </p>
-                        <p className="text-[13px] dark:text-neutral-200">
-                          {post?.description}
-                        </p>
-                        <div className="flex items-center justify-between gap-x-1 mt-1">
-                          <div className="flex items-center gap-x-2">
-                            <Trash2 className="h-4 w-4 dark:text-neutral-200" />
-                            <span className="text-[13px] dark:text-neutral-200">
-                              {daysLeft} days left
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-end gap-x-2">
-                        <span className="text-[13px] mt-0.5 dark:text-neutral-200">
-                          {trashedTime}
-                        </span>
-                        <Button className="p-2 bg-neutral-200 hover:bg-neutral-300 text-black ">
-                          View
-                        </Button>
-                        <ArchiveOrTrashPostOption
-                          postId={post.id}
-                          postImage={post.image}
-                          handleDeleteSinglePost={handleDeleteSinglePost}
-                          isDeleteModalOpen={isDeleteModalOpen}
-                          setIsDeleteModalOpen={setIsDeleteModalOpen}
-                          handleRestoreSinglePost={handleRestoreSinglePost}
-                          isRestorePostModalOpen={isRestorePostModalOpen}
-                          setIsRestorePostModalOpen={setIsRestorePostModalOpen}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {/* if post is an image or gallery */}
-                {post.image !== null && (
-                  <div className="flex items-start gap-x-2 w-full">
+                  )}
+                  {post.image !== null && (
                     <Image
                       width={80}
                       height={80}
@@ -442,56 +398,94 @@ const TrashPosts = ({ trashPosts }) => {
                       referrerPolicy="no-referrer"
                       className="transition rounded-xl object-contain"
                     />
+                  )}
 
-                    <div className="flex-1 flex items-center justify-between mt-2">
-                      <div>
+                  {post.video !== null && (
+                    <div className="">
+                      <video
+                        src={post.video[0].url}
+                        autoPlay
+                        muted
+                        loop
+                        preload="metadata"
+                        className="object-fit w-28 mt-2 rounded-xl"
+                      />
+                    </div>
+                  )}
+
+                  <div className="flex-1 flex items-center justify-between">
+                    <div>
+                      {post.image === null && post.video === null && (
+                        <p className="text-[15px] dark:text-neutral-200 ">
+                          {" "}
+                          <span className="font-semibold">
+                            {post?.author?.name}{" "}
+                          </span>
+                          updated his status.
+                        </p>
+                      )}
+
+                      {post.image !== null && (
                         <p className="text-[15px] dark:text-neutral-200">
                           {" "}
                           <span className="font-semibold">
                             {post?.author?.name}{" "}
                           </span>
-                          {post.image.length > 1
+                          {post.image !== null && post.image.length > 1
                             ? `added ${post.image.length} new photos.`
                             : "added a new photo."}
                         </p>
-                        <p className="text-[13px] dark:text-neutral-200">
-                          {post.description}
+                      )}
+
+                      {post.video !== null && (
+                        <p className="text-[15px] dark:text-neutral-200 mt-1">
+                          {" "}
+                          <span className="font-semibold">
+                            {post?.author?.name}{" "}
+                          </span>
+                          {post.image !== null && post.image.length > 1
+                            ? `added ${post.image.length} new videos.`
+                            : "added a new video."}
                         </p>
-                        <div className="flex items-center justify-between gap-x-1 mt-1">
-                          <div className="flex items-center gap-x-2">
-                            <Trash2 className="h-4 w-4 dark:text-neutral-200" />
-                            <span className="text-[13px] dark:text-neutral-200">
-                              {daysLeft} days left
-                            </span>
-                          </div>
+                      )}
+
+                      <p className="text-[13px] dark:text-neutral-200">
+                        {post.description}
+                      </p>
+                      <div className="flex items-center justify-between gap-x-1 mt-1">
+                        <div className="flex items-center gap-x-2">
+                          <Trash2 className="h-4 w-4 dark:text-neutral-200" />
+                          <span className="text-[13px] dark:text-neutral-200">
+                            {daysLeft} days left
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-end gap-x-2">
-                        <span className="text-[13px] mt-0.5 dark:text-neutral-200">
-                          {trashedTime}
-                        </span>
-                        <Link
-                          href={`/${post.author.name
-                            .replace(/\s/g, "")
-                            .toLowerCase()}/posts/${post.id}`}
-                          className="p-2 bg-neutral-200 dark:bg-neutral-700 dark:text-white hover:bg-neutral-300 text-black rounded-md "
-                        >
-                          View
-                        </Link>
-                        <ArchiveOrTrashPostOption
-                          postId={post.id}
-                          postImage={post.image}
-                          handleDeleteSinglePost={handleDeleteSinglePost}
-                          isDeleteModalOpen={isDeleteModalOpen}
-                          setIsDeleteModalOpen={setIsDeleteModalOpen}
-                          handleRestoreSinglePost={handleRestoreSinglePost}
-                          isRestorePostModalOpen={isRestorePostModalOpen}
-                          setIsRestorePostModalOpen={setIsRestorePostModalOpen}
-                        />
-                      </div>
+                    </div>
+                    <div className="flex items-end gap-x-2">
+                      <span className="text-[13px] mt-0.5 dark:text-neutral-200">
+                        {trashedTime}
+                      </span>
+                      <Link
+                        href={`/${post.author.name
+                          .replace(/\s/g, "")
+                          .toLowerCase()}/posts/${post.id}`}
+                        className="p-2 bg-neutral-200 dark:bg-neutral-700 dark:text-white hover:bg-neutral-300 text-black rounded-md "
+                      >
+                        View
+                      </Link>
+                      <ArchiveOrTrashPostOption
+                        postId={post.id}
+                        postImage={post.image}
+                        handleDeleteSinglePost={handleDeleteSinglePost}
+                        isDeleteModalOpen={isDeleteModalOpen}
+                        setIsDeleteModalOpen={setIsDeleteModalOpen}
+                        handleRestoreSinglePost={handleRestoreSinglePost}
+                        isRestorePostModalOpen={isRestorePostModalOpen}
+                        setIsRestorePostModalOpen={setIsRestorePostModalOpen}
+                      />
                     </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}

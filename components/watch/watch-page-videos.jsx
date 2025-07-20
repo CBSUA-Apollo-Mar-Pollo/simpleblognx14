@@ -41,7 +41,7 @@ const WatchPageVideos = ({ initialVideos, session }) => {
   const videos = data?.pages?.flatMap((page) => page) ?? initialVideos;
 
   return (
-    <div className="z-2 space-y-3">
+    <div className="z-2 space-y-3 mx-[18vw]">
       <ul className="flex flex-col col-span-2 space-y-3 pb-2">
         {videos.map((blog, index) => {
           const votesAmt = blog?.votes?.reduce((acc, vote) => {
