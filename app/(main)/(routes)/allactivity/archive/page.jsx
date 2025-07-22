@@ -15,7 +15,7 @@ const ArchivePage = () => {
   return (
     <div className="flex">
       <AllActivitySideBar />
-      <div>ArchivePage</div>;
+      <div className="mx-20 w-full">ArchivePage</div>;
     </div>
   );
 };

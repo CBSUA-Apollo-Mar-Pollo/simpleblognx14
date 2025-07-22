@@ -18,7 +18,7 @@ const EmojiPicker = ({ onChange, triggerClassName }) => {
           triggerClassName
         )}
       >
-        <Smile className="text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition" />
+        <Smile className="text-neutral-400 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition" />
       </PopoverTrigger>
 
       <PopoverContent

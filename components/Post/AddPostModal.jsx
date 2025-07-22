@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -21,7 +22,14 @@ import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { AlertCircle, ImagePlus, X } from "lucide-react";
+import {
+  ALargeSmall,
+  AlertCircle,
+  ChevronLeft,
+  ImagePlus,
+  LayoutGrid,
+  X,
+} from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
@@ -38,10 +46,61 @@ const AddPostModal = ({ session, user, communityId }) => {
   const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const [errorMessage, setErrorMessage] = useState("");
+  const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
+    useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [videoPreviews, setVideoPreviews] = useState([]);
+
+  const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
+
+  const gradientBackgroundColors = [
+    {
+      grayToBlack: {
+        from: "#3c4250",
+        to: "#0e1015",
+      },
+      purpleToPink: {
+        from: "#6e2de7",
+        to: "#ff3cd3",
+      },
+      purpleToOrange: {
+        from: "#8e2de2",
+        to: "#f27121",
+      },
+      blueToPurple: {
+        from: "#396afc",
+        to: "#2948ff",
+      },
+      tealToLime: {
+        from: "#1de9b6",
+        to: "#b2ff59",
+      },
+      indigoToCyan: {
+        from: "#4b6cb7",
+        to: "#182848",
+      },
+      redToYellow: {
+        from: "#f12711",
+        to: "#f5af19",
+      },
+      sunset: {
+        from: "#0b486b",
+        to: "#f56217",
+      },
+      skyToPeach: {
+        from: "#00c6ff",
+        to: "#f7797d",
+      },
+      royal: {
+        from: "#141e30",
+        to: "#243b55",
+      },
+    },
+  ];
+
+  const gradients = gradientBackgroundColors[0];
 
   const {
     mutate: createBlog,
@@ -183,6 +242,8 @@ const AddPostModal = ({ session, user, communityId }) => {
     setVideoPreviews([...videoPreviews, ...videoUrls]);
   };
 
+  console.log(gradients);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full ">
@@ -193,11 +254,15 @@ const AddPostModal = ({ session, user, communityId }) => {
           } ?`}
         />
       </DialogTrigger>
-      <DialogContent className="min-w-[39vw] min-h-auto dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className="[&>button]:hidden  min-w-[30vw] min-h-auto  dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
-          <DialogTitle className="text-2xl font-bold text-center">
+          <DialogTitle className="text-xl font-bold text-center">
             Create post
           </DialogTitle>
+
+          <DialogClose asChild>
+            <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
+          </DialogClose>
         </DialogHeader>
         <Separator className="dark:bg-neutral-700 border-1" />
         <div className="grid gap-3 py-1">
@@ -243,8 +308,57 @@ const AddPostModal = ({ session, user, communityId }) => {
                 }?`}
                 className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
               />
+            </div>
+
+            <div className="flex items-center justify-between">
+              {!toggleTextBackgroundColor && (
+                <button
+                  onClick={() => setToggleTextBackgroundColor(true)}
+                  className="bg-gradient-to-br from-pink-500 via-yellow-400 to-green-400 p-1 rounded-md ml-4 border border-white"
+                >
+                  <ALargeSmall className="text-white" />
+                </button>
+              )}
+
+              {toggleTextBackgroundColor && (
+                <div className="ml-3 flex items-center gap-x-2">
+                  <button
+                    onClick={() => setToggleTextBackgroundColor(false)}
+                    className="bg-neutral-300 p-1 rounded-md"
+                  >
+                    <ChevronLeft className="text-neutral-700" />
+                  </button>
+
+                  <button className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400" />
+
+                  {solidBackgroundColors.slice(0, 4).map((color, index) => (
+                    <button
+                      style={{ backgroundColor: color }}
+                      key={index}
+                      className={`h-8 w-8  rounded-md  `}
+                    />
+                  ))}
+
+                  {Object.entries(gradients)
+                    .slice(0, 4)
+                    .map(([colorName, colors]) => (
+                      <button
+                        key={colorName}
+                        style={{
+                          backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                        }}
+                        className={`h-8 w-8  rounded-md  `}
+                      />
+                    ))}
+
+                  <button className="bg-neutral-300 p-1.5 rounded-md">
+                    <LayoutGrid className=" fill-black " />
+                  </button>
+                </div>
+              )}
+
               <EmojiPicker
-                triggerClassName="mr-5 bg-transparent"
+                triggerClassName="mr-2 bg-transparent"
                 onChange={(emoji) => setDescription(description + emoji)}
               />
             </div>

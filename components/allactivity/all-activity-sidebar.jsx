@@ -14,12 +14,13 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "../ui/Button";
 
 const AllActivitySideBar = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [toggleArchive, setToggleArchive] = useState(false);
 
   return (
@@ -113,6 +114,7 @@ const AllActivitySideBar = () => {
           {toggleArchive && (
             <div className="ml-8">
               <Button
+                onClick={() => router.push("/allactivity/archive")}
                 variant="ghost"
                 className="flex items-center justify-start gap-x-3 mt-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md cursor-pointer w-full py-6"
               >

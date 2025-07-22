@@ -14,12 +14,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { trashPost } from "@/actions/trashPost";
 import { useToast } from "@/hooks/use-toast";
 
-const MoveToTrashModal = ({ blog, session }) => {
+const MoveToTrashModal = ({ blog, session, fetchNextPage }) => {
   const queryClient = useQueryClient();
   const handleMoveToTrash = async (postId) => {
-    // (Optional) Call API to mark post as trashed
-    await trashPost(postId, session);
-
     // 🔁 Update cache locally
     queryClient.setQueryData(["get-posts-infinite-query"], (oldData) => {
       if (!oldData) return oldData;
@@ -33,6 +30,12 @@ const MoveToTrashModal = ({ blog, session }) => {
         ),
       };
     });
+
+    // Call server action to mark post as trashed
+    await trashPost(postId, session);
+
+    // fire function below so that post lists will not be stucked
+    fetchNextPage();
   };
 
   return (

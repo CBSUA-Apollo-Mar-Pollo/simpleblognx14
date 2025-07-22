@@ -22,7 +22,7 @@ import { getSharedPost } from "@/actions/getSharedPost";
 import { useQuery } from "@tanstack/react-query";
 import MoveToTrashModal from "./move-to-trash-modal";
 
-const PostOption = ({ blog, deleteImage }) => {
+const PostOption = ({ blog, deleteImage, fetchNextPage }) => {
   const authorId = blog.author.id;
   const authorName = blog.author.name;
   const { data: session } = useSession();
@@ -82,7 +82,11 @@ const PostOption = ({ blog, deleteImage }) => {
               </h6>
             </DropdownMenuItem>
 
-            <MoveToTrashModal blog={blog} session={session} />
+            <MoveToTrashModal
+              blog={blog}
+              session={session}
+              fetchNextPage={fetchNextPage}
+            />
           </>
         )}
 

@@ -13,11 +13,6 @@ import ShortsVPostCard from "../shortsv/shortsv-post-card";
 export default function Posts({ initialPosts, session, deleteImage }) {
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
-  const { ref, entry } = useIntersection({
-    root: null,
-    rootMargin: "0px",
-    threshold: 0.1,
-  });
 
   const fetchPosts = async ({ pageParam }) => {
     const query = `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}`;
@@ -26,14 +21,22 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     return res.json();
   };
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["get-posts-infinite-query"],
-    queryFn: fetchPosts,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) => {
-      return allPages.length + 1;
-    },
-    initialData: { pages: [initialPosts], pageParams: [1] },
+  const { data, fetchNextPage, isFetchingNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["get-posts-infinite-query"],
+      queryFn: fetchPosts,
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages.length + 1;
+      },
+      initialData: { pages: [initialPosts], pageParams: [1] },
+    });
+
+  const { ref, entry } = useIntersection({
+    root: null,
+    rootMargin: "40px",
+    threshold: 0.1,
+    enabled: hasNextPage,
   });
 
   useEffect(() => {
@@ -142,6 +145,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                       deleteImage={deleteImage}
                       votesAmt={votesAmt}
                       currentVote={currentVote}
+                      fetchNextPage={fetchNextPage}
                     />
                     {index === randNumber && <ReelsHomeCard />}
                     <div ref={ref} className="h-1 w-full" />
@@ -158,6 +162,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
                       deleteImage={deleteImage}
                       votesAmt={votesAmt}
                       currentVote={currentVote}
+                      fetchNextPage={fetchNextPage}
                     />
                     <div ref={ref} className="h-1 w-full" />
                   </li>
@@ -173,7 +178,7 @@ export default function Posts({ initialPosts, session, deleteImage }) {
         )}
 
         <li>
-          <div ref={ref} className="h-1 w-full" />
+          <div ref={ref} className="h-10 w-full" />
         </li>
       </ul>
     </div>

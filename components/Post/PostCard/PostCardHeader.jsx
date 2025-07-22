@@ -9,7 +9,7 @@ import PostOption from "../PostOption";
 import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 
-const PostCardHeader = ({ blog, session, deleteImage }) => {
+const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
   const router = useRouter();
   const { signinToast } = useCustomHooks();
 
@@ -118,7 +118,11 @@ const PostCardHeader = ({ blog, session, deleteImage }) => {
       {/* option */}
       {session?.user && (
         <div className="flex items-center gap-x-1 pr-4">
-          <PostOption blog={blog} deleteImage={deleteImage} />
+          <PostOption
+            blog={blog}
+            deleteImage={deleteImage}
+            fetchNextPage={fetchNextPage}
+          />
           {session?.user?.id !== blog.author.id && (
             <X className="hover:bg-neutral-100 dark:hover:bg-neutral-700 py-2 px-2 h-10 w-10 rounded-full cursor-pointer" />
           )}

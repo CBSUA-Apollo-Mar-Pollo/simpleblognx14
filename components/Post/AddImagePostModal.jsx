@@ -2,6 +2,7 @@
 import React, { useContext, useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -231,11 +232,15 @@ const AddGalleryPostModal = ({ session, user, communityId }) => {
           Photo/Video
         </span>
       </DialogTrigger>
-      <DialogContent className=" min-w-[39vw] min-h-auto  dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className="[&>button]:hidden  min-w-[30vw] min-h-auto  dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200 px-2">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-2xl font-bold text-center">
             Create post
           </DialogTitle>
+
+          <DialogClose asChild>
+            <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
+          </DialogClose>
         </DialogHeader>
         <Separator className="dark:bg-neutral-700 border-1" />
         <div className="grid gap-3 py-1">

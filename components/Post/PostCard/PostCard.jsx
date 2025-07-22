@@ -18,7 +18,14 @@ import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
 import { getSharedAmount } from "@/actions/getSharedAmount";
 
-const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
+const PostCard = ({
+  blog,
+  session,
+  deleteImage,
+  votesAmt,
+  currentVote,
+  fetchNextPage,
+}) => {
   const [isVideoPaused, setVideoPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -52,6 +59,7 @@ const PostCard = ({ blog, session, deleteImage, votesAmt, currentVote }) => {
           blog={blog}
           session={session}
           deleteImage={deleteImage}
+          fetchNextPage={fetchNextPage}
         />
       </CardHeader>
 
