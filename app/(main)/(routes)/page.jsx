@@ -14,10 +14,16 @@ import { UTApi } from "uploadthing/server";
 import ChatHomeContactList from "@/components/chat/chat-home-contact-list";
 import PopularCommunities from "@/components/community/popular-communities";
 import Image from "next/image";
-import { Home, Plus } from "lucide-react";
+import { ChevronDown, Home, Plus } from "lucide-react";
 import HomePageStoryCards from "@/components/stories/homepage-story-cards";
 import { Button } from "@/components/ui/Button";
 import { Icons } from "@/components/utils/Icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/Dropdown-menu";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -189,10 +195,43 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
-            
+
               <HomePageStoryCards session={session} />
             </>
           )}
+
+          {!session?.user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-x-1 hover:bg-neutral-200 px-3 py-2 rounded-full">
+                <span className="text-xs font-medium text-neutral-700">
+                  Best
+                </span>
+                <ChevronDown className="h-3 w-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="min-w-[5vw] space-y-2 p-0 pb-2">
+                <div className="px-3 pt-2">
+                  <p className="text-[13px]">Sort by</p>
+                </div>
+                <DropdownMenuItem className="px-3 cursor-pointer">
+                  <span>Best</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="px-3 cursor-pointer">
+                  <span>Hot</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="px-3 cursor-pointer">
+                  <span>New</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="px-3 cursor-pointer">
+                  <span>Top</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="px-3 cursor-pointer">
+                  <span>Rising</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
+          {!session?.user && <Separator className="mb-4 mt-1 bg-neutral-300" />}
 
           {/* all post cards */}
           <Posts

@@ -314,7 +314,7 @@ const AddPostModal = ({ session, user, communityId }) => {
               {!toggleTextBackgroundColor && (
                 <button
                   onClick={() => setToggleTextBackgroundColor(true)}
-                  className="bg-gradient-to-br from-pink-500 via-yellow-400 to-green-400 p-1 rounded-md ml-4 border border-white"
+                  className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
                 >
                   <ALargeSmall className="text-white" />
                 </button>
