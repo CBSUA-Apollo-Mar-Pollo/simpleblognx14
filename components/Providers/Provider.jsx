@@ -12,6 +12,7 @@ import { LoaderContext } from "@/context/LoaderContext";
 import { ThemeProvider } from "next-themes";
 import { ScrollRestoration } from "@tanstack/react-router";
 import { SocketProvider } from "./socket-provider";
+import { TooltipProvider } from "../ui/tooltip";
 
 const Providers = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient());
@@ -34,7 +35,9 @@ const Providers = ({ children }) => {
             {isLoading && (
               <BackgroundLoader loaderDescription={loaderDescription} />
             )}
-            <SessionProvider>{children}</SessionProvider>
+            <SessionProvider>
+              <TooltipProvider>{children}</TooltipProvider>
+            </SessionProvider>
           </LoaderContext.Provider>
         </QueryClientProvider>
       </ThemeProvider>

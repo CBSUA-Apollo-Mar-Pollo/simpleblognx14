@@ -83,18 +83,16 @@ const PostDetailPage = async ({ params }) => {
                   {formatTimeToNow(new Date(post?.createdAt))}
                 </p>
                 <Dot className="-mx-1 text-gray-600 dark:text-neutral-200" />
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Settings className="h-4 w-4 text-gray-600 dark:text-neutral-200" />
-                    </TooltipTrigger>
-                    <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
-                      <p className="text-white dark:text-black text-xs p-1 rounded-xl">
-                        Only you can see posts in your trash.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Settings className="h-4 w-4 text-gray-600 dark:text-neutral-200" />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                    <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                      Only you can see posts in your trash.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
               </div>
             </div>
           </div>

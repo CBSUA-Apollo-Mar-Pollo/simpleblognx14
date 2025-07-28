@@ -121,7 +121,7 @@ const HomePageStoryCards = ({ session }) => {
           className="relative bg-white border dark:border-0 xl:rounded-2xl rounded-xl  dark:bg-neutral-800 xl:drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
         >
           {/* create story */}
-          <div className="relative md:w-40 md:h-48 w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+          <div className="relative md:w-32 md:h-40 w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
             <Image
               sizes="100vw"
               width={0}
@@ -132,11 +132,11 @@ const HomePageStoryCards = ({ session }) => {
             />
           </div>
 
-          <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <Plus className="bg-blue-700 text-white h-10 w-10 rounded-full border-4 dark:border-neutral-800" />
           </div>
 
-          <div className="pt-8 pb-2 border-t dark:border-neutral-700">
+          <div className="pt-4 pb-2 border-t dark:border-neutral-700">
             <p className="text-[14px] font-semibold text-center xl:dark:text-white  ">
               Create story
             </p>
@@ -162,7 +162,7 @@ const HomePageStoryCards = ({ session }) => {
                 className="relative border dark:border-0 rounded-2xl  dark:bg-neutral-800 drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
               >
                 {/* Wrapper for image with overflow hidden to clip any zoomed-out content */}
-                <div className="relative md:w-40 md:h-[29.5vh] w-40 h-40 overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
+                <div className="relative md:w-32 md:h-52 w-40 h-40 overflow-hidden rounded-2xl bg-white dark:bg-neutral-900">
                   <div className="absolute top-3 left-2 z-10">
                     <UserAvatar
                       className="h-10 w-10 border-[3px] border-blue-600"

@@ -28,6 +28,7 @@ import {
   ChevronLeft,
   ImagePlus,
   LayoutGrid,
+  Triangle,
   X,
 } from "lucide-react";
 import { UploadDropzone } from "@uploadthing/react";
@@ -36,6 +37,8 @@ import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
+import { Icons } from "../utils/Icons";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 const AddPostModal = ({ session, user, communityId }) => {
   const [title, setTitle] = useState("");
@@ -52,6 +55,7 @@ const AddPostModal = ({ session, user, communityId }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [videoPreviews, setVideoPreviews] = useState([]);
+  const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
 
   const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
 
@@ -68,14 +72,6 @@ const AddPostModal = ({ session, user, communityId }) => {
       purpleToOrange: {
         from: "#8e2de2",
         to: "#f27121",
-      },
-      blueToPurple: {
-        from: "#396afc",
-        to: "#2948ff",
-      },
-      tealToLime: {
-        from: "#1de9b6",
-        to: "#b2ff59",
       },
       indigoToCyan: {
         from: "#4b6cb7",
@@ -242,7 +238,7 @@ const AddPostModal = ({ session, user, communityId }) => {
     setVideoPreviews([...videoPreviews, ...videoUrls]);
   };
 
-  console.log(gradients);
+  console.log(selectedBackgroundColor);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -254,7 +250,7 @@ const AddPostModal = ({ session, user, communityId }) => {
           } ?`}
         />
       </DialogTrigger>
-      <DialogContent className="[&>button]:hidden  min-w-[30vw] min-h-auto  dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 px-2">
+      <DialogContent className="[&>button]:hidden  min-w-[30vw] min-h-auto  dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 ">
         <DialogHeader className="pt-4 px-4">
           <DialogTitle className="text-xl font-bold text-center">
             Create post
@@ -275,29 +271,32 @@ const AddPostModal = ({ session, user, communityId }) => {
               }}
             />
             <div className="space-y-1">
-              <p className="font-semibold text-gray-700 text-base pl-1 dark:text-neutral-200">
+              <p className="font-semibold text-sm pl-1 dark:text-neutral-200">
                 {session?.user.name || user?.name}
               </p>
-              <Select>
-                <SelectTrigger className="h-6 w-24 font-medium text-sm focus:ring-0 dark:bg-neutral-600 dark:border-0">
-                  <SelectValue
-                    placeholder="Public"
-                    className="font-semibold "
-                  />
-                </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-neutral-800 dark:border-0 border w-[110px] rounded">
-                  <SelectItem
-                    value="Private"
-                    className="cursor-pointer font-medium "
-                  >
-                    Private
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              <button className="flex items-center gap-x-1 bg-neutral-200 px-2 py-0.5 rounded-lg">
+                <Icons.earthIcon className="h-3.5 w-3.5" />
+                <span className="text-[13px] font-medium">Public</span>
+                <Triangle className="rotate-180 h-2 w-2 fill-neutral-800 mb-[1px] ml-1" />
+              </button>
             </div>
           </div>
           <div className="grid items-center  max-h-[60vh] overflow-auto">
-            <div className="flex items-center">
+            <div
+              style={{
+                backgroundColor:
+                  selectedBackgroundColor?.backgroundColorType === "solid" &&
+                  selectedBackgroundColor?.color,
+                backgroundImage:
+                  selectedBackgroundColor?.backgroundColorType === "gradient"
+                    ? `linear-gradient(to bottom right, ${selectedBackgroundColor?.color.from}, ${selectedBackgroundColor?.color.to})`
+                    : `url('${selectedBackgroundColor?.color}') `,
+                color: selectedBackgroundColor ? "white" : "black",
+              }}
+              className={`${
+                selectedBackgroundColor && "h-[40vh]"
+              } flex items-center justify-center `}
+            >
               <Textarea
                 id="desc"
                 value={description}
@@ -306,11 +305,19 @@ const AddPostModal = ({ session, user, communityId }) => {
                 placeholder={`What's on your mind, ${
                   session?.user.name.split(" ")[0] || user?.name.split(" ")[0]
                 }?`}
-                className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
+                className={`dark:bg-neutral-800 bg-transparent  dark:placeholder-neutral-300 ${
+                  selectedBackgroundColor
+                    ? "text-center text-2xl font-bold"
+                    : "text-xl"
+                } ${
+                  selectedBackgroundColor !== null
+                    ? "placeholder:text-white "
+                    : "placeholder:text-black"
+                } focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10  border-none resize-none px-4 `}
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pt-2">
               {!toggleTextBackgroundColor && (
                 <button
                   onClick={() => setToggleTextBackgroundColor(true)}
@@ -329,10 +336,19 @@ const AddPostModal = ({ session, user, communityId }) => {
                     <ChevronLeft className="text-neutral-700" />
                   </button>
 
-                  <button className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400" />
+                  <button
+                    onClick={() => setSelectedBackgroundColor(null)}
+                    className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
+                  />
 
                   {solidBackgroundColors.slice(0, 4).map((color, index) => (
                     <button
+                      onClick={() =>
+                        setSelectedBackgroundColor({
+                          backgroundColorType: "solid",
+                          color: color,
+                        })
+                      }
                       style={{ backgroundColor: color }}
                       key={index}
                       className={`h-8 w-8  rounded-md  `}
@@ -343,6 +359,12 @@ const AddPostModal = ({ session, user, communityId }) => {
                     .slice(0, 4)
                     .map(([colorName, colors]) => (
                       <button
+                        onClick={() =>
+                          setSelectedBackgroundColor({
+                            backgroundColorType: "gradient",
+                            color: colors,
+                          })
+                        }
                         key={colorName}
                         style={{
                           backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
@@ -350,6 +372,21 @@ const AddPostModal = ({ session, user, communityId }) => {
                         className={`h-8 w-8  rounded-md  `}
                       />
                     ))}
+
+                  <button
+                    onClick={() =>
+                      setSelectedBackgroundColor({
+                        backgroundColorType: "image",
+                        color:
+                          "/abstract_background_image/19965192_6193255.jpg",
+                      })
+                    }
+                  >
+                    <img
+                      src="/abstract_background_image/19965192_6193255.jpg"
+                      className="h-8 w-8 object-fill rounded-md"
+                    />
+                  </button>
 
                   <button className="bg-neutral-300 p-1.5 rounded-md">
                     <LayoutGrid className=" fill-black " />
@@ -453,18 +490,86 @@ const AddPostModal = ({ session, user, communityId }) => {
             <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
               Add to your post
             </h1>
-            <div>
-              <ToolTipComp content="Add Photo/Video">
-                <Button
-                  variant="ghost"
-                  className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                  onClick={() =>
-                    setToggleImageUpload((prevState) => !prevState)
-                  }
-                >
-                  <ImagePlus className="text-green-600 " />
-                </Button>
-              </ToolTipComp>
+            <div className="flex items-center">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                    onClick={() =>
+                      setToggleImageUpload((prevState) => !prevState)
+                    }
+                  >
+                    <ImagePlus className="text-green-600 h-6 w-6" />
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                  <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                    Photo/video
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                    onClick={() =>
+                      setToggleImageUpload((prevState) => !prevState)
+                    }
+                  >
+                    <Icons.friendTagIcon className="fill-blue-600 h-7 w-7" />
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                  <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                    Tag people
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hover:bg-gray-100 p-0 rounded-full cursor-pointer focus:ring-0"
+                    onClick={() =>
+                      setToggleImageUpload((prevState) => !prevState)
+                    }
+                  >
+                    <Icons.smileEmoteIcon className="fill-yellow-600 h-9 w-9" />
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                  <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                    Feeling/Activity
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="hover:bg-gray-100 p-1 rounded-full cursor-pointer focus:ring-0"
+                    onClick={() =>
+                      setToggleImageUpload((prevState) => !prevState)
+                    }
+                  >
+                    <Icons.GifIcon className="fill-cyan-600 h-9 w-9" />
+                  </Button>
+                </TooltipTrigger>
+
+                <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                  <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                    GIF
+                  </p>
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
         </div>
