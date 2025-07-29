@@ -15,6 +15,7 @@ export async function POST(req) {
     const body = await req.json();
     const {
       description = "",
+      selectedBackgroundColor = null,
       userStatus,
       images = [],
       videos = [],
@@ -42,6 +43,7 @@ export async function POST(req) {
       await db.blog.create({
         data: {
           description,
+          textBackgroundStyle: selectedBackgroundColor,
           authorId: session.user.id,
         },
       });

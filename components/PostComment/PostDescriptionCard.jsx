@@ -234,16 +234,40 @@ const PostDescriptionCard = ({
                     {formatTimeToNow(new Date(blog?.createdAt))}
                   </p>
                   <Dot className="-mx-1 text-neutral-800 dark:text-neutral-50" />
-                  <Globe className="h-3 w-3 text-neutral-800 dark:text-neutral-50 " />
+                  <Icons.earthIcon className="h-3 w-3 text-neutral-800 dark:text-neutral-50 " />
                 </div>
               </div>
             </div>
 
             {/* post description */}
             {blog.description && (
-              <p className="px-6 py-2 text-justify text-base leading-relaxed mb-1 font-normal text-neutral-800 dark:text-neutral-50">
-                {blog.description}
-              </p>
+              <div
+                style={{
+                  backgroundColor:
+                    blog?.textBackgroundStyle?.backgroundColorType ===
+                      "solid" && blog?.textBackgroundStyle?.color,
+                  backgroundImage:
+                    blog?.textBackgroundStyle?.backgroundColorType ===
+                    "gradient"
+                      ? `linear-gradient(to bottom right, ${blog?.textBackgroundStyle?.color.from}, ${blog?.textBackgroundStyle?.color.to})`
+                      : `url('${blog?.textBackgroundStyle?.color}') `,
+                  color: blog?.textBackgroundStyle ? "white" : "black",
+                }}
+                className={`${
+                  blog?.textBackgroundStyle &&
+                  "h-[50vh] flex items-center justify-center"
+                }  `}
+              >
+                <p
+                  className={`${
+                    blog?.textBackgroundStyle
+                      ? "text-2xl font-bold"
+                      : "text-[15px] "
+                  }  px-5 text-justify leading-snug font-[12px] py-1`}
+                >
+                  {blog.description}
+                </p>
+              </div>
             )}
 
             {blog.image && (
@@ -283,7 +307,6 @@ const PostDescriptionCard = ({
                 </div>
 
                 {/* custom control buttons */}
-
                 {progress !== 0 && (
                   <div className="flex items-center space-x-2 absolute bottom-2  w-full px-4 ">
                     <div className="flex items-center">
@@ -377,7 +400,7 @@ const PostDescriptionCard = ({
                               {formatTimeToNow(new Date(sharedPost?.createdAt))}
                             </p>
                             <Dot className="-mx-1 text-gray-600 dark:text-white" />
-                            <Globe className="h-3 w-3 text-gray-600 dark:text-white" />
+                            <Icons.earthIcon className="h-3 w-3 text-gray-600 dark:text-white" />
                           </div>
                         </div>
                       </div>

@@ -200,9 +200,30 @@ const StandardPostCard = ({
   return (
     <div>
       {blog.description && (
-        <p className="px-5 text-justify leading-snug text-[15px] font-[12px] py-1">
-          {blog.description}
-        </p>
+        <div
+          style={{
+            backgroundColor:
+              blog?.textBackgroundStyle?.backgroundColorType === "solid" &&
+              blog?.textBackgroundStyle?.color,
+            backgroundImage:
+              blog?.textBackgroundStyle?.backgroundColorType === "gradient"
+                ? `linear-gradient(to bottom right, ${blog?.textBackgroundStyle?.color.from}, ${blog?.textBackgroundStyle?.color.to})`
+                : `url('${blog?.textBackgroundStyle?.color}') `,
+            color: blog?.textBackgroundStyle ? "white" : "black",
+          }}
+          className={`${
+            blog?.textBackgroundStyle &&
+            "h-[40vh] flex items-center justify-center"
+          }  `}
+        >
+          <p
+            className={`${
+              blog?.textBackgroundStyle ? "text-2xl font-bold" : "text-[15px] "
+            }  px-5 text-justify leading-snug font-[12px] py-1`}
+          >
+            {blog.description}
+          </p>
+        </div>
       )}
 
       {/* if image render this  */}

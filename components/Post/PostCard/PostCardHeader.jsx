@@ -8,6 +8,7 @@ import React from "react";
 import PostOption from "../PostOption";
 import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
+import { Icons } from "@/components/utils/Icons";
 
 const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
   const router = useRouter();
@@ -68,7 +69,7 @@ const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
                     {formatTimeToNow(new Date(blog?.createdAt))}
                   </p>
                   <Dot className="-mx-1 text-gray-600 dark:text-neutral-200" />
-                  <Globe className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
+                  <Icons.earthIcon className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
                 </div>
               </div>
             </div>
@@ -107,7 +108,7 @@ const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
                     {formatTimeToNow(new Date(blog?.createdAt))}
                   </p>
                   <Dot className="-mx-1 text-gray-600 dark:text-neutral-200" />
-                  <Globe className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
+                  <Icons.earthIcon className="h-3 w-3 text-gray-600 dark:text-neutral-200" />
                 </div>
               </div>
             </div>

@@ -78,13 +78,14 @@ model User {
 }
 
 model Blog {
-  id          String   @id @default(cuid())
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  image       Json?
-  video       Json?
-  userStatus  String?
+  id                  String   @id @default(cuid())
+  description         String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  image               Json?
+  video               Json?
+  userStatus          String?
+  textBackgroundStyle Json?
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String
@@ -92,7 +93,7 @@ model Blog {
   sharedPostId String?
   trashed      Boolean   @default(false)
   trashedAt    DateTime?
-  
+
   comments    Comment[]
   RecentPosts RecentPosts[]
   community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)

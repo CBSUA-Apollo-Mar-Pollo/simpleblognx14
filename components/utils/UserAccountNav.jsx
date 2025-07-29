@@ -24,7 +24,7 @@ const UserAccountNav = ({ user }) => {
           className="h-10 w-10 "
           user={{ name: user.name || null, image: user?.image || null }}
         />
-        <ChevronDown className="absolute bottom-0 right-0 text-white bg-neutral-800 dark:bg-neutral-600 dark:border dark:border-neutral-900 h-3 w-3 rounded-full" />
+        <ChevronDown className="absolute bottom-0 right-0 text-black bg-neutral-100 dark:bg-neutral-600 dark:text-white dark:border dark:border-neutral-900 h-3 w-3 rounded-full" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
