@@ -19,7 +19,18 @@ import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
 import { SelectContent } from "@radix-ui/react-select";
-import { Dot, Globe, ImagePlus, Pen, Pencil, Play, X } from "lucide-react";
+import {
+  ALargeSmall,
+  ChevronLeft,
+  Dot,
+  Globe,
+  ImagePlus,
+  LayoutGrid,
+  Pen,
+  Pencil,
+  Play,
+  X,
+} from "lucide-react";
 import { LoaderContext } from "@/context/LoaderContext";
 import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
@@ -41,6 +52,49 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
+    useState(false);
+  const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
+  const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
+
+  const gradientBackgroundColors = [
+    {
+      grayToBlack: {
+        from: "#3c4250",
+        to: "#0e1015",
+      },
+      purpleToPink: {
+        from: "#6e2de7",
+        to: "#ff3cd3",
+      },
+      purpleToOrange: {
+        from: "#8e2de2",
+        to: "#f27121",
+      },
+      indigoToCyan: {
+        from: "#4b6cb7",
+        to: "#182848",
+      },
+      redToYellow: {
+        from: "#f12711",
+        to: "#f5af19",
+      },
+      sunset: {
+        from: "#0b486b",
+        to: "#f56217",
+      },
+      skyToPeach: {
+        from: "#00c6ff",
+        to: "#f7797d",
+      },
+      royal: {
+        from: "#141e30",
+        to: "#243b55",
+      },
+    },
+  ];
+
+  const gradients = gradientBackgroundColors[0];
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(
@@ -261,23 +315,130 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                   </Select>
                 </div>
               </div>
-              <div className="grid items-center ">
-                <div className="flex items-center">
-                  <Textarea
-                    id="desc"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={1}
-                    placeholder={`What's on your mind, ${
-                      session?.user.name.split(" ")[0]
-                    }?`}
-                    className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
-                  />
+              <div className="grid items-center my-2">
+                <div
+                  className={`${
+                    blog?.textBackgroundStyle
+                      ? "flex flex-col"
+                      : "flex justify-between items-center"
+                  }`}
+                >
+                  <div
+                    className={`${
+                      blog?.textBackgroundStyle &&
+                      "h-[40vh] flex items-center justify-center"
+                    } ${!blog?.textBackgroundStyle && "w-full"}`}
+                    style={{
+                      backgroundColor:
+                        blog?.textBackgroundStyle?.backgroundColorType ===
+                          "solid" && blog?.textBackgroundStyle?.color,
+                      backgroundImage:
+                        blog?.textBackgroundStyle?.backgroundColorType ===
+                        "gradient"
+                          ? `linear-gradient(to bottom right, ${blog?.textBackgroundStyle?.color.from}, ${blog?.textBackgroundStyle?.color.to})`
+                          : `url('${blog?.textBackgroundStyle?.color}') `,
+                      color: blog?.textBackgroundStyle ? "white" : "black",
+                    }}
+                  >
+                    <Textarea
+                      id="desc"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      rows={1}
+                      placeholder={`What's on your mind, ${
+                        session?.user.name.split(" ")[0]
+                      }?`}
+                      className={` bg-transparent ${
+                        blog?.textBackgroundStyle
+                          ? "text-center text-2xl font-bold "
+                          : "text-xl"
+                      }  dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 border-none resize-none px-4`}
+                    />
+                  </div>
 
-                  <EmojiPicker
-                    triggerClassName="mr-5 bg-transparent"
-                    onChange={(emoji) => setDescription(description + emoji)}
-                  />
+                  <div className="flex justify-between my-2">
+                    {!toggleTextBackgroundColor &&
+                      blog?.textBackgroundStyle && (
+                        <button
+                          onClick={() => setToggleTextBackgroundColor(true)}
+                          className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
+                        >
+                          <ALargeSmall className="text-white" />
+                        </button>
+                      )}
+                    {toggleTextBackgroundColor && (
+                      <div className="ml-3 flex items-center gap-x-2">
+                        <button
+                          onClick={() => setToggleTextBackgroundColor(false)}
+                          className="bg-neutral-300 p-1 rounded-md"
+                        >
+                          <ChevronLeft className="text-neutral-700" />
+                        </button>
+
+                        <button
+                          onClick={() => setSelectedBackgroundColor(null)}
+                          className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
+                        />
+
+                        {solidBackgroundColors
+                          .slice(0, 4)
+                          .map((color, index) => (
+                            <button
+                              onClick={() =>
+                                setSelectedBackgroundColor({
+                                  backgroundColorType: "solid",
+                                  color: color,
+                                })
+                              }
+                              style={{ backgroundColor: color }}
+                              key={index}
+                              className={`h-8 w-8  rounded-md  `}
+                            />
+                          ))}
+
+                        {Object.entries(gradients)
+                          .slice(0, 4)
+                          .map(([colorName, colors]) => (
+                            <button
+                              onClick={() =>
+                                setSelectedBackgroundColor({
+                                  backgroundColorType: "gradient",
+                                  color: colors,
+                                })
+                              }
+                              key={colorName}
+                              style={{
+                                backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                              }}
+                              className={`h-8 w-8  rounded-md  `}
+                            />
+                          ))}
+
+                        <button
+                          onClick={() =>
+                            setSelectedBackgroundColor({
+                              backgroundColorType: "image",
+                              color:
+                                "/abstract_background_image/19965192_6193255.jpg",
+                            })
+                          }
+                        >
+                          <img
+                            src="/abstract_background_image/19965192_6193255.jpg"
+                            className="h-8 w-8 object-fill rounded-md"
+                          />
+                        </button>
+
+                        <button className="bg-neutral-300 p-1.5 rounded-md">
+                          <LayoutGrid className=" fill-black " />
+                        </button>
+                      </div>
+                    )}
+                    <EmojiPicker
+                      triggerClassName="mr-5 bg-transparent"
+                      onChange={(emoji) => setDescription(description + emoji)}
+                    />
+                  </div>
                 </div>
 
                 {/* shared post content */}
@@ -337,7 +498,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                   <div
                     onMouseEnter={handleMouseHover}
                     onMouseLeave={handleMouseLeave}
-                    className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4"
+                    className="flex items-center justify-center w-auto"
                   >
                     {/* Image upload UI */}
 
@@ -531,38 +692,40 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                       </div>
                     ) : (
                       <>
-                        <div
-                          className="py-16 hover:bg-neutral-200 dark:hover:bg-neutral-600 w-full cursor-pointer"
-                          onDrop={handleFileDrop}
-                          onDragOver={handleDragOver}
-                          onClick={() =>
-                            document.getElementById("fileInput").click()
-                          }
-                        >
-                          <div className="space-y-2">
-                            <div className="flex justify-center">
-                              <div className="dark:bg-neutral-700 py-2 px-2 rounded-full">
-                                <ImagePlus className="h-7 w-7" />
+                        {!blog?.textBackgroundStyle && (
+                          <div
+                            className="py-16 hover:bg-neutral-200 dark:hover:bg-neutral-600 w-full cursor-pointer  border  border-gray-300 dark:border-neutral-700 rounded-md  relative my-2 mx-4"
+                            onDrop={handleFileDrop}
+                            onDragOver={handleDragOver}
+                            onClick={() =>
+                              document.getElementById("fileInput").click()
+                            }
+                          >
+                            <div className="space-y-2">
+                              <div className="flex justify-center">
+                                <div className="dark:bg-neutral-700 py-2 px-2 rounded-full">
+                                  <ImagePlus className="h-7 w-7" />
+                                </div>
+                              </div>
+                              <div className="flex flex-col items-center">
+                                <p className="text-center font-medium text-[17px] dark:text-neutral-100">
+                                  Add Photos/Videos
+                                </p>
+                                <span className="text-xs dark:text-neutral-400">
+                                  or drag and drop
+                                </span>
                               </div>
                             </div>
-                            <div className="flex flex-col items-center">
-                              <p className="text-center font-medium text-[17px] dark:text-neutral-100">
-                                Add Photos/Videos
-                              </p>
-                              <span className="text-xs dark:text-neutral-400">
-                                or drag and drop
-                              </span>
-                            </div>
+                            <input
+                              id="fileInput"
+                              type="file"
+                              multiple
+                              className="hidden"
+                              accept="image/*, video/*"
+                              onChange={handleFileSelect}
+                            />
                           </div>
-                          <input
-                            id="fileInput"
-                            type="file"
-                            multiple
-                            className="hidden"
-                            accept="image/*, video/*"
-                            onChange={handleFileSelect}
-                          />
-                        </div>
+                        )}
                       </>
                     )}
                   </div>
