@@ -3,6 +3,7 @@ import AddPostModal from "@/components/Post/AddPostModal";
 import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
+import StickDiv from "@/components/UserProfile/sticky_div";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
@@ -90,14 +91,16 @@ const UserProfilePage = async ({ params }) => {
   };
 
   return (
-    <div>
+    <div className="relative">
       {/* user profile page header */}
       <ProfileBanner user={user} deleteImage={deleteImage} />
 
+      <StickDiv user={user} />
+
       {/* content */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-200 px-60 pt-5 gap-x-2 dark:bg-neutral-900">
+      <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
-          <div className="sticky top-[4.5rem]">
+          <div className="sticky top-[8rem]">
             <UserBio user={user} session={session} />
           </div>
         </div>

@@ -130,7 +130,7 @@ const SearchInput = () => {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-[24vw] mr-20 py-3 px-2 dark:bg-neutral-800 dark:border-0 -mt-14">
+      <DropdownMenuContent className="xl:min-w-[20vw] 2xl:min-w-[24vw] mr-20 py-3 px-2 dark:bg-neutral-800 dark:border-0 -mt-14">
         <DropdownMenuLabel className="flex items-center">
           <Button
             onClick={() => setActive(false)}

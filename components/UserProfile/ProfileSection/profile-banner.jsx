@@ -17,6 +17,7 @@ import {
   Loader2,
   MessageCircleMore,
   Pencil,
+  Plus,
   UserCheck,
   UserPlus,
   UserX,
@@ -120,7 +121,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
 
   return (
     <div
-      className="relative "
+      className=" "
       style={{
         backgroundImage:
           resolvedTheme === "light"
@@ -154,7 +155,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
         </div>
       )}
 
-      <div className="mx-52 ">
+      <div className="xl:mx-40 2xl:mx-52">
         <div className="">
           <BackgroundImage
             imageUrl={imageUrl}
@@ -169,8 +170,8 @@ const ProfileBanner = ({ user, deleteImage }) => {
             </div>
 
             <div className="-mt-4 w-full relative flex justify-between z-10 col-span-8">
-              <div className="ml-2">
-                <h1 className="font-extrabold text-4xl dark:text-white">
+              <div className="xl:ml-8 2xl:ml-2">
+                <h1 className="font-bold text-3xl dark:text-white">
                   {formattedName}
                 </h1>
                 <span className="text-base font-medium dark:text-white">
@@ -179,7 +180,13 @@ const ProfileBanner = ({ user, deleteImage }) => {
               </div>
 
               {session?.user.id === user.id ? (
-                <div className="mr-5">
+                <div className="mr-5 flex items-center gap-x-2">
+                  <Button className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+                    <span className="pr-2">
+                      <Plus className=" text-white h-5 w-5" />
+                    </span>
+                    <span className="text-white">Add to story</span>
+                  </Button>
                   <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
                     <span className="pr-2">
                       <Pencil className="fill-black stroke-transparent  h-4 w-4" />
@@ -242,10 +249,6 @@ const ProfileBanner = ({ user, deleteImage }) => {
         </div>
 
         <Separator className="mt-7 bg-neutral-300 dark:bg-neutral-700" />
-
-        <div className="mr-10">
-          <ProfileButtons userId={user.id} />
-        </div>
       </div>
     </div>
   );
