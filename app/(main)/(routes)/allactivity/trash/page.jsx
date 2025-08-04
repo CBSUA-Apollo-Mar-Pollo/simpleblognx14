@@ -30,6 +30,23 @@ const TrashPage = async () => {
     },
   });
 
+  const now = new Date();
+  const expiredPosts = trashPosts.filter((post) => {
+    const trashedAt = new Date(post.trashedAt);
+    const diffDays = (now - trashedAt) / (1000 * 60 * 60 * 24);
+    return diffDays > 30;
+  });
+
+  const expiredPostIds = expiredPosts.map((post) => post.id);
+
+  await db.blog.deleteMany({
+    where: {
+      id: {
+        in: expiredPostIds,
+      },
+    },
+  });
+
   return (
     <div className="flex">
       <AllActivitySideBar />

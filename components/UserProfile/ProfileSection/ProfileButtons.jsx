@@ -99,7 +99,7 @@ const ProfileButtons = ({ userId }) => {
           <DropdownMenuContent
             side="bottom"
             sideOffset={8}
-            className="p-0 min-w-[25vw] rounded-lg"
+            className="p-0  xl:min-w-[15vw]  rounded-lg"
           >
             {session?.user.id === userId ? (
               <div className="  space-y-0.5    dark:bg-neutral-800 p-3">
