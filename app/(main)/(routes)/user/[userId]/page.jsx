@@ -91,11 +91,11 @@ const UserProfilePage = async ({ params }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative h-full">
       {/* user profile page header */}
       <ProfileBanner user={user} deleteImage={deleteImage} />
 
-      <StickDiv user={user} />
+      <StickDiv user={user} session={session} />
 
       {/* content */}
       <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">

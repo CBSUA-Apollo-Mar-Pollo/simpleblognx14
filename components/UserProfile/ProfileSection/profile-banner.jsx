@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { checkIfIsAFriend } from "@/actions/checkIfIsAFriend";
 import ProfilePic from "./profile-pic";
+import Link from "next/link";
 
 const ProfileBanner = ({ user, deleteImage }) => {
   const { data: session } = useSession();
@@ -181,12 +182,15 @@ const ProfileBanner = ({ user, deleteImage }) => {
 
               {session?.user.id === user.id ? (
                 <div className="mr-5 flex items-center gap-x-2">
-                  <Button className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+                  <Link
+                    href="/stories/create"
+                    className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 py-2 flex items-center rounded-md"
+                  >
                     <span className="pr-2">
                       <Plus className=" text-white h-5 w-5" />
                     </span>
-                    <span className="text-white">Add to story</span>
-                  </Button>
+                    <span className="text-white text-sm">Add to story</span>
+                  </Link>
                   <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
                     <span className="pr-2">
                       <Pencil className="fill-black stroke-transparent  h-4 w-4" />

@@ -2,47 +2,167 @@
 
 import { useState, useEffect, useRef } from "react";
 import ProfileButtons from "./ProfileSection/ProfileButtons";
+import UserAvatar from "../utils/UserAvatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/Dropdown-menu";
+import {
+  Archive,
+  BadgeCheck,
+  Eye,
+  History,
+  List,
+  Lock,
+  MoreHorizontal,
+  PlusCircle,
+  Search,
+  Shield,
+  Trash2,
+  Triangle,
+  UserCog,
+} from "lucide-react";
 
-const StickDiv = ({ user }) => {
-  function useSticky() {
-    const ref = useRef();
-
+const StickDiv = ({ user, session }) => {
+  const useDetectSticky = (ref, observerSettings = { threshold: [1] }) => {
     const [isSticky, setIsSticky] = useState(false);
+    const newRef = useRef();
+    ref ||= newRef;
 
+    // mount
     useEffect(() => {
-      if (!ref.current) {
-        return;
-      }
+      const cachedRef = ref.current,
+        observer = new IntersectionObserver(
+          ([e]) => setIsSticky(e.intersectionRatio < 1),
+          observerSettings
+        );
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          setIsSticky(entry.intersectionRatio < 1); // Trigger when the element is not fully visible
-        },
-        {
-          threshold: [0], // This will trigger the callback as soon as any part of the element is out of view
-          rootMargin: "-1px 0px 0px 0px", // Adjust this as necessary to trigger the effect earlier
-        }
-      );
+      observer.observe(cachedRef);
 
-      observer.observe(ref.current);
-
-      return () => observer.disconnect();
+      // unmount
+      return () => {
+        observer.unobserve(cachedRef);
+      };
     }, []);
 
-    return { ref, isSticky };
-  }
+    return [isSticky, ref, setIsSticky];
+  };
 
-  const { ref, isSticky } = useSticky();
+  const [isSticky, ref, setIsSticky] = useDetectSticky();
 
-  console.log(isSticky); // See if the state updates when you scroll
+  console.log(user);
 
   return (
     <div
       ref={ref}
-      className={`sticky top-[3.5rem] z-20 ${isSticky ? "hidden" : ""}`}
+      className={`sticky top-[-1px] z-20  pr-[14vw] bg-white w-full`}
     >
-      <div className="pr-[14vw] bg-white w-full">
-        <ProfileButtons userId={user.id} />
+      <ProfileButtons userId={user.id} />
+
+      <div
+        className={`${
+          isSticky ? "block" : "hidden"
+        } py-3 flex items-center justify-between`}
+      >
+        <div className="flex items-center gap-x-3  pl-[14vw]">
+          <UserAvatar
+            className="h-10 w-10 "
+            user={{
+              name: user.name || null,
+              image: user.image || null,
+            }}
+          />
+          <p className="font-semibold">{user.name}</p>
+        </div>
+
+        <div className="ml-2">
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger className="bg-neutral-200 rounded-md mt-1 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-600 ">
+              <div className="px-2 py-1">
+                <MoreHorizontal className="" />
+              </div>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent
+              side="bottom"
+              sideOffset={8}
+              className="p-0  xl:min-w-[15vw]  rounded-lg"
+            >
+              {session?.user.id === user.id ? (
+                <div className="  space-y-0.5    dark:bg-neutral-800 p-3">
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <Eye className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">View As</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <Search className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Search</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <Shield className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Profile Status</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => router.push("/allactivity/archive")}
+                    className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600"
+                  >
+                    <Archive className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Post Archive</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <History className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Story archive</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => router.push("/allactivity/trash")}
+                    className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600"
+                  >
+                    <Trash2 className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Trash</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <List className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Activity Log</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <UserCog className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">
+                      Profile and Tagging settings
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <Lock className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Lock Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <PlusCircle className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">
+                      Create another profile
+                    </span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
+                    <BadgeCheck className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
+                    <span className="font-semibold">Estorya verified</span>
+                  </DropdownMenuItem>
+                </div>
+              ) : (
+                <>
+                  <DropdownMenuItem className="cursor-pointer dark:text-neutral-100 dark:hover:bg-neutral-600 dark:hover:text-neutral-100">
+                    Follow
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-neutral-100 dark:hover:bg-neutral-600 dark:hover:text-neutral-100">
+                    Find Suppport or report
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer dark:text-neutral-100 dark:hover:bg-neutral-600 dark:hover:text-neutral-100">
+                    Block
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   );
