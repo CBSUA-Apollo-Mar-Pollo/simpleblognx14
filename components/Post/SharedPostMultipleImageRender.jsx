@@ -183,7 +183,7 @@ const SharedPostMultipleImageRender = ({
                     height={0}
                     src={blog.image[0].url}
                     alt="profile image"
-                    className="w-full h-auto object-cover rounded-tl-2xl"
+                    className="w-full h-auto object-cover "
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
                   />
                 </Link>
@@ -197,7 +197,7 @@ const SharedPostMultipleImageRender = ({
                     height={0}
                     src={blog.image[1].url}
                     alt="profile image"
-                    className="w-full h-auto object-cover rounded-tr-2xl"
+                    className="w-full h-auto object-cover "
                     style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
                   />
                 </Link>

@@ -42,15 +42,15 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
             imagePreviews.length === 3 && "grid grid-cols-10 gap-x-1"
           }`}
         >
-          <div className="relative col-span-7">
+          <div className="relative col-span-6">
             <img
               src={imagePreviews[0].url}
               alt="profile image"
-              className="w-full h-auto object-cover"
+              className=" h-full object-fill"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
             />
           </div>
-          <div className=" flex flex-col space-y-[4px] col-span-3">
+          <div className=" flex flex-col space-y-[4px] col-span-4">
             {imagePreviews.map((imageData, index) => {
               if (index === 0) {
                 return null;
