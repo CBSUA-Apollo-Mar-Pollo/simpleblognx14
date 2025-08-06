@@ -24,6 +24,10 @@ const EditPostContent = ({
   handleFileDrop,
   handleDragOver,
   handleFileSelect,
+  removeImage,
+  isBase64ImageDataURL,
+  setIsLoading,
+  setLoaderDescription,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -90,13 +94,22 @@ const EditPostContent = ({
               {imagePreviews.length === 1 && (
                 <Button
                   onClick={() => {
-                    handleRemoveImage(imagePreviews[0].key)
-                      .then((res) => {
-                        imagePreviews.splice(0, 1);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
+                    if (isBase64ImageDataURL(imagePreviews[0])) {
+                      removeImage(0, imagePreviews[0]);
+                    } else {
+                      setIsLoading(true);
+                      setLoaderDescription(`Removing ${imagePreviews[0].name}`);
+                      handleRemoveImage(imagePreviews[0].key)
+                        .then((res) => {
+                          imagePreviews.splice(0, 1);
+                          blog.image.splice(0, 1);
+                          setIsLoading(false);
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                          setIsLoading(false);
+                        });
+                    }
                   }}
                   className="rounded-full px-2 bg-neutral-800/80  hover:bg-neutral-800 h-8 w-8 mr-10"
                   variant="ghost"
@@ -191,6 +204,10 @@ const EditPostContent = ({
             <ImagePreviewEditPost imagePreviews={imagePreviews} blog={blog} />
           )}
 
+          {imagePreviews && !blog.image && (
+            <ImagePreviewEditPost imagePreviews={imagePreviews} />
+          )}
+
           {blog.video && (
             <div className="relative flex flex-col items-center hover:cursor-pointer bg-neutral-950">
               <video
@@ -219,7 +236,7 @@ const EditPostContent = ({
         </div>
       )}
 
-      {!isPostHaveImageOrVideos && (
+      {/* {!isPostHaveImageOrVideos && (
         <>
           {!blog?.textBackgroundStyle && (
             <div
@@ -243,18 +260,20 @@ const EditPostContent = ({
                   </span>
                 </div>
               </div>
-              <input
-                id="fileInput"
-                type="file"
-                multiple
-                className="hidden"
-                accept="image/*, video/*"
-                onChange={handleFileSelect}
-              />
+           
             </div>
           )}
         </>
-      )}
+      )} */}
+
+      <input
+        id="fileInput"
+        type="file"
+        multiple
+        className="hidden"
+        accept="image/*, video/*"
+        onChange={handleFileSelect}
+      />
     </div>
   );
 };

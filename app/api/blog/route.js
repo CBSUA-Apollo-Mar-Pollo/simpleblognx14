@@ -135,7 +135,7 @@ export async function PATCH(req) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const { description, images } = await req.json();
+    const { description, images, selectedBackgroundColor } = await req.json();
 
     const { searchParams } = new URL(req.url);
 
@@ -148,19 +148,39 @@ export async function PATCH(req) {
       );
     }
 
+    console.log(images);
+
     let imageExist = images.length !== 0 ? images : null;
 
-    await db.blog.update({
-      where: {
-        id: postId,
-        authorId: session.user.id,
-      },
-      data: {
-        description,
-        userStatus: "edited",
-        image: imageExist,
-      },
-    });
+    if (imageExist === null) {
+      await db.blog.update({
+        where: {
+          id: postId,
+          authorId: session.user.id,
+        },
+        data: {
+          description,
+          userStatus: "edited",
+          textBackgroundStyle: selectedBackgroundColor,
+        },
+      });
+    }
+
+    if (imageExist) {
+      await db.blog.update({
+        where: {
+          id: postId,
+          authorId: session.user.id,
+        },
+        data: {
+          description,
+          userStatus: "edited",
+          image: imageExist,
+        },
+      });
+
+      return new Response("OK");
+    }
 
     return new Response("OK");
   } catch (error) {

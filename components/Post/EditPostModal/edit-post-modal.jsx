@@ -62,6 +62,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import PostAudienceSelection from "../post-audience-selection";
 
 const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   const { data: session } = useSession();
@@ -74,6 +75,8 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
   const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
   const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
+  const [isBackGroundColorCleared, setIsBackGroundColorCleared] =
+    useState(false);
 
   const gradientBackgroundColors = [
     {
@@ -154,6 +157,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
       const payload = {
         description,
         images: [...imagePreviews, ...images],
+        selectedBackgroundColor,
       };
 
       const url = qs.stringifyUrl({
@@ -271,6 +275,10 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
     });
   };
 
+  let isBackgroundColorBeingEdited = selectedBackgroundColor;
+
+  console.log(selectedBackgroundColor, "selectedBackgroundColor");
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-2 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2 hover:bg-gray-100">
@@ -320,50 +328,192 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                       </button>
                     </div>
                   </div>
+
                   <div className="grid items-center my-2">
-                    <div
-                      className={`${
-                        blog?.textBackgroundStyle
-                          ? "flex flex-col"
-                          : "flex justify-between items-center"
-                      }`}
-                    >
+                    {/* Description of the post or background stylish that only contain  text */}
+
+                    {/* a post that only contain a text with background style */}
+                    {!selectedBackgroundColor && !isBackGroundColorCleared && (
                       <div
                         className={`${
-                          blog?.textBackgroundStyle &&
-                          "h-[40vh] flex items-center justify-center"
-                        } ${!blog?.textBackgroundStyle && "w-full"}`}
-                        style={{
-                          backgroundColor:
-                            blog?.textBackgroundStyle?.backgroundColorType ===
-                              "solid" && blog?.textBackgroundStyle?.color,
-                          backgroundImage:
-                            blog?.textBackgroundStyle?.backgroundColorType ===
-                            "gradient"
-                              ? `linear-gradient(to bottom right, ${blog?.textBackgroundStyle?.color.from}, ${blog?.textBackgroundStyle?.color.to})`
-                              : `url('${blog?.textBackgroundStyle?.color}') `,
-                          color: blog?.textBackgroundStyle ? "white" : "black",
-                        }}
+                          blog?.textBackgroundStyle
+                            ? "flex flex-col"
+                            : "flex justify-between items-center"
+                        }`}
                       >
-                        <Textarea
-                          id="desc"
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          rows={1}
-                          placeholder={`What's on your mind, ${
-                            session?.user.name.split(" ")[0]
-                          }?`}
-                          className={` bg-transparent ${
-                            blog?.textBackgroundStyle
-                              ? "text-center text-2xl font-bold "
-                              : "text-xl"
-                          }  dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 border-none resize-none px-4`}
-                        />
-                      </div>
+                        <div
+                          className={`${
+                            blog?.textBackgroundStyle &&
+                            "h-[40vh] flex items-center justify-center"
+                          } ${!blog?.textBackgroundStyle && "w-full"}`}
+                          style={{
+                            backgroundColor:
+                              blog?.textBackgroundStyle?.backgroundColorType ===
+                                "solid" && blog?.textBackgroundStyle?.color,
+                            backgroundImage:
+                              blog?.textBackgroundStyle?.backgroundColorType ===
+                              "gradient"
+                                ? `linear-gradient(to bottom right, ${blog?.textBackgroundStyle?.color.from}, ${blog?.textBackgroundStyle?.color.to})`
+                                : `url('${blog?.textBackgroundStyle?.color}') `,
+                            color: blog?.textBackgroundStyle
+                              ? "white"
+                              : "black",
+                          }}
+                        >
+                          <Textarea
+                            id="desc"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={1}
+                            placeholder={`What's on your mind, ${
+                              session?.user.name.split(" ")[0]
+                            }?`}
+                            className={` bg-transparent ${
+                              blog?.textBackgroundStyle
+                                ? "text-center text-2xl font-bold "
+                                : "text-xl"
+                            }  dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 border-none resize-none px-4`}
+                          />
+                        </div>
 
-                      <div className="flex justify-between my-2">
-                        {!toggleTextBackgroundColor &&
-                          blog?.textBackgroundStyle && (
+                        <div className="flex justify-between my-2">
+                          {!toggleTextBackgroundColor &&
+                            blog?.textBackgroundStyle && (
+                              <button
+                                onClick={() =>
+                                  setToggleTextBackgroundColor(true)
+                                }
+                                className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
+                              >
+                                <ALargeSmall className="text-white" />
+                              </button>
+                            )}
+
+                          {toggleTextBackgroundColor && (
+                            <div className="ml-3 flex items-center gap-x-2">
+                              <button
+                                onClick={() =>
+                                  setToggleTextBackgroundColor(false)
+                                }
+                                className="bg-neutral-300 p-1 rounded-md"
+                              >
+                                <ChevronLeft className="text-neutral-700" />
+                              </button>
+
+                              <button
+                                onClick={() => {
+                                  setSelectedBackgroundColor(null);
+                                  setIsBackGroundColorCleared(true);
+                                }}
+                                className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
+                              />
+
+                              {solidBackgroundColors
+                                .slice(0, 4)
+                                .map((color, index) => (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedBackgroundColor({
+                                        backgroundColorType: "solid",
+                                        color: color,
+                                      })
+                                    }
+                                    style={{ backgroundColor: color }}
+                                    key={index}
+                                    className={`h-8 w-8  rounded-md  `}
+                                  />
+                                ))}
+
+                              {Object.entries(gradients)
+                                .slice(0, 4)
+                                .map(([colorName, colors]) => (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedBackgroundColor({
+                                        backgroundColorType: "gradient",
+                                        color: colors,
+                                      })
+                                    }
+                                    key={colorName}
+                                    style={{
+                                      backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                                    }}
+                                    className={`h-8 w-8  rounded-md  `}
+                                  />
+                                ))}
+
+                              <button
+                                onClick={() =>
+                                  setSelectedBackgroundColor({
+                                    backgroundColorType: "image",
+                                    color:
+                                      "/abstract_background_image/19965192_6193255.jpg",
+                                  })
+                                }
+                              >
+                                <img
+                                  src="/abstract_background_image/19965192_6193255.jpg"
+                                  className="h-8 w-8 object-fill rounded-md"
+                                />
+                              </button>
+
+                              <button className="bg-neutral-300 p-1.5 rounded-md">
+                                <LayoutGrid className=" fill-black " />
+                              </button>
+                            </div>
+                          )}
+                          <EmojiPicker
+                            triggerClassName="mr-5 bg-transparent"
+                            onChange={(emoji) =>
+                              setDescription(description + emoji)
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* show this when the user change the background style of the text post */}
+                    {isBackgroundColorBeingEdited && (
+                      <>
+                        <div
+                          style={{
+                            backgroundColor:
+                              selectedBackgroundColor?.backgroundColorType ===
+                                "solid" && selectedBackgroundColor?.color,
+                            backgroundImage:
+                              selectedBackgroundColor?.backgroundColorType ===
+                              "gradient"
+                                ? `linear-gradient(to bottom right, ${selectedBackgroundColor?.color.from}, ${selectedBackgroundColor?.color.to})`
+                                : `url('${selectedBackgroundColor?.color}') `,
+                            color: selectedBackgroundColor ? "white" : "black",
+                          }}
+                          className={`${
+                            selectedBackgroundColor && "h-[40vh]"
+                          } flex items-center justify-center `}
+                        >
+                          <Textarea
+                            id="desc"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={1}
+                            placeholder={`What's on your mind, ${
+                              session?.user.name.split(" ")[0] ||
+                              user?.name.split(" ")[0]
+                            }?`}
+                            className={`dark:bg-neutral-800 bg-transparent  dark:placeholder-neutral-300 ${
+                              selectedBackgroundColor
+                                ? "text-center text-2xl font-bold"
+                                : "text-xl"
+                            } ${
+                              selectedBackgroundColor !== null
+                                ? "placeholder:text-white "
+                                : "placeholder:text-black"
+                            } focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10  border-none resize-none px-4 `}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2">
+                          {!toggleTextBackgroundColor && (
                             <button
                               onClick={() => setToggleTextBackgroundColor(true)}
                               className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
@@ -372,84 +522,199 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                             </button>
                           )}
 
-                        {toggleTextBackgroundColor && (
-                          <div className="ml-3 flex items-center gap-x-2">
-                            <button
-                              onClick={() =>
-                                setToggleTextBackgroundColor(false)
-                              }
-                              className="bg-neutral-300 p-1 rounded-md"
-                            >
-                              <ChevronLeft className="text-neutral-700" />
-                            </button>
+                          {toggleTextBackgroundColor && (
+                            <div className="ml-3 flex items-center gap-x-2">
+                              <button
+                                onClick={() =>
+                                  setToggleTextBackgroundColor(false)
+                                }
+                                className="bg-neutral-300 p-1 rounded-md"
+                              >
+                                <ChevronLeft className="text-neutral-700" />
+                              </button>
 
-                            <button
-                              onClick={() => setSelectedBackgroundColor(null)}
-                              className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
-                            />
-
-                            {solidBackgroundColors
-                              .slice(0, 4)
-                              .map((color, index) => (
-                                <button
-                                  onClick={() =>
-                                    setSelectedBackgroundColor({
-                                      backgroundColorType: "solid",
-                                      color: color,
-                                    })
-                                  }
-                                  style={{ backgroundColor: color }}
-                                  key={index}
-                                  className={`h-8 w-8  rounded-md  `}
-                                />
-                              ))}
-
-                            {Object.entries(gradients)
-                              .slice(0, 4)
-                              .map(([colorName, colors]) => (
-                                <button
-                                  onClick={() =>
-                                    setSelectedBackgroundColor({
-                                      backgroundColorType: "gradient",
-                                      color: colors,
-                                    })
-                                  }
-                                  key={colorName}
-                                  style={{
-                                    backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
-                                  }}
-                                  className={`h-8 w-8  rounded-md  `}
-                                />
-                              ))}
-
-                            <button
-                              onClick={() =>
-                                setSelectedBackgroundColor({
-                                  backgroundColorType: "image",
-                                  color:
-                                    "/abstract_background_image/19965192_6193255.jpg",
-                                })
-                              }
-                            >
-                              <img
-                                src="/abstract_background_image/19965192_6193255.jpg"
-                                className="h-8 w-8 object-fill rounded-md"
+                              <button
+                                onClick={() => {
+                                  setSelectedBackgroundColor(null);
+                                  setIsBackGroundColorCleared(true);
+                                }}
+                                className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
                               />
-                            </button>
 
-                            <button className="bg-neutral-300 p-1.5 rounded-md">
-                              <LayoutGrid className=" fill-black " />
-                            </button>
+                              {solidBackgroundColors
+                                .slice(0, 4)
+                                .map((color, index) => (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedBackgroundColor({
+                                        backgroundColorType: "solid",
+                                        color: color,
+                                      })
+                                    }
+                                    style={{ backgroundColor: color }}
+                                    key={index}
+                                    className={`h-8 w-8  rounded-md  `}
+                                  />
+                                ))}
+
+                              {Object.entries(gradients)
+                                .slice(0, 4)
+                                .map(([colorName, colors]) => (
+                                  <button
+                                    onClick={() =>
+                                      setSelectedBackgroundColor({
+                                        backgroundColorType: "gradient",
+                                        color: colors,
+                                      })
+                                    }
+                                    key={colorName}
+                                    style={{
+                                      backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                                    }}
+                                    className={`h-8 w-8  rounded-md  `}
+                                  />
+                                ))}
+
+                              <button
+                                onClick={() =>
+                                  setSelectedBackgroundColor({
+                                    backgroundColorType: "image",
+                                    color:
+                                      "/abstract_background_image/19965192_6193255.jpg",
+                                  })
+                                }
+                              >
+                                <img
+                                  src="/abstract_background_image/19965192_6193255.jpg"
+                                  className="h-8 w-8 object-fill rounded-md"
+                                />
+                              </button>
+
+                              <button className="bg-neutral-300 p-1.5 rounded-md">
+                                <LayoutGrid className=" fill-black " />
+                              </button>
+                            </div>
+                          )}
+
+                          <EmojiPicker
+                            triggerClassName="mr-2 bg-transparent"
+                            onChange={(emoji) =>
+                              setDescription(description + emoji)
+                            }
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {/* show this when the user pick white backgrond */}
+                    {selectedBackgroundColor === null &&
+                      isBackGroundColorCleared && (
+                        <div className="flex flex-col items-center">
+                          <Textarea
+                            id="desc"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={1}
+                            placeholder={`What's on your mind, ${
+                              session?.user.name.split(" ")[0]
+                            }?`}
+                            className="dark:bg-neutral-800 dark:placeholder-neutral-300 focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10 text-lg border-none resize-none px-4"
+                          />
+
+                          <div className="flex items-center justify-between pt-2">
+                            {!toggleTextBackgroundColor && (
+                              <button
+                                onClick={() =>
+                                  setToggleTextBackgroundColor(true)
+                                }
+                                className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
+                              >
+                                <ALargeSmall className="text-white" />
+                              </button>
+                            )}
+
+                            {toggleTextBackgroundColor && (
+                              <div className="ml-3 flex items-center gap-x-2">
+                                <button
+                                  onClick={() =>
+                                    setToggleTextBackgroundColor(false)
+                                  }
+                                  className="bg-neutral-300 p-1 rounded-md"
+                                >
+                                  <ChevronLeft className="text-neutral-700" />
+                                </button>
+
+                                <button
+                                  onClick={() =>
+                                    setSelectedBackgroundColor(null)
+                                  }
+                                  className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
+                                />
+
+                                {solidBackgroundColors
+                                  .slice(0, 4)
+                                  .map((color, index) => (
+                                    <button
+                                      onClick={() =>
+                                        setSelectedBackgroundColor({
+                                          backgroundColorType: "solid",
+                                          color: color,
+                                        })
+                                      }
+                                      style={{ backgroundColor: color }}
+                                      key={index}
+                                      className={`h-8 w-8  rounded-md  `}
+                                    />
+                                  ))}
+
+                                {Object.entries(gradients)
+                                  .slice(0, 4)
+                                  .map(([colorName, colors]) => (
+                                    <button
+                                      onClick={() =>
+                                        setSelectedBackgroundColor({
+                                          backgroundColorType: "gradient",
+                                          color: colors,
+                                        })
+                                      }
+                                      key={colorName}
+                                      style={{
+                                        backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                                      }}
+                                      className={`h-8 w-8  rounded-md  `}
+                                    />
+                                  ))}
+
+                                <button
+                                  onClick={() =>
+                                    setSelectedBackgroundColor({
+                                      backgroundColorType: "image",
+                                      color:
+                                        "/abstract_background_image/19965192_6193255.jpg",
+                                    })
+                                  }
+                                >
+                                  <img
+                                    src="/abstract_background_image/19965192_6193255.jpg"
+                                    className="h-8 w-8 object-fill rounded-md"
+                                  />
+                                </button>
+
+                                <button className="bg-neutral-300 p-1.5 rounded-md">
+                                  <LayoutGrid className=" fill-black " />
+                                </button>
+                              </div>
+                            )}
+
+                            <EmojiPicker
+                              triggerClassName="mr-2 bg-transparent"
+                              onChange={(emoji) =>
+                                setDescription(description + emoji)
+                              }
+                            />
                           </div>
-                        )}
-                        <EmojiPicker
-                          triggerClassName="mr-5 bg-transparent"
-                          onChange={(emoji) =>
-                            setDescription(description + emoji)
-                          }
-                        />
-                      </div>
-                    </div>
+                        </div>
+                      )}
 
                     {/* shared post content */}
                     {sharedPost && <SharedPostEdit sharedPost={sharedPost} />}
@@ -465,6 +730,9 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                         handleDragOver={handleDragOver}
                         handleFileSelect={handleFileSelect}
                         removeImage={removeImage}
+                        isBase64ImageDataURL={isBase64ImageDataURL}
+                        setIsLoading={setIsLoading}
+                        setLoaderDescription={setLoaderDescription}
                       />
                     )}
                   </div>
@@ -482,7 +750,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                               variant="ghost"
                               className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
                               onClick={() =>
-                                setToggleImageUpload((prevState) => !prevState)
+                                document.getElementById("fileInput").click()
                               }
                             >
                               <ImagePlus
@@ -584,158 +852,9 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
 
         {/* post audience content for changing the post audience */}
         {isPostAudienceActive && (
-          <>
-            <DialogHeader className="pt-4 px-4">
-              <DialogTitle className="text-xl font-bold text-center">
-                Post audience
-              </DialogTitle>
-
-              <Button
-                variant="ghost"
-                onClick={() => setIsPostAudienceActive(false)}
-                className="p-0 rounded-full"
-                asChild
-              >
-                <ArrowLeft className="w-10 h-10 absolute left-4 top-1 cursor-pointer p-2 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 " />
-              </Button>
-            </DialogHeader>
-
-            <Separator className="dark:bg-neutral-700 border-1" />
-
-            <div className="px-2 max-h-[50vh] overflow-y-auto">
-              <div className="px-2">
-                <h1 className="font-semibold">Who can see your post? </h1>
-
-                <p className="text-sm my-2 text-neutral-600">
-                  Your post will show up in Feed, on your profile and in search
-                  results.
-                </p>
-
-                <p className="text-sm text-neutral-600">
-                  Your default audience is set to Only me, but you can change
-                  the audience of this specific post.
-                </p>
-              </div>
-
-              <RadioGroup
-                defaultValue="Public"
-                className="pl-1 pr-2 mt-4 space-y-1"
-              >
-                <label
-                  htmlFor="public"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.earthIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Public</h1>
-                      <p className="text-sm text-neutral-600">
-                        Anyone on or off Estorias
-                      </p>
-                    </div>
-                  </div>
-                  <RadioGroupItem value="public" id="public" />
-                </label>
-                <label
-                  htmlFor="friends"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.friendsOnlyIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Friends</h1>
-                      <p className="text-sm text-neutral-600">
-                        Your friends on estorias
-                      </p>
-                    </div>
-                  </div>
-                  <RadioGroupItem value="friends" id="friends" />
-                </label>
-                <label
-                  htmlFor="exceptions"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.friendsExceptionIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Friends exceptions</h1>
-                      <p className="text-sm text-neutral-600">
-                        Don't show to some friends
-                      </p>
-                    </div>
-                  </div>
-                  <RadioGroupItem value="exceptions" id="exceptions" />
-                </label>
-                <label
-                  htmlFor="specificfriends"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.SpecificFriendsIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Specific friends</h1>
-                      <p className="text-sm text-neutral-600">
-                        Only to show to some friends
-                      </p>
-                    </div>
-                  </div>
-                  <RadioGroupItem
-                    value="specificfriends"
-                    id="specificfriends"
-                  />
-                </label>
-                <label
-                  htmlFor="onlyme"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.OnlyMeIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Only me</h1>
-                    </div>
-                  </div>
-                  <RadioGroupItem value="onlyme" id="onlyme" />
-                </label>
-                <label
-                  htmlFor="custom"
-                  className="flex items-center justify-between hover:bg-neutral-100 cursor-pointer px-4 py-1 rounded-md"
-                >
-                  <div className="flex items-center gap-x-2">
-                    <Icons.CustomAudienceIcon className="h-14 w-14 p-3 bg-neutral-300 rounded-full" />
-                    <div>
-                      <h1 className="font-semibold">Custom</h1>
-                      <p className="text-sm text-neutral-600">
-                        Include and exclude friends and lists
-                      </p>
-                    </div>
-                  </div>
-                  <RadioGroupItem value="custom" id="custom" />
-                </label>
-              </RadioGroup>
-            </div>
-
-            <Separator className="dark:bg-neutral-700 border-1" />
-
-            <div className="flex items-center gap-x-2 pl-3">
-              <Checkbox id="setAsDefaultAudience" className="h-6 w-6" />
-              <Label>set as default audience.</Label>
-            </div>
-
-            <DialogFooter className="px-2 pb-3">
-              <Button
-                variant="ghost"
-                className="text-blue-600 hover:bg-neutral-200 hover:text-blue-600"
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="ghost"
-                className="bg-blue-600 text-white p-0 px-8 rounded-lg hover:bg-blue-500 hover:text-white"
-              >
-                Save
-              </Button>
-            </DialogFooter>
-          </>
+          <PostAudienceSelection
+            setIsPostAudienceActive={setIsPostAudienceActive}
+          />
         )}
       </DialogContent>
     </Dialog>

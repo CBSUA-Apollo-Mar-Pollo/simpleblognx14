@@ -197,8 +197,6 @@ const StandardPostCard = ({
     }
   };
 
-  console.log(blog, "from standard post card");
-
   return (
     <div>
       {blog.description && (

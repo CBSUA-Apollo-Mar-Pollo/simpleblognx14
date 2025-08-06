@@ -4,11 +4,24 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
   console.log(imagePreviews, "image previews in edit post");
   return (
     <>
-      {imagePreviews.length === 1 && (
+      {imagePreviews.length === 1 && blog?.image && (
         <div>
           <div className="relative">
             <img
               src={imagePreviews[0] && imagePreviews[0].url}
+              alt="profile image"
+              className="w-full h-auto object-cover"
+              style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
+            />
+          </div>
+        </div>
+      )}
+
+      {imagePreviews.length === 1 && !blog?.image && (
+        <div>
+          <div className="relative">
+            <img
+              src={imagePreviews[0]}
               alt="profile image"
               className="w-full h-auto object-cover"
               style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
@@ -22,7 +35,11 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
           {imagePreviews.map((imageData, index) => (
             <div key={index} className="relative">
               <img
-                src={typeof imageData === "string" ? imageData : imageData.url}
+                src={
+                  typeof imageData === "string"
+                    ? imageData
+                    : imageData.url || imageData.ufsUrl
+                }
                 alt={
                   typeof imageData === "string"
                     ? "profile image"
