@@ -88,7 +88,12 @@ const ToolTipComp = ({ children, className, content, user, post }) => {
                   <AvatarFallback className="bg-neutral-200">
                     <span className="sr-only">{user?.name}</span>
                     <div className="h-full w-full">
-                      <Image src="/user.png" fill className="h-full w-full" />
+                      <Image
+                        src="/user.png"
+                        fill
+                        className="h-full w-full"
+                        alt="User avatar"
+                      />
                     </div>
                   </AvatarFallback>
                 )}

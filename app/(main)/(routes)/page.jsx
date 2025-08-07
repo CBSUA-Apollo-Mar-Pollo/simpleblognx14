@@ -179,7 +179,11 @@ export default async function HomePage() {
 
                 <div className="lg:flex items-center justify-center my-1 hidden">
                   <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
-                    <img src="/ImageIcons/live.png" className="h-8 w-8" />
+                    <img
+                      src="/ImageIcons/live.png"
+                      className="h-8 w-8"
+                      alt="Live video icon"
+                    />
                     <span className="dark:text-neutral-100 text-sm">
                       Live video
                     </span>
@@ -188,7 +192,11 @@ export default async function HomePage() {
                     <AddGalleryPostModal session={session} />
                   </div>
                   <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
-                    <img src="/ImageIcons/smile.png" className="h-7 w-7" />
+                    <img
+                      src="/ImageIcons/smile.png"
+                      className="h-7 w-7"
+                      alt="Feeling or activity icon"
+                    />
                     <span className="dark:text-neutral-100 text-sm">
                       Feeling/Activity
                     </span>

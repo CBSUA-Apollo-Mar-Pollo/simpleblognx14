@@ -37,6 +37,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Friends"
       />
     ),
     label: "Friends",
@@ -50,6 +51,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="History"
       />
     ),
     label: "History",
@@ -63,6 +65,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Saved"
       />
     ),
     label: "Saved",
@@ -77,6 +80,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Pages"
       />
     ),
     label: "Pages",
@@ -90,6 +94,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Events"
       />
     ),
     label: "Events",
@@ -103,6 +108,7 @@ export const SideBarFirstLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Shortsv"
       />
     ),
     label: "Shortsv",
@@ -124,6 +130,7 @@ export const SideBarSecondLinks = [
         width="0"
         height="0"
         className="w-6 h-6"
+        alt="Popular"
       />
     ),
     label: "Popular",

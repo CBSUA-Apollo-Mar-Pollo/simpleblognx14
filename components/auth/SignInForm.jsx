@@ -174,7 +174,6 @@ const SignInForm = () => {
 
           <Button
             onClick={loginWithGoogle}
-            isLoading={isLoading}
             variant="outline"
             className="rounded-full py-6"
           >

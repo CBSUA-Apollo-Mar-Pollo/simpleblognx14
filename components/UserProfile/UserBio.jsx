@@ -41,8 +41,6 @@ const UserBio = async ({ user, session }) => {
     })
     .filter((item) => item.image !== null);
 
-  console.log(mergedImages, "mergedImages");
-
   return (
     <div className="space-y-3">
       <Card className="dark:bg-neutral-800 dark:border-0">
@@ -101,11 +99,11 @@ const UserBio = async ({ user, session }) => {
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-2">
-              {mergedImages.slice(0, 6).map((img) => (
+              {mergedImages.slice(0, 6).map((img, index) => (
                 <Link
                   href={`/postComment/${img?.postId}/${img.index}`}
                   className="relative overflow-clip "
-                  key={img.id}
+                  key={index}
                 >
                   <Image
                     sizes="100vw"

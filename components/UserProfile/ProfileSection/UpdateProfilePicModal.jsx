@@ -14,7 +14,8 @@ import axios from "axios";
 import { Camera, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Avatar from "react-avatar-edit";
+import dynamic from "next/dynamic";
+const Avatar = dynamic(() => import("react-avatar-edit"), { ssr: false });
 
 const UpdateProfilePicModal = ({ userId }) => {
   const router = useRouter();
@@ -112,7 +113,7 @@ const UpdateProfilePicModal = ({ userId }) => {
     >
       <DialogTrigger>
         <div className="flex items-center ">
-          <Camera className="text-neutral-200 h-8 w-8 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
+          <Camera className="text-neutral-50 h-8 w-8 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
         </div>
       </DialogTrigger>
       <DialogContent className="p-0 min-w-[45rem] bg-neutral-800 text-white border-none z-50">
