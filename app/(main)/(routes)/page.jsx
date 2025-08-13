@@ -209,31 +209,31 @@ export default async function HomePage() {
           )}
 
           {!session?.user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-x-1 hover:bg-neutral-200 px-3 py-2 rounded-full">
-                <span className="text-xs font-medium text-neutral-700">
+            <DropdownMenu className="dark:border-none">
+              <DropdownMenuTrigger className="flex items-center gap-x-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 px-3 py-2 rounded-full">
+                <span className="text-xs font-medium text-neutral-700 dark:text-white">
                   Best
                 </span>
-                <ChevronDown className="h-3 w-3" />
+                <ChevronDown className="h-3 w-3 dark:text-white" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="min-w-[5vw] space-y-2 p-0 pb-2">
+              <DropdownMenuContent className="min-w-[5vw] space-y-2 p-0 pb-2 dark:bg-neutral-800 dark:border-none">
                 <div className="px-3 pt-2">
-                  <p className="text-[13px]">Sort by</p>
+                  <p className="text-[13px] dark:text-white">Sort by</p>
                 </div>
                 <DropdownMenuItem className="px-3 cursor-pointer">
-                  <span>Best</span>
+                  <span className="dark:text-white">Best</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="px-3 cursor-pointer">
-                  <span>Hot</span>
+                  <span className="dark:text-white">Hot</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="px-3 cursor-pointer">
-                  <span>New</span>
+                  <span className="dark:text-white">New</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="px-3 cursor-pointer">
-                  <span>Top</span>
+                  <span className="dark:text-white">Top</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="px-3 cursor-pointer">
-                  <span>Rising</span>
+                  <span className="dark:text-white">Rising</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

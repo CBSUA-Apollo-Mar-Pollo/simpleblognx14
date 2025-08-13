@@ -220,7 +220,7 @@ const StandardPostCard = ({
             className={`${
               blog?.textBackgroundStyle
                 ? "text-2xl font-bold"
-                : "text-[15px] mt-1 mb-2 "
+                : "text-[15px] mt-1 mb-2 dark:text-white "
             }  px-5 text-justify leading-snug font-[12px] py-1`}
           >
             {blog.description}

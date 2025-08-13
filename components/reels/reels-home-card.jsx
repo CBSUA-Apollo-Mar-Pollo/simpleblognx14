@@ -52,10 +52,13 @@ const ReelsHomeCard = () => {
   const RightScroll = () => {
     if (videoContainerRef.current) {
       const container = videoContainerRef.current;
-
-      // Scroll to the right by 230px
+      const scrollAmount = 240;
+      const remaining =
+        container.scrollWidth - (container.scrollLeft + container.clientWidth);
+      // If remaining space is less than scrollAmount, scroll by remaining
+      const actualScroll = remaining < scrollAmount ? remaining : scrollAmount;
       container.scrollBy({
-        left: 240,
+        left: actualScroll,
         behavior: "smooth",
       });
 
@@ -84,10 +87,12 @@ const ReelsHomeCard = () => {
   const LeftScroll = () => {
     if (videoContainerRef.current) {
       const container = videoContainerRef.current;
-
-      // Scroll to the left by 230px
+      const scrollAmount = 230;
+      const remaining = container.scrollLeft;
+      // If remaining space is less than scrollAmount, scroll by remaining
+      const actualScroll = remaining < scrollAmount ? remaining : scrollAmount;
       container.scrollBy({
-        left: -230,
+        left: -actualScroll,
         behavior: "smooth",
       });
 

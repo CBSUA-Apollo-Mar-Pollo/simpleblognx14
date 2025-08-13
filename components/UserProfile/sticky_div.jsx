@@ -57,7 +57,9 @@ const StickDiv = ({ user, session }) => {
   return (
     <div
       ref={ref}
-      className={`sticky top-[-1px] z-20  pr-[14vw] bg-white w-full`}
+      className={`${
+        isSticky ? "dark:bg-neutral-700" : "dark:bg-neutral-800 "
+      } sticky top-[-1px] z-20  pr-[14vw] bg-white  w-full`}
     >
       <ProfileButtons userId={user.id} />
 
@@ -74,14 +76,14 @@ const StickDiv = ({ user, session }) => {
               image: user.image || null,
             }}
           />
-          <p className="font-semibold">{user.name}</p>
+          <p className="font-semibold dark:text-white">{user.name}</p>
         </div>
 
         <div className="ml-2">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger className="bg-neutral-200 rounded-md mt-1 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-600 ">
               <div className="px-2 py-1">
-                <MoreHorizontal className="" />
+                <MoreHorizontal className="dark:text-white" />
               </div>
             </DropdownMenuTrigger>
 
