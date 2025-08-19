@@ -2,6 +2,7 @@ import ProfileForm from "@/components/SettingsComponent/ProfileForm";
 import { Input } from "@/components/ui/Input";
 import { getAuthSession } from "@/lib/auth";
 import { Search } from "lucide-react";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import React from "react";
@@ -34,7 +35,13 @@ const settings = async () => {
 
           <div className="grid grid-cols-3 gap-x-6 mt-2">
             <div className="bg-gray-200 dark:bg-neutral-900 rounded-md flex items-center flex-col py-12 space-y-5">
-              <img src="/ImageIcons/block.png" className="h-16 w-16" />
+              <Image
+                src="/ImageIcons/block.png"
+                className="h-16 w-16"
+                alt="Block icon"
+                width={64}
+                height={64}
+              />
               <div className="pt-4 mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">Blocking</h1>
                 <p className="dark:text-neutral-300 text-sm text-justify">
@@ -44,7 +51,13 @@ const settings = async () => {
               </div>
             </div>
             <div className="bg-gray-200 dark:bg-neutral-900 rounded-md flex items-center flex-col py-12 space-y-5">
-              <img src="/ImageIcons/contract.png" className="h-16 w-16" />
+              <Image
+                src="/ImageIcons/contract.png"
+                className="h-16 w-16"
+                alt="Contract icon"
+                width={64}
+                height={64}
+              />
               <div className="pt-4 mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">
                   Activity log
@@ -55,7 +68,13 @@ const settings = async () => {
               </div>
             </div>
             <div className="bg-gray-200 dark:bg-neutral-900 rounded-md flex items-center flex-col py-12 space-y-5">
-              <img src="/ImageIcons/light-bulb.png" className="h-16 w-16" />
+              <Image
+                src="/ImageIcons/light-bulb.png"
+                className="h-16 w-16"
+                alt="Light bulb icon"
+                width={64}
+                height={64}
+              />
               <div className="pt-4 mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">Dark mode</h1>
                 <p className="dark:text-neutral-300 text-sm text-justify">
@@ -73,7 +92,13 @@ const settings = async () => {
 
           <div className="mt-2 space-y-5">
             <div className="bg-gray-200 dark:bg-neutral-900 rounded-md flex items-center py-5 px-10">
-              <img src="/ImageIcons/padlock.png" className="h-[6em] w-[6em]" />
+              <Image
+                src="/ImageIcons/padlock.png"
+                className="h-[6em] w-[6em]"
+                alt="Padlock icon"
+                width={96}
+                height={96}
+              />
               <div className="mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">
                   Privacy center
@@ -85,7 +110,13 @@ const settings = async () => {
               </div>
             </div>
             <div className="bg-gray-200 dark:bg-neutral-900 rounded-md flex items-center py-5 px-10">
-              <img src="/ImageIcons/ux.png" className="h-[6em] w-[6em]" />
+              <Image
+                src="/ImageIcons/ux.png"
+                className="h-[6em] w-[6em]"
+                alt="UX icon"
+                width={96}
+                height={96}
+              />
               <div className="mx-5">
                 <h1 className="dark:text-neutral-100 font-medium">
                   Help Center

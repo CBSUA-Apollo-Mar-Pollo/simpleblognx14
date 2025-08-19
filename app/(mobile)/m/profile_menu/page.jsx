@@ -55,6 +55,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Shortsv icon"
           />
           Shortsv
         </Button>
@@ -65,6 +66,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Chatbox icon"
           />
           Chatbox
         </Button>
@@ -75,6 +77,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Community icon"
           />
           Community
         </Button>
@@ -85,6 +88,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Friends icon"
           />
           Friends
         </Button>
@@ -95,6 +99,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Video icon"
           />
           Video
         </Button>
@@ -105,6 +110,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Page icon"
           />
           Page
         </Button>
@@ -115,6 +121,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Saved icon"
           />
           Saved
         </Button>
@@ -125,6 +132,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Memories icon"
           />
           Memories
         </Button>
@@ -135,6 +143,7 @@ const ProfileMenu = async () => {
             width="0"
             height="0"
             className="w-7 h-7"
+            alt="Feed icon"
           />
           Feed
         </Button>

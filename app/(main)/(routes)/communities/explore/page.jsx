@@ -1,8 +1,13 @@
 import CommunityInitialPageExplore from "@/components/community/community-initialpage-explore";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import React, { Suspense } from "react";
 
-import React from "react";
+const LoadingFallback = () => {
+  return (
+    <div className="w-full h-screen bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+  );
+};
 
 const ExploreCommunitiesPage = async () => {
   const session = await getAuthSession();
@@ -22,9 +27,11 @@ const ExploreCommunitiesPage = async () => {
   });
 
   return (
-    <CommunityInitialPageExplore
-      {...{ communitiesCreated, communities, session }}
-    />
+    <Suspense fallback={<LoadingFallback />}>
+      {/* <CommunityInitialPageExplore
+        {...{ communitiesCreated, communities, session }}
+      /> */}
+    </Suspense>
   );
 };
 

@@ -195,8 +195,6 @@ const TrashPosts = ({ trashPosts }) => {
       setGroupedPostsByTrashedAt(formattedTrashPosts);
     }
   };
-  console.log(checkedItems, "checked items");
-  console.log(groupedPostsByTrashedAt, "trash posts");
 
   return (
     <div className="mx-20 w-full">
@@ -320,7 +318,7 @@ const TrashPosts = ({ trashPosts }) => {
               <Separator className="dark:bg-neutral-700  h-[1px] bg-neutral-400" />
 
               <p className="px-4 pb-2 dark:text-neutral-200">
-                items you delete can't be restored.
+                items you delete can&apos;t be restored.
               </p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">
@@ -343,12 +341,15 @@ const TrashPosts = ({ trashPosts }) => {
         </div>
       </div>
 
-      {groupedPostsByTrashedAt.map((item) => (
-        <div className="bg-white dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex-col items-center justify-between p-4 rounded-md mt-4 mb-4">
+      {groupedPostsByTrashedAt.map((item, index) => (
+        <div
+          key={index}
+          className="bg-white dark:bg-neutral-800 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)] flex-col items-center justify-between p-4 rounded-md mt-4 mb-4"
+        >
           <h1 className="font-medium mb-2 dark:text-neutral-200">
             {item.trashedAt}
           </h1>
-          {item.posts.map((post) => {
+          {item.posts.map((post, index) => {
             // Function to calculate the deletion date (30 days after trashedAt)
             const trashedDate = new Date(post.trashedAt);
             trashedDate.setDate(trashedDate.getDate() + 30); // Add 30 days
@@ -367,7 +368,7 @@ const TrashPosts = ({ trashPosts }) => {
             } ${ampm}`;
 
             return (
-              <div className="mx-1 flex items-center my-3 gap-x-4">
+              <div key={index} className="mx-1 flex items-center my-3 gap-x-4">
                 <Checkbox
                   checked={checkedItems.some((item) => item.postId === post.id)}
                   onCheckedChange={(e) =>

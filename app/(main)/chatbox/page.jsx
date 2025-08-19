@@ -4,6 +4,7 @@ import SocketTestComponent from "@/components/socket-test-component";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 const ChatBoxPage = async () => {
   const session = await getAuthSession();

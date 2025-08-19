@@ -126,7 +126,7 @@ const ArchiveOrTrashPostOption = ({
               <Separator className="dark:bg-neutral-700  h-[1px] bg-neutral-400" />
 
               <p className="px-4 pb-2 dark:text-neutral-200">
-                items you delete can't be restored.
+                items you delete can&apos;t be restored.
               </p>
 
               <div className="w-full flex items-end justify-end gap-x-1 p-3">

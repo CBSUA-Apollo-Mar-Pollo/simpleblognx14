@@ -41,7 +41,9 @@ const PostDetailPage = async ({ params }) => {
     <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-screen flex justify-center ">
       <Card className="dark:bg-neutral-800 dark:border-0 dark:text-neutral-200 drop-shadow-sm border border-neutral-200 rounded-none md:rounded-xl mt-4 h-fit pb-10 min-w-[40vw] max-w-[40vw]">
         <CardHeader className="pt-2 pb-1 px-0 flex items-center justify-center w-full relative">
-          <p className="mt-2.5 font-bold text-xl">{post.author.name}'s post</p>
+          <p className="mt-2.5 font-bold text-xl">
+            {post.author.name}&apos;s post
+          </p>
           <Link
             href="/"
             className="absolute top-1 right-4 p-2 rounded-full bg-neutral-200 dark:bg-neutral-700  hover:bg-neutral-300 dark:hover:bg-neutral-600"

@@ -83,7 +83,7 @@ const PostAudienceSelection = ({ setIsPostAudienceActive }) => {
               <div>
                 <h1 className="font-semibold">Friends exceptions</h1>
                 <p className="text-sm text-neutral-600">
-                  Don't show to some friends
+                  Don&apos;t show to some friends
                 </p>
               </div>
             </div>

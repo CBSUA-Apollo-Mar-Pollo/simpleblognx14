@@ -1,21 +1,20 @@
 import AllActivitySideBar from "@/components/allactivity/all-activity-sidebar";
-import { Input } from "@/components/ui/Input";
-import { Separator } from "@/components/ui/Separator";
-import {
-  CalendarDays,
-  CircleEllipsisIcon,
-  List,
-  Search,
-  Trash2,
-} from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
+
+const LoadingFallback = () => {
+  return (
+    <div className="w-full h-screen bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+  );
+};
 
 const ArchivePage = () => {
   return (
     <div className="flex">
-      <AllActivitySideBar />
-      <div className="mx-20 w-full">ArchivePage</div>;
+      <Suspense fallback={<LoadingFallback />}>
+        <AllActivitySideBar />
+      </Suspense>
+      <div className="mx-20 w-full">ArchivePage</div>
     </div>
   );
 };

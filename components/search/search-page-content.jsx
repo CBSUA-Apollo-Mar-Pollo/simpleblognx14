@@ -10,7 +10,7 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostCard from "../Post/PostCard/PostCard";
 import { Loader2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+
 import Link from "next/link";
 
 const SearchPageContent = ({

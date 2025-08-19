@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import {
   DropdownMenuContent,
   DropdownMenuLabel,
@@ -78,7 +79,13 @@ const Menu = ({ contentClassName }) => {
 
               <div className="mt-2">
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/event.png" className="h-7 w-7 mt-1" />
+                  <Image
+                    src="/ImageIcons/event.png"
+                    className="h-7 w-7 mt-1"
+                    alt="Event icon"
+                    width={32}
+                    height={32}
+                  />
                   <div>
                     <h3 className="font-semibold">Events</h3>
                     <p className="text-[13px] font-light">
@@ -111,7 +118,13 @@ const Menu = ({ contentClassName }) => {
                   </div>
                 </div>
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/post.png" className="h-8 w-8 mt-1" />
+                  <Image
+                    src="/ImageIcons/post.png"
+                    className="h-8 w-8 mt-1"
+                    alt="Post icon"
+                    width={32}
+                    height={32}
+                  />
                   <div>
                     <h3 className="font-semibold">News Feeds</h3>
                     <p className="text-[13px] font-light">
@@ -134,7 +147,13 @@ const Menu = ({ contentClassName }) => {
                   </div>
                 </div>
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/pages.png" className="h-8 w-8 mt-1" />
+                  <Image
+                    src="/ImageIcons/pages.png"
+                    className="h-8 w-8 mt-1"
+                    alt="Pages icon"
+                    width={32}
+                    height={32}
+                  />
                   <div>
                     <h3 className="font-semibold">Pages</h3>
                     <p className="text-[13px] font-light">
@@ -179,7 +198,13 @@ const Menu = ({ contentClassName }) => {
                   </div>
                 </div>
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/play.png" className="h-9 w-9 mt-1" />
+                  <Image
+                    src="/ImageIcons/play.png"
+                    className="h-9 w-9 mt-1"
+                    alt="Play icon"
+                    width={36}
+                    height={36}
+                  />
                   <div>
                     <h3 className="font-semibold">Video</h3>
                     <p className="text-[13px] font-light">
@@ -200,7 +225,13 @@ const Menu = ({ contentClassName }) => {
 
               <div className="mt-2">
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/refresh.png" className="h-8 w-8 mt-1" />
+                  <Image
+                    src="/ImageIcons/refresh.png"
+                    className="h-8 w-8 mt-1"
+                    alt="Refresh icon"
+                    width={32}
+                    height={32}
+                  />
                   <div>
                     <h3 className="font-semibold">Memories</h3>
                     <p className="text-[13px] font-light">
@@ -233,7 +264,13 @@ const Menu = ({ contentClassName }) => {
 
               <div className="mt-2">
                 <div className="flex gap-x-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-4 py-2 cursor-pointer rounded-md">
-                  <img src="/ImageIcons/message.png" className="h-8 w-8 mt-1" />
+                  <Image
+                    src="/ImageIcons/message.png"
+                    className="h-8 w-8 mt-1"
+                    alt="Message icon"
+                    width={32}
+                    height={32}
+                  />
                   <div>
                     <h3 className="font-semibold">Message</h3>
                     <p className="text-[13px] font-light">

@@ -9,6 +9,7 @@ import UserAvatar from "@/components/utils/UserAvatar";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import Image from "next/image";
 import React from "react";
 import { UTApi } from "uploadthing/server";
 
@@ -123,7 +124,13 @@ const UserProfilePage = async ({ params }) => {
 
               <div className="flex items-center justify-center my-1 ">
                 <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
-                  <img src="/ImageIcons/live.png" className="h-8 w-8" />
+                  <Image
+                    src="/ImageIcons/live.png"
+                    className="h-8 w-8"
+                    alt="Live video icon"
+                    width={32}
+                    height={32}
+                  />
                   <span className="dark:text-neutral-100 text-sm">
                     Live video
                   </span>
@@ -132,7 +139,13 @@ const UserProfilePage = async ({ params }) => {
                   <AddGalleryPostModal session={session} />
                 </div>
                 <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
-                  <img src="/ImageIcons/smile.png" className="h-7 w-7" />
+                  <Image
+                    src="/ImageIcons/smile.png"
+                    className="h-7 w-7"
+                    alt="Feeling or activity icon"
+                    width={28}
+                    height={28}
+                  />
                   <span className="dark:text-neutral-100 text-sm">
                     Feeling/Activity
                   </span>

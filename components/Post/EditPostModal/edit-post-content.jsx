@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { ImagePlus, Pencil, Play, X } from "lucide-react";
 import React, { useState } from "react";
 import ImagePreviewEditPost from "../image-preview-edit-post";
+import Image from "next/image";
 
 const EditPostContent = ({
   blog,
@@ -76,7 +77,13 @@ const EditPostContent = ({
                   className="  bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
                 >
                   {" "}
-                  <img src="/ImageIcons/imageadd.png" className="h-6 w-6" />
+                  <Image
+                    src="/ImageIcons/imageadd.png"
+                    className="h-6 w-6"
+                    alt="Add image icon"
+                    width={24}
+                    height={24}
+                  />
                   <span className="text-sm font-semibold">
                     Add Photos/Videos
                   </span>

@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -21,7 +22,13 @@ const PopularCommunities = async () => {
             className="flex items-center gap-x-3 hover:bg-neutral-300 px-2 py-2 mx-2 rounded-lg transition duration-150 ease-in-out"
             key={community.id}
           >
-            <img src={community.icon} className="h-10 w-10 rounded-full" />
+            <Image
+              src={community.icon}
+              className="h-10 w-10 rounded-full"
+              alt="Community icon"
+              width={40}
+              height={40}
+            />
             <div className="flex flex-col">
               <h4 className="text-sm dark:text-white font-semibold">
                 {community.name}

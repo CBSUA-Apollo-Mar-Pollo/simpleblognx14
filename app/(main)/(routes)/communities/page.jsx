@@ -3,7 +3,7 @@ import useCustomHooks from "@/hooks/use-custom-hooks";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 const CommunitiesInitialPage = async () => {
   const session = await getAuthSession();
@@ -16,7 +16,11 @@ const CommunitiesInitialPage = async () => {
     },
   });
 
-  return <CommunityInitialPageContent {...{ communitiesCreated }} />;
+  return (
+    <Suspense>
+      <CommunityInitialPageContent {...{ communitiesCreated }} />;
+    </Suspense>
+  );
 };
 
 export default CommunitiesInitialPage;

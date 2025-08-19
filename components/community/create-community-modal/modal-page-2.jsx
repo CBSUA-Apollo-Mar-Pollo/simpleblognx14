@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from "@/components/ui/Dialog";
 import { Dot } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 const ModalPage2 = ({
@@ -53,7 +54,13 @@ const ModalPage2 = ({
             </div>
 
             {previewBanner && (
-              <img src={previewBanner} alt="Preview" className="my-2" />
+              <Image
+                src={previewBanner}
+                alt="Preview banner"
+                className="my-2"
+                width={200}
+                height={60}
+              />
             )}
           </div>
 

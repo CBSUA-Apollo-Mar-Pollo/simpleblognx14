@@ -24,7 +24,9 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div className="mx-auto dark:bg-neutral-900">
-            <BeforeUnload>{children}</BeforeUnload>
+            <BeforeUnload>
+              <Suspense>{children}</Suspense>
+            </BeforeUnload>
           </div>
           <Suspense>
             <ClientSideScrollRestorer />

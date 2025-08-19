@@ -1,7 +1,7 @@
 "use client";
 
 import { AppWindow, Compass, Settings, UsersRound } from "lucide-react";
-import React from "react";
+import React, { Suspense } from "react";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
 import CreateCommunityModal from "./create-community-modal/modal";
@@ -23,7 +23,13 @@ const CommunityInitialPageSideBar = ({ communitiesCreated }) => {
         </div>
 
         <div className="mx-3 my-1">
-          <CreateCommunityModal />
+          <Suspense
+            fallback={
+              <div className="h-10 w-full bg-neutral-200 dark:bg-neutral-700 animate-pulse rounded-lg" />
+            }
+          >
+            <CreateCommunityModal />
+          </Suspense>
         </div>
 
         <div className="px-3 mt-3 space-y-1">

@@ -8,6 +8,7 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { MoreHorizontal } from "lucide-react";
 import Image from "next/image";
+import { Suspense } from "react";
 
 const ChatBoxPage = async ({ params }) => {
   const session = await getAuthSession();
@@ -61,9 +62,11 @@ const ChatBoxPage = async ({ params }) => {
   return (
     <div className="h-full m-0">
       <div className="h-full grid grid-cols-8 dark:bg-neutral-900">
-        <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
-          <ChatSideBar users={users} session={session} />
-        </div>
+        {/* <div className="col-span-2 border-r border-neutral-300 dark:border-neutral-800 h-full">
+          <Suspense>
+            <ChatSideBar users={users} session={session} />
+          </Suspense>
+        </div> */}
         <div className="col-span-6">
           {/* chat message */}
           <div className="flex flex-col h-full">
@@ -111,23 +114,27 @@ const ChatBoxPage = async ({ params }) => {
                     <div className="flex-1 flex  justify-center items-end ">
                       <div className="flex flex-col w-full">
                         {/* messages output */}
-                        <ChatMessages
-                          currentUser={currentUser}
-                          userProfile={userProfile}
-                          chatId={conversation.id}
-                          paramKey="conversationId"
-                          paramValue={conversation.id}
-                          conversationId={conversation.id}
-                          conversationDate={conversation?.createdAt}
-                          apiUrl="/api/direct-messages"
-                        />
+                        {/* <Suspense>
+                          <ChatMessages
+                            currentUser={currentUser}
+                            userProfile={userProfile}
+                            chatId={conversation.id}
+                            paramKey="conversationId"
+                            paramValue={conversation.id}
+                            conversationId={conversation.id}
+                            conversationDate={conversation?.createdAt}
+                            apiUrl="/api/direct-messages"
+                          />
+                        </Suspense> */}
 
                         {/* input message and buttons */}
-                        <ChatInput
-                          session={session}
-                          conversationId={conversation.id}
-                          userProfile={userProfile}
-                        />
+                        {/* <Suspense>
+                          <ChatInput
+                            session={session}
+                            conversationId={conversation.id}
+                            userProfile={userProfile}
+                          />
+                        </Suspense> */}
                       </div>
                     </div>
                   </div>

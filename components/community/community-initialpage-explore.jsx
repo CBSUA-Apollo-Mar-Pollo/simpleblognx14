@@ -1,13 +1,13 @@
+"use client";
 import CommunityInitialPageSideBar from "@/components/community/community-initialpage-sidebar";
-import { Input } from "@/components/ui/Input";
 import { Dot, Search } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { Button } from "../ui/Button";
 
 const CommunityInitialPageExplore = ({
-  sesssion,
+  session,
   communitiesCreated,
   communities,
 }) => {
@@ -15,15 +15,22 @@ const CommunityInitialPageExplore = ({
     <div className="">
       <div className="grid grid-cols-9">
         <div className="col-span-2 ">
-          <CommunityInitialPageSideBar {...{ communitiesCreated }} />
+          <Suspense
+            fallback={
+              <div className="w-full h-screen bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+            }
+          >
+            <CommunityInitialPageSideBar {...{ communitiesCreated }} />
+          </Suspense>
         </div>
 
         <div className="col-span-7  mt-4 ml-10">
           <div className="relative flex items-center mb-2 w-[25vw]">
             <Search className="absolute left-4 h-5 w-5 text-neutral-700 z-10 dark:text-neutral-300" />
-            <Input
+            <input
+              type="text"
               placeholder="Search Community"
-              className="h-10 pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700  border-0 bg-neutral-200 font-light rounded-full w-full text-sm "
+              className="h-10 pl-12 focus-visible:ring-transparent placeholder:font-normal placeholder:text-neutral-700 border-0 bg-neutral-200 font-light rounded-full w-full text-sm dark:bg-neutral-600 dark:placeholder-neutral-400 dark:focus-visible:ring-0 dark:text-neutral-50"
             />
           </div>
 
@@ -52,12 +59,18 @@ const CommunityInitialPageExplore = ({
                   </div>
 
                   <div className="absolute -bottom-9 left-1/2 transform -translate-x-1/2 z-10">
-                    <UserAvatar
-                      className="h-20 w-20 border-2 border-neutral-50 dark:border-neutral-500"
-                      user={{
-                        image: community.icon || null,
-                      }}
-                    />
+                    <Suspense
+                      fallback={
+                        <div className="h-20 w-20 rounded-full bg-neutral-200 dark:bg-neutral-700 animate-pulse" />
+                      }
+                    >
+                      <UserAvatar
+                        className="h-20 w-20 border-2 border-neutral-50 dark:border-neutral-500"
+                        user={{
+                          image: community.icon || null,
+                        }}
+                      />
+                    </Suspense>
                   </div>
                 </div>
 
