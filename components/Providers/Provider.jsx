@@ -5,6 +5,7 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
+
 import { SessionProvider, useSession } from "next-auth/react";
 import BackgroundLoader from "@/components/Loaders/BackgroundLoader";
 import { Suspense, useState } from "react";

@@ -146,7 +146,7 @@ const HomePageStoryCards = ({ session }) => {
         {isLoading &&
           [...Array(7)].map((_, index) => (
             <div key={index}>
-              <Skeleton className="xl:md:w-44 xl:md:h-[29.5vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
+              <Skeleton className="xl:md:w-36 xl:md:h-[24vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
             </div>
           ))}
 

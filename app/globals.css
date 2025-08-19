@@ -171,3 +171,16 @@
   height: 5px; /* Track height */
   border-radius: 4px; /* Rounded corners */
 }
+
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .bar {
+  background: #ff4500; /* Example: Reddit-style orange */
+  height: 3px;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+}

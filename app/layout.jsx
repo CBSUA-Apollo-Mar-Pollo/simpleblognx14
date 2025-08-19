@@ -8,6 +8,7 @@ import Providers from "@/components/Providers/Provider";
 import ChatWindow from "@/components/chat/chat-window";
 import ClientSideScrollRestorer from "@/components/utils/client-side-scroll-restorer";
 import BeforeUnload from "@/components/utils/before-unload";
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
+          <NextTopLoader color="#ffbb00" height={4} />
           <div className="mx-auto dark:bg-neutral-900">
             <BeforeUnload>
               <Suspense>{children}</Suspense>

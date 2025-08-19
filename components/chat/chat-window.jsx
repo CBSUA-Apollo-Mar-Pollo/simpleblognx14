@@ -113,7 +113,7 @@ const ChatWindowBox = ({ chat }) => {
   const currentUser = conversationData?.currentUser;
 
   return (
-    <div className="max-w-[22vw] w-[22vw]   drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
+    <div className="max-w-[21vw] w-[21vw]   drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-t-xl">
       {/* header */}
       <div className="py-2 px-2 drop-shadow-sm bg-white dark:bg-neutral-800 dark:border-0 rounded-t-xl border dark:border-b dark:border-neutral-700 border-neutral-200">
         <div className="flex items-center justify-between">

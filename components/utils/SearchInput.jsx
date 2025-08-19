@@ -146,7 +146,7 @@ const SearchInput = () => {
                 value={searchInput}
                 onChange={handleTyping}
                 placeholder="Search"
-                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base dark:placeholder:text-neutral-50"
+                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base dark:placeholder:text-neutral-50 caret-black dark:caret-white"
               />
             </div>
 
@@ -162,7 +162,7 @@ const SearchInput = () => {
         </DropdownMenuLabel>
         <DropdownMenuLabel>
           <div className="flex items-center justify-between">
-            <span className="text-white text-lg">Recent</span>
+            <span className="dark:text-white text-lg">Recent</span>
             <Button
               variant="ghost"
               size="sm"
@@ -201,6 +201,7 @@ const SearchInput = () => {
         )}
 
         {session?.user &&
+          searchInput.length === 0 &&
           getSearchHistory?.data.map((item, index) => (
             <div key={index}>
               <Link href={`/search/top?q=${item.text}`}>

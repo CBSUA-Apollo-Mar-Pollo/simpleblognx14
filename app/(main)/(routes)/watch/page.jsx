@@ -28,10 +28,10 @@ const WatchPage = async () => {
 
   return (
     <div className="grid grid-cols-10 ">
-      <div className="col-span-2 border-r border-neutral-200 dark:border-neutral-800 relative">
+      <div className="col-span-2 border-r dark:bg-neutral-800 border-neutral-200 dark:border-neutral-800 relative">
         <WatchPageSideBar />
       </div>
-      <div className="col-span-8 pt-5 bg-neutral-200 ">
+      <div className="col-span-8 pt-5 bg-neutral-200 dark:bg-neutral-900 ">
         <WatchPageVideos initialVideos={videos} session={session} />
       </div>
     </div>
