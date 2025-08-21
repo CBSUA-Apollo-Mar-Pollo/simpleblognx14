@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
         className={cn("min-h-screen font-sons antialiased", poppins.className)}
       >
         <Providers>
-          <NextTopLoader color="#ffbb00" height={4} />
+          <NextTopLoader color="#ffbb00" height={4} showSpinner={false} />
           <div className="mx-auto dark:bg-neutral-900">
             <BeforeUnload>
               <Suspense>{children}</Suspense>

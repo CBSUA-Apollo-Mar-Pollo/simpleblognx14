@@ -43,7 +43,7 @@ const CommunityPage = async ({ params }) => {
       )}
 
       <div
-        className={cn("col-span-9", {
+        className={cn("col-span-9 bg-neutral-200", {
           "col-span-11":
             !session?.user.id ||
             session?.user.id !== communityDetails?.creatorId,

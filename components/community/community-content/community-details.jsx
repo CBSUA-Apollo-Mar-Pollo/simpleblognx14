@@ -12,7 +12,7 @@ const CommunityDetails = ({ communityDetails, session }) => {
     year: "numeric", // "2024"
   });
   return (
-    <div className="bg-white dark:bg-neutral-800 border dark:border-0 mr-32  py-2 rounded-xl px-3">
+    <div className="bg-white dark:bg-neutral-800 border dark:border-0 py-2 rounded-xl px-3">
       <div className="flex items-center justify-between px-5">
         <h4 className="font-semibold text-2xl mt-2 dark:text-neutral-300">
           {communityDetails.name}

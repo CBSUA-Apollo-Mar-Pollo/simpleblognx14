@@ -7,7 +7,7 @@ import React from "react";
 
 const CommunityCreatePostModal = ({ session, communityId }) => {
   return (
-    <div className="border pt-3 pb-1 px-5 rounded-xl bg-white dark:bg-neutral-800 dark:border-0 ml-16">
+    <div className="border pt-3 pb-1 px-5 rounded-xl bg-white w-full dark:bg-neutral-800 dark:border-0">
       <div className="flex flex-row items-center space-x-4">
         <UserAvatar
           className="h-10 w-10 "

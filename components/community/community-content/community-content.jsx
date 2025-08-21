@@ -35,7 +35,7 @@ const CommunityContent = ({ communityDetails, communityId }) => {
     <div>
       <CommunityBanner {...{ communityDetails, session }} />
 
-      <div className=" flex flex-col items-center justify-center h-full">
+      <div className=" flex flex-col items-center justify-center w-full h-full">
         {/* about page */}
         {pathname === `/communities/${communityId}/about` ? (
           <div className="flex-1 mt-10 bg-neutral-100 dark:bg-neutral-900">
@@ -110,27 +110,15 @@ const CommunityContent = ({ communityDetails, communityId }) => {
             </div>
           </div>
         ) : (
-          <div
-            className={cn("grid grid-cols-8 pt-4", {
-              "ml-72 mr-32":
-                session === null ||
-                session?.user.id !== communityDetails.creatorId,
-            })}
-          >
-            <div
-              className={cn("col-span-5 mb-4 ml-20 mr-12", {
-                "ml-14 mr-10":
-                  session === null ||
-                  session?.user.id !== communityDetails.creatorId,
-              })}
-            >
+          <div className={cn("flex flex-row pt-4 w-full pl-32 pr-[8vw]")}>
+            <div className="w-full  pr-20 ">
               {/* Create post modal */}
               <CommunityCreatePostModal
                 session={session}
                 communityId={communityDetails?.id}
               />
 
-              <div className="ml-16 mt-1">
+              <div className=" mt-1">
                 <div className="mb-1">
                   <Button
                     variant="ghost"
@@ -166,7 +154,7 @@ const CommunityContent = ({ communityDetails, communityId }) => {
             </div>
 
             {/* community info */}
-            <div className="col-span-3 mb-4">
+            <div className="w-[30vw] mb-4">
               <CommunityDetails {...{ communityDetails, session }} />
             </div>
           </div>

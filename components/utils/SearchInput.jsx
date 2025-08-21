@@ -130,23 +130,24 @@ const SearchInput = () => {
           />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="xl:min-w-[20vw] 2xl:min-w-[24vw] mr-20 py-3 px-2 dark:bg-neutral-800 dark:border-0 -mt-14">
+      <DropdownMenuContent className="xl:min-w-[20vw] 2xl:min-w-[19vw] mr-20 py-3 px-2 dark:bg-neutral-800 dark:border-0 -mt-[62px]">
         <DropdownMenuLabel className="flex items-center">
           <Button
             onClick={() => setActive(false)}
             variant="ghost"
             size="sm"
-            className="text-white text-base dark:hover:bg-neutral-700 hover:rounded-full py-5 mr-2"
+            className="text-white text-base dark:hover:bg-neutral-700 hover:rounded-full py-5 mr-1"
           >
             <MoveLeft className="text-neutral-800 dark:text-neutral-200" />
           </Button>
           <div className="relative flex items-center w-full">
-            <div className="w-full">
+            <div className="w-full relative  items-center hidden xl:flex">
+              <Search className="absolute left-4 h-5 w-5 text-gray-500 z-20 dark:text-neutral-300" />
               <Input
                 value={searchInput}
                 onChange={handleTyping}
-                placeholder="Search"
-                className="pl-5 focus-visible:ring-transparent border-gray-300 dark:border-0 dark:border-neutral-500 font-light rounded-full w-full text-base placeholder:font-light placeholder:text-base dark:placeholder:text-neutral-50 caret-black dark:caret-white"
+                placeholder="Search..."
+                className="pl-12 focus-visible:ring-transparent  placeholder:font-normal bg-neutral-200/50 placeholder:text-neutral-700  dark:border-0  font-light rounded-full w-full  dark:placeholder:text-neutral-50 caret-black dark:caret-white"
               />
             </div>
 
