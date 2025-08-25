@@ -1,13 +1,14 @@
 import Posts from "@/components/Post/Posts";
 import WatchPageSideBar from "@/components/watch/watch-page-sidebar";
+import WatchPageSingleVideo from "@/components/watch/watch-page-single-video";
 import WatchPageVideos from "@/components/watch/watch-page-videos";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-
 import React from "react";
 
-const WatchPage = async () => {
+const WatchPage = async ({ searchParams }) => {
+  const searchQuery = searchParams?.v;
   const session = await getAuthSession();
   const videos = await db.blog.findMany({
     where: {
@@ -25,6 +26,27 @@ const WatchPage = async () => {
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
+
+  const video = await db.blog.findFirst({
+    where: {
+      id: searchQuery,
+    },
+    include: {
+      author: true,
+      comments: true,
+      votes: true,
+    },
+  });
+
+  console.log(video);
+
+  if (searchQuery) {
+    return (
+      <>
+        <WatchPageSingleVideo video={video} />
+      </>
+    );
+  }
 
   return (
     <div className="grid grid-cols-10 ">

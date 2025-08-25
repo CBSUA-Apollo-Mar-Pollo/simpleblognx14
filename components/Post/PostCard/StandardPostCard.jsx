@@ -199,6 +199,7 @@ const StandardPostCard = ({
 
   return (
     <div>
+      {/* Description */}
       {blog.description && (
         <div
           style={{
@@ -316,7 +317,11 @@ const StandardPostCard = ({
                 <div className="flex items-center gap-x-4 pl-4">
                   <Icons.SettingIcon className="h-5 w-5 fill-white" />
 
-                  <Link href={`/postComment/${blog.id}/0`}>
+                  <Link
+                    href={`/${blog.author.name
+                      .replace(/\s+/g, "")
+                      .toLowerCase()}/videos/${blog.id}`}
+                  >
                     <Maximize2 className="text-white  h-5 w-5" />
                   </Link>
 

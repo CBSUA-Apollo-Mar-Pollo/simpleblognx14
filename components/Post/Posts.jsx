@@ -79,8 +79,6 @@ export default function Posts({ initialPosts, session, deleteImage }) {
     }
   }, []);
 
-  console.log(posts, " from posts ");
-
   return (
     <div className="z-2 xl:space-y-3 space-y-1">
       <ul className={"flex flex-col col-span-2 xl:space-y-3 space-y-1 pb-2"}>
@@ -114,10 +112,10 @@ export default function Posts({ initialPosts, session, deleteImage }) {
             );
 
             // Check if the blog post is a video or an image
-            const isVideo = Boolean(blog.videoUrl);
+            const isShortV = Boolean(blog.videoUrl);
             const isImage = Boolean(blog.image);
 
-            if (isVideo && session?.user) {
+            if (isShortV && session?.user) {
               return (
                 <li key={blog.id} className="list-none z-10">
                   <ShortsVPostCard
