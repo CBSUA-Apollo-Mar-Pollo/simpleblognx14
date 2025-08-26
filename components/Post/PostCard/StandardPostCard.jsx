@@ -320,7 +320,7 @@ const StandardPostCard = ({
                   <Link
                     href={`/${blog.author.name
                       .replace(/\s+/g, "")
-                      .toLowerCase()}/videos/${blog.id}`}
+                      .toLowerCase()}/videos/${blog.id}/0`}
                   >
                     <Maximize2 className="text-white  h-5 w-5" />
                   </Link>

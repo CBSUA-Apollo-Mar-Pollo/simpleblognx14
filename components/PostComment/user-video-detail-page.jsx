@@ -8,8 +8,9 @@ import CommentSection from "./CommentSection";
 import { Download, Scaling, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import PostDescription from "./PostDescription";
 
-const UserVideoDetailPage = ({ post, comments, session }) => {
+const UserVideoDetailPage = ({ post, comments, session, index }) => {
   const router = useRouter();
   const votesAmt = post.votes.reduce((acc, vote) => {
     if (vote.type === "UP") return acc + 1;
@@ -58,38 +59,37 @@ const UserVideoDetailPage = ({ post, comments, session }) => {
       </div>
 
       <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">
-        <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">
-          <ProfileImageAndIcons session={session} />
+        <ProfileImageAndIcons session={session} />
 
-          <Separator className="bg-neutral-200 dark:bg-neutral-700" />
+        <Separator className="bg-neutral-200 dark:bg-neutral-700" />
 
-          <div
-            className={` overflow-auto max-h-[100vh] ${
-              session?.user ? "pb-[22vh]" : "pb-[10vh]"
-            }`}
-          >
-            {/* <PostDescription
-              post={post}
-              commentAmt={comments.length}
-              session={session}
-            /> */}
+        <div
+          className={` overflow-auto max-h-[100vh] ${
+            session?.user ? "pb-[22vh]" : "pb-[10vh]"
+          }`}
+        >
+          <PostDescription
+            post={post}
+            commentAmt={comments.length}
+            session={session}
+            index={index}
+          />
 
-            <Separator className="bg-neutral-300 dark:bg-neutral-700" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-700" />
 
-            <VoteCommentAndShare
-              postId={post.id}
-              initialVote={currentVote?.type}
-              initialVotesAmt={votesAmt}
-            />
+          <VoteCommentAndShare
+            postId={post.id}
+            initialVote={currentVote?.type}
+            initialVotesAmt={votesAmt}
+          />
 
-            <Separator className="bg-neutral-300 dark:bg-neutral-700" />
+          <Separator className="bg-neutral-300 dark:bg-neutral-700" />
 
-            <CommentSection
-              session={session}
-              post={post}
-              initialComments={comments}
-            />
-          </div>
+          <CommentSection
+            session={session}
+            post={post}
+            initialComments={comments}
+          />
         </div>
       </div>
     </div>

@@ -33,16 +33,23 @@ const descriptionSchema = z.object({
 });
 
 const PostDescription = ({ post, commentAmt, session, index }) => {
+  console.log(post, commentAmt, session, index);
   const router = useRouter();
   const [toggleEditDescription, setToggleEditDescription] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(descriptionSchema),
     defaultValues: {
-      description:
-        post.image[index]?.description === undefined
-          ? ""
-          : post.image[index]?.description + " ", // Provide a default empty string if undefined
+      description: (() => {
+        // Try image first
+        const imageDesc = post.image?.[index]?.description;
+        // Try video if image not found
+        const videoDesc = post.video?.[index]?.description;
+
+        // Pick whichever exists, fallback to empty string
+        const desc = imageDesc ?? videoDesc ?? "";
+        return desc + (desc ? " " : ""); // add space only if not empty
+      })(),
     },
   });
 
@@ -136,9 +143,10 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
           style={{ whiteSpace: "pre-line" }}
           className="text-sm dark:text-neutral-50 mt-2"
         >
-          {post.image.length === 1
+          {post.image?.length === 1 || post.video?.length === 1
             ? post.description
-            : post.image[index]?.description}
+            : post.image?.[index]?.description ||
+              post.video?.[index]?.description}
         </p>
       )}
 

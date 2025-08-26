@@ -10,9 +10,10 @@ export const metadata = {
 
 const postCommentPage = async ({ params }) => {
   const session = await getAuthSession();
+  const { postId, index } = params;
   const post = await db.blog.findFirst({
     where: {
-      id: params?.postId,
+      id: postId,
     },
     include: {
       author: true,
@@ -28,7 +29,7 @@ const postCommentPage = async ({ params }) => {
     where: {
       postId: post.id,
       replyToId: null,
-      index: params?.index,
+      index: post.image.length === 1 ? null : index,
     },
     include: {
       author: true,
@@ -43,10 +44,12 @@ const postCommentPage = async ({ params }) => {
     },
   });
 
+  console.log(post);
+
   return (
     <PostCommentCard
       post={post}
-      index={params?.index}
+      index={index}
       comments={comments}
       session={session}
     />

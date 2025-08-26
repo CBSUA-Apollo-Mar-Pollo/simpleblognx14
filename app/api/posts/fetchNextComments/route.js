@@ -21,6 +21,39 @@ export async function GET(req) {
 
     let comments = [];
 
+    const post = await db.blog.findFirst({
+      where: {
+        id: postId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    // if the post image is 1 bring back the comment from that is indexed
+    if (post.image.length === 1) {
+      comments = await db.comment.findMany({
+        take: parseInt(limit),
+        skip: (parseInt(page) - 1) * parseInt(limit),
+        where: {
+          postId: postId,
+          replyToId: null,
+        },
+        include: {
+          author: true,
+          replies: {
+            include: {
+              author: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      return new Response(JSON.stringify(comments));
+    }
+
     if (imageIndex !== undefined || null) {
       comments = await db.comment.findMany({
         take: parseInt(limit),

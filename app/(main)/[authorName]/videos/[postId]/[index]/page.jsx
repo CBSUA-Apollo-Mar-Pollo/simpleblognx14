@@ -5,7 +5,7 @@ import React from "react";
 
 const UsersVideoPage = async ({ params }) => {
   const session = await getAuthSession();
-  const { authorName, postId } = params;
+  const { authorName, postId, index } = params;
   const post = await db.blog.findFirst({
     where: {
       id: postId,
@@ -24,6 +24,7 @@ const UsersVideoPage = async ({ params }) => {
     where: {
       postId: post.id,
       replyToId: null,
+      index: index,
     },
     include: {
       author: true,
@@ -39,7 +40,12 @@ const UsersVideoPage = async ({ params }) => {
   });
 
   return (
-    <UserVideoDetailPage post={post} comments={comments} session={session} />
+    <UserVideoDetailPage
+      post={post}
+      comments={comments}
+      session={session}
+      index={index}
+    />
   );
 };
 
