@@ -25,6 +25,7 @@ import {
 import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 import { Input } from "../ui/Input";
+import Link from "next/link";
 
 const Menu = ({ contentClassName }) => {
   const [open, setOpen] = useState(false);
@@ -318,12 +319,15 @@ const Menu = ({ contentClassName }) => {
               <DropdownMenuSeparator className="my-2 mx-2 bg-neutral-400 dark:bg-neutral-600" />
 
               <div className="px-1">
-                <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
+                <Link
+                  href="/pages/creation"
+                  className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md"
+                >
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <Flag className="h-5 w-5" />
                   </div>
                   <h3 className="font-semibold text-[15px]">Page</h3>
-                </div>
+                </Link>
                 <div className="flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-700 px-2 py-2 cursor-pointer rounded-md">
                   <div className=" bg-gray-200 dark:bg-neutral-600 p-2.5 rounded-full cursor-pointer ">
                     <Icons.Group className="h-5 w-5 fill-neutral-800 dark:fill-neutral-300" />
