@@ -23,8 +23,8 @@ import { z } from "zod";
 
 const PageCreationInputSchema = z.object({
   pagename: z.string(),
-  // pagecategory: z.enum(["sports", "tech", "health", "music", "food"]),
-  // pagebio: z.string(),
+  pagecategory: z.enum(["sports", "tech", "health", "music", "food"]),
+  pagebio: z.string(),
 });
 
 const PageCreationSideBar = () => {
@@ -32,8 +32,13 @@ const PageCreationSideBar = () => {
     resolver: zodResolver(PageCreationInputSchema),
     defaultValues: {
       pagename: "",
+      pagecategory: "",
+      pagebio: "",
     },
   });
+  const isSubmitDisabled = !form.formState.isDirty;
+
+  console.log(isSubmitDisabled, "isSubmitDisabled");
 
   const onSubmit = (data) => {
     console.log(data, "the page creation input values");
@@ -144,7 +149,11 @@ const PageCreationSideBar = () => {
                   />
                 </div>
                 <div className="absolute bottom-0 left-0 w-full px-3">
-                  <Button disabled={true} type="submit" className="w-full">
+                  <Button
+                    disabled={isSubmitDisabled}
+                    type="submit"
+                    className="w-full"
+                  >
                     Create page
                   </Button>
 
