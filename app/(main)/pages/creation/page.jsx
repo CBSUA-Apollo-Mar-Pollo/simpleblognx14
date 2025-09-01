@@ -1,3 +1,4 @@
+import PageCreationComponent from "@/components/page/creation-page/page-creation-component";
 import PageCreationContentPreview from "@/components/page/creation-page/page-creation-content-preview";
 import PageCreationSideBar from "@/components/page/creation-page/page-creation-sidebar";
 import { getAuthSession } from "@/lib/auth";
@@ -10,16 +11,7 @@ export const metadata = {
 
 const PageCreation = async () => {
   const session = await getAuthSession();
-  return (
-    <div className="grid grid-cols-9">
-      <div className="col-span-2 bg-white drop-shadow-xl">
-        <PageCreationSideBar />
-      </div>
-      <div className="col-span-7 bg-neutral-100 h-screen">
-        <PageCreationContentPreview session={session} />
-      </div>
-    </div>
-  );
+  return <PageCreationComponent session={session} />;
 };
 
 export default PageCreation;

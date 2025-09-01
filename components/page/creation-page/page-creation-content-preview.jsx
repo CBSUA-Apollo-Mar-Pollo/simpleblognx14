@@ -20,8 +20,7 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-const PageCreationContentPreview = ({ session }) => {
-  const [pagename, setPagename] = useState("");
+const PageCreationContentPreview = ({ session, formValues }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-end py-2 pr-4">
@@ -50,9 +49,21 @@ const PageCreationContentPreview = ({ session }) => {
             <div className="absolute left-1/2 top-[32vh] transform -translate-x-1/2 -translate-y-1/2 bg-neutral-300 rounded-full border-4 border-white">
               <User className="fill-white text-white h-40 w-40" />
             </div>
-            <h1 className="mt-8 text-3xl font-bold text-center text-neutral-400">
-              Page name
+            <h1
+              className={`${
+                formValues.pagename ? "text-neutral-800" : "text-neutral-400"
+              } mt-8 text-3xl font-bold text-center `}
+            >
+              {formValues.pagename ? formValues.pagename : "Page name"}
             </h1>
+            <p
+              className={`${
+                formValues.pagebio ? "text-neutral-800" : "text-neutral-500"
+              } text-center `}
+            >
+              {" "}
+              {formValues.pagebio ? formValues.pagebio : null}
+            </p>
 
             <div className="px-4 my-4">
               <Separator className="bg-neutral-300 h-[0.7px]" />

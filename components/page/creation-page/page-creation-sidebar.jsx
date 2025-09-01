@@ -11,39 +11,13 @@ import {
   FormMessage,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
 import { Separator } from "@/components/ui/Separator";
 import { Textarea } from "@/components/ui/Textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-const PageCreationInputSchema = z.object({
-  pagename: z.string(),
-  pagecategory: z.enum(["sports", "tech", "health", "music", "food"]),
-  pagebio: z.string(),
-});
-
-const PageCreationSideBar = () => {
-  const form = useForm({
-    resolver: zodResolver(PageCreationInputSchema),
-    defaultValues: {
-      pagename: "",
-      pagecategory: "",
-      pagebio: "",
-    },
-  });
-  const isSubmitDisabled = !form.formState.isDirty;
-
-  console.log(isSubmitDisabled, "isSubmitDisabled");
-
-  const onSubmit = (data) => {
-    console.log(data, "the page creation input values");
-  };
-
+const PageCreationSideBar = ({ onSubmit, isSubmitDisabled, form }) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center py-2 pl-3 gap-x-2">
