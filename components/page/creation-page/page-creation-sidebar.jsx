@@ -13,17 +13,32 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
 import { Textarea } from "@/components/ui/Textarea";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, Loader2, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const PageCreationSideBar = ({ onSubmit, isSubmitDisabled, form }) => {
+const PageCreationSideBar = ({
+  onSubmit,
+  isSubmitDisabled,
+  form,
+  isLoading,
+  formValues,
+  setOpenLeavePageModal,
+}) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center py-2 pl-3 gap-x-2">
-        <Link href="/" className="p-2 bg-neutral-500 rounded-full">
+        <Button
+          onClick={() =>
+            formValues ? setOpenLeavePageModal(true) : router.push("/")
+          }
+          className="p-2 bg-neutral-500 rounded-full"
+        >
           <X className="text-white" />
-        </Link>
+        </Button>
         <Link href="/" className="font-bold">
           <span className=" px-3.5 py-[2px] rounded-full bg-yellow-500/80 text-[27px] ">
             E
@@ -124,10 +139,13 @@ const PageCreationSideBar = ({ onSubmit, isSubmitDisabled, form }) => {
                 </div>
                 <div className="absolute bottom-0 left-0 w-full px-3">
                   <Button
-                    disabled={isSubmitDisabled}
+                    disabled={isSubmitDisabled || isLoading}
                     type="submit"
                     className="w-full"
                   >
+                    {isLoading && (
+                      <Loader2 className="w-5 h-5 text-zinc-500 animate-spin my-10 mr-4" />
+                    )}
                     Create page
                   </Button>
 

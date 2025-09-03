@@ -20,7 +20,12 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-const PageCreationContentPreview = ({ session, formValues }) => {
+const PageCreationContentPreview = ({
+  session,
+  formValues,
+  togglePreview,
+  setTogglePreview,
+}) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-end py-2 pr-4">
@@ -32,21 +37,59 @@ const PageCreationContentPreview = ({ session, formValues }) => {
         </div>
       </div>
 
-      <div className="mx-48 bg-white  drop-shadow-[0px_0px_8px_rgba(0,0,0,0.2)] h-full mt-2 mb-10 rounded-xl p-4">
+      <div
+        className={`${
+          togglePreview === 1 ? "mx-48" : "mx-[23vw]"
+        }   bg-white  drop-shadow-[0px_0px_8px_rgba(0,0,0,0.2)] h-full mt-2 mb-10 rounded-xl p-4`}
+      >
         <div className="flex items-center justify-between">
-          <h1 className="font-semibold">Desktop preview</h1>
-          <div className="flex items-center gap-x-3">
-            <div className="bg-blue-50 rounded-full">
-              <Monitor className="text-blue-500 p-2 h-10 w-10  " />
-            </div>
-            <Smartphone />
+          <h1 className="font-semibold">
+            {togglePreview === 1 ? "Desktop" : "Mobile"} preview
+          </h1>
+          <div className="flex items-center gap-x-1">
+            <Button
+              onClick={() => setTogglePreview(1)}
+              className={`${
+                togglePreview === 1
+                  ? "bg-blue-50 hover:bg-blue-100"
+                  : "bg-white hover:bg-neutral-200"
+              }  rounded-full p-0`}
+            >
+              <Monitor
+                className={`${
+                  togglePreview === 1 ? "text-blue-500" : "text-black"
+                }  p-2 h-10 w-10  `}
+              />
+            </Button>
+            <Button
+              onClick={() => setTogglePreview(2)}
+              className={`${
+                togglePreview === 2
+                  ? "bg-blue-50 hover:bg-blue-100"
+                  : "bg-white hover:bg-neutral-200"
+              }  rounded-full p-0`}
+            >
+              <Smartphone
+                className={`${
+                  togglePreview === 2 ? "text-blue-500" : "text-black"
+                }  p-2 h-10 w-10  `}
+              />
+            </Button>
           </div>
         </div>
 
         <div className="border rounded-md mt-4 max-h-[77vh] overflow-y-auto">
           <div className="relative drop-shadow bg-white">
-            <div className="h-[40vh] bg-neutral-100 rounded-md" />
-            <div className="absolute left-1/2 top-[32vh] transform -translate-x-1/2 -translate-y-1/2 bg-neutral-300 rounded-full border-4 border-white">
+            <div
+              className={`${
+                togglePreview === 1 ? "h-[40vh]" : "h-[25vh]"
+              }  bg-neutral-100 rounded-md`}
+            />
+            <div
+              className={`absolute ${
+                togglePreview === 1 ? "top-[32vh]" : "top-[17vh]"
+              } left-1/2  transform -translate-x-1/2 -translate-y-1/2 bg-neutral-300 rounded-full border-4 border-white`}
+            >
               <User className="fill-white text-white h-40 w-40" />
             </div>
             <h1
@@ -69,30 +112,48 @@ const PageCreationContentPreview = ({ session, formValues }) => {
               <Separator className="bg-neutral-300 h-[0.7px]" />
             </div>
 
-            <div className="flex items-center justify-between gap-x-6 mx-6">
-              <div className="flex items-center gap-x-6">
-                <p className="font-semibold text-neutral-700 text-[15px]">
-                  Posts
-                </p>
-                <p className="font-semibold text-neutral-700 text-[15px]">
-                  About
-                </p>
-                <p className="font-semibold text-neutral-700 text-[15px]">
-                  Followers
-                </p>
-                <p className="font-semibold text-neutral-700 text-[15px]">
-                  Photos
-                </p>
-                <p className="font-semibold text-neutral-700 text-[15px]">
-                  Videos
-                </p>
-                <div className="flex items-center gap-x-1">
+            <div
+              className={`${
+                togglePreview === 1 ? "mx-6" : "mx-4"
+              } flex items-center justify-between gap-x-6`}
+            >
+              {togglePreview === 1 ? (
+                <div className="flex items-center gap-x-6">
                   <p className="font-semibold text-neutral-700 text-[15px]">
-                    More
+                    Posts
                   </p>
-                  <Triangle className="rotate-180 text-transparent fill-neutral-700 h-2 w-3  " />
+                  <p className="font-semibold text-neutral-700 text-[15px]">
+                    About
+                  </p>
+                  <p className="font-semibold text-neutral-700 text-[15px]">
+                    Followers
+                  </p>
+                  <p className="font-semibold text-neutral-700 text-[15px]">
+                    Photos
+                  </p>
+                  <p className="font-semibold text-neutral-700 text-[15px]">
+                    Videos
+                  </p>
+                  <div className="flex items-center gap-x-1">
+                    <p className="font-semibold text-neutral-700 text-[15px]">
+                      More
+                    </p>
+                    <Triangle className="rotate-180 text-transparent fill-neutral-700 h-2 w-3  " />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-center gap-x-6">
+                  <p className="font-semibold text-neutral-700 text-[15px]">
+                    Posts
+                  </p>
+                  <div className="flex items-center gap-x-1">
+                    <p className="font-semibold text-neutral-700 text-[15px]">
+                      More
+                    </p>
+                    <Triangle className="rotate-180 text-transparent fill-neutral-700 h-2 w-3  " />
+                  </div>
+                </div>
+              )}
 
               <div className="flex items-center gap-x-2 pb-3">
                 <Button disabled={true} className="flex gap-x-1 rounded-lg">
@@ -111,7 +172,11 @@ const PageCreationContentPreview = ({ session, formValues }) => {
           </div>
 
           <div className="bg-neutral-200 pt-4 flex flex-col space-y-5 pb-4">
-            <div className="bg-white mx-28 p-4 rounded-xl drop-shadow">
+            <div
+              className={`${
+                togglePreview === 1 ? "mx-28 " : "mx-4"
+              } bg-white p-4 rounded-xl drop-shadow`}
+            >
               <h1 className="font-bold text-xl">Intro</h1>
 
               <div className="flex flex-col space-y-4 mt-4">
@@ -129,7 +194,11 @@ const PageCreationContentPreview = ({ session, formValues }) => {
               </div>
             </div>
 
-            <div className="bg-white mx-28 p-4 rounded-xl drop-shadow mb-4 flex items-center justify-between">
+            <div
+              className={`${
+                togglePreview === 1 ? "mx-28" : "mx-4"
+              } bg-white  p-3 rounded-xl drop-shadow mb-4 flex items-center justify-between`}
+            >
               <h1 className="font-bold text-xl">Posts</h1>
               <Button className="gap-x-2 rounded-md px-3 py-2 bg-neutral-300 text-neutral-800">
                 <Settings2 className="h-5 w-5" />
