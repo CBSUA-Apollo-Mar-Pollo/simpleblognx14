@@ -184,3 +184,10 @@
   left: 0;
   width: 100%;
 }
+
+.simplebar-content-wrapper:hover .simplebar-scrollbar::before {
+  opacity: 1 !important;
+}
+.simplebar-content-wrapper:hover .simplebar-track {
+  visibility: visible !important;
+}

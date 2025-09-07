@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 
-const PageCreationContentPreview = ({
+const PageCreationInitialContentPreview = ({
   session,
   formValues,
   togglePreview,
@@ -212,4 +212,4 @@ const PageCreationContentPreview = ({
   );
 };
 
-export default PageCreationContentPreview;
+export default PageCreationInitialContentPreview;

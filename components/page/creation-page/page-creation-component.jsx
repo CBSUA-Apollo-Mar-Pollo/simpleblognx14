@@ -1,13 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import PageCreationSideBar from "./page-creation-sidebar";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import PageCreationContentPreview from "./page-creation-content-preview";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -21,6 +18,9 @@ import { X } from "lucide-react";
 import { Separator } from "@/components/ui/Separator";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
+import PageCreationInitialSideBar from "./page-creation-initial-sidebar";
+import PageCreationInitialContentPreview from "./page-creation-initial-content-preview";
+import PageCreationMultiStepSideBar from "./page-creation-multi-step-sidebar";
 
 const PageCreationInputSchema = z.object({
   pagename: z.string(),
@@ -29,10 +29,15 @@ const PageCreationInputSchema = z.object({
 });
 
 const PageCreationComponent = ({ session }) => {
-  const router = useRouter();
   const [openLeavePageModal, setOpenLeavePageModal] = useState(false);
-  const { toast } = useToast();
   const [togglePreview, setTogglePreview] = useState(1);
+  const [sideBarStepProcesssCounter, setSideBarStepProcessCounter] =
+    useState(1);
+  const [isFormDirty, setIsFormDirty] = useState(false);
+
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm({
     resolver: zodResolver(PageCreationInputSchema),
     defaultValues: {
@@ -63,6 +68,7 @@ const PageCreationComponent = ({ session }) => {
       });
     },
     onSuccess: (data) => {
+      setSideBarStepProcessCounter(1);
       toast({
         description: (
           <>
@@ -74,8 +80,6 @@ const PageCreationComponent = ({ session }) => {
       });
     },
   });
-
-  const [isFormDirty, setIsFormDirty] = useState(false);
 
   useEffect(() => {
     const hasChanges = Object.values(formValues).some((value) => value !== "");
@@ -138,24 +142,52 @@ const PageCreationComponent = ({ session }) => {
 
   return (
     <div className="grid grid-cols-9">
-      <div className="col-span-2 bg-white drop-shadow-xl">
-        <PageCreationSideBar
-          onSubmit={onSubmit}
-          isSubmitDisabled={isSubmitDisabled}
-          form={form}
-          isLoading={isPending}
-          formValues={formValues}
-          setOpenLeavePageModal={setOpenLeavePageModal}
-        />
-      </div>
-      <div className="col-span-7 bg-neutral-100 h-screen">
-        <PageCreationContentPreview
-          session={session}
-          formValues={formValues}
-          togglePreview={togglePreview}
-          setTogglePreview={setTogglePreview}
-        />
-      </div>
+      {/* initial step in page creation */}
+      {sideBarStepProcesssCounter === 0 && (
+        <>
+          <div className="col-span-2 bg-white drop-shadow-xl">
+            <PageCreationInitialSideBar
+              onSubmit={onSubmit}
+              isSubmitDisabled={isSubmitDisabled}
+              form={form}
+              isLoading={isPending}
+              formValues={formValues}
+              setOpenLeavePageModal={setOpenLeavePageModal}
+            />
+          </div>
+          <div className="col-span-7 bg-neutral-100 h-screen">
+            <PageCreationInitialContentPreview
+              session={session}
+              formValues={formValues}
+              togglePreview={togglePreview}
+              setTogglePreview={setTogglePreview}
+            />
+          </div>
+        </>
+      )}
+      {/* multi step additional inputs and preview */}
+      {sideBarStepProcesssCounter !== 0 && (
+        <>
+          <div className="col-span-2 bg-white drop-shadow-xl">
+            <PageCreationMultiStepSideBar
+              onSubmit={onSubmit}
+              isSubmitDisabled={isSubmitDisabled}
+              form={form}
+              isLoading={isPending}
+              formValues={formValues}
+              setOpenLeavePageModal={setOpenLeavePageModal}
+            />
+          </div>
+          <div className="col-span-7 bg-neutral-100 h-screen">
+            <PageCreationInitialContentPreview
+              session={session}
+              formValues={formValues}
+              togglePreview={togglePreview}
+              setTogglePreview={setTogglePreview}
+            />
+          </div>
+        </>
+      )}
 
       <Dialog open={openLeavePageModal} onOpenChange={setOpenLeavePageModal}>
         <DialogContent className="[&>button]:hidden p-0">

@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const PageCreationSideBar = ({
+const PageCreationInitialSideBar = ({
   onSubmit,
   isSubmitDisabled,
   form,
@@ -163,4 +163,4 @@ const PageCreationSideBar = ({
   );
 };
 
-export default PageCreationSideBar;
+export default PageCreationInitialSideBar;

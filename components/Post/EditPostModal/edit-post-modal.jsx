@@ -39,24 +39,16 @@ import {
   X,
 } from "lucide-react";
 import { LoaderContext } from "@/context/LoaderContext";
-import ToolTipComp from "../../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useSession } from "next-auth/react";
 import qs from "query-string";
-import ImagePreviewEditPost from "../image-preview-edit-post";
 import EmojiPicker from "../../PostComment/EmojiPicker";
-import { cn, formatTimeToNow } from "@/lib/utils";
 import { Icons } from "../../utils/Icons";
-import { handleRemoveImage } from "@/actions/handleRemovImage";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
-import MultipleImageRender from "../multiple-image-render";
-import Link from "next/link";
 import SharedPostEdit from "./shared_post_edit";
 import EditPostContent from "./edit-post-content";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/RadioGroup";
-import { Checkbox } from "@/components/ui/Checkbox";
-import { Label } from "@/components/ui/Label";
+
 import {
   Tooltip,
   TooltipContent,

@@ -1,6 +1,6 @@
 import PageCreationComponent from "@/components/page/creation-page/page-creation-component";
-import PageCreationContentPreview from "@/components/page/creation-page/page-creation-content-preview";
-import PageCreationSideBar from "@/components/page/creation-page/page-creation-sidebar";
+import PageCreationContentPreview from "@/components/page/creation-page/page-creation-initial-content-preview";
+import PageCreationSideBar from "@/components/page/creation-page/page-creation-initial-sidebar";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
 
