@@ -13,10 +13,13 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
 import { Textarea } from "@/components/ui/Textarea";
+import { pageCategories } from "@/constants/page-categories";
 import { ChevronRight, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const PageCreationInitialSideBar = ({
   onSubmit,
@@ -27,6 +30,26 @@ const PageCreationInitialSideBar = ({
   setOpenLeavePageModal,
 }) => {
   const router = useRouter();
+  const containerRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const { pagename, pagecategory } = form.watch();
+  const handleFocus = () => setIsFocused(true);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setIsFocused(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col h-full">
@@ -98,14 +121,49 @@ const PageCreationInitialSideBar = ({
                     control={form.control}
                     name="pagecategory"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="relative" ref={containerRef}>
                         <FormLabel>Category(required)</FormLabel>
                         <FormControl>
                           <Input
-                            className="h-14 border-neutral-300  rounded-2xl focus:border-2  focus:border-blue-600 "
+                            onFocus={handleFocus}
+                            className="h-14  border-neutral-300  rounded-2xl focus:border-2  focus:border-blue-600 "
                             {...field}
                           />
                         </FormControl>
+                        {isFocused && (
+                          <div
+                            onMouseDown={(e) => e.preventDefault()}
+                            className="absolute top-[82px] left-0 bg-white border-2 border-gray-300 p-2 w-[20.3vw] shadow-lg rounded-xl"
+                          >
+                            {pagecategory.length === 0 && (
+                              <h1 className="text-center p-2">
+                                Type something to get started
+                              </h1>
+                            )}
+
+                            {pagecategory.length > 0 && (
+                              <SimpleBar
+                                forceVisible="y"
+                                style={{ maxHeight: "30vh" }}
+                              >
+                                {pageCategories
+                                  .filter((item) =>
+                                    item
+                                      .toLowerCase()
+                                      .includes(pagecategory.toLowerCase())
+                                  )
+                                  .map((item) => (
+                                    <div
+                                      key={item}
+                                      className="p-2  cursor-pointer hover:bg-gray-100"
+                                    >
+                                      <p className="font-medium">{item}</p>
+                                    </div>
+                                  ))}
+                              </SimpleBar>
+                            )}
+                          </div>
+                        )}
                         <FormDescription className="text-[12px] text-neutral-700">
                           Your Page needs to have a category. Enter a category
                           that best describes you.

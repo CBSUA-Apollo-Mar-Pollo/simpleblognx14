@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 import PageCreationInitialSideBar from "./page-creation-initial-sidebar";
 import PageCreationInitialContentPreview from "./page-creation-initial-content-preview";
-import PageCreationMultiStepSideBar from "./page-creation-multi-step-sidebar";
+import PageCreationMultiStepSideBar from "./multi-step-sidebars/page-creation-multi-step-sidebar";
 
 const PageCreationInputSchema = z.object({
   pagename: z.string(),
@@ -32,7 +32,7 @@ const PageCreationComponent = ({ session }) => {
   const [openLeavePageModal, setOpenLeavePageModal] = useState(false);
   const [togglePreview, setTogglePreview] = useState(1);
   const [sideBarStepProcesssCounter, setSideBarStepProcessCounter] =
-    useState(1);
+    useState(0);
   const [isFormDirty, setIsFormDirty] = useState(false);
 
   const router = useRouter();
@@ -165,17 +165,21 @@ const PageCreationComponent = ({ session }) => {
           </div>
         </>
       )}
+
       {/* multi step additional inputs and preview */}
       {sideBarStepProcesssCounter !== 0 && (
         <>
           <div className="col-span-2 bg-white drop-shadow-xl">
             <PageCreationMultiStepSideBar
+              sideBarStepProcesssCounter={sideBarStepProcesssCounter}
+              setSideBarStepProcessCounter={setSideBarStepProcessCounter}
               onSubmit={onSubmit}
               isSubmitDisabled={isSubmitDisabled}
               form={form}
               isLoading={isPending}
               formValues={formValues}
               setOpenLeavePageModal={setOpenLeavePageModal}
+              session={session}
             />
           </div>
           <div className="col-span-7 bg-neutral-100 h-screen">

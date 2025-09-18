@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/Button";
 import {
   Form,
@@ -22,7 +20,8 @@ import React from "react";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 
-const PageCreationMultiStepSideBar = ({
+const PageCreationStepOneSidebar = ({
+  setSideBarStepProcessCounter,
   onSubmit,
   isSubmitDisabled,
   form,
@@ -265,10 +264,22 @@ const PageCreationMultiStepSideBar = ({
             </p>
             <Progress value={80} className="h-2 my-2" />
             <div className="flex items-center gap-x-2">
-              <Button className="w-full bg-neutral-300 text-black">
+              <Button
+                onClick={() =>
+                  setSideBarStepProcessCounter((prevCount) => {
+                    if (prevCount > 0) {
+                      return prevCount - 1;
+                    }
+                    return prevCount;
+                  })
+                }
+                className="w-full bg-neutral-300 hover:bg-neutral-400 text-black"
+              >
                 Previous
               </Button>
-              <Button className="w-full bg-blue-100 text-blue-700">Next</Button>
+              <Button className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700">
+                Next
+              </Button>
             </div>
           </div>
         </div>
@@ -277,4 +288,4 @@ const PageCreationMultiStepSideBar = ({
   );
 };
 
-export default PageCreationMultiStepSideBar;
+export default PageCreationStepOneSidebar;
