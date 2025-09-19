@@ -2,6 +2,7 @@ import PageCreationComponent from "@/components/page/creation-page/page-creation
 import PageCreationContentPreview from "@/components/page/creation-page/page-creation-initial-content-preview";
 import PageCreationSideBar from "@/components/page/creation-page/page-creation-initial-sidebar";
 import { getAuthSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export const metadata = {
@@ -11,6 +12,9 @@ export const metadata = {
 
 const PageCreation = async () => {
   const session = await getAuthSession();
+  if (!session?.user) {
+    redirect("/");
+  }
   return <PageCreationComponent session={session} />;
 };
 

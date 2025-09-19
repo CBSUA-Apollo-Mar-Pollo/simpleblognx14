@@ -63,7 +63,7 @@ const PageCreationStepFourSidebar = ({
               <p className="text-sm text-neutral-500">
                 Dont miss updates about your page PAGE while you're switched
                 into your profile{" "}
-                <span className="font-semibold">{session.user.name}</span>.
+                <span className="font-semibold">{session?.user?.name}</span>.
               </p>
             </div>
             <Switch className="mt-2" />

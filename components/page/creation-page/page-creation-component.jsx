@@ -24,7 +24,7 @@ import PageCreationMultiStepSideBar from "./multi-step-sidebars/page-creation-mu
 
 const PageCreationInputSchema = z.object({
   pagename: z.string(),
-  pagecategory: z.string(),
+  pagecategory: z.array(z.string()).min(1, "At least one category is required"),
   pagebio: z.string(),
 });
 
@@ -34,6 +34,7 @@ const PageCreationComponent = ({ session }) => {
   const [sideBarStepProcesssCounter, setSideBarStepProcessCounter] =
     useState(0);
   const [isFormDirty, setIsFormDirty] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const router = useRouter();
   const { toast } = useToast();
@@ -42,7 +43,7 @@ const PageCreationComponent = ({ session }) => {
     resolver: zodResolver(PageCreationInputSchema),
     defaultValues: {
       pagename: "",
-      pagecategory: "",
+      pagecategory: [], // Now it's an empty array by default
       pagebio: "",
     },
   });
@@ -153,6 +154,8 @@ const PageCreationComponent = ({ session }) => {
               isLoading={isPending}
               formValues={formValues}
               setOpenLeavePageModal={setOpenLeavePageModal}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
             />
           </div>
           <div className="col-span-7 bg-neutral-100 h-screen">

@@ -33,7 +33,7 @@ const PageCreationInitialContentPreview = ({
           <Menu contentClassName="-mr-[7vw]" />
           <ChatBoxMenu />
           <NotificationMenu />
-          <UserAccountNav user={session.user} />
+          <UserAccountNav user={session?.user} />
         </div>
       </div>
 
