@@ -377,12 +377,45 @@ model History {
 model Page {
   id       String  @id @default(cuid())
   name     String
-  category String
+  category Json // array of categories
   bio      String?
+
+  additional   PageAdditionalInfo? @relation(fields: [additionalId], references: [id])
+  additionalId String?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PageAdditionalInfo {
+  id String @id @default(cuid())
+
+  website String?
+  phone   String?
+  email   String?
+
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId String?   @unique
+
+  businessHours Json?
+
+  photoUrl      String?
+  coverPhotoUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Page      Page[]
+}
+
+model Location {
+  id      String  @id @default(cuid())
+  address String?
+  city    String?
+  zipCode String?
+  country String?
+
+  pageAdditionalInfo PageAdditionalInfo?
 }

@@ -49,16 +49,21 @@ const PageCreationComponent = ({ session }) => {
   });
 
   const { pagename, pagecategory } = form.watch();
-  const isSubmitDisabled = !pagename || !pagecategory;
+  const isSubmitDisabled = !pagename || !selectedCategories;
   const formValues = form.watch();
 
   const {
     mutate: onSubmit,
+    data: pageId,
     isPending,
     isSuccess,
   } = useMutation({
-    mutationFn: async (values) => {
-      const { data } = await axios.post("/api/page/creation", values);
+    mutationFn: async () => {
+      const payload = {
+        ...form.getValues(),
+        pagecategory: selectedCategories,
+      };
+      const { data } = await axios.post("/api/page/creation", payload);
       return data;
     },
     onError: (err) => {
@@ -200,7 +205,9 @@ const PageCreationComponent = ({ session }) => {
         <DialogContent className="[&>button]:hidden p-0">
           <DialogHeader className="pt-4 relative">
             <DialogTitle className="text-start pl-7 font-bold text-xl dark:text-neutral-200">
-              Leave page?
+              {sideBarStepProcesssCounter > 0
+                ? "Exit without finishing?"
+                : "Leave page?"}
             </DialogTitle>
             <DialogClose asChild>
               <X className="w-9 h-9 absolute right-4 top-1 cursor-pointer p-1.5 bg-neutral-200 dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
@@ -210,25 +217,43 @@ const PageCreationComponent = ({ session }) => {
           <Separator className="bg-neutral-300 h-[0.2px]" />
 
           <div className="px-4 pb-4">
-            <p>
-              Are you sure want to leave?Your changes will be lost if you leave
-              this page.
+            <p className="text-[15px]">
+              {sideBarStepProcesssCounter > 0
+                ? "Your page has been created,but you'll lose any unsaved details if you leave or go to the page now."
+                : " Are you sure want to leave?Your changes will be lost if you leave this page."}
             </p>
 
-            <div className="mt-4 w-full flex justify-end gap-x-1">
-              <Button
-                onClick={() => setOpenLeavePageModal(false)}
-                className="bg-transparent hover:bg-blue-100 text-blue-600 font-semibold px-5 py-2"
-              >
-                Stay on page
-              </Button>
-              <Button
-                onClick={() => router.push("/")}
-                className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl"
-              >
-                Leave page
-              </Button>
-            </div>
+            {sideBarStepProcesssCounter > 0 ? (
+              <div className="mt-4 w-full flex justify-end gap-x-1">
+                <Button
+                  onClick={() => router.push("/")}
+                  className="bg-transparent hover:bg-blue-100 text-blue-600 font-semibold px-5 py-2"
+                >
+                  Leave page
+                </Button>
+                <Button
+                  onClick={() => router.push(`/page/profile/${pageId}`)}
+                  className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl"
+                >
+                  Go to page
+                </Button>
+              </div>
+            ) : (
+              <div className="mt-4 w-full flex justify-end gap-x-1">
+                <Button
+                  onClick={() => setOpenLeavePageModal(false)}
+                  className="bg-transparent hover:bg-blue-100 text-blue-600 font-semibold px-5 py-2"
+                >
+                  Stay on page
+                </Button>
+                <Button
+                  onClick={() => router.push("/")}
+                  className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl"
+                >
+                  Leave page
+                </Button>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>

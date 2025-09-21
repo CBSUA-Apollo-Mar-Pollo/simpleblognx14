@@ -4,10 +4,16 @@ import { db } from "@/lib/db";
 export async function POST(req) {
   try {
     const session = await getAuthSession();
+
+    if (!session.user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
     const body = await req.json();
+
     const { pagename, pagecategory, pagebio } = body;
 
-    await db.page.create({
+    const page = await db.page.create({
       data: {
         name: pagename,
         category: pagecategory,
@@ -16,7 +22,7 @@ export async function POST(req) {
       },
     });
 
-    return new Response("OK");
+    return new Response(page.id, { status: 200 });
   } catch (error) {
     console.log("Error page creation:", error);
   }

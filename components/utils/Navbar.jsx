@@ -18,7 +18,7 @@ import { AlignJustify, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 
-const Navbar = () => {
+const Navbar = ({ pages }) => {
   const { setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -115,7 +115,7 @@ const Navbar = () => {
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
-              <UserAccountNav user={session.user} />
+              <UserAccountNav user={session.user} pages={pages} />
 
               {/* show in mobile */}
               <div className="xl:hidden ">

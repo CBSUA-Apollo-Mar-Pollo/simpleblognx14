@@ -11,8 +11,11 @@ import DarkMode from "./DarkMode";
 import DropDownMenuContentComp from "./DropDownMenuContentComp";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { Separator } from "../ui/Separator";
+import { Icons } from "./Icons";
+import { Button } from "../ui/Button";
 
-const UserAccountNav = ({ user }) => {
+const UserAccountNav = ({ user, pages }) => {
   const [open, setOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState(false);
   const [subMenu, setSubMenu] = useState(null);
@@ -33,17 +36,17 @@ const UserAccountNav = ({ user }) => {
       >
         {/* profile image and name */}
         {!subMenu && (
-          <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] dark:drop-shadow-[0px_0px_8px_rgba(0,0,0,0.20)] bg-white dark:bg-neutral-700 dark:hover:bg-neutral-700 rounded-xl">
+          <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.2)] pb-1 dark:drop-shadow-[0px_0px_8px_rgba(0,0,0,0.20)] bg-white dark:bg-neutral-700 dark:hover:bg-neutral-700 rounded-xl">
             <Link href={`/user/${user.id}`}>
               <div className="px-2.5 flex items-center py-3 justify-start gap-x-3  ">
                 <UserAvatar
-                  className="h-14 w-14 "
+                  className="h-12 w-12 "
                   user={{ name: user.name || null, image: user?.image || null }}
                 />
 
                 <div className="flex flex-col leading-none">
                   {user?.name && (
-                    <p className="font-semibold text-lg text-neutral-800 dark:text-neutral-100">
+                    <p className="font-bold text-lg text-neutral-800 dark:text-neutral-100">
                       {user?.name}
                     </p>
                   )}
@@ -59,6 +62,35 @@ const UserAccountNav = ({ user }) => {
                 </div>
               </div>
             </Link>
+
+            {pages?.length > 0 &&
+              pages.map((page) => (
+                <div key={page.id} className="px-2 py-3">
+                  <Separator className="bg-neutral-300 mb-2" />
+                  <div className="py-2 pl-2 flex items-center gap-x-2 hover:bg-neutral-200 rounded-lg cursor-pointer">
+                    <div className="relative">
+                      <p className="absolute top-[6.0.15px] left-[6px] text-lg font-semibold bg-yellow-500 text-yellow-800 px-2  w-7 rounded-full">
+                        {page.name[0].toUpperCase()}
+                      </p>
+                      <Icons.circularIcon className="h-10 w-10 text-neutral-500" />
+                    </div>
+
+                    <p className="font-semibold">
+                      {page?.name
+                        ? page.name.charAt(0).toUpperCase() + page.name.slice(1)
+                        : ""}
+                    </p>
+                  </div>
+
+                  <Separator className="bg-neutral-300 mt-2" />
+                </div>
+              ))}
+
+            <div className="mx-4 mb-3">
+              <Button className="w-full font-semibold bg-neutral-300 hover:bg-neutral-400 text-black">
+                See all profiles
+              </Button>
+            </div>
           </div>
         )}
 

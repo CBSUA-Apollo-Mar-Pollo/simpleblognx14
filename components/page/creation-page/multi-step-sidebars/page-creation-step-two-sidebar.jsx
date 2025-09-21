@@ -40,7 +40,7 @@ const PageCreationStepTwoSidebar = ({
             href="/pages"
             className="hover:underline text-xs font-semibold text-neutral-700"
           >
-            Step 2 of 5
+            Step 2 of 4
           </Link>
         </div>
 
@@ -139,7 +139,14 @@ const PageCreationStepTwoSidebar = ({
               >
                 Previous
               </Button>
-              <Button className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700">
+              <Button
+                onClick={() =>
+                  setSideBarStepProcessCounter((prevCount) => {
+                    return prevCount + 1;
+                  })
+                }
+                className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700"
+              >
                 Next
               </Button>
             </div>

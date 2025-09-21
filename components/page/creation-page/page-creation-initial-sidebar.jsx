@@ -308,26 +308,7 @@ const PageCreationInitialSideBar = ({
   before:shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] before:pointer-events-none"
         >
           <Button
-            disabled={isSubmitDisabled || isLoading}
-            type="submit"
-            className="w-full"
-          >
-            {isLoading && (
-              <Loader2 className="w-5 h-5 text-zinc-500 animate-spin my-10 mr-4" />
-            )}
-            Create page
-          </Button>
-
-          <p className="text-xs text-center text-neutral-700 mt-1">
-            By creating a Page, you agree to the Pages, Groups and Events
-            Policies
-          </p>
-        </div>
-        <div
-          className="absolute bottom-0 left-0 w-full px-3 py-2  z-20 bg-white   before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-2 
-  before:shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] before:pointer-events-none"
-        >
-          <Button
+            onClick={onSubmit}
             disabled={isSubmitDisabled || isLoading}
             type="submit"
             className="w-full"

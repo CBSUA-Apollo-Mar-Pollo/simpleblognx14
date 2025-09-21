@@ -93,7 +93,16 @@ const PageCreationStepFourSidebar = ({
             >
               Previous
             </Button>
-            <Button className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700">
+            <Button
+              onClick={() =>
+                setSideBarStepProcessCounter((prevCount) => {
+                  if (prevCount === 4) {
+                    return prevCount;
+                  }
+                })
+              }
+              className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700"
+            >
               Next
             </Button>
           </div>

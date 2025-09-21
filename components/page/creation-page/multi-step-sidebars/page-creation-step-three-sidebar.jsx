@@ -80,7 +80,14 @@ const PageCreationStepThreeSidebar = ({
             >
               Previous
             </Button>
-            <Button className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700">
+            <Button
+              onClick={() =>
+                setSideBarStepProcessCounter((prevCount) => {
+                  return prevCount + 1;
+                })
+              }
+              className="w-full bg-blue-100 hover:bg-blue-300 text-blue-700"
+            >
               Next
             </Button>
           </div>
