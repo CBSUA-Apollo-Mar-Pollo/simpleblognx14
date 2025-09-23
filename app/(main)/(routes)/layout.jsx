@@ -10,15 +10,31 @@ export const metadata = {
 
 const Layout = async ({ children }) => {
   const session = await getAuthSession();
+
+  const user = await db.user.findFirst({
+    where: {
+      id: session?.user?.id,
+    },
+    select: {
+      id: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+    },
+  });
   const pages = await db.page.findMany({
     where: {
       userId: session?.user?.id,
     },
   });
+
+  const profiles = [user, ...pages];
+
   return (
     <div className="h-full ">
       <Suspense>
-        <Navbar pages={pages} />
+        <Navbar profiles={profiles} />
       </Suspense>
       {children}
     </div>
