@@ -38,6 +38,7 @@ model Account {
 
 model User {
   id               String    @id @default(cuid())
+  type             String    @default("user")
   name             String?
   handleName       String?
   bio              String?
@@ -49,6 +50,14 @@ model User {
   birthdate        DateTime?
   onlineStatus     Boolean   @default(false)
   lastStatusChange DateTime  @default(now())
+  category         Json? // array of categories for page profile
+
+  ownerId String?
+  owner   User?   @relation("PageOwner", fields: [ownerId], references: [id])
+  pages   User[]  @relation("PageOwner")
+
+  additional           PageAdditionalInfo? @relation(fields: [additionalPageInfoId], references: [id])
+  additionalPageInfoId String?
 
   accounts         Account[]
   blogs            Blog[]
@@ -75,7 +84,6 @@ model User {
   ShortsVidVote     ShortsVidVote[]
   Story             Story[]
   History           History[]
-  Page              Page[]
 }
 
 model Blog {
@@ -374,21 +382,21 @@ model History {
   @@id([postId, userId])
 }
 
-model Page {
-  id       String  @id @default(cuid())
-  name     String
-  category Json // array of categories
-  bio      String?
+// model Page {
+//   id       String  @id @default(cuid())
+//   name     String
+//   category Json // array of categories
+//   bio      String?
 
-  additional   PageAdditionalInfo? @relation(fields: [additionalId], references: [id])
-  additionalId String?
+//   additional   PageAdditionalInfo? @relation(fields: [additionalId], references: [id])
+//   additionalId String?
 
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+//   user   User   @relation(fields: [userId], references: [id])
+//   userId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 
 model PageAdditionalInfo {
   id String @id @default(cuid())
@@ -407,7 +415,8 @@ model PageAdditionalInfo {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Page      Page[]
+
+  User User[]
 }
 
 model Location {

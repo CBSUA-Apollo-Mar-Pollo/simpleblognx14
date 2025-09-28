@@ -1560,7 +1560,7 @@ c0 480 -13 616 -77 822 -110 355 -380 693 -721 904 -291 181 -651 258 -1020
         height="32"
         fill="currentColor"
         aria-hidden="true"
-        class="x14rh7hd x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq"
+        className="x14rh7hd x1lliihq x1tzjh5l x1k90msu x2h7rmj x1qfuztq"
         {...props}
       >
         <g fillRule="evenodd" transform="translate(-446 -398)">

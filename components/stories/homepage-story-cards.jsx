@@ -122,14 +122,22 @@ const HomePageStoryCards = ({ session }) => {
         >
           {/* create story */}
           <div className="relative md:w-32 md:h-40 w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
-            <Image
-              sizes="100vw"
-              width={0}
-              height={0}
-              src={session?.user.image}
-              alt="profile image"
-              className="w-full h-full object-cover"
-            />
+            {session?.user.image && (
+              <Image
+                sizes="100vw"
+                width={0}
+                height={0}
+                src={session?.user.image}
+                alt="profile image"
+                className="w-full h-full object-cover"
+              />
+            )}
+
+            {!session?.user.image && (
+              <p className="flex justify-center items-center text-[8em] font-semibold bg-yellow-500 text-yellow-800 px-2 h-full">
+                {session?.user?.name[0].toUpperCase()}
+              </p>
+            )}
           </div>
 
           <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

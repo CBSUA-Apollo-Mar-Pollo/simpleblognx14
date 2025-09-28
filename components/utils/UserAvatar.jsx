@@ -24,16 +24,15 @@ const UserAvatar = ({ post, user, ...props }) => {
             />
           </div>
         ) : (
-          <AvatarFallback className="bg-neutral-200">
-            <span className="sr-only">{user?.name}</span>
-            <div className="h-full w-full">
-              <Image
+          <AvatarFallback className="text-4xl font-bold bg-yellow-500 text-yellow-800 px-2   rounded-full">
+            {/* <Image
                 src="/user.png"
                 fill
                 className="h-full w-full"
                 alt="User avatar"
-              />
-            </div>
+              /> */}
+
+            {user?.name[0].toUpperCase()}
           </AvatarFallback>
         )}
       </Avatar>

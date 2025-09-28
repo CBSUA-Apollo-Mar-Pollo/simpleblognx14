@@ -115,7 +115,11 @@ const Navbar = ({ profiles }) => {
               <ChatBoxMenu />
               <NotificationMenu />
               {/* user profile */}
-              <UserAccountNav user={session.user} profiles={profiles} />
+              <UserAccountNav
+                user={session.user}
+                profiles={profiles}
+                accountOwner={session.accountOwner}
+              />
 
               {/* show in mobile */}
               <div className="xl:hidden ">

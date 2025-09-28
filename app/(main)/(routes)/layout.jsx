@@ -15,21 +15,37 @@ const Layout = async ({ children }) => {
     where: {
       id: session?.user?.id,
     },
+
     select: {
       id: true,
       name: true,
       bio: true,
       email: true,
       image: true,
-    },
-  });
-  const pages = await db.page.findMany({
-    where: {
-      userId: session?.user?.id,
+      pages: {
+        select: {
+          id: true,
+          name: true,
+          category: true,
+          image: true,
+          bio: true,
+          type: true,
+          ownerId: true,
+        },
+      },
+      owner: {
+        select: {
+          id: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+        },
+      },
     },
   });
 
-  const profiles = [user, ...pages];
+  const profiles = [user, ...user.pages, user.owner].filter(Boolean);
 
   return (
     <div className="h-full ">

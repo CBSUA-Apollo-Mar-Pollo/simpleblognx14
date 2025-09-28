@@ -13,17 +13,22 @@ export async function POST(req) {
 
     const { pagename, pagecategory, pagebio } = body;
 
-    const page = await db.page.create({
+    const page = await db.user.create({
       data: {
         name: pagename,
         category: pagecategory,
         bio: pagebio,
-        userId: session.user.id,
+        ownerId: session.user.id,
+        type: "page",
       },
     });
 
     return new Response(page.id, { status: 200 });
   } catch (error) {
     console.log("Error page creation:", error);
+
+    return new Response("Error page creation:", error, {
+      status: 500,
+    });
   }
 }
