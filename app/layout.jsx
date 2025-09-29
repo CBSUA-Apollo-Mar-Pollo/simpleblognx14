@@ -9,6 +9,7 @@ import ChatWindow from "@/components/chat/chat-window";
 import ClientSideScrollRestorer from "@/components/utils/client-side-scroll-restorer";
 import BeforeUnload from "@/components/utils/before-unload";
 import NextTopLoader from "nextjs-toploader";
+import { Loader2 } from "lucide-react";
 
 const poppins = Poppins({
   subsets: ["latin"],

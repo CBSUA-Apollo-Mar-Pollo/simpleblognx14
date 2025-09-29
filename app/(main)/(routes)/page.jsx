@@ -31,7 +31,6 @@ export const metadata = {
 
 export default async function HomePage() {
   const session = await getAuthSession();
-  console.log(session, "user session from homepage");
   const posts = await db.blog.findMany({
     include: {
       author: true,

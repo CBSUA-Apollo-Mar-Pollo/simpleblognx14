@@ -14,12 +14,15 @@ import { ThemeProvider } from "next-themes";
 import { ScrollRestoration } from "@tanstack/react-router";
 import { SocketProvider } from "./socket-provider";
 import { TooltipProvider } from "../ui/tooltip";
+import SwitchingProfileLoader from "../Loaders/switching-profile-loader";
 
 const Providers = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient());
 
   const [isLoading, setIsLoading] = useState(false);
   const [loaderDescription, setLoaderDescription] = useState("");
+  const [isSwitchingProfile, setIsSwitchingProfile] = useState(false);
+  const [profileInfo, setProfileInfo] = useState(null);
 
   return (
     <SocketProvider>
@@ -31,11 +34,18 @@ const Providers = ({ children }) => {
               setIsLoading,
               loaderDescription,
               setLoaderDescription,
+              isSwitchingProfile,
+              setIsSwitchingProfile,
             }}
           >
             {isLoading && (
               <BackgroundLoader loaderDescription={loaderDescription} />
             )}
+
+            {isSwitchingProfile && (
+              <SwitchingProfileLoader profileInfo={profileInfo} />
+            )}
+
             <SessionProvider>
               <TooltipProvider>{children}</TooltipProvider>
             </SessionProvider>

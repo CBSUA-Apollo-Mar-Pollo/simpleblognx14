@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ import { Icons } from "./Icons";
 import { Button } from "../ui/Button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { LoaderContext } from "@/context/LoaderContext";
 
 const UserAccountNav = ({ user, profiles, accountOwner }) => {
   const [open, setOpen] = useState(false);
@@ -23,14 +24,21 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
   const [subMenu, setSubMenu] = useState(null);
   const { update } = useSession();
   const router = useRouter();
+  const { setIsSwitchingProfile, setProfileInfo } = useContext(LoaderContext);
 
   const switchProfile = async (profile) => {
-    await update({
-      type: profile.id === accountOwner.id ? "user" : "page",
-      activeProfileId: profile.id,
-    });
+    try {
+      setIsSwitchingProfile(true);
 
-    window.location.reload();
+      await update({
+        type: profile.id === accountOwner.id ? "user" : "page",
+        activeProfileId: profile.id,
+      });
+    } catch (error) {
+      console.error("❌ Failed to switch profile:", err);
+    }
+
+    setIsSwitchingProfile(false);
   };
 
   return (

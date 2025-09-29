@@ -9,8 +9,10 @@ import React, { useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import UserAvatar from "../utils/UserAvatar";
 import { Skeleton } from "../ui/Skeleton";
+import { useSession } from "next-auth/react";
 
-const HomePageStoryCards = ({ session }) => {
+const HomePageStoryCards = () => {
+  const { data: session } = useSession();
   const storyCardContainer = useRef(null);
   const [scale, setScale] = useState(1);
   const [hoveredStory, setHoveredStory] = useState(null);
