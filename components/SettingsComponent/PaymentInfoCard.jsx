@@ -2,8 +2,10 @@ import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { ChevronRight } from "lucide-react";
 import { Button } from "../ui/Button";
+import { useSession } from "next-auth/react";
 
 const PaymentInfoCard = ({ data }) => {
+  const { data } = useSession();
   return (
     <div className="bg-white drop-shadow-md dark:bg-neutral-800 px-10 mt-5 py-10 rounded-2xl mx-32">
       <div className="flex items-center gap-x-4">

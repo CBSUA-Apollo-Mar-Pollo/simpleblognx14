@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import StoryPageSidebar from "./story-page-sidebar";
 import StoryPageContent from "./story-page-content";
+import { useSession } from "next-auth/react";
 
-const StoryPage = ({ id, session, stories }) => {
-  console.log(stories, "stories in story page");
-
+const StoryPage = ({ id, stories }) => {
+  const { data: session } = useSession();
   const currentStory = stories.find((story) => story.author.id === id);
 
   const [currentStoryBeingShown, setCurrentStoryBeingShown] = useState({

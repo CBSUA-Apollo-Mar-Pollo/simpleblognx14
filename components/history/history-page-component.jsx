@@ -19,8 +19,10 @@ import {
 } from "../ui/Dropdown-menu";
 import { Button } from "../ui/Button";
 import HistoryPagePosts from "./history-page-posts";
+import { useSession } from "next-auth/react";
 
-const HistoryPageComponent = ({ posts, session, deleteImage }) => {
+const HistoryPageComponent = ({ posts, deleteImage }) => {
+  const { data: session } = useSession();
   return (
     <div>
       <div>

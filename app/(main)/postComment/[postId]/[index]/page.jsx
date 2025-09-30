@@ -46,14 +46,7 @@ const postCommentPage = async ({ params }) => {
 
   console.log(post);
 
-  return (
-    <PostCommentCard
-      post={post}
-      index={index}
-      comments={comments}
-      session={session}
-    />
-  );
+  return <PostCommentCard post={post} index={index} comments={comments} />;
 };
 
 export default postCommentPage;

@@ -7,8 +7,10 @@ import React, { useEffect } from "react";
 import PostCard from "../Post/PostCard/PostCard";
 import { Loader2 } from "lucide-react";
 import WatchPageVideoCard from "./watch-page-video-card";
+import { useSession } from "next-auth/react";
 
-const WatchPageVideos = ({ initialVideos, session }) => {
+const WatchPageVideos = ({ initialVideos }) => {
+  const { data: session } = useSession();
   const { ref, entry } = useIntersection({
     root: null,
     rootMargin: "0px",

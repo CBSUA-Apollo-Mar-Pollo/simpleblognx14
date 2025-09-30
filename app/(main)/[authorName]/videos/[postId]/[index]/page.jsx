@@ -39,14 +39,7 @@ const UsersVideoPage = async ({ params }) => {
     },
   });
 
-  return (
-    <UserVideoDetailPage
-      post={post}
-      comments={comments}
-      session={session}
-      index={index}
-    />
-  );
+  return <UserVideoDetailPage post={post} comments={comments} index={index} />;
 };
 
 export default UsersVideoPage;

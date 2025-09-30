@@ -96,13 +96,13 @@ const UserProfilePage = async ({ params }) => {
       {/* user profile page header */}
       <ProfileBanner user={user} deleteImage={deleteImage} />
 
-      <StickDiv user={user} session={session} />
+      <StickDiv user={user} />
 
       {/* content */}
       <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[8rem]">
-            <UserBio user={user} session={session} />
+            <UserBio user={user} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">
@@ -117,7 +117,7 @@ const UserProfilePage = async ({ params }) => {
                   }}
                 />
 
-                <AddPostModal session={session} />
+                <AddPostModal />
               </div>
 
               <Separator className="mt-3 dark:bg-neutral-700" />
@@ -153,11 +153,7 @@ const UserProfilePage = async ({ params }) => {
               </div>
             </div>
           )}
-          <UserAllPosts
-            initialPosts={sortedData}
-            userId={user.id}
-            session={session}
-          />
+          <UserAllPosts initialPosts={sortedData} userId={user.id} />
         </div>
       </div>
     </div>

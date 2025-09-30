@@ -12,14 +12,10 @@ import PostCard from "../Post/PostCard/PostCard";
 import { Loader2 } from "lucide-react";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-const SearchPageContent = ({
-  people,
-  initialPosts,
-  session,
-  searchQuery,
-  filter,
-}) => {
+const SearchPageContent = ({ people, initialPosts, searchQuery, filter }) => {
+  const { data: session } = useSession();
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({

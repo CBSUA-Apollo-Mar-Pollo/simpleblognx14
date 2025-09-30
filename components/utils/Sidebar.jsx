@@ -15,8 +15,10 @@ import {
 import Link from "next/link";
 import UserAvatar from "./UserAvatar";
 import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
 
-const Sidebar = ({ session }) => {
+const Sidebar = () => {
+  const { data: session } = useSession();
   const { theme } = useTheme();
   const pathname = usePathname();
   const [toggleScrollBar, setToggleScrollBar] = useState(false);

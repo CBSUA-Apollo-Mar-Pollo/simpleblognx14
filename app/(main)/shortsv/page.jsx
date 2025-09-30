@@ -75,7 +75,6 @@ const shortsVPage = async () => {
         video={shortsVideo}
         comments={comments}
         nextLink={shortsVideoIds[randomSecondIndex]?.id}
-        session={session}
       />
     </div>
   );

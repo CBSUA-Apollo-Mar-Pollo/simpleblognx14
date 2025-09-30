@@ -8,8 +8,10 @@ import VideoDescription from "./VideoDescription";
 import ProfileImageAndIcons from "../PostComment/ProfileImageAndIcons";
 import ShortsVCommentSection from "./shortsv-comment-section";
 import { useToggleCommentSection } from "@/hooks/use-toggle-comment-section";
+import { useSession } from "next-auth/react";
 
-const ShortsvCard = ({ video, comments, session, nextLink }) => {
+const ShortsvCard = ({ video, comments, nextLink }) => {
+  const { data: session } = useSession();
   const { isToggleCommentSection, setToggled } = useToggleCommentSection();
   return (
     <div className="grid grid-cols-4 relative bg-neutral-950">

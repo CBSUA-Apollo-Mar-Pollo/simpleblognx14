@@ -38,8 +38,6 @@ const SearchQueryPage = async ({ params, searchParams }) => {
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
 
-  const session = getAuthSession();
-
   return (
     <div className="grid grid-cols-4">
       <div className="col-span-1 w-full relative">
@@ -49,7 +47,6 @@ const SearchQueryPage = async ({ params, searchParams }) => {
         <SearchPageContent
           people={people}
           initialPosts={posts}
-          session={session}
           searchQuery={searchQuery}
           filter={params.filter}
         />

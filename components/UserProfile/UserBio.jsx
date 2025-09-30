@@ -7,8 +7,10 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
 import { Pencil } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-const UserBio = async ({ user, session }) => {
+const UserBio = async ({ user }) => {
+  const { data: session } = useSession();
   const userImages = await db.blog.findMany({
     where: {
       authorId: user.id,

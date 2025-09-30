@@ -88,7 +88,7 @@ const HistoryPage = async () => {
   return (
     <div className="grid grid-cols-12 dark:bg-neutral-900">
       <div className="  xl:col-span-3 xl:block hidden relative border-r border-neutral-200 dark:border-neutral-800 mr-[5vw] ">
-        <Sidebar session={session} />
+        <Sidebar />
       </div>
 
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3   dark:bg-neutral-900">
@@ -109,10 +109,7 @@ const HistoryPage = async () => {
 
           {session?.user && (
             <>
-              <ChatHomeContactList
-                conversationList={conversationList}
-                session={session}
-              />
+              <ChatHomeContactList conversationList={conversationList} />
             </>
           )}
 

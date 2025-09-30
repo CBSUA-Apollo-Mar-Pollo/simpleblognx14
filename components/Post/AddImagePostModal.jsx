@@ -28,8 +28,10 @@ import { uploadFiles } from "@/lib/uploadThing";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
-const AddGalleryPostModal = ({ session, user, communityId }) => {
+const AddGalleryPostModal = ({ user, communityId }) => {
+  const { data: session } = useSession();
   const [toggleButton, setToggleButton] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");

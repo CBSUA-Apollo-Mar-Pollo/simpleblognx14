@@ -19,11 +19,7 @@ import React, { useState } from "react";
 const PostVoteDetails = ({ votesAmt, postId }) => {
   const [activeTab, setActiveTab] = useState(1);
 
-  const {
-    data: votedUsers,
-    isLoading,
-    status,
-  } = useQuery({
+  const { data: votedUsers } = useQuery({
     // Query key (unique identifier)
     queryKey: ["votedetails", postId, activeTab],
     // Query function

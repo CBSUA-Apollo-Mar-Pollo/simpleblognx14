@@ -15,7 +15,7 @@ const PageCreation = async () => {
   if (!session?.user) {
     redirect("/");
   }
-  return <PageCreationComponent session={session} />;
+  return <PageCreationComponent />;
 };
 
 export default PageCreation;

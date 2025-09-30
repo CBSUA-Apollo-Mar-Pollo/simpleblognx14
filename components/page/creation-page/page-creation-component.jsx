@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import PageCreationInitialSideBar from "./page-creation-initial-sidebar";
 import PageCreationInitialContentPreview from "./page-creation-initial-content-preview";
 import PageCreationMultiStepSideBar from "./multi-step-sidebars/page-creation-multi-step-sidebar";
+import { useSession } from "next-auth/react";
 
 const PageCreationInputSchema = z.object({
   pagename: z.string(),
@@ -28,7 +29,8 @@ const PageCreationInputSchema = z.object({
   pagebio: z.string(),
 });
 
-const PageCreationComponent = ({ session }) => {
+const PageCreationComponent = () => {
+  const { data: session } = useSession();
   const [openLeavePageModal, setOpenLeavePageModal] = useState(false);
   const [togglePreview, setTogglePreview] = useState(1);
   const [sideBarStepProcesssCounter, setSideBarStepProcessCounter] =

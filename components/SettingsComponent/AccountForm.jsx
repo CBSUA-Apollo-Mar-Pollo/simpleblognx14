@@ -14,8 +14,11 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const AccountForm = ({ user }) => {
+const AccountForm = () => {
+  const { data: session } = useSession();
+  const user = session.user;
   const [date, setDate] = useState();
   const [name, setName] = useState("");
   const { toast } = useToast();

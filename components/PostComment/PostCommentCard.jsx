@@ -12,8 +12,10 @@ import { useEffect, useState } from "react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
+import { useSession } from "next-auth/react";
 
-const PostCommentCard = ({ post, index, session, comments }) => {
+const PostCommentCard = ({ post, index, comments }) => {
+  const { data: session } = useSession();
   const { isFullScreen, setFullScreen } = useFullScreenImage();
 
   const router = useRouter();

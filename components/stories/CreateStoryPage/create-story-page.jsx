@@ -17,8 +17,10 @@ import { Button } from "@/components/ui/Button";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
-const CreateStoryPage = ({ session }) => {
+const CreateStoryPage = () => {
+  const { data: session } = useSession();
   const [toggleAddText, setToggleAddText] = useState(false);
   const [image, setImage] = useState(null);
   const [isDiscarding, setIsDiscarding] = useState(false);

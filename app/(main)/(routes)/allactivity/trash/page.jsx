@@ -13,10 +13,13 @@ import Link from "next/link";
 import AllActivitySideBar from "@/components/allactivity/all-activity-sidebar";
 import TrashPosts from "@/components/allactivity/trash-posts";
 import { db } from "@/lib/db";
+import { getAuthSession } from "@/lib/auth";
 
 const TrashPage = async () => {
+  const session = await getAuthSession();
   const trashPosts = await db.blog.findMany({
     where: {
+      authorId: session?.user.id,
       trashed: true,
     },
     include: {

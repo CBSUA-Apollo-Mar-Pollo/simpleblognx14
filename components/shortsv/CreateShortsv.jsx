@@ -13,8 +13,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { LoaderContext } from "@/context/LoaderContext";
+import { useSession } from "next-auth/react";
 
-const CreateShortsv = ({ session }) => {
+const CreateShortsv = () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [videoUrl, setVideoUrl] = useState("");
   const [toggleNext, setToggleNext] = useState(false);

@@ -7,8 +7,10 @@ import { useIntersection } from "@mantine/hooks";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import PostCard from "../Post/PostCard/PostCard";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
+import { useSession } from "next-auth/react";
 
-const UserAllPosts = ({ initialPosts, userId, session }) => {
+const UserAllPosts = ({ initialPosts, userId }) => {
+  const { data: session } = useSession();
   const lastPostRef = useRef(null);
   const { ref, entry } = useIntersection({
     root: null,

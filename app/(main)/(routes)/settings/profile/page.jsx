@@ -3,8 +3,7 @@ import { getAuthSession } from "@/lib/auth";
 import React from "react";
 
 const ProfilePage = async () => {
-  const session = await getAuthSession();
-  return <ProfileForm user={session.user} />;
+  return <ProfileForm />;
 };
 
 export default ProfilePage;

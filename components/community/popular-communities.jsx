@@ -1,15 +1,8 @@
-import { db } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const PopularCommunities = async () => {
-  const communities = await db.community.findMany({
-    include: {
-      members: true,
-    },
-  });
-
+const PopularCommunities = async ({ communities }) => {
   return (
     <div className="bg-neutral-200/50 dark:bg-neutral-800  rounded-lg pb-2 mx-4 mt-2">
       <h1 className="pt-3 pb-1 dark:text-white font-semibold pl-4">

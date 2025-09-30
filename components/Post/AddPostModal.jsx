@@ -45,8 +45,10 @@ import { RadioGroup, RadioGroupItem } from "../ui/RadioGroup";
 import { Checkbox } from "../ui/Checkbox";
 import { Label } from "../ui/Label";
 import PostAudienceSelection from "./post-audience-selection";
+import { useSession } from "next-auth/react";
 
-const AddPostModal = ({ session, user, communityId }) => {
+const AddPostModal = ({ user, communityId }) => {
+  const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);

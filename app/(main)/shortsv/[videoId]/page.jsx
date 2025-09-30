@@ -1,5 +1,4 @@
 import ShortsvCard from "@/components/shortsv/ShortsvCard";
-import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
 
@@ -13,8 +12,6 @@ const page = async ({ params }) => {
       comments: true,
     },
   });
-
-  const session = await getAuthSession();
   // get comments
   const comments = await db.comment.findMany({
     where: {
@@ -54,7 +51,6 @@ const page = async ({ params }) => {
       video={shortsVideo}
       comments={comments}
       nextLink={shortsVideoId[randomIndex]?.id}
-      session={session}
     />
   );
 };

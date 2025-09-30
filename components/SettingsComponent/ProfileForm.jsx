@@ -18,8 +18,11 @@ import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import UserAvatar from "../utils/UserAvatar";
 import { Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-const ProfileForm = ({ user }) => {
+const ProfileForm = () => {
+  const { data: session } = useSession();
+  const user = session.user;
   const [handleName, setHandleName] = useState("");
   const [bio, setBio] = useState("");
   const { toast } = useToast();

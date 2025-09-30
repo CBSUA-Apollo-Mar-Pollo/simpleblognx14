@@ -24,8 +24,10 @@ import {
   Triangle,
   UserCog,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-const StickDiv = ({ user, session }) => {
+const StickDiv = ({ user }) => {
+  const { data: session } = useSession();
   const useDetectSticky = (ref, observerSettings = { threshold: [1] }) => {
     const [isSticky, setIsSticky] = useState(false);
     const newRef = useRef();

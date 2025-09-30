@@ -7,12 +7,32 @@ import UserAvatar from "../utils/UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 import { useSocket } from "../Providers/socket-provider";
 import { useMakeUserOnline } from "@/hooks/use-make-user-online";
-import { useGetUserOnlineData } from "@/hooks/use-get-user-online-data";
+import { useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { getContactList } from "@/actions/getContactList";
 
-const ChatHomeContactList = ({ conversationList, session }) => {
+const ChatHomeContactList = ({ conversationList }) => {
+  const { data: session } = useSession();
   const { onOpen, data } = useChatWindowStore();
   const { socket } = useSocket();
   const [userData, setUserData] = useState([]);
+
+  // const {
+  //   data: conversationList,
+  //   status,
+  //   isLoading,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["contactlist", session?.user?.id], // include user id to refetch when session loads
+  //   queryFn: async () => {
+  //     if (!session?.user?.id) return []; // <- prevent call if session isn't ready
+  //     const res = await getContactList(session);
+  //     return res;
+  //   },
+  //   enabled: !!session?.user?.id, // ✅ only run query when session is ready
+  // });
+
+  // console.log(conversationList, "conversationList ");
 
   useMakeUserOnline({ session });
 
@@ -22,7 +42,7 @@ const ChatHomeContactList = ({ conversationList, session }) => {
     const handleUserOnline = (data) => {
       const userId = data.id;
       const hasAlreadyStored = userData.some((item) => item?.id === userId);
-      const isAFriend = conversationList.some(
+      const isAFriend = conversationList?.some(
         (item) => item.userOneId === userId || item.userTwoId === userId
       );
 

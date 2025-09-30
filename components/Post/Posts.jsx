@@ -9,8 +9,10 @@ import PostCard from "./PostCard/PostCard";
 import ReelsHomeCard from "../reels/reels-home-card";
 import { useScrollTracker } from "@/hooks/use-scroll-tracker";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
+import { useSession } from "next-auth/react";
 
-export default function Posts({ initialPosts, session, deleteImage }) {
+export default function Posts({ initialPosts, deleteImage }) {
+  const { data: session } = useSession();
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
 

@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/Input";
 import { MoreHorizontal, Pencil, Search } from "lucide-react";
 import ChatContactsListUserOne from "./chat-contacts-lists-user-one";
 import ChatContactsListUserTwo from "./chat-contacts-lists-user-two";
+import { useSession } from "next-auth/react";
 
-const ChatSideBar = ({ users, session }) => {
+const ChatSideBar = ({ users }) => {
+  const { data: session } = useSession();
   return (
     <>
       <div className="flex items-center justify-between m-4">

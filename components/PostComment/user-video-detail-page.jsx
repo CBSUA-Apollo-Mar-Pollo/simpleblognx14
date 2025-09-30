@@ -9,8 +9,10 @@ import { Download, Scaling, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PostDescription from "./PostDescription";
+import { useSession } from "next-auth/react";
 
-const UserVideoDetailPage = ({ post, comments, session, index }) => {
+const UserVideoDetailPage = ({ post, comments, index }) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const votesAmt = post.votes.reduce((acc, vote) => {
     if (vote.type === "UP") return acc + 1;

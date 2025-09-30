@@ -54,7 +54,7 @@ const WatchPage = async ({ searchParams }) => {
         <WatchPageSideBar />
       </div>
       <div className="col-span-8 pt-5 bg-neutral-200 dark:bg-neutral-900 ">
-        <WatchPageVideos initialVideos={videos} session={session} />
+        <WatchPageVideos initialVideos={videos} />
       </div>
     </div>
   );

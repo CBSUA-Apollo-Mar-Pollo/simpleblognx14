@@ -17,15 +17,16 @@ import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
 import { getSharedAmount } from "@/actions/getSharedAmount";
+import { useSession } from "next-auth/react";
 
 const PostCard = ({
   blog,
-  session,
   deleteImage,
   votesAmt,
   currentVote,
   fetchNextPage,
 }) => {
+  const { data: session } = useSession();
   const [isVideoPaused, setVideoPaused] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);

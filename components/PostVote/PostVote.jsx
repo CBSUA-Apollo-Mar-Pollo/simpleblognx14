@@ -1,3 +1,5 @@
+"use client";
+
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
