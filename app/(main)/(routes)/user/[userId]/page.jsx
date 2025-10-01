@@ -4,6 +4,7 @@ import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banne
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
 import StickDiv from "@/components/UserProfile/sticky_div";
+import UserPostCreationSection from "@/components/UserProfile/user-post-creation-section";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
@@ -91,6 +92,24 @@ const UserProfilePage = async ({ params }) => {
     await utapi.deleteFiles(image[0].key);
   };
 
+  const userImages = await db.blog.findMany({
+    where: {
+      authorId: user.id,
+      image: {
+        not: null,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+
+    select: {
+      image: true,
+      id: true,
+      trashed: true,
+    },
+  });
+
   return (
     <div className="relative h-full">
       {/* user profile page header */}
@@ -102,57 +121,11 @@ const UserProfilePage = async ({ params }) => {
       <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[8rem]">
-            <UserBio user={user} />
+            <UserBio userImages={userImages} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">
-          {session?.user.id === user?.id && (
-            <div className=" border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
-              <div className="flex flex-row items-center space-x-4">
-                <UserAvatar
-                  className="h-10 w-10 "
-                  user={{
-                    name: session?.user.name || null || user?.name,
-                    image: session?.user.image || null || user?.image,
-                  }}
-                />
-
-                <AddPostModal />
-              </div>
-
-              <Separator className="mt-3 dark:bg-neutral-700" />
-
-              <div className="flex items-center justify-center my-1 ">
-                <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
-                  <Image
-                    src="/ImageIcons/live.png"
-                    className="h-8 w-8"
-                    alt="Live video icon"
-                    width={32}
-                    height={32}
-                  />
-                  <span className="dark:text-neutral-100 text-sm">
-                    Live video
-                  </span>
-                </div>
-                <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
-                  <AddGalleryPostModal session={session} />
-                </div>
-                <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
-                  <Image
-                    src="/ImageIcons/smile.png"
-                    className="h-7 w-7"
-                    alt="Feeling or activity icon"
-                    width={28}
-                    height={28}
-                  />
-                  <span className="dark:text-neutral-100 text-sm">
-                    Feeling/Activity
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
+          <UserPostCreationSection user={user} />
           <UserAllPosts initialPosts={sortedData} userId={user.id} />
         </div>
       </div>

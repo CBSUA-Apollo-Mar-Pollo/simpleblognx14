@@ -29,13 +29,14 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
   const switchProfile = async (profile) => {
     try {
       setIsSwitchingProfile(true);
+      setProfileInfo(profile);
 
       await update({
         type: profile.id === accountOwner.id ? "user" : "page",
         activeProfileId: profile.id,
       });
     } catch (error) {
-      console.error("❌ Failed to switch profile:", err);
+      console.error("❌ Failed to switch profile:", error);
     }
 
     setIsSwitchingProfile(false);

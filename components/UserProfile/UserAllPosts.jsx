@@ -113,6 +113,12 @@ const UserAllPosts = ({ initialPosts, userId }) => {
           }
         })}
 
+        {posts.length === 0 && (
+          <p className="text-center text-xl font-semibold mt-4">
+            No posts available
+          </p>
+        )}
+
         {isFetchingNextPage && (
           <li className="flex justify-center my-20">
             <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />

@@ -1,34 +1,19 @@
+"use client";
+
 import React from "react";
 import { Card, CardContent } from "../ui/Card";
-import { Button, buttonVariants } from "../ui/Button";
-import { db } from "@/lib/db";
+
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
 import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { Button, buttonVariants } from "../ui/Button";
 
-const UserBio = async ({ user }) => {
+const UserBio = ({ userImages }) => {
   const { data: session } = useSession();
-  const userImages = await db.blog.findMany({
-    where: {
-      authorId: user.id,
-      image: {
-        not: null,
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-
-    select: {
-      image: true,
-      id: true,
-      trashed: true,
-    },
-  });
-
+  const user = session?.user;
   const mergedImages = userImages
     .filter(({ trashed }) => !trashed) // Filter out trashed items first
     .flatMap(({ id, image }) => {

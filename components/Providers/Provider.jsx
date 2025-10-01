@@ -28,28 +28,29 @@ const Providers = ({ children }) => {
     <SocketProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <QueryClientProvider client={queryClient}>
-          <LoaderContext.Provider
-            value={{
-              isLoading,
-              setIsLoading,
-              loaderDescription,
-              setLoaderDescription,
-              isSwitchingProfile,
-              setIsSwitchingProfile,
-            }}
-          >
-            {isLoading && (
-              <BackgroundLoader loaderDescription={loaderDescription} />
-            )}
+          <SessionProvider>
+            <LoaderContext.Provider
+              value={{
+                isLoading,
+                setIsLoading,
+                loaderDescription,
+                setLoaderDescription,
+                isSwitchingProfile,
+                setIsSwitchingProfile,
+                setProfileInfo,
+              }}
+            >
+              {isLoading && (
+                <BackgroundLoader loaderDescription={loaderDescription} />
+              )}
 
-            {isSwitchingProfile && (
-              <SwitchingProfileLoader profileInfo={profileInfo} />
-            )}
+              {isSwitchingProfile && (
+                <SwitchingProfileLoader profileInfo={profileInfo} />
+              )}
 
-            <SessionProvider>
               <TooltipProvider>{children}</TooltipProvider>
-            </SessionProvider>
-          </LoaderContext.Provider>
+            </LoaderContext.Provider>
+          </SessionProvider>
         </QueryClientProvider>
       </ThemeProvider>
     </SocketProvider>

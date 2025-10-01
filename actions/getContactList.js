@@ -48,7 +48,5 @@ export const getContactList = async (session) => {
     };
   });
 
-  console.log(contactList, "contactList wew");
-
   return contactList;
 };

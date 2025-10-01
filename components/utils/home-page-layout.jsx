@@ -22,14 +22,22 @@ import Posts from "../Post/Posts";
 import PopularCommunities from "../community/popular-communities";
 import ChatHomeContactList from "../chat/chat-home-contact-list";
 import { Button } from "../ui/Button";
+import { useQuery } from "@tanstack/react-query";
+import { getContactList } from "@/actions/getContactList";
+import { Skeleton } from "../ui/Skeleton";
 
-const HomePageLayout = ({
-  sortedData,
-  deleteImage,
-  conversationList,
-  communities,
-}) => {
+const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
   const { data: session } = useSession();
+
+  const { data: conversationList, isPending } = useQuery({
+    queryKey: ["contactlist", session?.user?.id],
+    queryFn: async () => {
+      const res = await getContactList(session);
+      return res;
+    },
+    enabled: !!session?.user,
+  });
+
   return (
     <div className="grid  xl:grid-cols-12 lg:grid-cols-7 grid-cols-1 dark:bg-neutral-900">
       {/* first column the side bar */}
@@ -161,9 +169,11 @@ const HomePageLayout = ({
           {!session?.user && <PopularCommunities communities={communities} />}
 
           {session?.user && (
-            <>
-              <ChatHomeContactList conversationList={conversationList} />
-            </>
+            <ChatHomeContactList
+              conversationList={conversationList}
+              session={session}
+              isPending={isPending}
+            />
           )}
 
           {session?.user && (
