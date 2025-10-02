@@ -31,7 +31,7 @@ export async function GET(req) {
     });
 
     // if the post image is 1 bring back the comment from that is indexed
-    if (post?.image.length === 1) {
+    if (post?.image?.length === 1) {
       comments = await db.comment.findMany({
         take: parseInt(limit),
         skip: (parseInt(page) - 1) * parseInt(limit),

@@ -91,7 +91,7 @@ const HomePageStoryCards = () => {
   const {
     data: stories,
     status,
-    isLoading,
+    isPending,
   } = useQuery({
     queryKey: ["stories"],
     queryFn: async () => {
@@ -99,8 +99,6 @@ const HomePageStoryCards = () => {
       return res;
     },
   });
-
-  console.log(stories);
 
   return (
     <div className=" flex items-center relative xl:bg-none bg-white dark:bg-neutral-900 xl:my-3 my-1">
@@ -123,7 +121,7 @@ const HomePageStoryCards = () => {
           className="relative bg-white border dark:border-0 xl:rounded-2xl rounded-xl  dark:bg-neutral-800 xl:drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
         >
           {/* create story */}
-          <div className="relative md:w-32 md:h-40 w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+          <div className="relative md:w-32 md:h-[18vh] w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
             {session?.user.image && (
               <Image
                 sizes="100vw"
@@ -153,16 +151,16 @@ const HomePageStoryCards = () => {
           </div>
         </button>
 
-        {isLoading &&
+        {isPending &&
           [...Array(7)].map((_, index) => (
             <div key={index}>
-              <Skeleton className="xl:md:w-36 xl:md:h-[24vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
+              <Skeleton className="md:w-32 md:h-[23vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
             </div>
           ))}
 
         {/* stories */}
         <div className="flex items-center gap-x-2 ">
-          {isLoading === false &&
+          {!isPending &&
             stories?.map((story, index) => (
               <button
                 key={index}

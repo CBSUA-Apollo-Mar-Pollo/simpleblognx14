@@ -11,9 +11,8 @@ import { Pencil } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Button, buttonVariants } from "../ui/Button";
 
-const UserBio = ({ userImages }) => {
+const UserBio = ({ userImages, user }) => {
   const { data: session } = useSession();
-  const user = session?.user;
   const mergedImages = userImages
     .filter(({ trashed }) => !trashed) // Filter out trashed items first
     .flatMap(({ id, image }) => {

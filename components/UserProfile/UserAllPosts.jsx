@@ -114,7 +114,7 @@ const UserAllPosts = ({ initialPosts, userId }) => {
         })}
 
         {posts.length === 0 && (
-          <p className="text-center text-xl font-semibold mt-4">
+          <p className="text-center text-xl font-semibold mt-8 mb-20">
             No posts available
           </p>
         )}

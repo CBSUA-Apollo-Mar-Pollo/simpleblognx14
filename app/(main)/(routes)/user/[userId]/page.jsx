@@ -1,16 +1,14 @@
-import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
-import AddPostModal from "@/components/Post/AddPostModal";
 import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
 import StickDiv from "@/components/UserProfile/sticky_div";
 import UserPostCreationSection from "@/components/UserProfile/user-post-creation-section";
-import { Separator } from "@/components/ui/Separator";
-import UserAvatar from "@/components/utils/UserAvatar";
+import UserPostsToolBar from "@/components/UserProfile/user-posts-toolbar";
+
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import Image from "next/image";
+
 import React from "react";
 import { UTApi } from "uploadthing/server";
 
@@ -21,9 +19,10 @@ export const metadata = {
 
 const UserProfilePage = async ({ params }) => {
   const session = await getAuthSession();
+  const userId = params?.userId;
   const user = await db.user.findFirst({
     where: {
-      id: params.userId,
+      id: userId,
     },
     include: {
       blogs: true,
@@ -121,11 +120,12 @@ const UserProfilePage = async ({ params }) => {
       <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[8rem]">
-            <UserBio userImages={userImages} />
+            <UserBio userImages={userImages} user={user} />
           </div>
         </div>
         <div className="mx-2 space-y-2 col-span-4">
           <UserPostCreationSection user={user} />
+          <UserPostsToolBar />
           <UserAllPosts initialPosts={sortedData} userId={user.id} />
         </div>
       </div>
