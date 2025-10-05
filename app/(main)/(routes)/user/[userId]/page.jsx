@@ -117,7 +117,7 @@ const UserProfilePage = async ({ params }) => {
       <StickDiv user={user} />
 
       {/* content */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-200 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
+      <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
         <div className="col-span-3 relative">
           <div className="sticky top-[8rem]">
             <UserBio userImages={userImages} user={user} />

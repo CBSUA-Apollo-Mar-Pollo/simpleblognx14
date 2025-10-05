@@ -25,6 +25,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import PageProfileButtons from "./ProfileSection/page-profile-buttons";
 
 const StickDiv = ({ user }) => {
   const { data: session } = useSession();
@@ -54,16 +55,16 @@ const StickDiv = ({ user }) => {
 
   const [isSticky, ref, setIsSticky] = useDetectSticky();
 
-  console.log(user);
-
   return (
     <div
       ref={ref}
       className={`${
         isSticky ? "dark:bg-neutral-700" : "dark:bg-neutral-800 "
-      } sticky top-[-1px] z-20  pr-[14vw] bg-white  w-full`}
+      } sticky top-[-1px] z-20   bg-white  w-full`}
     >
-      <ProfileButtons userId={user.id} />
+      {session?.user.type === "user" && <ProfileButtons userId={user.id} />}
+
+      {session?.user.type === "page" && <PageProfileButtons userId={user.id} />}
 
       <div
         className={`${

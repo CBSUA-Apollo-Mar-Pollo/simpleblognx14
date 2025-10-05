@@ -14,7 +14,10 @@ import { LoaderContext } from "@/context/LoaderContext";
 import { getDominantColor } from "@/actions/getDominantColor";
 import { useTheme } from "next-themes";
 import {
+  Dot,
   Loader2,
+  LucideBarChart,
+  Megaphone,
   MessageCircleMore,
   Pencil,
   Plus,
@@ -126,13 +129,15 @@ const ProfileBanner = ({ user, deleteImage }) => {
       ? dominantColor
       : [36, 36, 36]; // fallback to a neutral gray
 
+  console.log(session, "session from profile banner");
+
   return (
     <div
-      className=" "
+      className=""
       style={{
         backgroundImage:
           resolvedTheme === "light"
-            ? `linear-gradient(to bottom,  rgba(${safeDominantColor[0]}, ${safeDominantColor[1]}, ${safeDominantColor[2]}, 0.9) 0%, rgba(255, 255, 255, 1) 100%)`
+            ? `linear-gradient(to bottom,  rgba(${safeDominantColor[0]}, ${safeDominantColor[1]}, ${safeDominantColor[2]}, 0.9) 0%, rgba(255, 255, 255, 1) 100%) `
             : `linear-gradient(to bottom, rgba(${safeDominantColor[0]}, ${safeDominantColor[1]}, ${safeDominantColor[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
       }}
     >
@@ -177,32 +182,76 @@ const ProfileBanner = ({ user, deleteImage }) => {
             </div>
 
             <div className="-mt-4 w-full relative flex justify-between z-10 col-span-8">
-              <div className="xl:ml-8 2xl:ml-2">
-                <h1 className="font-bold text-3xl dark:text-white">
-                  {formattedName}
-                </h1>
-                <span className="text-base font-medium dark:text-white">
-                  {user.handleName}
-                </span>
+              <div>
+                <div className="xl:ml-8 2xl:ml-2">
+                  <h1 className="font-bold text-3xl dark:text-white">
+                    {formattedName}
+                  </h1>
+                  <span className="text-base font-medium dark:text-white">
+                    {user.handleName}
+                  </span>
+                </div>
+
+                {session?.user.type === "page" && (
+                  <div className="flex items-center pl-2">
+                    <p className="text-neutral-500 font-medium">0 followers</p>
+                    <Dot />
+                    <p className="text-neutral-500 font-medium">0 following</p>
+                  </div>
+                )}
               </div>
 
               {session?.user.id === user.id ? (
-                <div className="mr-5 flex items-center gap-x-2">
-                  <Link
-                    href="/stories/create"
-                    className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 py-2 flex items-center rounded-md"
-                  >
-                    <span className="pr-2">
-                      <Plus className=" text-white h-5 w-5" />
-                    </span>
-                    <span className="text-white text-sm">Add to story</span>
-                  </Link>
-                  <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
-                    <span className="pr-2">
-                      <Pencil className="fill-black stroke-transparent  h-4 w-4" />
-                    </span>
-                    Edit Profile
-                  </Button>
+                <div className="mr-5">
+                  {session?.user.type === "page" && (
+                    <div className=" flex flex-col items-end gap-x-2">
+                      <div className="flex items-center gap-x-2">
+                        <Link
+                          href="/stories/create"
+                          className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 py-2 flex items-center rounded-md"
+                        >
+                          <span className="pr-2">
+                            <LucideBarChart className=" text-white h-5 w-5" />
+                          </span>
+                          <span className="text-white text-sm">
+                            Professional dashboard
+                          </span>
+                        </Link>
+                        <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+                          <span className="pr-2">
+                            <Pencil className="fill-black stroke-transparent  h-4 w-4" />
+                          </span>
+                          Edit
+                        </Button>
+                      </div>
+                      <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 mt-2 ">
+                        <span className="pr-2">
+                          <Megaphone className="fill-black stroke-transparent  h-6 w-6" />
+                        </span>
+                        Advertise
+                      </Button>
+                    </div>
+                  )}
+
+                  {session?.user.type === "user" && (
+                    <>
+                      <Link
+                        href="/stories/create"
+                        className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 py-2 flex items-center rounded-md"
+                      >
+                        <span className="pr-2">
+                          <Plus className=" text-white h-5 w-5" />
+                        </span>
+                        <span className="text-white text-sm">Add to story</span>
+                      </Link>
+                      <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+                        <span className="pr-2">
+                          <Pencil className="fill-black stroke-transparent  h-4 w-4" />
+                        </span>
+                        Edit Profile
+                      </Button>
+                    </>
+                  )}
                 </div>
               ) : (
                 // if there is a logged in user show this ui
