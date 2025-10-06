@@ -1,6 +1,7 @@
 import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import UserAllPosts from "@/components/UserProfile/UserAllPosts";
 import UserBio from "@/components/UserProfile/UserBio";
+import PageSetupChecklists from "@/components/UserProfile/page-setup-checklists";
 import StickDiv from "@/components/UserProfile/sticky_div";
 import UserPostCreationSection from "@/components/UserProfile/user-post-creation-section";
 import UserPostsToolBar from "@/components/UserProfile/user-posts-toolbar";
@@ -109,6 +110,8 @@ const UserProfilePage = async ({ params }) => {
     },
   });
 
+  console.log(user);
+
   return (
     <div className="relative h-full">
       {/* user profile page header */}
@@ -117,8 +120,11 @@ const UserProfilePage = async ({ params }) => {
       <StickDiv user={user} />
 
       {/* content */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:px-40 2xl:px-60 pt-5 gap-x-2 dark:bg-neutral-900">
-        <div className="col-span-3 relative">
+      <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:pr-56 xl:pl-72  pt-5 gap-x-2 dark:bg-neutral-900">
+        <div className="col-span-3 relative space-y-4">
+          {session?.user.id === user.id && user.type === "page" && (
+            <PageSetupChecklists />
+          )}
           <div className="sticky top-[8rem]">
             <UserBio userImages={userImages} user={user} />
           </div>

@@ -29,7 +29,7 @@ const UserBio = ({ userImages, user }) => {
 
   return (
     <div className="space-y-3">
-      <Card className="dark:bg-neutral-800 dark:border-0 shadow-[0px_0px_1px_rgba(0,0,0,0.2)]">
+      <Card className="dark:bg-neutral-800 dark:border-0 shadow-md border rounded-2xl">
         <CardContent className="p-0">
           <h2 className="text-xl font-bold py-4 dark:text-white ml-5">Intro</h2>
           <div className="flex flex-col space-y-4 w-full">
@@ -49,7 +49,7 @@ const UserBio = ({ userImages, user }) => {
             )}
 
             {user.type === "page" && (
-              <div className="flex flex-col space-y-3 mx-5 pb-3">
+              <div className="flex flex-col space-y-3 mx-5 pb-5">
                 <div className="flex items-center">
                   <div className="mr-3">
                     <Icons.informationIcon className="h-5 w-5 fill-neutral-400" />
