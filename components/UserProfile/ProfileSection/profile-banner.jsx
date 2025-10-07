@@ -234,7 +234,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
                   )}
 
                   {session?.user.type === "user" && (
-                    <>
+                    <div className=" flex items-center gap-x-2">
                       <Link
                         href="/stories/create"
                         className="bg-blue-600 hover:bg-blue-400 drop-shadow-sm text-neutral-800 font-semibold px-4 py-2 flex items-center rounded-md"
@@ -244,13 +244,13 @@ const ProfileBanner = ({ user, deleteImage }) => {
                         </span>
                         <span className="text-white text-sm">Add to story</span>
                       </Link>
-                      <Button className="bg-white hover:bg-neutral-100 drop-shadow-sm text-neutral-800 font-semibold px-4 flex items-center">
+                      <Button className="bg-white hover:bg-neutral-100 drop-shadow shadow text-neutral-800 font-semibold px-4 flex items-center">
                         <span className="pr-2">
                           <Pencil className="fill-black stroke-transparent  h-4 w-4" />
                         </span>
                         Edit Profile
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
               ) : (

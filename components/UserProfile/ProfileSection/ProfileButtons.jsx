@@ -32,7 +32,7 @@ const ProfileButtons = ({ userId }) => {
   const router = useRouter();
 
   return (
-    <ul className="flex justify-end text-neutral-800 dark:text-neutral-100 pt-2 gap-x-2">
+    <ul className="flex justify-end bg-white shadow-[0_1px_1px_rgba(0,0,0,0.1)] text-neutral-800 dark:text-neutral-100 pt-2 pr-[14vw]">
       <Link
         href={`/user/${userId}`}
         className={cn(

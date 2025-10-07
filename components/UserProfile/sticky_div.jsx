@@ -69,7 +69,7 @@ const StickDiv = ({ user }) => {
       <div
         className={`${
           isSticky ? "block" : "hidden"
-        } py-3 flex items-center justify-between`}
+        } py-3 flex items-center justify-between bg-white drop-shadow-md`}
       >
         <div className="flex items-center gap-x-3  pl-[14vw]">
           <UserAvatar
@@ -82,7 +82,7 @@ const StickDiv = ({ user }) => {
           <p className="font-semibold dark:text-white">{user.name}</p>
         </div>
 
-        <div className="ml-2">
+        <div className="ml-2 mr-[14vw]">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger className="bg-neutral-200 rounded-md mt-1 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-600 ">
               <div className="px-2 py-1">
