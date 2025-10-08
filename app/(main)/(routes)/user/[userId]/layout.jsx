@@ -1,13 +1,13 @@
 import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
-import UserPhotos from "@/components/UserProfile/UserPhotos";
+import StickDiv from "@/components/UserProfile/sticky_div";
 import { db } from "@/lib/db";
-import React from "react";
 import { UTApi } from "uploadthing/server";
 
-const UserProfilePagePhotos = async ({ params }) => {
+const Layout = async ({ children, params }) => {
+  const userId = params?.userId;
   const user = await db.user.findFirst({
     where: {
-      id: params?.userId,
+      id: userId,
     },
     include: {
       blogs: true,
@@ -35,31 +35,19 @@ const UserProfilePagePhotos = async ({ params }) => {
   const deleteImage = async (image) => {
     "use server";
     const utapi = new UTApi();
-    await utapi.deleteFiles(image.substring(image.lastIndexOf("/") + 1));
+    await utapi.deleteFiles(image[0].key);
   };
 
-  const userImages = await db.blog.findMany({
-    where: {
-      authorId: params?.userId,
-      image: {
-        not: null,
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-
-    select: {
-      image: true,
-      id: true,
-    },
-  });
-
   return (
-    <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 min-h-screen">
-      <UserPhotos userImages={userImages} />
+    <div className="relative h-full">
+      {/* user profile page header */}
+      <ProfileBanner user={user} deleteImage={deleteImage} />
+
+      <StickDiv user={user} />
+      {/* content */}
+      {children}
     </div>
   );
 };
 
-export default UserProfilePagePhotos;
+export default Layout;

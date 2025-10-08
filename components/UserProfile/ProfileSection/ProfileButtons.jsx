@@ -45,12 +45,18 @@ const ProfileButtons = ({ userId }) => {
       >
         Posts
       </Link>
-      <Button
-        variant="ghost"
-        className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
+      <Link
+        href={`/user/${userId}/about`}
+        className={cn(
+          buttonVariants({ variant: "ghost" }),
+          `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 ${
+            pathname === `/user/${userId}/about` &&
+            "border-b-4 rounded-none border-blue-600 text-blue-600 dark:hover:bg-inherit"
+          }`
+        )}
       >
         About
-      </Button>
+      </Link>
       <Button
         variant="ghost"
         className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"

@@ -68,30 +68,6 @@ const UserProfilePage = async ({ params }) => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
-  const getCoverPhoto = await db.blog.findMany({
-    where: {
-      AND: [
-        { image: { not: null } }, // Ensure `image` is not null
-        {
-          image: {
-            equals: {
-              url: user?.backgroundImage, // Correctly reference the JSON key
-            },
-          },
-        },
-      ],
-    },
-  });
-
-  user.coverPhotoId = getCoverPhoto[0]?.id;
-
-  // delete image in upload thing if the user click the cancel button
-  const deleteImage = async (image) => {
-    "use server";
-    const utapi = new UTApi();
-    await utapi.deleteFiles(image[0].key);
-  };
-
   const userImages = await db.blog.findMany({
     where: {
       authorId: user.id,
@@ -110,30 +86,20 @@ const UserProfilePage = async ({ params }) => {
     },
   });
 
-  console.log(user);
-
   return (
-    <div className="relative h-full">
-      {/* user profile page header */}
-      <ProfileBanner user={user} deleteImage={deleteImage} />
-
-      <StickDiv user={user} />
-
-      {/* content */}
-      <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:pr-56 xl:pl-72  pt-5 gap-x-2 dark:bg-neutral-900">
-        <div className="col-span-3 relative space-y-4">
-          {session?.user.id === user.id && user.type === "page" && (
-            <PageSetupChecklists />
-          )}
-          <div className="sticky top-[8rem]">
-            <UserBio userImages={userImages} user={user} />
-          </div>
+    <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:pr-56 xl:pl-72  pt-5 gap-x-2 dark:bg-neutral-900">
+      <div className="col-span-3 relative space-y-4">
+        {session?.user.id === user.id && user.type === "page" && (
+          <PageSetupChecklists />
+        )}
+        <div className="sticky top-[8rem]">
+          <UserBio userImages={userImages} user={user} />
         </div>
-        <div className="mx-2 space-y-2 col-span-4">
-          <UserPostCreationSection user={user} />
-          <UserPostsToolBar />
-          <UserAllPosts initialPosts={sortedData} userId={user.id} />
-        </div>
+      </div>
+      <div className="mx-2 space-y-2 col-span-4">
+        <UserPostCreationSection user={user} />
+        <UserPostsToolBar />
+        <UserAllPosts initialPosts={sortedData} userId={user.id} />
       </div>
     </div>
   );
