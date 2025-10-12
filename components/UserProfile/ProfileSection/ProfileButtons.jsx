@@ -87,12 +87,35 @@ const ProfileButtons = ({ userId }) => {
       >
         Videos
       </Link>
-      <Button
-        variant="ghost"
-        className="px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200"
-      >
-        More
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="px-6 focus-visible:outline-none mb-1 flex items-center justify-center gap-x-2 rounded-md hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200">
+          More
+          <Triangle className="rotate-180 h-[9px] w-[9px] fill-neutral-700" />
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent className="ml-48 drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)] shadow-none min-w-[17vw] rounded-xl py-2 px-2 *:cursor-pointer  *:py-1.5">
+          <DropdownMenuItem className="font-semibold">Sports</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Music</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Movies</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">
+            TV shows
+          </DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Books</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">
+            App and games
+          </DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Likes</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Sports</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Events</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">
+            Reviews given
+          </DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">Groups</DropdownMenuItem>
+          <DropdownMenuItem className="font-semibold">
+            Manage sections
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <div className="ml-2">
         <DropdownMenu modal={false}>

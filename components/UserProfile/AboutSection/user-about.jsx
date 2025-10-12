@@ -1,11 +1,40 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "../ui/Button";
+import { Button } from "../../ui/Button";
 import { PlusCircle } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/Form";
+import CountriesPhoneFormatSelectInput from "@/components/utils/countries-phone-format-select-input";
+import { Input } from "@/components/ui/Input";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const UserAboutSchema = z.object({
+  phonenumber: z.string(),
+});
 
 const UserAbout = () => {
   const [aboutNav, setAboutNav] = useState(1);
+  const form = useForm({
+    resolver: zodResolver(UserAboutSchema),
+    defaultValues: {
+      phonenumber: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <div className="bg-white drop-shadow-md shadow rounded-2xl">
       <div className="grid grid-cols-8">
@@ -77,13 +106,13 @@ const UserAbout = () => {
 
         {aboutNav === 1 && (
           <div className="col-span-6 px-4 pt-10 pb-4 space-y-8">
-            <Button
+            {/* <Button
               variant="ghost"
               className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
             >
               <PlusCircle className="text-blue-600" />
               <p className="text-blue-600">Life events</p>
-            </Button>
+            </Button> */}
             <Button
               variant="ghost"
               className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
@@ -119,6 +148,41 @@ const UserAbout = () => {
               <PlusCircle className="text-blue-600" />
               <p className="text-blue-600">Add relationsh status</p>
             </Button>
+            <div>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormField
+                    control={form.control}
+                    name="pagecategory"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-start justify-center gap-x-2 relative">
+                          <CountriesPhoneFormatSelectInput />
+                          <div className="flex flex-col w-full items-start gap-x-2 relative">
+                            <FormControl>
+                              <Input
+                                placeholder="Phone number"
+                                className="h-12 border-neutral-300  rounded-lg focus:border-2  focus:border-blue-600 "
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription
+                              className="text-xs p-1
+                            "
+                            >
+                              Given phone number must be a valid telephone
+                              number.
+                            </FormDescription>
+                          </div>
+                        </div>
+
+                        <FormMessage className="text-[12px] ml-2" />
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Form>
+            </div>
             <Button
               variant="ghost"
               className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"

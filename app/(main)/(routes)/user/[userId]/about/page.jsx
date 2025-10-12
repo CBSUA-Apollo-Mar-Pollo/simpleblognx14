@@ -1,4 +1,4 @@
-import UserAbout from "@/components/UserProfile/user-about";
+import UserAbout from "@/components/UserProfile/AboutSection/user-about";
 import { db } from "@/lib/db";
 import React from "react";
 

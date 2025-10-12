@@ -47,7 +47,7 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
       <DropdownMenuTrigger className="drop-shadow relative xl:block hidden">
         <UserAvatar
           className="h-10 w-10 "
-          user={{ name: user.name || null, image: user?.image || null }}
+          user={{ name: user?.name || null, image: user?.image || null }}
         />
         <ChevronDown className="absolute bottom-0 right-0 text-black bg-neutral-100 dark:bg-neutral-600 dark:text-white dark:border dark:border-neutral-900 h-3 w-3 rounded-full" />
       </DropdownMenuTrigger>
@@ -60,12 +60,12 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
         {!subMenu && (
           <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.2)] pb-1 dark:drop-shadow-[0px_0px_8px_rgba(0,0,0,0.20)] bg-white dark:bg-neutral-700 dark:hover:bg-neutral-700 rounded-xl pt-1">
             <Link
-              href={`/user/${user.id}`}
+              href={`/user/${user?.id}`}
               className="pl-2 flex items-center py-1.5 justify-start gap-x-3 hover:bg-neutral-200 rounded-lg cursor-pointer mx-3"
             >
               <UserAvatar
                 className="h-12 w-12 "
-                user={{ name: user.name || null, image: user?.image || null }}
+                user={{ name: user?.name || null, image: user?.image || null }}
               />
 
               <div className="flex flex-col leading-none">
