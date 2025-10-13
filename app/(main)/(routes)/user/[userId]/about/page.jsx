@@ -13,7 +13,7 @@ const UserProfileAboutPage = async ({ params }) => {
   });
 
   return (
-    <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 ">
+    <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 h-screen">
       <UserAbout />
     </div>
   );

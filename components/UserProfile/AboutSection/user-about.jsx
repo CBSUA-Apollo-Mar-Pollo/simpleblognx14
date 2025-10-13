@@ -17,24 +17,15 @@ import { Input } from "@/components/ui/Input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-const UserAboutSchema = z.object({
-  phonenumber: z.string(),
-});
+import UserAboutOverView from "./user-about-overview";
+import UserAboutPlacesLived from "./user-about-places-lived";
+import UserAboutWorkAndEducation from "./user-about-work-and-education";
+import UserAboutFamilyRelations from "./user-about-family-relations";
+import UserAboutDetails from "./user-about-details";
+import UserAboutLifeEvents from "./user-about-life-events";
 
 const UserAbout = () => {
   const [aboutNav, setAboutNav] = useState(1);
-  const form = useForm({
-    resolver: zodResolver(UserAboutSchema),
-    defaultValues: {
-      phonenumber: "",
-    },
-  });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
   return (
     <div className="bg-white drop-shadow-md shadow rounded-2xl">
       <div className="grid grid-cols-8">
@@ -104,245 +95,17 @@ const UserAbout = () => {
           </div>
         </div>
 
-        {aboutNav === 1 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-8">
-            {/* <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Life events</p>
-            </Button> */}
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add highschool</p>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add college</p>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add current city</p>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add hometown</p>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add relationsh status</p>
-            </Button>
-            <div>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <FormField
-                    control={form.control}
-                    name="pagecategory"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-start justify-center gap-x-2 relative">
-                          <CountriesPhoneFormatSelectInput />
-                          <div className="flex flex-col w-full items-start gap-x-2 relative">
-                            <FormControl>
-                              <Input
-                                placeholder="Phone number"
-                                className="h-12 border-neutral-300  rounded-lg focus:border-2  focus:border-blue-600 "
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormDescription
-                              className="text-xs p-1
-                            "
-                            >
-                              Given phone number must be a valid telephone
-                              number.
-                            </FormDescription>
-                          </div>
-                        </div>
+        {aboutNav === 1 && <UserAboutOverView />}
 
-                        <FormMessage className="text-[12px] ml-2" />
-                      </FormItem>
-                    )}
-                  />
-                </form>
-              </Form>
-            </div>
-            <Button
-              variant="ghost"
-              className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-            >
-              <PlusCircle className="text-blue-600" />
-              <p className="text-blue-600">Add phone number</p>
-            </Button>
-          </div>
-        )}
+        {aboutNav === 2 && <UserAboutWorkAndEducation />}
 
-        {aboutNav === 2 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-8">
-            <div className="space-y-4">
-              <h1 className="font-semibold">Work</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add a workspace</p>
-              </Button>
-            </div>
-            <div className="space-y-4">
-              <h1 className="font-semibold">College</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add college</p>
-              </Button>
-            </div>
-            <div className="space-y-4">
-              <h1 className="font-semibold">High School</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add highschool</p>
-              </Button>
-            </div>
-          </div>
-        )}
+        {aboutNav === 3 && <UserAboutPlacesLived />}
 
-        {aboutNav === 3 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-8">
-            <div className="space-y-6">
-              <h1 className="font-semibold">Place lived</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add current city</p>
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add hometown</p>
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add city</p>
-              </Button>
-            </div>
-          </div>
-        )}
+        {aboutNav === 5 && <UserAboutFamilyRelations />}
 
-        {aboutNav === 5 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-8">
-            <div className="space-y-4">
-              <h1 className="font-semibold">Relationship</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add a relationship status</p>
-              </Button>
-            </div>
-            <div className="space-y-4">
-              <h1 className="font-semibold">Family members</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add family member</p>
-              </Button>
-            </div>
-          </div>
-        )}
+        {aboutNav === 6 && <UserAboutDetails />}
 
-        {aboutNav === 6 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-6">
-            <div className="space-y-1">
-              <h1 className="font-semibold">About you</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">
-                  Write some details about yourself
-                </p>
-              </Button>
-            </div>
-            <div className="space-y-1">
-              <h1 className="font-semibold">Name pronounciation</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add a name pronounciation</p>
-              </Button>
-            </div>
-            <div className="space-y-1">
-              <h1 className="font-semibold">Other names</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add a nickname, a birth name...</p>
-              </Button>
-            </div>
-            <div className="space-y-1">
-              <h1 className="font-semibold">Favorite qoutes</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add your favorite qoutations</p>
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {aboutNav === 7 && (
-          <div className="col-span-6 px-4 pt-10 pb-4 space-y-6">
-            <div className="space-y-1">
-              <h1 className="font-semibold">Life events</h1>
-              <Button
-                variant="ghost"
-                className="w-full flex items-center justify-start gap-x-4 p-0 pl-3 font-medium  text-[15px]"
-              >
-                <PlusCircle className="text-blue-600" />
-                <p className="text-blue-600">Add a life event</p>
-              </Button>
-            </div>
-          </div>
-        )}
+        {aboutNav === 7 && <UserAboutLifeEvents />}
       </div>
     </div>
   );
