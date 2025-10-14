@@ -69,6 +69,8 @@ const BirthdateInfoModal = () => {
 
   const days = new Date(isYearSelected, selectedIndexMonth + 1, 0).getDate();
 
+  console.log(days, "birth date");
+
   const { mutate: onSubmit, isLoading } = useMutation({
     mutationFn: async (values) => {
       const { data } = await axios.post(
