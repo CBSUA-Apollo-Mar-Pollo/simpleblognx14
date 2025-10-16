@@ -13,13 +13,26 @@ import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
 import CountriesPhoneFormatSelectInput from "@/components/utils/countries-phone-format-select-input";
 import { Icons } from "@/components/utils/Icons";
+import { countries } from "@/constants/countries-phone-formats";
+import { phoneNumberRegex } from "@/lib/phone-number-regex";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { isValidPhoneNumber } from "libphonenumber-js";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const UserAboutPhoneNumberSchema = z.object({
-  phonenumber: z.string().min(10, "Must be at least 10 digits"),
+  phonenumber: z
+    .string()
+    .min(10, "Must be at least 10 digits") // Ensures it's at least 10 characters long
+    .refine(
+      (value) => {
+        return isValidPhoneNumber(value);
+      },
+      {
+        message: "Given phone number must be a valid telephone number.",
+      }
+    ),
 });
 
 const PhoneNumberForm = ({ toggleAddPhoneNumber, setToggleAddPhoneNumber }) => {
@@ -30,7 +43,12 @@ const PhoneNumberForm = ({ toggleAddPhoneNumber, setToggleAddPhoneNumber }) => {
     },
   });
 
-  const onSubmit = () => {};
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  console.log(phoneNumberRegex("+376"), "Yooooooooooo");
+
   return (
     <div>
       {toggleAddPhoneNumber && (
@@ -38,7 +56,7 @@ const PhoneNumberForm = ({ toggleAddPhoneNumber, setToggleAddPhoneNumber }) => {
           <form onSubmit={PhoneInfoForm.handleSubmit(onSubmit)}>
             <FormField
               control={PhoneInfoForm.control}
-              name="pagecategory"
+              name="phonenumber"
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-start justify-center gap-x-2 relative">
@@ -46,25 +64,22 @@ const PhoneNumberForm = ({ toggleAddPhoneNumber, setToggleAddPhoneNumber }) => {
                     <div className="flex flex-col w-full items-start gap-x-2 relative">
                       <FormControl>
                         <Input
-                          placeholder="Phone number"
+                          id="Phone number"
+                          name="phone"
+                          type="tel"
+                          placeholder="Enter your phone number"
+                          pattern="^[0-9+\-()\s]*$"
                           className="h-12 border-neutral-300  rounded-lg focus:border-2  focus:border-blue-600 "
                           {...field}
                         />
                       </FormControl>
-                      <FormDescription
-                        className="text-xs p-1
-                            "
-                      >
-                        Given phone number must be a valid telephone number.
-                      </FormDescription>
+                      <FormMessage className="text-[12px] ml-2" />
                     </div>
                   </div>
                   <p className="text-xs">
                     This number will display on your profile.Estorias will not
                     use it to contact
                   </p>
-
-                  <FormMessage className="text-[12px] ml-2" />
                 </FormItem>
               )}
             />
@@ -90,8 +105,9 @@ const PhoneNumberForm = ({ toggleAddPhoneNumber, setToggleAddPhoneNumber }) => {
                   <span className="text-[15px] font-semibold">Cancel</span>
                 </Button>
                 <Button
+                  type="submit"
                   variant="ghost"
-                  disabled={true}
+                  disabled={false}
                   className="flex items-center bg-neutral-400 gap-x-2 h-10 px-4"
                 >
                   <span className="text-[15px] font-semibold">Save</span>

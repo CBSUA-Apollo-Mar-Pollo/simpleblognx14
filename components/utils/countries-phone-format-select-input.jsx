@@ -1,8 +1,13 @@
 "use client";
 
 import { countries } from "@/constants/countries-phone-formats";
-import { Triangle } from "lucide-react";
+import { Search, Triangle } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "../ui/Dropdown-menu";
 
 const CountriesPhoneFormatSelectInput = () => {
   const [search, setSearch] = useState("");
@@ -28,50 +33,51 @@ const CountriesPhoneFormatSelectInput = () => {
   );
 
   return (
-    <div className="w-auto" ref={dropdownRef}>
+    <DropdownMenu>
       {/* Selected box */}
-      <div
-        className="flex items-center  border rounded-lg p-3 cursor-pointer bg-neutral-200"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="mr-2">{selected.code}</span>
-        <span className="mr-2">{selected.dial}</span>
-        <Triangle className="rotate-180 h-2 w-2 text-black fill-black z-20 dark:fill-neutral-800 dark:text-neutral-800" />
-      </div>
+      <DropdownMenuTrigger asChild>
+        <div className="flex items-center  border rounded-lg p-3 cursor-pointer bg-neutral-200">
+          <span className="mr-2">{selected.code}</span>
+          <span className="mr-2">{selected.dial}</span>
+          <Triangle className="rotate-180 h-2 w-2 text-black fill-black z-20 dark:fill-neutral-800 dark:text-neutral-800" />
+        </div>
+      </DropdownMenuTrigger>
 
       {/* Dropdown */}
-      {isOpen && (
-        <div className="absolute botom-0 mt-1 bg-white  drop-shadow-[0px_0px_8px_rgba(0,0,0,0.3)] w-full z-50 rounded-lg p-2">
+
+      <DropdownMenuContent className="ml-[14vw] min-w-[20vw]">
+        <div className="flex items-center border-b p-2 gap-x-2">
+          <Search className="text-neutral-500" />
           <input
             type="text"
             placeholder="Search country..."
-            className="w-full p-2 border-b outline-none "
+            className="w-full outline-none "
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-
-          <div className=" max-h-[40vh] overflow-y-auto">
-            {filteredCountries.map((c) => (
-              <div
-                key={c.code}
-                className="p-2 hover:bg-gray-100 cursor-pointer "
-                onClick={() => {
-                  setSelected(c);
-                  setIsOpen(false);
-                  setSearch("");
-                }}
-              >
-                <p className="font-semibold text-sm">{c.name}</p>
-                <p className="text-xs text-neutral-600 font-semibold">
-                  {c.code}
-                  {c.dial}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
-      )}
-    </div>
+
+        <div className=" max-h-[40vh] overflow-y-auto">
+          {filteredCountries.map((c) => (
+            <div
+              key={c.code}
+              className="p-2 hover:bg-gray-100 cursor-pointer "
+              onClick={() => {
+                setSelected(c);
+                setIsOpen(false);
+                setSearch("");
+              }}
+            >
+              <p className="font-semibold text-sm">{c.name}</p>
+              <p className="text-xs text-neutral-600 font-semibold">
+                {c.code}
+                {c.dial}
+              </p>
+            </div>
+          ))}
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
