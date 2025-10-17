@@ -5,7 +5,7 @@ import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 
 import { useQuery } from "@tanstack/react-query";
-import { getLastMessageUserOne } from "@/actions/getLastMessageUserOne";
+import { getLastMessageUserOne } from "@/data/getLastMessageUserOne";
 import { Dot } from "lucide-react";
 import { formatTimeToNow } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";

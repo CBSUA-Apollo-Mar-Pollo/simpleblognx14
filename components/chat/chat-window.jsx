@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import ChatWindowInput from "./chat-window-input";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { getConversationInfoForChatWindow } from "@/actions/getConversationInfoForChatWindow";
+import { getConversationInfoForChatWindow } from "@/data/getConversationInfoForChatWindow";
 import ChatWindowMessages from "./chat-window-messages";
 
 const ChatWindow = () => {

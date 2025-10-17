@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import ProfileButtons from "./ProfileButtons";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 import { useTheme } from "next-themes";
 import {
   Dot,

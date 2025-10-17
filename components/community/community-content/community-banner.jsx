@@ -1,6 +1,6 @@
 "use client";
 
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";

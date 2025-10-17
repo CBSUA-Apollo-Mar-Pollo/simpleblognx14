@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/Dropdown-menu";
 
-const CountriesPhoneFormatSelectInput = () => {
+const CountriesPhoneFormatSelectInput = ({ setSelectedCode }) => {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(countries[0]);
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +63,7 @@ const CountriesPhoneFormatSelectInput = () => {
               key={c.code}
               className="p-2 hover:bg-gray-100 cursor-pointer "
               onClick={() => {
+                setSelectedCode(c);
                 setSelected(c);
                 setIsOpen(false);
                 setSearch("");

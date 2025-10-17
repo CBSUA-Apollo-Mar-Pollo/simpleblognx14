@@ -7,14 +7,20 @@ const UserProfileAboutPage = async ({ params }) => {
     where: {
       id: params?.userId,
     },
-    include: {
-      blogs: true,
+    select: {
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+      category: true,
     },
   });
 
   return (
     <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 h-screen">
-      <UserAbout />
+      <UserAbout user={user} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { useQuery } from "@tanstack/react-query";
-import { getLastMessageUserTwo } from "@/actions/getLastMessageUserTwo";
+import { getLastMessageUserTwo } from "@/data/getLastMessageUserTwo";
 import { formatDistanceToNow } from "date-fns";
 import { Dot } from "lucide-react";
 import { Skeleton } from "../ui/Skeleton";

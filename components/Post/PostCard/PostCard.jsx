@@ -8,7 +8,7 @@ import HeartVote from "../../PostVote/HeartVote";
 import Link from "next/link";
 import PostDescriptionCard from "../../PostComment/PostDescriptionCard";
 import { useQuery } from "@tanstack/react-query";
-import { getSharedPost } from "@/actions/getSharedPost";
+import { getSharedPost } from "@/data/getSharedPost";
 import SharedPostCard from "./SharedPostCard";
 import StandardPostCard from "./StandardPostCard";
 import PostCardHeader from "./PostCardHeader";
@@ -16,7 +16,7 @@ import PostCardShareButton from "./PostCardShareButton";
 import SharedPostCardLoader from "@/components/Loaders/SharedPostCardLoader";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import PostVote from "@/components/PostVote/PostVote";
-import { getSharedAmount } from "@/actions/getSharedAmount";
+import { getSharedAmount } from "@/data/getSharedAmount";
 import { useSession } from "next-auth/react";
 
 const PostCard = ({

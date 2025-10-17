@@ -1,4 +1,4 @@
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 import MultipleImageRender from "@/components/Post/multiple-image-render";
 
 import { Card, CardHeader } from "@/components/ui/Card";

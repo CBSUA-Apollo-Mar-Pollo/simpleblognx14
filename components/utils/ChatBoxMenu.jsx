@@ -13,7 +13,7 @@ import { Input } from "../ui/Input";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { getFriendsList } from "@/actions/getFriendsList";
+import { getFriendsList } from "@/data/getFriendsList";
 import UserAvatar from "./UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 

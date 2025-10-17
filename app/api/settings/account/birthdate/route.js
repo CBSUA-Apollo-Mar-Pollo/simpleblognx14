@@ -1,4 +1,4 @@
-import { getMonthNumber } from "@/actions/getMonthNumber";
+import { getMonthNumber } from "@/data/getMonthNumber";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 

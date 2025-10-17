@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 
-import { getStoryData } from "@/actions/getStoryData";
+import { getStoryData } from "@/data/getStoryData";
 import StoryPage from "@/components/stories/StoryPage/story-page";
 import { getAuthSession } from "@/lib/auth";
 

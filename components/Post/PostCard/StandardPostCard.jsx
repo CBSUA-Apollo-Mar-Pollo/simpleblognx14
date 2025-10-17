@@ -1,6 +1,6 @@
 "use client";
 
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";

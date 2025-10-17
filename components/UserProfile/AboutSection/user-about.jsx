@@ -2,21 +2,6 @@
 
 import React, { useState } from "react";
 import { Button } from "../../ui/Button";
-import { PlusCircle } from "lucide-react";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/Form";
-import CountriesPhoneFormatSelectInput from "@/components/utils/countries-phone-format-select-input";
-import { Input } from "@/components/ui/Input";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import UserAboutOverView from "./user-about-overview";
 import UserAboutPlacesLived from "./user-about-places-lived";
 import UserAboutWorkAndEducation from "./user-about-work-and-education";
@@ -24,12 +9,12 @@ import UserAboutFamilyRelations from "./user-about-family-relations";
 import UserAboutDetails from "./user-about-details";
 import UserAboutLifeEvents from "./user-about-life-events";
 
-const UserAbout = () => {
+const UserAbout = ({ user }) => {
   const [aboutNav, setAboutNav] = useState(1);
   return (
     <div className="bg-white drop-shadow-md shadow rounded-2xl">
       <div className="grid grid-cols-8">
-        <div className="px-1 pt-3 pb-2 col-span-2 border-r border-neutral-300">
+        <div className="pl-2 pt-5 pb-2 col-span-2 border-r border-neutral-300">
           <h1 className="text-xl font-bold pl-3">About</h1>
           <div className="space-y-2 mt-3">
             <Button
@@ -95,7 +80,7 @@ const UserAbout = () => {
           </div>
         </div>
 
-        {aboutNav === 1 && <UserAboutOverView />}
+        {aboutNav === 1 && <UserAboutOverView user={user} />}
 
         {aboutNav === 2 && <UserAboutWorkAndEducation />}
 

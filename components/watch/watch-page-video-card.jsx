@@ -11,7 +11,7 @@ import PostCardShareButton from "../Post/PostCard/PostCardShareButton";
 import WatchPageVideoContent from "./watch-page-video-content";
 import { Dot, Forward, MessageCircle } from "lucide-react";
 import WatchPageVideoVote from "./watch-page-video-vote";
-import { getSharedAmount } from "@/actions/getSharedAmount";
+import { getSharedAmount } from "@/data/getSharedAmount";
 
 const WatchPageVideoCard = ({ blog, session, votesAmt, currentVote }) => {
   const [isVideoPaused, setVideoPaused] = useState(false);

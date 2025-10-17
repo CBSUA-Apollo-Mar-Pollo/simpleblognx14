@@ -14,10 +14,10 @@ import { Button } from "../ui/Button";
 import ToolTipComp from "../utils/ToolTipComp";
 import { useSession } from "next-auth/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getFriendRequestData } from "@/actions/getFriendRequestData";
+import { getFriendRequestData } from "@/data/getFriendRequestData";
 import UserAvatar from "../utils/UserAvatar";
 import axios from "axios";
-import { getNotificationData } from "@/actions/getNotificationData";
+import { getNotificationData } from "@/data/getNotificationData";
 
 const NotificationMenu = () => {
   const { data: session } = useSession();

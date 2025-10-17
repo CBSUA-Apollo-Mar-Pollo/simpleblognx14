@@ -7,7 +7,7 @@ import UserAvatar from "../utils/UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 import { useSocket } from "../Providers/socket-provider";
 import { useMakeUserOnline } from "@/hooks/use-make-user-online";
-import { getContactList } from "@/actions/getContactList";
+import { getContactList } from "@/data/getContactList";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "../ui/Skeleton";
 

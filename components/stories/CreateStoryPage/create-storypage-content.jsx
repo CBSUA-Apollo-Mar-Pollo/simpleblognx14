@@ -1,6 +1,6 @@
 "use client";
 
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 import NotificationMenu from "@/components/Notification/NotificationMenu";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";

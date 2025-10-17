@@ -1,6 +1,6 @@
 "use client";
 
-import { getDominantColor } from "@/actions/getDominantColor";
+import { getDominantColor } from "@/data/getDominantColor";
 import { storeToRecentPosts } from "@/actions/storeToRecentPosts";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { cn, formatTimeToNow } from "@/lib/utils";

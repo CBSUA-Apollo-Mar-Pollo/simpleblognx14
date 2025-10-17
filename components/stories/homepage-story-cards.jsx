@@ -1,6 +1,6 @@
 "use client";
 
-import { getStoryData } from "@/actions/getStoryData";
+import { getStoryData } from "@/data/getStoryData";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";

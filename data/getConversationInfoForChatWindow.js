@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { getOrCreateConversation } from "./conversation";
+import { getOrCreateConversation } from "../actions/conversation";
 
 export const getConversationInfoForChatWindow = async (
   chatId,

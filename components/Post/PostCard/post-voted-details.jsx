@@ -1,6 +1,6 @@
 "use client";
 
-import { getPostVoteDetails } from "@/actions/getPostVoteDetails";
+import { getPostVoteDetails } from "@/data/getPostVoteDetails";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,

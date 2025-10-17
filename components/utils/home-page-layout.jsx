@@ -23,7 +23,7 @@ import PopularCommunities from "../community/popular-communities";
 import ChatHomeContactList from "../chat/chat-home-contact-list";
 import { Button } from "../ui/Button";
 import { useQuery } from "@tanstack/react-query";
-import { getContactList } from "@/actions/getContactList";
+import { getContactList } from "@/data/getContactList";
 import { Skeleton } from "../ui/Skeleton";
 
 const HomePageLayout = ({ sortedData, deleteImage, communities }) => {

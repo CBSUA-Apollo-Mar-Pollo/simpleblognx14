@@ -18,7 +18,7 @@ import {
 import { Separator } from "../ui/Separator";
 import { useSession } from "next-auth/react";
 import EditPostModal from "./EditPostModal/edit-post-modal";
-import { getSharedPost } from "@/actions/getSharedPost";
+import { getSharedPost } from "@/data/getSharedPost";
 import { useQuery } from "@tanstack/react-query";
 import MoveToTrashModal from "./move-to-trash-modal";
 

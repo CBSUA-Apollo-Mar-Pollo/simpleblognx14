@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllReels } from "@/actions/getAllReels";
+import { getAllReels } from "@/data/getAllReels";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/Card";

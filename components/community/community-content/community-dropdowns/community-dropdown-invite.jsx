@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/Input";
 import { Separator } from "@/components/ui/Separator";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAllFriends } from "@/actions/getAllFriends";
+import { getAllFriends } from "@/data/getAllFriends";
 import UserAvatar from "@/components/utils/UserAvatar";
 
 import { cn } from "@/lib/utils";
