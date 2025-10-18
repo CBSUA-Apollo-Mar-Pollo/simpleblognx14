@@ -17,7 +17,11 @@ import {
 } from "@/components/ui/Select";
 import { Separator } from "@/components/ui/Separator";
 import { Icons } from "@/components/utils/Icons";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -41,7 +45,12 @@ const RelationShipStatusFormSchema = z.object({
     }
   ),
 });
-const RelationshipStatusForm = ({ setToggleRelationStatusForm }) => {
+const RelationshipStatusForm = ({
+  refetch,
+  setToggleRelationStatusForm,
+  userAboutInfo,
+}) => {
+  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(RelationShipStatusFormSchema),
     defaultValues: {
@@ -49,7 +58,31 @@ const RelationshipStatusForm = ({ setToggleRelationStatusForm }) => {
     },
   });
 
-  const onSubmit = () => {};
+  const status = form.watch("status");
+
+  const isStatusSelected = status !== "Status";
+
+  const { mutate: onSubmit, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const { res } = await axios.post(
+        "/api/userProf/about/relationstatus",
+        data
+      );
+      return res;
+    },
+    onError: (err) => {
+      return toast({
+        title: "There was an error",
+        description: "Couldn't not add relation status, please try again later",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      refetch();
+      setToggleRelationStatusForm(false);
+    },
+  });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -58,7 +91,15 @@ const RelationshipStatusForm = ({ setToggleRelationStatusForm }) => {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue="Status">
+              <Select
+                disabled={isPending}
+                onValueChange={field.onChange}
+                defaultValue={
+                  userAboutInfo?.relationstatus
+                    ? userAboutInfo?.relationstatus
+                    : "Status"
+                }
+              >
                 <FormControl>
                   <SelectTrigger className="focus:ring-0 bg-neutral-200 font-semibold  flex gap-x-2">
                     <SelectValue placeholder="Select a role" />
@@ -118,9 +159,12 @@ const RelationshipStatusForm = ({ setToggleRelationStatusForm }) => {
             </Button>
             <Button
               variant="ghost"
-              disabled={true}
-              className="flex items-center bg-neutral-400 gap-x-2 h-10 px-4"
+              disabled={isPending || !isStatusSelected}
+              className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
             >
+              {isPending && (
+                <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
+              )}
               <span className="text-[15px] font-semibold">Save</span>
             </Button>
           </div>

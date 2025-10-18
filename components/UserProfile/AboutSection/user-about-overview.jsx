@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { Lock, Pencil, Phone, PlusCircle } from "lucide-react";
+import { Heart, Lock, Pencil, Phone, PlusCircle } from "lucide-react";
 import React, { useState } from "react";
 import HighSchoolForm from "./UserAboutForms/high-school-form";
 import PhoneNumberForm from "./UserAboutForms/phone-number-form";
@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserAboutInfo } from "@/data/get-user-about-info";
 import { Icons } from "@/components/utils/Icons";
 import parsePhoneNumberFromString from "libphonenumber-js";
+import HomeTownForm from "./UserAboutForms/home-town-form";
 
 const UserAboutOverView = ({ user }) => {
   const [toggleAddPhoneNumber, setToggleAddPhoneNumber] = useState(false);
@@ -21,11 +22,13 @@ const UserAboutOverView = ({ user }) => {
   const [toggleWorkPlaceForm, setToggleWorkPlaceForm] = useState(false);
   const [toggleRelationStatusForm, setToggleRelationStatusForm] =
     useState(false);
+  const [toggleHomeTownForm, setToggleHomeTownForm] = useState(false);
 
   const {
     data: userAboutInfo,
     status,
     isLoading,
+    refetch,
   } = useQuery({
     queryKey: ["useraboutinfo", user.id],
     queryFn: async () => {
@@ -87,20 +90,54 @@ const UserAboutOverView = ({ user }) => {
         <PlusCircle className="text-blue-600" />
         <p className="text-blue-600">Add current city</p>
       </Button>
-      <Button
-        variant="ghost"
-        className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
-      >
-        <PlusCircle className="text-blue-600" />
-        <p className="text-blue-600">Add hometown</p>
-      </Button>
+
+      {toggleHomeTownForm && (
+        <HomeTownForm setToggleHomeTownForm={setToggleHomeTownForm} />
+      )}
+
+      {!toggleHomeTownForm && (
+        <Button
+          onClick={() => setToggleHomeTownForm(true)}
+          variant="ghost"
+          className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
+        >
+          <PlusCircle className="text-blue-600" />
+          <p className="text-blue-600">Add hometown</p>
+        </Button>
+      )}
 
       {toggleRelationStatusForm && (
         <RelationshipStatusForm
+          refetch={refetch}
           setToggleRelationStatusForm={setToggleRelationStatusForm}
+          userAboutInfo={userAboutInfo}
         />
       )}
-      {!toggleRelationStatusForm && (
+
+      {userAboutInfo?.relationstatus && !toggleRelationStatusForm && (
+        <div className="flex items-center justify-between ml-3">
+          <div className="flex items-center gap-x-3">
+            <Heart className="w-7 h-7 fill-neutral-500 text-transparent" />
+            <div className="relative">
+              <p className="text-[14px]">{userAboutInfo?.relationstatus}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-x-4">
+            <button>
+              <Icons.earthIcon className="h-5 w-5 fill-neutral-600" />
+            </button>
+            <button
+              onClick={() => setToggleRelationStatusForm(true)}
+              className="bg-neutral-200 p-2 rounded-full"
+            >
+              <Pencil className="text-neutral-600 h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!toggleRelationStatusForm && !userAboutInfo?.relationstatus && (
         <Button
           onClick={() => setToggleRelationStatusForm(!toggleRelationStatusForm)}
           variant="ghost"
@@ -115,6 +152,7 @@ const UserAboutOverView = ({ user }) => {
         <PhoneNumberForm setToggleAddPhoneNumber={setToggleAddPhoneNumber} />
       )}
 
+      {/* display user phone number */}
       {userAboutInfo?.phonenumber && (
         <div className="flex items-center justify-between ml-3">
           <div className="flex items-center gap-x-3">

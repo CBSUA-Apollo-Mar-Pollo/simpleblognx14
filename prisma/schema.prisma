@@ -434,7 +434,8 @@ model Location {
 model ProfileAboutInfo {
   id String @id @default(cuid())
 
-  phonenumber Json?
+  phonenumber    Json?
+  relationstatus String?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
