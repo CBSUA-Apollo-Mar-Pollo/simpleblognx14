@@ -11,10 +11,29 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    await db.profileAboutInfo.create({
+    const isAboutInfoExisted = await db.profileAboutInfo.findFirst({
+      where: {
+        userId: session?.user.id,
+      },
+    });
+
+    if (!isAboutInfoExisted) {
+      await db.profileAboutInfo.create({
+        data: {
+          phonenumber: body,
+          userId: session.user.id,
+        },
+      });
+      return new Response("OK", { status: 200 });
+    }
+
+    await db.profileAboutInfo.update({
+      where: {
+        id: isAboutInfoExisted.id,
+        userId: session.user.id,
+      },
       data: {
         phonenumber: body,
-        userId: session.user.id,
       },
     });
 

@@ -11,7 +11,7 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const { status } = body;
+    const { currentcity } = body;
 
     const isAboutInfoExisted = await db.profileAboutInfo.findFirst({
       where: {
@@ -22,7 +22,7 @@ export async function POST(req) {
     if (!isAboutInfoExisted) {
       await db.profileAboutInfo.create({
         data: {
-          relationstatus: status,
+          currentcity,
           userId: session.user.id,
         },
       });
@@ -35,7 +35,7 @@ export async function POST(req) {
         userId: session.user.id,
       },
       data: {
-        relationstatus: status,
+        currentcity,
       },
     });
 
@@ -43,7 +43,7 @@ export async function POST(req) {
   } catch (error) {
     console.log(error);
     return new Response(
-      "Could not add relation status please try again later.",
+      "Could not add your phone number please try again later.",
       { status: 500 }
     );
   }

@@ -129,7 +129,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
       ? dominantColor
       : [36, 36, 36]; // fallback to a neutral gray
 
-  console.log(session, "session from profile banner");
+  // console.log(session, "session from profile banner");
 
   return (
     <div

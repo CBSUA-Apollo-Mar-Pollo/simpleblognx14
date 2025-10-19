@@ -20,8 +20,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const HomeTownFormSchema = z.object({
-  hometown: z
+const CurrentCityFormSchema = z.object({
+  currentcity: z
     .string()
     .trim()
     .min(2, { message: "Hometown must be at least 2 characters long" })
@@ -31,26 +31,26 @@ const HomeTownFormSchema = z.object({
         "Hometown can only contain letters, spaces, commas, apostrophes, and hyphens",
     }),
 });
-
-const HomeTownForm = ({ setToggleHomeTownForm, refetch }) => {
+const CurrentCityForm = ({ setToggleCurrentCityForm, refetch }) => {
   const { toast } = useToast();
   const form = useForm({
-    resolver: zodResolver(HomeTownFormSchema),
+    resolver: zodResolver(CurrentCityFormSchema),
     defaultValues: {
-      hometown: "",
+      currentcity: "",
     },
   });
 
-  const formValueHomeTown = form.watch("hometown");
+  const formValueCurrentCity = form.watch("currentcity");
 
-  const isHomeTownEmpty = formValueHomeTown === "";
+  const isCurrentCityEmpty = formValueCurrentCity === "";
 
   const { mutate: onSubmit, isPending } = useMutation({
     mutationFn: async (data) => {
-      const { res } = await axios.post("/api/userProf/about/hometown", data);
+      const { res } = await axios.post("/api/userProf/about/currentcity", data);
       return res;
     },
     onError: (err) => {
+      console.log(err);
       return toast({
         title: "There was an error",
         description: "Couldn't not add home town, please try again later",
@@ -59,23 +59,22 @@ const HomeTownForm = ({ setToggleHomeTownForm, refetch }) => {
     },
     onSuccess: () => {
       refetch();
-      setToggleHomeTownForm(false);
+      setToggleCurrentCityForm(false);
     },
   });
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="hometown"
+          name="currentcity"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input
                   disabled={isPending}
-                  placeholder="Hometown"
-                  name="hometown"
+                  placeholder="Current City"
+                  name="currentcity"
                   className="p-6 rounded-xl border-neutral-300 hover:border-2 hover:border-neutral-400 focus:border-blue-600"
                   {...field}
                 />
@@ -101,7 +100,7 @@ const HomeTownForm = ({ setToggleHomeTownForm, refetch }) => {
           <div className="flex items-center gap-x-2">
             <Button
               disabled={isPending}
-              onClick={() => setToggleHomeTownForm(false)}
+              onClick={() => setToggleCurrentCityForm(false)}
               variant="ghost"
               className="flex items-center bg-neutral-300 gap-x-2 h-10 px-2"
             >
@@ -109,7 +108,7 @@ const HomeTownForm = ({ setToggleHomeTownForm, refetch }) => {
             </Button>
             <Button
               variant="ghost"
-              disabled={isHomeTownEmpty || isPending}
+              disabled={isCurrentCityEmpty || isPending}
               className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
             >
               {isPending && (
@@ -124,4 +123,4 @@ const HomeTownForm = ({ setToggleHomeTownForm, refetch }) => {
   );
 };
 
-export default HomeTownForm;
+export default CurrentCityForm;
