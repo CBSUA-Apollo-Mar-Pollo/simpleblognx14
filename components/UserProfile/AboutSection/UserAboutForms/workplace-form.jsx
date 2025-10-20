@@ -42,6 +42,7 @@ const WorkPlaceFormSchema = z.object({
     .string()
     .min(3, { message: "Description must be atleast 3 characters " })
     .max(200, { message: "Description must be at most 200 characters." }),
+  currentlyworking: z.boolean().optional().default(true),
 });
 
 const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
@@ -53,6 +54,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
       position: "",
       address: "",
       description: "",
+      currentlyworking: true,
     },
   });
 
@@ -83,7 +85,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
               </FormControl>
             </FormItem>
           )}
-        />{" "}
+        />
         <FormField
           control={form.control}
           name="position"
@@ -133,7 +135,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
           <h1 className="font-semibold text-sm my-2">Time period</h1>
           <FormField
             control={form.control}
-            name="graduated"
+            name="currentlyworking"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center space-x-3 space-y-0 my-3">
                 <FormControl>

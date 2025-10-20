@@ -439,6 +439,7 @@ model ProfileAboutInfo {
   hometown       String?
   currentcity    String?
   college        Json?
+  highschool     Json?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String

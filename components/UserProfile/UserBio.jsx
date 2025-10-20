@@ -7,18 +7,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
-import { Dot, Pencil, Star } from "lucide-react";
+import { Dot, Loader2, Pencil, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Button, buttonVariants } from "../ui/Button";
 import { Textarea } from "../ui/Textarea";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 const MAX_CHARS = 100;
 
 const UserBio = ({ userImages, user }) => {
   const { data: session } = useSession();
+  const { toast } = useToast();
   const router = useRouter();
   const [toggleEditBioInput, setToggleEditBioInput] = useState(false);
   const [bioInput, setBioInput] = useState(user?.bio || "");
@@ -53,10 +55,16 @@ const UserBio = ({ userImages, user }) => {
     },
     onError: (err) => {
       console.log(err);
+      return toast({
+        title: "There was an error",
+        description: "Couldn't not edit your bio, please try again later",
+        variant: "destructive",
+      });
     },
     onSuccess: () => {
       setToggleEditBioInput(false);
       router.refresh();
+      user.bio = bioInput;
     },
   });
 
@@ -121,6 +129,7 @@ const UserBio = ({ userImages, user }) => {
                   <div className="my-2">
                     <div>
                       <Textarea
+                        disabled={isPending}
                         onChange={(e) => setBioInput(e.target.value)}
                         value={bioInput}
                         maxLength={MAX_CHARS}
@@ -152,9 +161,14 @@ const UserBio = ({ userImages, user }) => {
                             isPending
                           }
                           variant="ghost"
-                          className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9 px-3 py-3"
+                          className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
                         >
-                          Save
+                          {isPending && (
+                            <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
+                          )}
+                          <span className="text-[15px] font-semibold">
+                            Save
+                          </span>
                         </Button>
                       </div>
                     </div>

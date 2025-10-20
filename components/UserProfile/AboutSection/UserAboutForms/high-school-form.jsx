@@ -7,6 +7,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
@@ -23,28 +24,47 @@ import { Separator } from "@/components/ui/Separator";
 import { Textarea } from "@/components/ui/Textarea";
 import { Icons } from "@/components/utils/Icons";
 import { months } from "@/constants/Birthdate";
+import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import SelectVisibility from "./select-visibility";
+import { Loader2 } from "lucide-react";
 
 const UserAboutHighSchoolSchema = z.object({
-  schoolname: z.string(),
+  schoolname: z
+    .string()
+    .min(2, "Highschool name must be at least 2 characters.")
+    .max(100)
+    .trim()
+    .refine((val) => /^[A-Za-z0-9\s\.,-]+$/.test(val), {
+      message: "Highschool name contains invalid characters.",
+    }),
+
   startDate: z.object({
-    year: z.string(),
+    year: z.string().optional(),
     month: z.string().optional(),
     day: z.string().optional(),
   }),
+
   endDate: z.object({
-    year: z.number(),
+    year: z.string().optional(),
     month: z.string().optional(),
     day: z.string().optional(),
   }),
-  description: z.string(),
+
+  graduated: z.boolean().optional().default(false),
+
+  description: z.string().max(500).trim().optional(),
 });
 
-const HighSchoolForm = ({ setToggleHighSchool }) => {
+const HighSchoolForm = ({ setToggleHighSchool, refetch }) => {
+  const { toast } = useToast();
   const currentYear = new Date().getFullYear();
+  const [selectedAudience, setSelectedAudience] = useState("Public");
 
   const HighSchoolForm = useForm({
     resolver: zodResolver(UserAboutHighSchoolSchema),
@@ -52,13 +72,10 @@ const HighSchoolForm = ({ setToggleHighSchool }) => {
       schoolname: "",
       startDate: { year: "", month: "", day: "" },
       endDate: { year: "", month: "", day: "" },
+      graduated: false,
       description: "",
     },
   });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
 
   const isStartedDateMonthSelected = HighSchoolForm.watch(
     "startDate.month",
@@ -93,6 +110,33 @@ const HighSchoolForm = ({ setToggleHighSchool }) => {
     endedDateSelectedIndexMonth + 1,
     0
   ).getDate();
+
+  const formValueHighSchoolName = HighSchoolForm.watch("schoolname");
+
+  const isHighSchoolNameEmpty = formValueHighSchoolName === "";
+
+  const { mutate: onSubmit, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const payload = { ...data, selectedAudience };
+      const { res } = await axios.post(
+        "/api/userProf/about/highschool",
+        payload
+      );
+      return res;
+    },
+    onError: (err) => {
+      console.log(err);
+      return toast({
+        title: "There was an error",
+        description: "Couldn't not add home town, please try again later",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      refetch();
+      setToggleHighSchool(false);
+    },
+  });
 
   return (
     <Form {...HighSchoolForm}>
@@ -369,15 +413,30 @@ const HighSchoolForm = ({ setToggleHighSchool }) => {
         </div>
 
         <div className="flex items-center mb-4 gap-x-2">
-          <Checkbox id="graduated" className="h-5 w-5 ml-1" />
-          <Label htmlFor="graduated" className="font-semibold text-sm">
-            Graduated
-          </Label>
+          <FormField
+            control={HighSchoolForm.control}
+            name="graduated"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center space-x-3 space-y-0 my-3">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+
+                <FormLabel className="text-sm font-semibold">
+                  Graduated
+                </FormLabel>
+                <FormMessage className="text-[12px] ml-2" />
+              </FormItem>
+            )}
+          />
         </div>
 
         <FormField
           control={HighSchoolForm.control}
-          name="discription"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <div className="flex flex-col space-y-2 items-start justify-center gap-x-2 relative">
@@ -400,14 +459,10 @@ const HighSchoolForm = ({ setToggleHighSchool }) => {
         <Separator className="bg-neutral-300 mt-3" />
 
         <div className="flex items-center justify-between mt-3">
-          <Button
-            variant="ghost"
-            disabled={true}
-            className="flex items-center bg-neutral-400 gap-x-2 h-8"
-          >
-            <Icons.earthIcon className="h-3.5 w-3.5" />
-            <span className="text-[14px] font-semibold">Public</span>
-          </Button>
+          <SelectVisibility
+            selectedAudience={selectedAudience}
+            setSelectedAudience={setSelectedAudience}
+          />
 
           <div className="flex items-center gap-x-2">
             <Button
@@ -419,9 +474,12 @@ const HighSchoolForm = ({ setToggleHighSchool }) => {
             </Button>
             <Button
               variant="ghost"
-              disabled={true}
-              className="flex items-center bg-neutral-400 gap-x-2 h-10 px-4"
+              disabled={isHighSchoolNameEmpty || isPending}
+              className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
             >
+              {isPending && (
+                <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
+              )}
               <span className="text-[15px] font-semibold">Save</span>
             </Button>
           </div>
