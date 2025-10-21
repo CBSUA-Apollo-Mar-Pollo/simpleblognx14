@@ -75,7 +75,7 @@ const StoryPageContent = ({
         <Menu contentClassName="-mr-32" />
         <ChatBoxMenu />
         <NotificationMenu />
-        <UserAccountNav user={session.user} />
+        <UserAccountNav user={session?.user} />
       </div>
 
       <div className="flex items-center justify-center w-full mt-4 relative">

@@ -12,7 +12,7 @@ const StoryHomePage = async ({ params }) => {
   if (!session?.user) {
     return redirect("/");
   }
-  return <StoryPage id={params.storyId} stories={stories} />;
+  return <StoryPage id={params?.storyId} stories={stories} />;
 };
 
 export default StoryHomePage;

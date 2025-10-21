@@ -32,7 +32,7 @@ const UserAvatar = ({ post, user, ...props }) => {
                 alt="User avatar"
               /> */}
 
-            {user?.name[0].toUpperCase()}
+            {user?.name?.[0]?.toUpperCase() || "U"}
           </AvatarFallback>
         )}
       </Avatar>

@@ -66,7 +66,7 @@ const CreateStoryPageSidebar = ({
             />
 
             <span className="font-semibold text-lg text-neutral-800 dark:text-white">
-              {session.user.name}
+              {session?.user.name}
             </span>
           </div>
         </div>

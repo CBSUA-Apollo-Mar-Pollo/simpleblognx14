@@ -20,8 +20,6 @@ import { useQuery } from "@tanstack/react-query";
 import { ALargeSmall, ArrowDown, Minus, Plus, Triangle, X } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import Draggable from "react-draggable";
-
 import {
   Poppins,
   Caveat,
@@ -34,33 +32,71 @@ import {
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-poppins", // Optionally set a custom CSS variable
+  variable: "--font-poppins",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 const caveat = Caveat({
-  subsets: ["latin"], // Choose subsets you need
+  subsets: ["latin"],
   display: "swap",
   variable: "--font-caveat",
-  weight: ["700"], // Optional: Specify weights
+  weight: ["700"],
 });
 const playfair = Playfair_Display({
-  subsets: ["latin"], // Choose subsets you need
+  subsets: ["latin"],
   display: "swap",
   variable: "--font-playfair",
-  weight: ["700"], // Optional: Specify weights
+  weight: ["700"],
 });
 const lexend = Lexend({
-  subsets: ["latin"], // Choose subsets you need
+  subsets: ["latin"],
   display: "swap",
   variable: "--font-lexend",
-  weight: ["700"], // Optional: Specify weights
+  weight: ["700"],
 });
 const teko = Teko({
-  subsets: ["latin"], // Choose subsets you need
+  subsets: ["latin"],
   display: "swap",
   variable: "--font-teko",
-  weight: ["700"], // Optional: Specify weights
+  weight: ["700"],
 });
+
+// Small reusable pointer-drag hook that works with mouse & touch via pointer events
+function usePointerDrag({ initial = { x: 0, y: 0 }, enabled = true } = {}) {
+  const posRef = useRef({ x: initial.x, y: initial.y });
+  const [pos, setPos] = useState({ x: initial.x, y: initial.y });
+  const draggingRef = useRef(false);
+  const pointerIdRef = useRef(null);
+  const startRef = useRef({ x: 0, y: 0 });
+
+  const onPointerDown = (e) => {
+    if (!enabled) return;
+    // use native pointer events to support touch and mouse
+    draggingRef.current = true;
+    pointerIdRef.current = e.pointerId;
+    e.currentTarget.setPointerCapture(pointerIdRef.current);
+    startRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const onPointerMove = (e) => {
+    if (!draggingRef.current) return;
+    const dx = e.clientX - startRef.current.x;
+    const dy = e.clientY - startRef.current.y;
+    const next = { x: posRef.current.x + dx, y: posRef.current.y + dy };
+    posRef.current = next;
+    setPos(next);
+    startRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const onPointerUp = (e) => {
+    if (!draggingRef.current) return;
+    draggingRef.current = false;
+    try {
+      e.currentTarget.releasePointerCapture(pointerIdRef.current);
+    } catch (err) {}
+  };
+
+  return { pos, onPointerDown, onPointerMove, onPointerUp, setPos, posRef };
+}
 
 const CraeateStoryPageContent = ({
   session,
@@ -84,19 +120,23 @@ const CraeateStoryPageContent = ({
   const [fontStyle, setFontStyle] = useState("Headline");
   const [imageName, setImageName] = useState("cropped-image-with-text.png");
 
+  // New states to manage positions (replaces react-draggable)
+  const [imagePos, setImagePos] = useState({ x: 100, y: 10 });
+  const [textPos, setTextPos] = useState({ x: 120, y: 120 });
+
   const colors = [
-    "#000000", // black
-    "#14b8a6", // teal-600
-    "#f59e0b", // amber-600
-    "#0ea5e9", // sky-600
-    "#fbbf24", // yellow-600
-    "#4b5563", // gray-600
-    "#84cc16", // lime-600
-    "#8b5cf6", // purple-600
-    "#f43f5e", // rose-600
-    "#ef4444", // red-600
-    "#ffffff", // white
-    "#7c3aed", // violet-600
+    "#000000",
+    "#14b8a6",
+    "#f59e0b",
+    "#0ea5e9",
+    "#fbbf24",
+    "#4b5563",
+    "#84cc16",
+    "#8b5cf6",
+    "#f43f5e",
+    "#ef4444",
+    "#ffffff",
+    "#7c3aed",
   ];
 
   const fontFamilies = {
@@ -109,24 +149,13 @@ const CraeateStoryPageContent = ({
 
   const imageRef = useRef(null);
   const cropRef = useRef(null);
-  const textRef = useRef(null); // Reference for draggable text
+  const textRef = useRef(null);
   const inputRef = useRef();
   const textBorderRef = useRef(null);
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setStoryPreview(true);
-      setImage(URL.createObjectURL(file));
-      setImageName(file.name);
-    }
-  };
-
   useEffect(() => {
     const input = inputRef.current;
-    if (input) {
-      input.focus();
-    }
+    if (input) input.focus();
   }, [toggleAddText]);
 
   const { data: dominantColor, error } = useQuery({
@@ -137,161 +166,35 @@ const CraeateStoryPageContent = ({
     },
   });
 
-  // for cropping the image
-  const handleCrop = () => {
-    const cropRect = cropRef.current.getBoundingClientRect();
-    const img = imageRef.current;
-    const imgRect = img.getBoundingClientRect();
-    const textElement = textRef.current;
-    const textBorderElement = textBorderRef.current;
-
-    // Create a canvas to draw the cropped image and text
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    // Set canvas dimensions to match the crop area size
-    canvas.width = cropRect.width;
-    canvas.height = cropRect.height;
-
-    // Create a linear gradient for the background
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(
-      0,
-      `rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 1)`
-    ); // Starting color (dominant color)
-    gradient.addColorStop(1, "rgba(255, 255, 255, 1)"); // Ending color (white)
-
-    // Apply the gradient as the background fill style
-    ctx.fillStyle = gradient;
-
-    // Fill the entire canvas with the gradient background
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Calculate the position and dimensions of the image to be cropped
-    const scaleX = img.naturalWidth / imgRect.width; // Image scaling in x direction
-    const scaleY = img.naturalHeight / imgRect.height; // Image scaling in y direction
-
-    // Calculate the cropping coordinates (relative to the crop area)
-    const offsetX = (cropRect.left - imgRect.left) * scaleX;
-    const offsetY = (cropRect.top - imgRect.top) * scaleY;
-
-    // Draw the portion of the image within the crop area to the canvas
-    ctx.drawImage(
-      img,
-      offsetX, // Starting x coordinate of the image to be cropped
-      offsetY, // Starting y coordinate of the image to be cropped
-      cropRect.width * scaleX, // Width of the portion of the image to be cropped
-      cropRect.height * scaleY, // Height of the portion of the image to be cropped
-      0, // X coordinate on the canvas
-      0, // Y coordinate on the canvas
-      canvas.width, // Width on the canvas (match crop area size)
-      canvas.height // Height on the canvas (match crop area size)
-    );
-
-    // Calculate the text position relative to the crop area
-    const textPosition = textElement?.getBoundingClientRect();
-
-    const textOffsetX = textPosition?.left - cropRect.left;
-    const textOffsetY = textPosition?.top - cropRect.top;
-
-    // Apply the scale and rotation to the text position
-    const transformedX = textOffsetX; // Apply scale transformation
-    const transformedY = textOffsetY - 20; // Apply scale transformation
-
-    // Apply rotation to the text
-    ctx.save(); // Save the current canvas state
-    ctx.translate(canvas.width / 2, canvas.height / 2); // Move the origin to the center of the canvas
-    ctx.translate(-canvas.width / 2, -canvas.height / 2); // Move back to the original origin
-
-    // Draw the draggable text onto the canvas
-    if (textElement) {
-      ctx.font = `bolder ${textFontSize + 1}px ${
-        fontFamilies[fontStyle].style.fontFamily
-      }`; // Customize font size and family
-      ctx.fillStyle = chosenColor; // Set text color from state
-      ctx.fillText(
-        text,
-        transformedX, // Draw text at the transformed position
-        transformedY // Draw text at the transformed position
-      );
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setStoryPreview(true);
+      setImage(URL.createObjectURL(file));
+      setImageName(file.name);
     }
-
-    ctx.restore(); // Restore the canvas state after rotation
-
-    // Get cropped image with text as a data URL (use "image/png" for transparency support)
-    const croppedImage = canvas.toDataURL("image/png");
-
-    // Extract MIME type from the base64 string
-    const [metadata, base64Data] = croppedImage.split(",");
-    const mimeType = metadata.match(/:(.*?);/)[1]; // Extract the MIME type
-
-    // Decode the base64 string
-    const binaryString = atob(base64Data);
-    const byteNumbers = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      byteNumbers[i] = binaryString.charCodeAt(i);
-    }
-
-    // Create a Blob from the binary data
-    const fileBlob = new Blob([byteNumbers], { type: mimeType });
-
-    // Create a File object
-    const file = new File([fileBlob], imageName, {
-      type: mimeType,
-      lastModified: Date.now(),
-    });
-
-    setCropImageLink(file);
   };
 
-  const zoomIn = () => {
-    setScale((prevScale) => {
-      // Increment the scale value by 0.1 and round to one decimal place
+  // pointer-drag hooks for image and text
+  const imageDrag = usePointerDrag({
+    initial: imagePos,
+    enabled: !isDraggableDisabled,
+  });
+  const textDrag = usePointerDrag({
+    initial: textPos,
+    enabled: !isDraggableDisabled,
+  });
 
-      const nextScale = Math.round((parseFloat(prevScale) + 0.1) * 10) / 10;
+  // keep local states in sync when hook pos updates
+  useEffect(() => {
+    setImagePos(imageDrag.pos);
+  }, [imageDrag.pos.x, imageDrag.pos.y]);
 
-      // Return the next scale, ensuring it does not exceed the max value of 2.5
-      return nextScale <= 2.5 ? nextScale : prevScale;
-    });
-  };
+  useEffect(() => {
+    setTextPos(textDrag.pos);
+  }, [textDrag.pos.x, textDrag.pos.y]);
 
-  const zoomOut = () =>
-    setScale((prevScale) =>
-      parseFloat(prevScale) > 0.1
-        ? parseFloat(prevScale) - 0.1
-        : parseFloat(prevScale)
-    );
-
-  const handleSliderClick = (e) => {
-    const slider = e.target;
-    const rect = slider.getBoundingClientRect();
-    const clickX = e.clientX - rect.left; // X-coordinate relative to the slider
-    const sliderWidth = rect.width;
-
-    const min = parseFloat(slider.min);
-    const max = parseFloat(slider.max);
-
-    // Calculate the new value and ensure it's a number
-    const newValue = min + (clickX / sliderWidth) * (max - min);
-
-    // Set scale as a number
-    setScale(Number(newValue));
-  };
-
-  // const rotateClockwise = () => setRotation((prev) => prev + 90);
-
-  const handleCloseTextEditor = () => {
-    setToggleAddText(false);
-  };
-
-  const handleMouseEnterOnText = () => {
-    setResizeTextToggle(true);
-  };
-
-  const handleMouseLeaveOnText = () => {
-    setResizeTextToggle(false);
-  };
-
+  // resizing handler (same idea as before)
   const handler = (mouseDownEvent) => {
     const startSize = size;
     const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
@@ -300,17 +203,14 @@ const CraeateStoryPageContent = ({
     const onMouseMove = (mouseMoveEvent) => {
       setIsDraggableDisabled(true);
       setSize((currentSize) => {
-        // Calculate new size
         const newSize = {
           x: startSize.x - startPosition.x + mouseMoveEvent.pageX,
           y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
         };
 
-        // Determine if the size is increasing or decreasing
         const isGettingBigger =
           newSize.x > currentSize.x || newSize.y > currentSize.y;
 
-        // Adjust font size accordingly
         setTextFontSize((prevFontSize) =>
           isGettingBigger ? prevFontSize + 0.3 : prevFontSize - 0.3
         );
@@ -337,12 +237,135 @@ const CraeateStoryPageContent = ({
     handleCrop();
   };
 
+  // Crop function unchanged aside from relying on DOM positions of elements
+  const handleCrop = () => {
+    const cropRect = cropRef.current.getBoundingClientRect();
+    const img = imageRef.current;
+    const imgRect = img.getBoundingClientRect();
+    const textElement = textRef.current;
+    const textBorderElement = textBorderRef.current;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = cropRect.width;
+    canvas.height = cropRect.height;
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(
+      0,
+      `rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 1)`
+    );
+    gradient.addColorStop(1, "rgba(255, 255, 255, 1)");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const scaleX = img.naturalWidth / imgRect.width;
+    const scaleY = img.naturalHeight / imgRect.height;
+
+    const offsetX = (cropRect.left - imgRect.left) * scaleX;
+    const offsetY = (cropRect.top - imgRect.top) * scaleY;
+
+    ctx.drawImage(
+      img,
+      offsetX,
+      offsetY,
+      cropRect.width * scaleX,
+      cropRect.height * scaleY,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    const textPosition = textElement?.getBoundingClientRect();
+    const textOffsetX = textPosition?.left - cropRect.left;
+    const textOffsetY = textPosition?.top - cropRect.top;
+
+    const transformedX = textOffsetX;
+    const transformedY = textOffsetY - 20;
+
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+    if (textElement) {
+      ctx.font = `bolder ${textFontSize + 1}px ${
+        fontFamilies[fontStyle].style.fontFamily
+      }`;
+      ctx.fillStyle = chosenColor;
+      ctx.fillText(text, transformedX, transformedY);
+    }
+
+    ctx.restore();
+
+    const croppedImage = canvas.toDataURL("image/png");
+
+    const [metadata, base64Data] = croppedImage.split(",");
+    const mimeType = metadata.match(/:(.*?);/)[1];
+
+    const binaryString = atob(base64Data);
+    const byteNumbers = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      byteNumbers[i] = binaryString.charCodeAt(i);
+    }
+
+    const fileBlob = new Blob([byteNumbers], { type: mimeType });
+
+    const file = new File([fileBlob], imageName, {
+      type: mimeType,
+      lastModified: Date.now(),
+    });
+
+    setCropImageLink(file);
+  };
+
+  const zoomIn = () => {
+    setScale((prevScale) => {
+      const nextScale = Math.round((parseFloat(prevScale) + 0.1) * 10) / 10;
+      return nextScale <= 2.5 ? nextScale : prevScale;
+    });
+  };
+
+  const zoomOut = () =>
+    setScale((prevScale) =>
+      parseFloat(prevScale) > 0.1
+        ? parseFloat(prevScale) - 0.1
+        : parseFloat(prevScale)
+    );
+
+  const handleSliderClick = (e) => {
+    const slider = e.target;
+    const rect = slider.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const sliderWidth = rect.width;
+
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+
+    const newValue = min + (clickX / sliderWidth) * (max - min);
+
+    setScale(Number(newValue));
+  };
+
+  const handleCloseTextEditor = () => {
+    setToggleAddText(false);
+  };
+
+  const handleMouseEnterOnText = () => {
+    setResizeTextToggle(true);
+  };
+
+  const handleMouseLeaveOnText = () => {
+    setResizeTextToggle(false);
+  };
+
   return (
     <div className="relative ">
       <div className="absolute top-4 right-7 flex items-center justify-end  gap-x-2">
         <Menu contentClassName="-mr-32" />
         <NotificationMenu />
-        <UserAccountNav user={session.user} />
+        <UserAccountNav user={session?.user} />
       </div>
 
       {storyPreview && (
@@ -358,8 +381,8 @@ const CraeateStoryPageContent = ({
                   className="w-full bg-neutral-200 dark:bg-neutral-800"
                   style={{
                     position: "relative",
-                    padding: "20px", // Add padding to create spacing around the crop area
-                    borderRadius: "16px", // Optional: make the outer container rounded
+                    padding: "20px",
+                    borderRadius: "16px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
@@ -370,8 +393,8 @@ const CraeateStoryPageContent = ({
                     className="rounded-xl"
                     style={{
                       position: "relative",
-                      width: "360px", // Width of the crop area
-                      height: "630px", // Height of the crop area
+                      width: "360px",
+                      height: "630px",
                       margin: "20px auto",
                       border: "2px dashed #ccc",
                       overflow: "hidden",
@@ -379,7 +402,6 @@ const CraeateStoryPageContent = ({
                     }}
                     ref={cropRef}
                   >
-                    {/* Draggable image */}
                     {image && (
                       <div
                         style={{
@@ -388,122 +410,119 @@ const CraeateStoryPageContent = ({
                           position: "relative",
                         }}
                       >
-                        <Draggable>
+                        {/* custom draggable image */}
+                        <div
+                          onPointerDown={(e) => imageDrag.onPointerDown(e)}
+                          onPointerMove={(e) => imageDrag.onPointerMove(e)}
+                          onPointerUp={(e) => imageDrag.onPointerUp(e)}
+                          style={{
+                            position: "absolute",
+                            top: imagePos.y,
+                            left: imagePos.x,
+                            cursor: isDraggableDisabled ? "default" : "grab",
+                          }}
+                        >
                           <img
                             ref={imageRef}
                             src={image}
                             draggable="false"
                             alt="To be cropped"
-                            style={{
-                              position: "absolute",
-                              cursor: "grab",
-                              top: "10px",
-                              left: "100px",
-                            }}
+                            style={{ maxWidth: "300px", maxHeight: "600px" }}
                           />
-                        </Draggable>
+                        </div>
                       </div>
                     )}
 
                     {text.length !== 0 && toggleAddText === false && (
-                      <Draggable disabled={isDraggableDisabled}>
+                      <div
+                        onPointerDown={(e) => textDrag.onPointerDown(e)}
+                        onPointerMove={(e) => textDrag.onPointerMove(e)}
+                        onPointerUp={(e) => textDrag.onPointerUp(e)}
+                        style={{
+                          position: "absolute",
+                          top: textPos.y,
+                          left: textPos.x,
+                          cursor: isDraggableDisabled ? "default" : "grab",
+                          color: "red",
+                          fontSize: "20px",
+                          fontWeight: "bolder",
+                        }}
+                      >
                         <div
                           onMouseEnter={handleMouseEnterOnText}
                           onMouseLeave={handleMouseLeaveOnText}
                           onDoubleClick={() => setToggleAddText(true)}
-                          style={{
-                            position: "absolute",
-                            top: "120px", // Set initial position of the text
-                            left: "120px", // Set initial position of the text
-                            cursor: "grab",
-                            color: "red", // Text color
-                            fontSize: "20px", // Text size
-                            fontWeight: "bolder",
-                          }}
                         >
-                          <div>
-                            <div className="relative">
-                              {/* Circles at the corners */}
-                              {resizeTextToggle && (
-                                <div
-                                  onClick={() => {
-                                    setText("");
-                                    setSize({ x: 100, y: 60 });
-                                    setTextFontSize(30);
-                                  }}
-                                  className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
-                                >
-                                  <X className="w-[13px] h-[13px] text-white" />
-                                </div>
-                              )}
-
-                              {resizeTextToggle && (
-                                <div
-                                  onMouseEnter={() => {
-                                    setIsDraggableDisabled(true);
-                                  }}
-                                  onMouseLeave={() => {
-                                    setIsDraggableDisabled(false);
-                                  }}
-                                  onMouseDown={handler}
-                                  className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-white cursor-se-resize"
-                                ></div>
-                              )}
-
+                          <div className="relative">
+                            {resizeTextToggle && (
                               <div
-                                style={{
-                                  width: size.x,
-                                  height: size.y,
-
-                                  whiteSpace: "nowrap",
-                                  color: chosenColor,
+                                onClick={() => {
+                                  setText("");
+                                  setSize({ x: 100, y: 60 });
+                                  setTextFontSize(30);
                                 }}
-                                className={`flex  items-center justify-center h-auto w-auto text-center 
-                                  ${
-                                    resizeTextToggle
-                                      ? `border border-neutral-50`
-                                      : `border-0`
-                                  }
-                                  ${fontFamilies[fontStyle].className}
-
-                                `}
+                                className="absolute -top-[10px] -left-[10px] bg-neutral-500 rounded-full p-[5px] cursor-pointer"
                               >
-                                <p
-                                  style={{ fontSize: `${textFontSize}px` }}
-                                  className="flex flex-col"
-                                >
-                                  {text}
-                                  <span ref={textRef}></span>
-                                </p>
+                                <X className="w-[13px] h-[13px] text-white" />
                               </div>
+                            )}
+
+                            {resizeTextToggle && (
+                              <div
+                                onMouseEnter={() => {
+                                  setIsDraggableDisabled(true);
+                                }}
+                                onMouseLeave={() => {
+                                  setIsDraggableDisabled(false);
+                                }}
+                                onMouseDown={handler}
+                                className="absolute -bottom-[2px] -right-[1.5px] w-1.5 h-1.5 rounded-full bg-white cursor-se-resize"
+                              ></div>
+                            )}
+
+                            <div
+                              style={{
+                                width: size.x,
+                                height: size.y,
+                                whiteSpace: "nowrap",
+                                color: chosenColor,
+                              }}
+                              className={`flex  items-center justify-center h-auto w-auto text-center ${
+                                resizeTextToggle
+                                  ? `border border-neutral-50`
+                                  : `border-0`
+                              } ${fontFamilies[fontStyle].className}`}
+                            >
+                              <p
+                                style={{ fontSize: `${textFontSize}px` }}
+                                className="flex flex-col"
+                              >
+                                {text}
+                                <span ref={textRef}></span>
+                              </p>
                             </div>
                           </div>
                         </div>
-                      </Draggable>
+                      </div>
                     )}
 
                     {toggleAddText && (
                       <div
                         className="h-full w-auto backdrop-opacity-5 "
-                        style={{
-                          backgroundColor: "rgba(50, 50, 50, 0.5)", // Semi-transparent white background
-                        }}
+                        style={{ backgroundColor: "rgba(50, 50, 50, 0.5)" }}
                       >
                         <div
                           style={{
                             position: "absolute",
-                            top: "120px", // Set initial position of the text
-                            left: "0px", // Set initial position of the text
+                            top: "120px",
+                            left: "0px",
                             cursor: "grab",
-
-                            fontSize: "100px", // Text size
+                            fontSize: "100px",
                             fontWeight: "bolder",
                           }}
                         >
                           <Input
-                            style={{
-                              color: chosenColor, // Text color
-                            }}
+                            style={{ color: chosenColor }}
                             ref={inputRef}
                             value={text}
                             className={`border-0 text-2xl bg-transparent placeholder:text-black text-center dark:bg-transparent ${fontFamilies[fontStyle].className}`}
@@ -575,7 +594,6 @@ const CraeateStoryPageContent = ({
                 )}
               </div>
 
-              {/* footer for rotating image and zoom in and out the image */}
               <div className="w-[48vw] min-h-[6vh] border-2 border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
                   <Minus
@@ -592,7 +610,7 @@ const CraeateStoryPageContent = ({
                       className="w-full h-1 rounded-none border-0 cursor-pointer  transition-all duration-300 ease-in-out"
                       value={scale}
                       onChange={(e) => setScale(e.target.value)}
-                      onMouseDown={handleSliderClick} // Handle clicks
+                      onMouseDown={handleSliderClick}
                     />
                   </div>
                   <Plus
@@ -600,18 +618,6 @@ const CraeateStoryPageContent = ({
                     className="dark:text-white cursor-pointer"
                   />
                 </div>
-
-                {/* <Button
-                  onClick={rotateClockwise}
-                  className="flex gap-x-2 bg-neutral-200 hover:bg-neutral-100"
-                >
-                  <RotateCw className="h-5 w-5 text-black" />
-                  <span className="text-black ">Rotate Image</span>
-                </Button> */}
-
-                {/* <button onClick={handleCrop} style={{ marginTop: "10px" }}>
-                  Crop Image
-                </button> */}
               </div>
             </div>
           </div>

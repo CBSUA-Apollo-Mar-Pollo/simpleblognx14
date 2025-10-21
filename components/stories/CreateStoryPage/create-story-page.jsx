@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/Dialog";
-import { Separator } from "@/components/ui/Separator";
 import { Button } from "@/components/ui/Button";
 import { uploadFiles } from "@/lib/uploadThing";
 import { useToast } from "@/hooks/use-toast";
@@ -26,7 +25,6 @@ const CreateStoryPage = () => {
   const [isDiscarding, setIsDiscarding] = useState(false);
   const [storyPreview, setStoryPreview] = useState(false);
   const [cropImageLink, setCropImageLink] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -37,9 +35,8 @@ const CreateStoryPage = () => {
     setIsDiscarding(false);
   };
 
-  const { mutate: createStory, isError } = useMutation({
+  const { mutate: createStory, isPending } = useMutation({
     mutationFn: async () => {
-      setIsLoading(true);
       // Upload the image in upload thing
       let file = cropImageLink;
       const response = await uploadFiles("imageUploader", {
@@ -54,7 +51,7 @@ const CreateStoryPage = () => {
     },
     onError: (err) => {
       console.log(err);
-      setIsLoading(false);
+
       return toast({
         title: "There was a problem",
         description: "Something went wrong. Please try again.",
@@ -62,7 +59,6 @@ const CreateStoryPage = () => {
       });
     },
     onSuccess: () => {
-      setIsLoading(false);
       router.push("/");
     },
   });
@@ -77,7 +73,7 @@ const CreateStoryPage = () => {
           setIsDiscarding={setIsDiscarding}
           storyPreview={storyPreview}
           createStory={createStory}
-          isLoading={isLoading}
+          isLoading={isPending}
         />
       </div>
 
