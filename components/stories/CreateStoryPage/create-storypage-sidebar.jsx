@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { Separator } from "@/components/ui/Separator";
+import { Icons } from "@/components/utils/Icons";
 import UserAvatar from "@/components/utils/UserAvatar";
 import { ALargeSmall, Loader2, Settings, X } from "lucide-react";
 import Link from "next/link";
@@ -52,7 +53,7 @@ const CreateStoryPageSidebar = ({
               size="icon"
               className="bg-neutral-200 dark:bg-neutral-800 rounded-full hover:bg-neutral-300 dark:hover:bg-neutral-700"
             >
-              <Settings className="text-neutral-200 dark:text-neutral-800   fill-neutral-700 dark:fill-neutral-300 w-7 h-7 " />
+              <Icons.SettingIcon className="h-5 w-5 fill-neutral-800  border-neutral-800 dark:fill-neutral-200" />
             </Button>
           </div>
 

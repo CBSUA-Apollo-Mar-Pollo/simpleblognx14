@@ -158,7 +158,7 @@ const CraeateStoryPageContent = ({
     if (input) input.focus();
   }, [toggleAddText]);
 
-  const { data: dominantColor, error } = useQuery({
+  const { data: dominantColor } = useQuery({
     queryKey: ["dominantColor", image],
     queryFn: async () => {
       const res = await getDominantColor(image);
@@ -370,15 +370,15 @@ const CraeateStoryPageContent = ({
 
       {storyPreview && (
         <div className="flex items-center justify-center h-screen gap-x-4">
-          <div className="space-y-2">
+          <div className="">
             <h1 className="text-2xl font-bold text-start dark:text-white">
               Preview
             </h1>
 
             <div>
-              <div className="relative w-[48vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300 dark:border-neutral-800">
+              <div className="relative w-[55vw] h-[77vh]  rounded-t-2xl flex items-center justify-center overflow-hidden border-2 border-neutral-300 dark:border-neutral-800">
                 <div
-                  className="w-full bg-neutral-200 dark:bg-neutral-800"
+                  className="w-full bg-neutral-800 "
                   style={{
                     position: "relative",
                     padding: "20px",
@@ -390,13 +390,13 @@ const CraeateStoryPageContent = ({
                 >
                   <div
                     onMouseLeave={handleOnMouseLeaveCropArea}
-                    className="rounded-xl"
+                    className="rounded-xl border-2 border-white"
                     style={{
                       position: "relative",
                       width: "360px",
-                      height: "630px",
+                      height: "600px",
                       margin: "20px auto",
-                      border: "2px dashed #ccc",
+
                       overflow: "hidden",
                       backgroundImage: `linear-gradient(to bottom,  rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.9) 0%, rgba(255, 255, 255, 1) 100%)`,
                     }}
@@ -594,7 +594,7 @@ const CraeateStoryPageContent = ({
                 )}
               </div>
 
-              <div className="w-[48vw] min-h-[6vh] border-2 border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
+              <div className="w-[55vw] min-h-[6vh] border-2 border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 rounded-b-2xl flex items-center justify-center gap-x-3 pb-4 pt-5">
                 <div className="flex items-center justify-end gap-x-2 w-[20vw]">
                   <Minus
                     onClick={zoomOut}

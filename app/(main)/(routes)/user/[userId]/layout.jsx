@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { UTApi } from "uploadthing/server";
 
 const Layout = async ({ children, params }) => {
-  const userId = params?.userId;
+  const { userId } = await params;
   const user = await db.user.findFirst({
     where: {
       id: userId,

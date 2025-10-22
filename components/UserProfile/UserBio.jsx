@@ -15,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import EditDetailsModal from "./ProfileSection/edit-details-modal";
 
 const MAX_CHARS = 100;
 
@@ -185,12 +186,8 @@ const UserBio = ({ userImages, user }) => {
                   </Button>
                 )}
 
-                <Button
-                  variant="ghost"
-                  className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"
-                >
-                  Edit details
-                </Button>
+                <EditDetailsModal user={user} />
+
                 <Button
                   variant="ghost"
                   className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"

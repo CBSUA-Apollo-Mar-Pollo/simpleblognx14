@@ -20,7 +20,7 @@ export const metadata = {
 
 const UserProfilePage = async ({ params }) => {
   const session = await getAuthSession();
-  const userId = params?.userId;
+  const { userId } = await params;
   const user = await db.user.findFirst({
     where: {
       id: userId,
@@ -70,7 +70,7 @@ const UserProfilePage = async ({ params }) => {
 
   const userImages = await db.blog.findMany({
     where: {
-      authorId: user.id,
+      authorId: user?.id,
       image: {
         not: null,
       },

@@ -3,9 +3,10 @@ import { db } from "@/lib/db";
 import React from "react";
 
 const UserProfileAboutPage = async ({ params }) => {
+  const { userId, about } = await params;
   const user = await db.user.findFirst({
     where: {
-      id: params?.userId,
+      id: userId,
     },
     select: {
       id: true,
@@ -20,7 +21,7 @@ const UserProfileAboutPage = async ({ params }) => {
 
   return (
     <div className="bg-neutral-200 dark:bg-neutral-900 px-60 py-5 min-h-screen">
-      <UserAbout user={user} />
+      <UserAbout user={user} aboutTab={about} />
     </div>
   );
 };
