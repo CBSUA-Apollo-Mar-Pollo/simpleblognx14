@@ -69,9 +69,82 @@ const UserAboutOverView = ({ user }) => {
   return (
     <div className="col-span-6 pl-4 pr-20 pt-10 pb-4 space-y-6">
       {toggleWorkPlaceForm && (
-        <WorkPlaceForm setToggleWorkPlaceForm={setToggleWorkPlaceForm} />
+        <WorkPlaceForm
+          setToggleWorkPlaceForm={setToggleWorkPlaceForm}
+          refetch={refetch}
+        />
       )}
-      {!toggleWorkPlaceForm && (
+      {userAboutInfo?.workplace && !toggleWorkPlaceForm && (
+        <div className="flex items-center justify-between ml-3">
+          <div className="flex items-center gap-x-3">
+            <Icons.BriefCaseIcon className="w-7 h-7 fill-neutral-500 text-white text-transparent mr-1" />
+            <div className="flex flex-col">
+              <div className="relative flex items-center gap-x-1">
+                <p className="text-[14px]">
+                  Former {userAboutInfo?.workplace.position} at
+                </p>
+                <p className="text-[14px] font-medium">
+                  {userAboutInfo?.workplace.companyname}
+                </p>
+              </div>
+              <div>
+                <p className="text-[12px] text-neutral-600">
+                  {userAboutInfo?.workplace.startDate.month}{" "}
+                  {userAboutInfo?.workplace.startDate.day}{" "}
+                  {userAboutInfo?.workplace.startDate.year} to{" "}
+                  {userAboutInfo?.workplace.endDate.month}{" "}
+                  {userAboutInfo?.workplace.endDate.day}{" "}
+                  {userAboutInfo?.workplace.endDate.year}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-x-4">
+            <button>
+              <Icons.earthIcon className="h-5 w-5 fill-neutral-600" />
+            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="bg-neutral-200 p-2 rounded-full">
+                  <MoreHorizontal className="text-neutral-600 h-5 w-5" />
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="mr-[17.5rem] p-2 min-w-[18vw] bg-transparent border-0 drop-shadow-[0_4px_9px_rgba(0,0,0,0.4)] shadow-none">
+                <div className="relative z-0">
+                  <Triangle className="fill-white text-white h-10 w-10 rotate-[15.2rad] absolute -top-2.5 -right-[9px] z-30" />
+                  <div className="bg-white mt-2 z-40 relative ml-[3.2px] rounded-xl p-2">
+                    <Button
+                      variant="ghost"
+                      className="w-full flex items-center justify-start space-x-5 hover:bg-neutral-200"
+                    >
+                      <Star className="absolute left-4 h-5 w-5 text-neutral-800 z-20 dark:text-neutral-300" />
+                      <p className="font-semibold">See life event</p>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="w-full flex items-center justify-start space-x-5 hover:bg-neutral-200"
+                    >
+                      <Pencil className="absolute left-4 h-5 w-5 text-neutral-800 z-20 dark:text-neutral-300" />
+                      <p className="font-semibold">Edit workplace</p>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="w-full flex items-center justify-start space-x-5 hover:bg-neutral-200"
+                    >
+                      <Trash2 className="absolute left-4 h-5 w-5 text-neutral-800 z-20 dark:text-neutral-300" />
+                      <p className="font-semibold">Delete workplace</p>
+                    </Button>
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      )}
+
+      {!toggleWorkPlaceForm && !userAboutInfo.workplace && (
         <Button
           onClick={() => setToggleWorkPlaceForm(!toggleWorkPlaceForm)}
           variant="ghost"
@@ -101,7 +174,7 @@ const UserAboutOverView = ({ user }) => {
                 </p>
               </div>
               <div>
-                <p className="text-[13px] text-neutral-600">
+                <p className="text-[12px] text-neutral-600">
                   Attended from {userAboutInfo?.highschool.startDate.year} to{" "}
                   {userAboutInfo?.highschool.endDate.year}
                 </p>
@@ -183,7 +256,7 @@ const UserAboutOverView = ({ user }) => {
                 </p>
               </div>
               <div>
-                <p className="text-[13px] text-neutral-600">
+                <p className="text-[12px] text-neutral-600">
                   Attended from {userAboutInfo?.college.startDate.year} to{" "}
                   {userAboutInfo?.college.endDate.year}
                 </p>
@@ -421,7 +494,7 @@ const UserAboutOverView = ({ user }) => {
           className="w-full flex items-center justify-start gap-x-6 p-0 pl-3 font-medium  text-[15px]"
         >
           <PlusCircle className="text-blue-600" />
-          <p className="text-blue-600">Add relationsh status</p>
+          <p className="text-blue-600">Add relationship status</p>
         </Button>
       )}
 

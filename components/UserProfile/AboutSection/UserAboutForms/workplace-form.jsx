@@ -21,9 +21,14 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Icons } from "@/components/utils/Icons";
 import { months } from "@/constants/Birthdate";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import SelectVisibility from "./select-visibility";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 const WorkPlaceFormSchema = z.object({
   companyname: z
@@ -43,9 +48,21 @@ const WorkPlaceFormSchema = z.object({
     .min(3, { message: "Description must be atleast 3 characters " })
     .max(200, { message: "Description must be at most 200 characters." }),
   currentlyworking: z.boolean().optional().default(true),
+  startDate: z.object({
+    year: z.string().optional(),
+    month: z.string().optional(),
+    day: z.string().optional(),
+  }),
+  endDate: z.object({
+    year: z.string().optional(),
+    month: z.string().optional(),
+    day: z.string().optional(),
+  }),
 });
 
-const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
+const WorkPlaceForm = ({ setToggleWorkPlaceForm, refetch }) => {
+  const { toast } = useToast();
+  const [selectedAudience, setSelectedAudience] = useState("Public");
   const currentYear = new Date().getFullYear();
   const form = useForm({
     resolver: zodResolver(WorkPlaceFormSchema),
@@ -55,18 +72,70 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
       address: "",
       description: "",
       currentlyworking: true,
+      startDate: { year: "", month: "", day: "" },
+      endDate: { year: "", month: "", day: "" },
     },
   });
 
-  const onSubmit = () => {};
+  const { companyname, position, address, description } = form.watch();
 
-  const isMonthSelected = form.watch("startDate.month", false);
-  const isDaySelected = form.watch("startDate.day", false);
-  const isYearSelected = form.watch("startDate.year", false);
+  const areWorkPlaceInputsFilled =
+    (companyname ?? "").length > 0 &&
+    (position ?? "").length > 0 &&
+    (address ?? "").length > 0 &&
+    (description ?? "").length > 0;
 
-  const selectedIndexMonth = months.indexOf(isMonthSelected);
+  const { mutate: onSubmit, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const payload = { ...data, selectedAudience };
+      const { res } = await axios.post(
+        "/api/userProf/about/workplace",
+        payload
+      );
+      return res;
+    },
+    onError: (err) => {
+      console.log(err);
+      return toast({
+        title: "There was an error",
+        description: "Couldn't not add workplace, please try again later",
+        variant: "destructive",
+      });
+    },
+    onSuccess: () => {
+      refetch();
+      setToggleWorkPlaceForm(false);
+    },
+  });
+  const isCurrentWorkingChecked = form.watch("currentlyworking");
 
-  const days = new Date(isYearSelected, selectedIndexMonth + 1, 0).getDate();
+  const isStartedDateMonthSelected = form.watch("startDate.month", false);
+  const isStartedDateDaySelected = form.watch("startDate.day", false);
+  const isStartedDateYearSelected = form.watch("startDate.year", false);
+
+  const startedDateSelectedIndexMonth = months.indexOf(
+    isStartedDateMonthSelected
+  );
+
+  const startedDateDays = new Date(
+    isStartedDateYearSelected,
+    startedDateSelectedIndexMonth + 1,
+    0
+  ).getDate();
+
+  const isEndedDateMonthSelected = form.watch("endDate.month", false);
+  const isEndedDateDaySelected = form.watch("endDate.day", false);
+  const isEndedDateYearSelected = form.watch("endDate.year", false);
+
+  const endedDateSelectedIndexMonth = months.indexOf(
+    isStartedDateMonthSelected
+  );
+
+  const endedDateDays = new Date(
+    isEndedDateYearSelected,
+    endedDateSelectedIndexMonth + 1,
+    0
+  ).getDate();
 
   return (
     <Form {...form}>
@@ -78,6 +147,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
             <FormItem>
               <FormControl>
                 <Input
+                  disabled={isPending}
                   placeholder="Company"
                   className="p-6 border-neutral-300 hover:border-2 hover:border-neutral-400"
                   {...field}
@@ -93,6 +163,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
             <FormItem>
               <FormControl>
                 <Input
+                  disabled={isPending}
                   placeholder="Position"
                   className="p-6 border-neutral-300 hover:border-2 hover:border-neutral-400"
                   {...field}
@@ -108,6 +179,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
             <FormItem>
               <FormControl>
                 <Input
+                  disabled={isPending}
                   placeholder="City/Town"
                   className="p-6 border-neutral-300 hover:border-2 hover:border-neutral-400"
                   {...field}
@@ -123,6 +195,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
             <FormItem>
               <FormControl>
                 <Textarea
+                  disabled={isPending}
                   placeholder="Description"
                   className=" border border-neutral-300 hover:border-2 hover:border-neutral-400 resize-none"
                   {...field}
@@ -174,9 +247,9 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
                             {(() => {
                               const years = [];
                               for (
-                                let year = 1999;
-                                year <= currentYear;
-                                year++
+                                let year = currentYear;
+                                year >= 1999;
+                                year--
                               ) {
                                 years.push(
                                   <SelectItem
@@ -198,7 +271,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
                 )}
               />
 
-              {isYearSelected && (
+              {isStartedDateYearSelected && (
                 <FormField
                   control={form.control}
                   name="startDate.month"
@@ -229,7 +302,7 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
                 />
               )}
 
-              {isMonthSelected && (
+              {isStartedDateMonthSelected && (
                 <FormField
                   control={form.control}
                   name="startDate.day"
@@ -248,7 +321,133 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
                               <SelectItem value="Day">Day</SelectItem>
                               {(() => {
                                 const daysArray = [];
-                                for (let day = 1; day <= days; day++) {
+                                for (
+                                  let day = 1;
+                                  day <= startedDateDays;
+                                  day++
+                                ) {
+                                  daysArray.push(
+                                    <SelectItem
+                                      key={day}
+                                      value={day.toString()}
+                                    >
+                                      {day}
+                                    </SelectItem>
+                                  );
+                                }
+                                return daysArray;
+                              })()}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {!isCurrentWorkingChecked && <p>to</p>}
+
+              {!isCurrentWorkingChecked && isStartedDateDaySelected && (
+                <FormField
+                  control={form.control}
+                  name="endDate.year"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          defaultValue="Year"
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="bg-neutral-200 font-semibold focus:ring-0 flex gap-x-2">
+                            <SelectValue placeholder="Year" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectContent>
+                              <SelectGroup>
+                                <SelectItem value="Year">Year</SelectItem>
+                                {/* Generate years dynamically */}
+
+                                {(() => {
+                                  const years = [];
+                                  for (
+                                    let year = currentYear;
+                                    year >= 1999;
+                                    year--
+                                  ) {
+                                    years.push(
+                                      <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                        className="cursor-pointer"
+                                      >
+                                        {year}
+                                      </SelectItem>
+                                    );
+                                  }
+                                  return years;
+                                })()}
+                              </SelectGroup>
+                            </SelectContent>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {!isCurrentWorkingChecked && isEndedDateYearSelected && (
+                <FormField
+                  control={form.control}
+                  name="endDate.month"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue="Month"
+                        >
+                          <SelectTrigger className="bg-neutral-200 font-semibold focus:ring-0 flex gap-x-2">
+                            <SelectValue placeholder="Month" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="Month">Month</SelectItem>
+                              {months.map((month, index) => (
+                                <SelectItem value={month} key={index}>
+                                  {month}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {!isCurrentWorkingChecked && isEndedDateMonthSelected && (
+                <FormField
+                  control={form.control}
+                  name="endDate.day"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue="Day"
+                        >
+                          <SelectTrigger className="bg-neutral-200 font-semibold focus:ring-0 flex gap-x-2">
+                            <SelectValue placeholder="Day" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="Day">Day</SelectItem>
+                              {(() => {
+                                const daysArray = [];
+                                for (let day = 1; day <= endedDateDays; day++) {
                                   daysArray.push(
                                     <SelectItem
                                       key={day}
@@ -273,14 +472,10 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
         </div>
         <Separator className="bg-neutral-300 mt-3" />
         <div className="flex items-center justify-between mt-3">
-          <Button
-            variant="ghost"
-            disabled={true}
-            className="flex items-center bg-neutral-400 gap-x-2 h-8"
-          >
-            <Icons.earthIcon className="h-3.5 w-3.5" />
-            <span className="text-[14px] font-semibold">Public</span>
-          </Button>
+          <SelectVisibility
+            selectedAudience={selectedAudience}
+            setSelectedAudience={setSelectedAudience}
+          />
 
           <div className="flex items-center gap-x-2">
             <Button
@@ -292,9 +487,12 @@ const WorkPlaceForm = ({ setToggleWorkPlaceForm }) => {
             </Button>
             <Button
               variant="ghost"
-              disabled={true}
-              className="flex items-center bg-neutral-400 gap-x-2 h-10 px-4"
+              disabled={!areWorkPlaceInputsFilled || isPending}
+              className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
             >
+              {isPending && (
+                <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
+              )}
               <span className="text-[15px] font-semibold">Save</span>
             </Button>
           </div>

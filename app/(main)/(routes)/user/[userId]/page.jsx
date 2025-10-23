@@ -25,8 +25,14 @@ const UserProfilePage = async ({ params }) => {
     where: {
       id: userId,
     },
-    include: {
-      blogs: true,
+    select: {
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+      category: true,
     },
   });
 

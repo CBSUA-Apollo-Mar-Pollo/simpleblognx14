@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,
@@ -8,12 +10,32 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { Separator } from "@radix-ui/react-separator";
-import { PlusCircle, X } from "lucide-react";
+import { Pencil, PlusCircle, X } from "lucide-react";
 import React from "react";
 import SelectVisibility from "../AboutSection/UserAboutForms/select-visibility";
 import Link from "next/link";
+import { getUserAboutInfo } from "@/data/get-user-about-info";
+import { useQuery } from "@tanstack/react-query";
+import { Switch } from "@/components/ui/Switch";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const EditDetailsModal = ({ user }) => {
+  const {
+    data: userdetails,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ["useraboutdetails", user.id],
+    queryFn: async () => {
+      const res = await getUserAboutInfo(user);
+      return res;
+    },
+  });
+
+  console.log(user, "user");
+  console.log(userdetails, "user details");
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -37,7 +59,7 @@ const EditDetailsModal = ({ user }) => {
 
         <Separator className="dark:bg-neutral-700  h-[1px] bg-neutral-200" />
 
-        <div className="px-8 max-h-[70vh] overflow-y-auto">
+        <SimpleBar style={{ maxHeight: "60vh" }} className="pl-8 pr-4">
           <p className="text-neutral-700 text-sm">
             Details you select will be{" "}
             <span className="font-semibold">Public</span> and appear at the top
@@ -47,6 +69,24 @@ const EditDetailsModal = ({ user }) => {
           <div className="mt-6 flex flex-col space-y-5">
             <div>
               <h1 className="font-semibold">Work</h1>
+              {userdetails && (
+                <div className="flex items-center justify-between  gap-x-6">
+                  <div className="flex items-center   gap-x-6">
+                    <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                    <div className="relative flex items-center gap-x-1">
+                      <p className="text-[14px]">
+                        Former {userdetails?.workplace.position} at
+                      </p>
+                      <p className="text-[14px] font-medium">
+                        {userdetails?.workplace.companyname}
+                      </p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" className="hover:bg-transparent">
+                    <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                  </Button>
+                </div>
+              )}
               <Link
                 href={`/user/${user.id}/about_work_and_education`}
                 className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
@@ -56,8 +96,40 @@ const EditDetailsModal = ({ user }) => {
               </Link>
             </div>
 
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col">
               <h1 className="font-semibold">Education</h1>
+              {userdetails && (
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between  gap-x-6">
+                    <div className="flex items-center   gap-x-6">
+                      <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">Studied at</p>
+                        <p className="text-[14px] font-medium">
+                          {userdetails?.college.collegename}
+                        </p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" className="hover:bg-transparent">
+                      <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between  gap-x-6">
+                    <div className="flex items-center   gap-x-6">
+                      <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">Went to</p>
+                        <p className="text-[14px] font-medium">
+                          {userdetails?.highschool.schoolname}
+                        </p>
+                      </div>
+                    </div>
+                    <Button variant="ghost" className="hover:bg-transparent">
+                      <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                    </Button>
+                  </div>
+                </div>
+              )}
               <Link
                 href={`/user/${user.id}/about_work_and_education`}
                 className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
@@ -76,35 +148,85 @@ const EditDetailsModal = ({ user }) => {
 
             <div>
               <h1 className="font-semibold">Current city</h1>
-              <Link
-                href={`/user/${user.id}/about_places`}
-                className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
-              >
-                <PlusCircle className="text-blue-600 h-8 w-8" />
-                <p className="text-blue-600">Add current city</p>
-              </Link>
+              {userdetails ? (
+                <div className="flex items-center justify-between  gap-x-6">
+                  <div className="flex items-center   gap-x-6">
+                    <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                    <div className="relative flex items-center gap-x-1">
+                      <p className="text-[14px]">Lives in</p>
+                      <p className="text-[14px] font-semibold">
+                        {userdetails?.currentcity}
+                      </p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" className="hover:bg-transparent">
+                    <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                  </Button>
+                </div>
+              ) : (
+                <Link
+                  href={`/user/${user.id}/about_places`}
+                  className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
+                >
+                  <PlusCircle className="text-blue-600 h-8 w-8" />
+                  <p className="text-blue-600">Add current city</p>
+                </Link>
+              )}
             </div>
 
             <div>
               <h1 className="font-semibold">Hometown</h1>
-              <Link
-                href={`/user/${user.id}/about_places`}
-                className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
-              >
-                <PlusCircle className="text-blue-600 h-8 w-8" />
-                <p className="text-blue-600">Add hometown</p>
-              </Link>
+              {userdetails ? (
+                <div className="flex items-center justify-between  gap-x-6">
+                  <div className="flex items-center   gap-x-6">
+                    <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                    <div className="relative flex items-center gap-x-1">
+                      <p className="text-[14px]">From</p>
+                      <p className="text-[14px] font-semibold">
+                        {userdetails?.hometown}
+                      </p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" className="hover:bg-transparent">
+                    <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                  </Button>
+                </div>
+              ) : (
+                <Link
+                  href={`/user/${user.id}/about_places`}
+                  className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
+                >
+                  <PlusCircle className="text-blue-600 h-8 w-8" />
+                  <p className="text-blue-600">Add hometown</p>
+                </Link>
+              )}
             </div>
 
             <div>
               <h1 className="font-semibold">Relationship</h1>
-              <Link
-                href={`/user/${user.id}/about_family_and_relationship`}
-                className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
-              >
-                <PlusCircle className="text-blue-600 h-8 w-8" />
-                <p className="text-blue-600">Add relation status</p>
-              </Link>
+              {userdetails ? (
+                <div className="flex items-center justify-between  gap-x-6">
+                  <div className="flex items-center   gap-x-6">
+                    <Switch className=" data-[state=unchecked]:bg-neutral-600 data-[state=checked]:bg-blue-500" />
+                    <div className="relative">
+                      <p className="text-[14px]">
+                        {userdetails?.relationstatus}
+                      </p>
+                    </div>
+                  </div>
+                  <Button variant="ghost" className="hover:bg-transparent">
+                    <Pencil className="fill-neutral-800 text-white h-7 w-7" />
+                  </Button>
+                </div>
+              ) : (
+                <Link
+                  href={`/user/${user.id}/about_family_and_relationship`}
+                  className="w-full flex items-center justify-start gap-x-6 p-0 pt-2 font-normal text-[15px] hover:bg-transparent"
+                >
+                  <PlusCircle className="text-blue-600 h-8 w-8" />
+                  <p className="text-blue-600">Add relation status</p>
+                </Link>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
@@ -129,7 +251,7 @@ const EditDetailsModal = ({ user }) => {
               <SelectVisibility />
             </div>
           </div>
-        </div>
+        </SimpleBar>
 
         <div className="pb-4  pt-3 flex items-center justify-between px-4 border-t border-neutral-300">
           <Link
