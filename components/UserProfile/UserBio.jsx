@@ -7,15 +7,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Icons } from "../utils/Icons";
-import { Dot, Loader2, Pencil, Star } from "lucide-react";
+import { Dot, Heart, Loader2, MapPin, Pencil, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Button, buttonVariants } from "../ui/Button";
 import { Textarea } from "../ui/Textarea";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import EditDetailsModal from "./ProfileSection/edit-details-modal";
+import { getUserAboutInfo } from "@/data/get-user-about-info";
 
 const MAX_CHARS = 100;
 
@@ -68,6 +69,20 @@ const UserBio = ({ userImages, user }) => {
       user.bio = bioInput;
     },
   });
+
+  const {
+    data: userdetails,
+    isPending: isfetchingUserDetails,
+    refetch,
+  } = useQuery({
+    queryKey: ["useraboutdetails", user.id],
+    queryFn: async () => {
+      const res = await getUserAboutInfo(user);
+      return res;
+    },
+  });
+
+  console.log(userdetails);
 
   return (
     <div className="space-y-3">
@@ -186,7 +201,91 @@ const UserBio = ({ userImages, user }) => {
                   </Button>
                 )}
 
-                <EditDetailsModal user={user} />
+                <div className="flex flex-col space-y-2">
+                  {userdetails?.ProfileAboutInfoVisibility.workplace && (
+                    <div className="flex items-center gap-x-3">
+                      <Icons.BriefCaseIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                      <div className="flex flex-col">
+                        <div className="relative flex items-center gap-x-1">
+                          <p className="text-[14px]">
+                            Former {userdetails?.workplace.position} at
+                          </p>
+                          <p className="text-[14px] font-medium">
+                            {userdetails?.workplace.companyname}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {userdetails?.ProfileAboutInfoVisibility.college && (
+                    <div className="flex items-center gap-x-3">
+                      <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                      <div className="flex flex-col">
+                        <div className="relative flex items-center gap-x-1">
+                          <p className="text-[14px]">Studied at</p>
+                          <p className="text-[14px] font-medium">
+                            {userdetails?.college.collegename}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {userdetails?.ProfileAboutInfoVisibility.highschool && (
+                    <div className="flex items-center gap-x-3">
+                      <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                      <div className="flex flex-col">
+                        <div className="relative flex items-center gap-x-1">
+                          <p className="text-[14px]">Went to</p>
+                          <p className="text-[14px] font-medium">
+                            {userdetails?.highschool.schoolname}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {userdetails?.ProfileAboutInfoVisibility.currentcity && (
+                    <div className="flex items-center gap-x-3">
+                      <Icons.HomeFilled className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">Lives in</p>
+                        <p className="text-[14px] font-semibold">
+                          {userdetails?.currentcity}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {userdetails?.ProfileAboutInfoVisibility.hometown && (
+                    <div className="flex items-center gap-x-3">
+                      <MapPin className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">From</p>
+                        <p className="text-[14px] font-semibold">
+                          {userdetails?.hometown}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {userdetails?.ProfileAboutInfoVisibility.relationstatus && (
+                    <div className="flex items-center gap-x-3">
+                      <Heart className="w-8 h-8 fill-neutral-500 text-transparent" />
+                      <div className="relative">
+                        <p className="text-[14px]">
+                          {userdetails?.relationstatus}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <EditDetailsModal
+                  user={user}
+                  userdetails={userdetails}
+                  isfetchingUserDetails={isfetchingUserDetails}
+                  refetch={refetch}
+                />
 
                 <Button
                   variant="ghost"

@@ -444,4 +444,19 @@ model ProfileAboutInfo {
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
+
+  ProfileAboutInfoVisibility ProfileAboutInfoVisibility?
+}
+
+model ProfileAboutInfoVisibility {
+  id             String  @id @default(cuid())
+  workplace      Boolean @default(false)
+  highschool     Boolean @default(false)
+  college        Boolean @default(false)
+  hometown       Boolean @default(false)
+  currentcity    Boolean @default(false)
+  relationstatus Boolean @default(false)
+
+  profileAboutInfo   ProfileAboutInfo? @relation(fields: [profileAboutInfoId], references: [id])
+  profileAboutInfoId String?           @unique
 }

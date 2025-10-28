@@ -35,7 +35,7 @@ export const setupSocketEvents = (io) => {
     });
 
     socket.on("sign-out", async (data) => {
-      await dbPages.user.update({
+      await dbPages.user?.update({
         where: {
           id: data,
         },

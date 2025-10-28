@@ -95,7 +95,7 @@ const UserProfilePage = async ({ params }) => {
   return (
     <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:pr-56 xl:pl-72  pt-5 gap-x-2 dark:bg-neutral-900">
       <div className="col-span-3 relative space-y-4">
-        {session?.user.id === user.id && user.type === "page" && (
+        {session?.user.id === user?.id && user?.type === "page" && (
           <PageSetupChecklists />
         )}
         <div className="sticky top-[8rem]">
@@ -105,7 +105,7 @@ const UserProfilePage = async ({ params }) => {
       <div className="mx-2 space-y-2 col-span-4">
         <UserPostCreationSection user={user} />
         <UserPostsToolBar />
-        <UserAllPosts initialPosts={sortedData} userId={user.id} />
+        <UserAllPosts initialPosts={sortedData} userId={user?.id} />
       </div>
     </div>
   );

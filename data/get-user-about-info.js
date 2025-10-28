@@ -7,6 +7,9 @@ export const getUserAboutInfo = async (user) => {
     where: {
       userId: user.id,
     },
+    include: {
+      ProfileAboutInfoVisibility: true,
+    },
   });
 
   return data;
