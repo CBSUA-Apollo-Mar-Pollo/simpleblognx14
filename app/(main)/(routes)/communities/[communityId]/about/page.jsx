@@ -25,7 +25,17 @@ const CommunityAboutPage = async ({ params }) => {
       },
       members: {
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              type: true,
+              name: true,
+              bio: true,
+              email: true,
+              image: true,
+              category: true,
+            },
+          },
         },
       },
       shortsv: true,

@@ -29,7 +29,17 @@ const PostDetailPage = async ({ params }) => {
       id: postId,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+        },
+      },
     },
   });
 

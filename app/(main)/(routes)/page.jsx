@@ -12,7 +12,19 @@ export default async function HomePage() {
   const session = await getAuthSession();
   const posts = await db.blog.findMany({
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       votes: true,
       community: {
@@ -31,7 +43,19 @@ export default async function HomePage() {
   // short video posts
   const shortVideos = await db.shortsv.findMany({
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       shortsVotes: true,
     },

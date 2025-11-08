@@ -17,7 +17,19 @@ const WatchPage = async ({ searchParams }) => {
       },
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       votes: true,
     },
@@ -32,7 +44,19 @@ const WatchPage = async ({ searchParams }) => {
       id: searchQuery,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       votes: true,
     },

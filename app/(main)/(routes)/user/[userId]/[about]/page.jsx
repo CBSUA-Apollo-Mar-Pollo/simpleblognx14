@@ -16,6 +16,7 @@ const UserProfileAboutPage = async ({ params }) => {
       email: true,
       image: true,
       category: true,
+      backgroundImage: true,
     },
   });
 

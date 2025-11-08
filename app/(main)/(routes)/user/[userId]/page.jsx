@@ -33,6 +33,7 @@ const UserProfilePage = async ({ params }) => {
       email: true,
       image: true,
       category: true,
+      backgroundImage: true,
     },
   });
 
@@ -43,7 +44,18 @@ const UserProfilePage = async ({ params }) => {
     },
     include: {
       comments: true,
-      author: true,
+      author: {
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       votes: true,
     },
     orderBy: {
@@ -58,7 +70,18 @@ const UserProfilePage = async ({ params }) => {
       authorId: user?.id,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       shortsVotes: true,
     },

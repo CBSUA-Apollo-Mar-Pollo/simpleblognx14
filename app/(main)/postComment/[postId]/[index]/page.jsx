@@ -16,7 +16,19 @@ const postCommentPage = async ({ params }) => {
       id: postId,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
       votes: true,
     },
@@ -32,10 +44,34 @@ const postCommentPage = async ({ params }) => {
       index: post.image.length === 1 ? null : index,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       replies: {
         include: {
-          author: true,
+          author: {
+            select: {
+              blogs: true,
+              id: true,
+              type: true,
+              name: true,
+              bio: true,
+              email: true,
+              image: true,
+              category: true,
+              backgroundImage: true,
+            },
+          },
         },
       },
     },

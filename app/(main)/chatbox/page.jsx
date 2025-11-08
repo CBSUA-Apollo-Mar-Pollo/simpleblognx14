@@ -18,7 +18,19 @@ const ChatBoxPage = async () => {
       OR: [{ userId: session.user.id }, { requesterUserId: session.user.id }],
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       requesterUser: true,
     },
   });

@@ -9,8 +9,16 @@ const Layout = async ({ children, params }) => {
     where: {
       id: userId,
     },
-    include: {
+    select: {
       blogs: true,
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+      category: true,
+      backgroundImage: true,
     },
   });
 

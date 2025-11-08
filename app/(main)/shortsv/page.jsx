@@ -41,7 +41,19 @@ const shortsVPage = async () => {
   const shortsVideo = await db.shortsv.findUnique({
     where: { id: randomVideoId },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       comments: true,
     },
   });
@@ -54,10 +66,34 @@ const shortsVPage = async () => {
       replyToId: null,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          blogs: true,
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+          backgroundImage: true,
+        },
+      },
       replies: {
         include: {
-          author: true,
+          author: {
+            select: {
+              blogs: true,
+              id: true,
+              type: true,
+              name: true,
+              bio: true,
+              email: true,
+              image: true,
+              category: true,
+              backgroundImage: true,
+            },
+          },
         },
       },
     },

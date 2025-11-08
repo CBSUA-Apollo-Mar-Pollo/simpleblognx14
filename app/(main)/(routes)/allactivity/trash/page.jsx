@@ -23,7 +23,17 @@ const TrashPage = async () => {
       trashed: true,
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+        },
+      },
       comments: true,
       votes: true,
     },

@@ -21,6 +21,15 @@ const SearchQueryPage = async ({ params, searchParams }) => {
         { handleName: { contains: searchQuery } },
       ],
     },
+    select: {
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+      category: true,
+    },
   });
 
   const posts = await db.blog.findMany({
@@ -28,7 +37,17 @@ const SearchQueryPage = async ({ params, searchParams }) => {
       description: { contains: searchQuery },
     },
     include: {
-      author: true,
+      author: {
+        select: {
+          id: true,
+          type: true,
+          name: true,
+          bio: true,
+          email: true,
+          image: true,
+          category: true,
+        },
+      },
       comments: true,
       votes: true,
     },
@@ -37,6 +56,8 @@ const SearchQueryPage = async ({ params, searchParams }) => {
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
+
+  console.log(people);
 
   return (
     <div className="grid grid-cols-4">

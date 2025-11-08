@@ -9,8 +9,16 @@ const UserProfilePagePhotos = async ({ params }) => {
     where: {
       id: params?.userId,
     },
-    include: {
+    select: {
       blogs: true,
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      email: true,
+      image: true,
+      category: true,
+      backgroundImage: true,
     },
   });
 
