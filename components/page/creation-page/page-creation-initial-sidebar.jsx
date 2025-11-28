@@ -152,7 +152,7 @@ const PageCreationInitialSideBar = ({
                           <FormDescription className="text-[12px] text-neutral-700">
                             Use the name of your business, brand, or
                             organization, or choose a name that clearly
-                            represents the purpose of your Page."
+                            represents the purpose of your Page.
                           </FormDescription>
 
                           <FormMessage className="text-[12px] ml-2" />

@@ -122,7 +122,7 @@ const RelationshipStatusForm = ({
                     In an open relationship
                   </SelectItem>
                   <SelectItem value="Its complicated">
-                    It's complicated
+                    It&apos;s complicated
                   </SelectItem>
                   <SelectItem value="Separated">Separated</SelectItem>
                   <SelectItem value="Divorced">Divorced</SelectItem>

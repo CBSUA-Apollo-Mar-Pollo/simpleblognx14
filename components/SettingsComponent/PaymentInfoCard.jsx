@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import UserAvatar from "../utils/UserAvatar";
 import { ChevronRight } from "lucide-react";
@@ -5,21 +7,23 @@ import { Button } from "../ui/Button";
 import { useSession } from "next-auth/react";
 
 const PaymentInfoCard = ({ data }) => {
-  const { data } = useSession();
+  const { data: session } = useSession();
   return (
     <div className="bg-white drop-shadow-md dark:bg-neutral-800 px-10 mt-5 py-10 rounded-2xl mx-32">
       <div className="flex items-center gap-x-4">
         <UserAvatar
           className="h-14 w-14"
           user={{
-            name: data.user.name || null,
-            image: data.user.image || null,
+            name: session?.user?.name || null,
+            image: session?.user?.image || null,
           }}
         />
         <div>
-          <p className="dark:text-neutral-200 font-medium">{data.user.name}</p>
+          <p className="dark:text-neutral-200 font-medium">
+            {session?.user?.name}
+          </p>
           <span className="dark:text-neutral-200 text-sm">
-            {data.user.email}
+            {session?.user?.email}
           </span>
         </div>
       </div>

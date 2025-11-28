@@ -61,8 +61,8 @@ const PageCreationStepFourSidebar = ({
                 Page notifications on your profile
               </h1>
               <p className="text-sm text-neutral-500">
-                Dont miss updates about your page PAGE while you're switched
-                into your profile{" "}
+                Don&apos;t miss updates about your page PAGE while you&apos;re
+                switched into your profile{" "}
                 <span className="font-semibold">{session?.user?.name}</span>.
               </p>
             </div>

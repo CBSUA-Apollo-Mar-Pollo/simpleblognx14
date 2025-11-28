@@ -15,7 +15,6 @@ const Layout = async ({ children }) => {
     where: {
       id: session?.user?.id,
     },
-
     select: {
       id: true,
       name: true,

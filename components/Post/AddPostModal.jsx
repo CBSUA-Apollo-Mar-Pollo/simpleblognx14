@@ -260,7 +260,7 @@ const AddPostModal = ({ user, communityId }) => {
         />
       </DialogTrigger>
 
-      <DialogContent className="[&>button]:hidden  min-w-[30vw] min-h-auto  dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 ">
+      <DialogContent className="[&>button]:hidden  min-w-[40vw]   dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 ">
         {/* Create post contest */}
         {!isPostAudienceActive && (
           <>
@@ -323,15 +323,22 @@ const AddPostModal = ({ user, communityId }) => {
                       session?.user.name.split(" ")[0] ||
                       user?.name.split(" ")[0]
                     }?`}
-                    className={`dark:bg-neutral-800 bg-transparent  dark:placeholder-neutral-300 ${
-                      selectedBackgroundColor
-                        ? "text-center text-2xl font-bold"
-                        : "text-xl"
-                    } ${
+                    className={`
+                    dark:bg-neutral-800 bg-transparent 
+                    ${
                       selectedBackgroundColor !== null
-                        ? "placeholder:text-white "
-                        : "placeholder:text-black"
-                    } focus-visible:ring-transparent focus:border-gray-500 focus:border-2 min-h-10  border-none resize-none px-4 `}
+                        ? "text-center text-2xl font-bold"
+                        : "text-2xl"
+                    }
+                    focus-visible:ring-transparent focus:border-gray-500 focus:border-2 
+                    min-h-44 border-none resize-none px-4
+                    placeholder:${
+                      selectedBackgroundColor !== null
+                        ? "text-white"
+                        : "text-neutral-500"
+                    } 
+                    dark:placeholder-neutral-300
+                  `}
                   />
                 </div>
 

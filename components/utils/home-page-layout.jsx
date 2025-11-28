@@ -68,6 +68,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
               </div>
             </div>
           </div>
+
           {session?.user && (
             <>
               <div className=" lg:pt-3 lg:pb-1 lg:px-5 lg:rounded-lg rounded-none bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">

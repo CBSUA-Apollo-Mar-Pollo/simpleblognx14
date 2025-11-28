@@ -63,7 +63,7 @@ const PageCreationStepOneSidebar = ({
           <div className="pr-6">
             <h1 className="font-bold text-2xl">Finish setting up your page</h1>
             <p className="text-justify text-neutral-600 font-light">
-              Success! Your page has been created. Now, let's add some more
+              Success! Your page has been created. Now, let&apos;s add some more
               details to make it stand out.
             </p>
           </div>
@@ -191,7 +191,7 @@ const PageCreationStepOneSidebar = ({
                   <div className="flex flex-col space-y-1 mt-4">
                     <h1 className="font-bold">Hours</h1>
                     <p className="text-sm pb-3">
-                      Let people know your location's hours.
+                      Let people know your location&apos;s hours.
                     </p>
                     <FormField
                       control={form.control}
@@ -210,7 +210,7 @@ const PageCreationStepOneSidebar = ({
                                     No hours available
                                   </h1>
                                   <p className="text-xs text-neutral-600">
-                                    Dont show any hours.
+                                    Don&apos;t show any hours.
                                   </p>
                                 </div>
                               </div>
@@ -224,7 +224,7 @@ const PageCreationStepOneSidebar = ({
                                     Always open
                                   </h1>
                                   <p className="text-xs text-neutral-600">
-                                    You're open 24 hours a day.
+                                    You&apos;re open 24 hours a day.
                                   </p>
                                 </div>
                               </div>
