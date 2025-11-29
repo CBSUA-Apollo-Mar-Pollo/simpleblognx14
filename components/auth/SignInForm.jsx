@@ -115,7 +115,7 @@ const SignInForm = () => {
       <div className="bg-gray-900 h-full lg:block hidden ">
         <div className="absolute top-6 left-7">
           <Link href="/" className="text-4xl font-bold text-white">
-            EStoryaMo
+            Estorias
           </Link>
         </div>
         <div className="flex items-center h-full px-24">

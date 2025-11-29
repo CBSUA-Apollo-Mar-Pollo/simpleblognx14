@@ -2,6 +2,7 @@ import PostCommentCard from "@/components/PostComment/PostCommentCard";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
+import { COMMENT_PAGE } from "@/config";
 
 export const metadata = {
   title: `Estorya | Post Comments`,
@@ -11,78 +12,104 @@ export const metadata = {
 const postCommentPage = async ({ params }) => {
   const session = await getAuthSession();
   const { postId, index } = params;
-  const post = await db.blog.findFirst({
-    where: {
-      id: postId,
-    },
-    include: {
+
+  // Fetch minimal post metadata first (avoid large nested payloads)
+  const post = await db.blog.findUnique({
+    where: { id: postId },
+    select: {
+      id: true,
+      description: true,
+      image: true,
+      video: true,
+      createdAt: true,
+      userStatus: true,
+
+      // only grab simple author info that UI needs
       author: {
         select: {
-          blogs: true,
           id: true,
-          type: true,
           name: true,
-          bio: true,
-          email: true,
           image: true,
-          category: true,
-          backgroundImage: true,
         },
       },
-      comments: true,
-      votes: true,
-    },
-    orderBy: {
-      createdAt: "desc",
     },
   });
 
+  if (!post) return null;
+
+  const commentImageIndex = post.image?.length === 1 ? null : index;
+
+  // Fetch initial comment page limited to COMMENT_PAGE to avoid large payloads
   const comments = await db.comment.findMany({
     where: {
       postId: post.id,
       replyToId: null,
-      index: post.image.length === 1 ? null : index,
+      index: commentImageIndex,
     },
-    include: {
+    take: COMMENT_PAGE,
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      text: true,
+      createdAt: true,
+      commentImageUrl: true,
+      replyToId: true,
       author: {
         select: {
-          blogs: true,
           id: true,
-          type: true,
           name: true,
-          bio: true,
-          email: true,
           image: true,
-          category: true,
-          backgroundImage: true,
+          handleName: true,
+          bio: true,
+          birthdate: true,
         },
       },
       replies: {
-        include: {
+        take: 3,
+        orderBy: { createdAt: "asc" },
+        select: {
+          id: true,
+          text: true,
+          createdAt: true,
+          commentImageUrl: true,
           author: {
             select: {
-              blogs: true,
               id: true,
-              type: true,
               name: true,
-              bio: true,
-              email: true,
               image: true,
-              category: true,
-              backgroundImage: true,
+              handleName: true,
             },
           },
+          replyToId: true,
         },
       },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
   });
 
-  console.log(post);
+  // Compute votes counts and current user vote without fetching the whole vote array
+  const [upVotes, downVotes, currentVote] = await Promise.all([
+    db.vote.count({ where: { postId: post.id, type: "UP" } }),
+    db.vote.count({ where: { postId: post.id, type: "DOWN" } }),
+    session?.user?.id
+      ? db.vote.findFirst({
+          where: { postId: post.id, userId: session.user.id },
+          select: { type: true },
+        })
+      : null,
+  ]);
 
-  return <PostCommentCard post={post} index={index} comments={comments} />;
+  const initialVotesAmt = upVotes - downVotes;
+  const initialVote = currentVote?.type ?? undefined;
+
+  return (
+    <PostCommentCard
+      post={post}
+      index={index}
+      comments={comments}
+      initialVotesAmt={initialVotesAmt}
+      initialVote={initialVote}
+    />
+  );
 };
 
 export default postCommentPage;

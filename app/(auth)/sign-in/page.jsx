@@ -1,23 +1,26 @@
-import { getAuthSession } from "@/lib/auth";
 import SignInForm from "@/components/auth/SignInForm";
+import { getAuthSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
-export const metadata = {
-  title: `Estorya | Sign in`,
-  description: "All in one social media app",
-};
-
-const SignInPage = async () => {
+async function AuthCheck() {
   const session = await getAuthSession();
 
   if (session?.user) {
     redirect("/");
   }
 
+  return null;
+}
+
+const SignInPage = () => {
   return (
-    <div className="absolute lg:inset-0 ">
-      <SignInForm />
-    </div>
+    <Suspense fallback={null}>
+      <AuthCheck />
+      <div className="absolute lg:inset-0 ">
+        <SignInForm />
+      </div>
+    </Suspense>
   );
 };
 

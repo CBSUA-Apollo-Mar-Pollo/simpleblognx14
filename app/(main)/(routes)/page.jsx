@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getAuthSession } from "@/lib/auth";
+// session is handled client-side in HomePageLayout with `useSession`
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { UTApi } from "uploadthing/server";
 import HomePageLayout from "@/components/utils/home-page-layout";
@@ -9,73 +9,74 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const session = await getAuthSession();
-  const posts = await db.blog.findMany({
-    include: {
-      author: {
-        select: {
-          blogs: true,
-          id: true,
-          type: true,
-          name: true,
-          bio: true,
-          email: true,
-          image: true,
-          category: true,
-          backgroundImage: true,
+  // fetch posts, short videos and communities in parallel to reduce latency
+  const [posts, shortVideos, communities] = await Promise.all([
+    db.blog.findMany({
+      include: {
+        author: {
+          // only request author fields that are used in the UI to avoid overfetching
+          select: {
+            id: true,
+            name: true,
+            handleName: true,
+            image: true,
+            bio: true,
+            birthdate: true,
+          },
         },
+        // comments: only need ids so components can show counts without loading full comment objects
+        comments: { select: { id: true } },
+        // select only fields required for computing votes on the client
+        votes: { select: { userId: true, type: true } },
+        // community members: we only need userId to compute membership
+        community: { include: { members: { select: { userId: true } } } },
       },
-      comments: true,
-      votes: true,
-      community: {
-        include: {
-          members: true,
+      orderBy: { createdAt: "desc" },
+      take: INFINITE_SCROLL_PAGINATION_RESULTS,
+    }),
+
+    // short video posts
+    db.shortsv.findMany({
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            handleName: true,
+            image: true,
+            bio: true,
+            birthdate: true,
+          },
         },
+        comments: { select: { id: true } },
+        shortsVotes: { select: { userId: true, type: true } },
       },
-    },
+      orderBy: { createdAt: "desc" },
+      take: INFINITE_SCROLL_PAGINATION_RESULTS,
+    }),
+    db.community.findMany({
+      include: { members: { select: { userId: true } } },
+    }),
+  ]);
 
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
-  });
-
-  // short video posts
-  const shortVideos = await db.shortsv.findMany({
-    include: {
-      author: {
-        select: {
-          blogs: true,
-          id: true,
-          type: true,
-          name: true,
-          bio: true,
-          email: true,
-          image: true,
-          category: true,
-          backgroundImage: true,
-        },
-      },
-      comments: true,
-      shortsVotes: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
-  });
-
-  // added a boolean key value
+  // add an isShortsV flag for shorts
   const updatedShortVideos = shortVideos.map((item) => ({
     ...item,
     isShortsV: true,
   }));
 
-  const mergeData = [...posts, ...updatedShortVideos];
+  // attach numeric timestamp to optimize JS sort and avoid creating Date objects repeatedly
+  const normalizedPosts = posts.map((p) => ({
+    ...p,
+    createdAtMs: new Date(p.createdAt).getTime(),
+  }));
+  const normalizedShorts = updatedShortVideos.map((p) => ({
+    ...p,
+    createdAtMs: new Date(p.createdAt).getTime(),
+  }));
+  const mergeData = [...normalizedPosts, ...normalizedShorts];
 
-  const sortedData = mergeData.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+  const sortedData = mergeData.sort((a, b) => b.createdAtMs - a.createdAtMs);
 
   const deleteImage = async (image) => {
     "use server";
@@ -83,63 +84,18 @@ export default async function HomePage() {
     await utapi.deleteFiles(image.key);
   };
 
-  const getAllConversationsByLogInUser = await db.conversation.findMany({
-    where: {
-      OR: [{ userOneId: session?.user.id }, { userTwoId: session?.user.id }],
-    },
-    include: {
-      userOne: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          image: true,
-        },
-      },
-      userTwo: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          image: true,
-        },
-      },
-    },
-  });
+  // Conversation list is fetched client-side inside `HomePageLayout` via `getContactList`.
+  // Avoid server-side fetching of conversations here since it's not used by the server-rendered UI and increases latency.
+  const conversationList = null;
 
-  const conversationList = getAllConversationsByLogInUser.map((item) => {
-    let { userOne, userTwo, ...rest } = item;
-
-    // Remove userOne if it matches session.user.id
-    if (userOne.id === session.user.id) {
-      userOne = null;
-    }
-
-    // Remove userTwo if it matches session.user.id
-    if (userTwo.id === session.user.id) {
-      userTwo = null;
-    }
-
-    // Return the new object with potentially null values
-    return {
-      ...rest,
-      userOne,
-      userTwo,
-    };
-  });
-
-  const communities = await db.community.findMany({
-    include: {
-      members: true,
-    },
-  });
+  // communities were fetched in parallel above; keep their reference.
+  // we only included members.userId to reduce payloads.
 
   //
   return (
     <HomePageLayout
       sortedData={sortedData}
       deleteImage={deleteImage}
-      conversationList={conversationList}
       communities={communities}
     />
   );

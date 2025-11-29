@@ -33,7 +33,6 @@ const descriptionSchema = z.object({
 });
 
 const PostDescription = ({ post, commentAmt, session, index }) => {
-  console.log(post, commentAmt, session, index);
   const router = useRouter();
   const [toggleEditDescription, setToggleEditDescription] = useState(false);
 

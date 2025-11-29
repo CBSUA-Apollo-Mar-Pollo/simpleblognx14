@@ -4,7 +4,10 @@ import { Separator } from "../ui/Separator";
 import ProfileImageAndIcons from "./ProfileImageAndIcons";
 import PostDescription from "./PostDescription";
 import VoteCommentAndShare from "./VoteCommentAndShare";
-import CommentSection from "./CommentSection";
+import dynamic from "next/dynamic";
+const CommentSection = dynamic(() => import("./CommentSection"), {
+  ssr: false,
+});
 
 import BackgroundImagePost from "./BackgroundImagePost";
 import ImagePost from "./ImagePost";
@@ -14,7 +17,13 @@ import { cn } from "@/lib/utils";
 import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
 import { useSession } from "next-auth/react";
 
-const PostCommentCard = ({ post, index, comments }) => {
+const PostCommentCard = ({
+  post,
+  index,
+  comments,
+  initialVotesAmt = 0,
+  initialVote = undefined,
+}) => {
   const { data: session } = useSession();
   const { isFullScreen, setFullScreen } = useFullScreenImage();
 
@@ -32,15 +41,8 @@ const PostCommentCard = ({ post, index, comments }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const votesAmt = post.votes.reduce((acc, vote) => {
-    if (vote.type === "UP") return acc + 1;
-    if (vote.type === "DOWN") return acc - 1;
-    return acc;
-  }, 0);
-
-  const currentVote = post.votes.find(
-    (vote) => vote.userId === session?.user.id
-  );
+  const votesAmt = initialVotesAmt;
+  const currentVote = initialVote;
 
   return (
     <div className="grid grid-cols-4 relative">
@@ -90,7 +92,7 @@ const PostCommentCard = ({ post, index, comments }) => {
 
             <VoteCommentAndShare
               postId={post.id}
-              initialVote={currentVote?.type}
+              initialVote={currentVote}
               initialVotesAmt={votesAmt}
             />
 

@@ -25,16 +25,30 @@ export async function GET(req) {
         postId: postId,
         replyToId: null,
       },
-      include: {
-        author: true,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        commentImageUrl: true,
+        replyToId: true,
+        author: {
+          select: { id: true, name: true, image: true, handleName: true },
+        },
         replies: {
-          include: {
-            author: true,
+          take: 3,
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            text: true,
+            createdAt: true,
+            commentImageUrl: true,
+            author: {
+              select: { id: true, name: true, image: true, handleName: true },
+            },
+            replyToId: true,
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
       },
     });
 

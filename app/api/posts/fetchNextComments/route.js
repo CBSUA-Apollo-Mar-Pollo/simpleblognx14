@@ -39,22 +39,38 @@ export async function GET(req) {
           postId: postId,
           replyToId: null,
         },
-        include: {
-          author: true,
-          replies: {
-            include: {
-              author: true,
-            },
-          },
-        },
         orderBy: {
           createdAt: "desc",
+        },
+        select: {
+          id: true,
+          text: true,
+          createdAt: true,
+          commentImageUrl: true,
+          replyToId: true,
+          author: {
+            select: { id: true, name: true, image: true, handleName: true },
+          },
+          replies: {
+            take: 3,
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              text: true,
+              createdAt: true,
+              commentImageUrl: true,
+              author: {
+                select: { id: true, name: true, image: true, handleName: true },
+              },
+              replyToId: true,
+            },
+          },
         },
       });
       return new Response(JSON.stringify(comments));
     }
 
-    if (imageIndex !== undefined || null) {
+    if (imageIndex !== undefined && imageIndex !== null && imageIndex !== "") {
       comments = await db.comment.findMany({
         take: parseInt(limit),
         skip: (parseInt(page) - 1) * parseInt(limit),
@@ -63,16 +79,32 @@ export async function GET(req) {
           replyToId: null,
           index: imageIndex,
         },
-        include: {
-          author: true,
-          replies: {
-            include: {
-              author: true,
-            },
-          },
-        },
         orderBy: {
           createdAt: "desc",
+        },
+        select: {
+          id: true,
+          text: true,
+          createdAt: true,
+          commentImageUrl: true,
+          replyToId: true,
+          author: {
+            select: { id: true, name: true, image: true, handleName: true },
+          },
+          replies: {
+            take: 3,
+            orderBy: { createdAt: "asc" },
+            select: {
+              id: true,
+              text: true,
+              createdAt: true,
+              commentImageUrl: true,
+              author: {
+                select: { id: true, name: true, image: true, handleName: true },
+              },
+              replyToId: true,
+            },
+          },
         },
       });
       return new Response(JSON.stringify(comments));
@@ -85,16 +117,30 @@ export async function GET(req) {
         postId: postId,
         replyToId: null,
       },
-      include: {
-        author: true,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        text: true,
+        createdAt: true,
+        commentImageUrl: true,
+        replyToId: true,
+        author: {
+          select: { id: true, name: true, image: true, handleName: true },
+        },
         replies: {
-          include: {
-            author: true,
+          take: 3,
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            text: true,
+            createdAt: true,
+            commentImageUrl: true,
+            author: {
+              select: { id: true, name: true, image: true, handleName: true },
+            },
+            replyToId: true,
           },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
       },
     });
 
