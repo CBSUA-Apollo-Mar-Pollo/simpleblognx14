@@ -109,6 +109,7 @@ const CreateComment = ({
 
   useEffect(() => {
     const textarea = document.getElementById("auto-resize-textarea");
+    if (!textarea) return; // Guard against null reference
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
   }, [textareaValue]);

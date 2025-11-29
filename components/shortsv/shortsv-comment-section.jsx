@@ -21,12 +21,16 @@ const ShortsVCommentSection = ({
   const pathname = usePathname();
 
   useEffect(() => {
-    // Remove the body scrollbar when the component mounts
-    document.body.style.overflow = "hidden";
+    // Remove the body scrollbar when the component mounts (guard against missing document.body)
+    if (typeof document !== "undefined" && document.body) {
+      document.body.style.overflow = "hidden";
+    }
 
     // Re-enable the body scrollbar when the component unmounts
     return () => {
-      document.body.style.overflow = "visible";
+      if (typeof document !== "undefined" && document.body) {
+        document.body.style.overflow = "visible";
+      }
     };
   }, []);
 

@@ -91,6 +91,7 @@ const PostDescription = ({ post, commentAmt, session, index }) => {
   useEffect(() => {
     if (session?.user.id) {
       const textarea = document.getElementById("auto-resize-textarea");
+      if (!textarea) return; // Guard against null reference
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [watchedField, toggleEditDescription]);

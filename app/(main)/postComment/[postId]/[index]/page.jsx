@@ -11,7 +11,7 @@ export const metadata = {
 
 const postCommentPage = async ({ params }) => {
   const session = await getAuthSession();
-  const { postId, index } = params;
+  const { postId, index } = await params;
 
   // Fetch minimal post metadata first (avoid large nested payloads)
   const post = await db.blog.findUnique({

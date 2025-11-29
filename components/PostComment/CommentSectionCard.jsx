@@ -35,14 +35,14 @@ const CommentSectionCard = ({
 
   const handleMouseEnter = (e) => {
     if (e === index && session?.user) {
-      commentRef.current.style = "opacity: 1"; // Change element style on hover
+      if (commentRef.current) commentRef.current.style.opacity = "1"; // Change element style on hover
     }
     // Other actions if needed
   };
 
   const handleMouseLeave = () => {
     if (session?.user) {
-      commentRef.current.style = "opacity: 0"; // Revert element style
+      if (commentRef.current) commentRef.current.style.opacity = "0"; // Revert element style
     }
     // Other actions if needed
   };
