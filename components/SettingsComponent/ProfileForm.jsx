@@ -22,7 +22,7 @@ import { useSession } from "next-auth/react";
 
 const ProfileForm = () => {
   const { data: session } = useSession();
-  const user = session.user;
+  const user = session?.user || {};
   const [handleName, setHandleName] = useState("");
   const [bio, setBio] = useState("");
   const { toast } = useToast();

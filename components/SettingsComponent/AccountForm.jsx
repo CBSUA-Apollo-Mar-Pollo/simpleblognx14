@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 
 const AccountForm = () => {
   const { data: session } = useSession();
-  const user = session.user;
+  const user = session?.user || {};
   const [date, setDate] = useState();
   const [name, setName] = useState("");
   const { toast } = useToast();
