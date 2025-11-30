@@ -2,6 +2,7 @@
 
 import { useFullScreenImage } from "@/hooks/use-fullscreen-image";
 import { ChevronLeft, ChevronRight, Download, Scaling, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -77,7 +78,7 @@ const ImagePost = ({ image, index, postId, setToggleExpand }) => {
         </div>
       </div>
 
-      <img
+      <Image
         sizes="100vw"
         width={0}
         height={0}

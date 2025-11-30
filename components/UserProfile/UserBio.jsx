@@ -56,7 +56,6 @@ const UserBio = ({ userImages, user }) => {
       return data;
     },
     onError: (err) => {
-      console.log(err);
       return toast({
         title: "There was an error",
         description: "Couldn't not edit your bio, please try again later",
@@ -81,8 +80,6 @@ const UserBio = ({ userImages, user }) => {
       return res;
     },
   });
-
-  console.log(userdetails);
 
   return (
     <div className="space-y-3">
@@ -139,162 +136,159 @@ const UserBio = ({ userImages, user }) => {
             )}
 
             {/* render for user profile */}
-            {session?.user?.id === user.id && (
-              <div className="mx-4 flex flex-col space-y-3 ">
-                {toggleEditBioInput && (
-                  <div className="my-2">
-                    <div>
-                      <Textarea
-                        disabled={isPending}
-                        onChange={(e) => setBioInput(e.target.value)}
-                        value={bioInput}
-                        maxLength={MAX_CHARS}
-                        className="resize-none text-center bg-neutral-100 focus:bg-white border border-neutral-300 focus:border focus:border-neutral-700 rounded-md"
-                      />
-                      <p className="text-end text-xs text-neutral-600 mt-1">
-                        {keyCharactersAmount} characters remaining
-                      </p>
-                    </div>
 
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex items-center gap-x-2">
-                        <Icons.earthIcon className="h-6 w-6" />
-                        <span className="text-sm">Public</span>
-                      </div>
-                      <div className="flex items-center gap-x-1">
-                        <Button
-                          onClick={() => setToggleEditBioInput(false)}
-                          variant="ghost"
-                          className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9 px-3 py-3"
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          onClick={updateBio}
-                          disabled={
-                            user.bio === bioInput ||
-                            bioInput.length === 0 ||
-                            isPending
-                          }
-                          variant="ghost"
-                          className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
-                        >
-                          {isPending && (
-                            <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
-                          )}
-                          <span className="text-[15px] font-semibold">
-                            Save
-                          </span>
-                        </Button>
+            <div className="mx-4 flex flex-col space-y-3 ">
+              {toggleEditBioInput && session?.user?.id === user.id && (
+                <div className="my-2">
+                  <div>
+                    <Textarea
+                      disabled={isPending}
+                      onChange={(e) => setBioInput(e.target.value)}
+                      value={bioInput}
+                      maxLength={MAX_CHARS}
+                      className="resize-none text-center bg-neutral-100 focus:bg-white border border-neutral-300 focus:border focus:border-neutral-700 rounded-md"
+                    />
+                    <p className="text-end text-xs text-neutral-600 mt-1">
+                      {keyCharactersAmount} characters remaining
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-center gap-x-2">
+                      <Icons.earthIcon className="h-6 w-6" />
+                      <span className="text-sm">Public</span>
+                    </div>
+                    <div className="flex items-center gap-x-1">
+                      <Button
+                        onClick={() => setToggleEditBioInput(false)}
+                        variant="ghost"
+                        className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9 px-3 py-3"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={updateBio}
+                        disabled={
+                          user.bio === bioInput ||
+                          bioInput.length === 0 ||
+                          isPending
+                        }
+                        variant="ghost"
+                        className="flex items-center bg-blue-600 hover:bg-blue-700 hover:text-white text-white gap-x-2 h-10 px-4"
+                      >
+                        {isPending && (
+                          <Loader2 className="w-5 h-5 text-white animate-spin my-10 mr-1" />
+                        )}
+                        <span className="text-[15px] font-semibold">Save</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!toggleEditBioInput && (
+                <Button
+                  onClick={() => setToggleEditBioInput((prev) => !prev)}
+                  variant="ghost"
+                  className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"
+                >
+                  {user.bio ? "Edit Bio" : "Add Bio"}
+                </Button>
+              )}
+
+              <div className="flex flex-col space-y-2">
+                {userdetails?.ProfileAboutInfoVisibility.workplace && (
+                  <div className="flex items-center gap-x-3">
+                    <Icons.BriefCaseIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                    <div className="flex flex-col">
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">
+                          Former {userdetails?.workplace.position} at
+                        </p>
+                        <p className="text-[14px] font-medium">
+                          {userdetails?.workplace.companyname}
+                        </p>
                       </div>
                     </div>
                   </div>
                 )}
 
-                {!toggleEditBioInput && (
-                  <Button
-                    onClick={() => setToggleEditBioInput((prev) => !prev)}
-                    variant="ghost"
-                    className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"
-                  >
-                    {user.bio ? "Edit Bio" : "Add Bio"}
-                  </Button>
+                {userdetails?.ProfileAboutInfoVisibility.college && (
+                  <div className="flex items-center gap-x-3">
+                    <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                    <div className="flex flex-col">
+                      <div className="relative flex items-center gap-x-1">
+                        <p className="text-[14px]">Studied at</p>
+                        <p className="text-[14px] font-medium">
+                          {userdetails?.college.collegename}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 )}
 
-                <div className="flex flex-col space-y-2">
-                  {userdetails?.ProfileAboutInfoVisibility.workplace && (
-                    <div className="flex items-center gap-x-3">
-                      <Icons.BriefCaseIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
-                      <div className="flex flex-col">
-                        <div className="relative flex items-center gap-x-1">
-                          <p className="text-[14px]">
-                            Former {userdetails?.workplace.position} at
-                          </p>
-                          <p className="text-[14px] font-medium">
-                            {userdetails?.workplace.companyname}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {userdetails?.ProfileAboutInfoVisibility.college && (
-                    <div className="flex items-center gap-x-3">
-                      <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
-                      <div className="flex flex-col">
-                        <div className="relative flex items-center gap-x-1">
-                          <p className="text-[14px]">Studied at</p>
-                          <p className="text-[14px] font-medium">
-                            {userdetails?.college.collegename}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {userdetails?.ProfileAboutInfoVisibility.highschool && (
-                    <div className="flex items-center gap-x-3">
-                      <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
-                      <div className="flex flex-col">
-                        <div className="relative flex items-center gap-x-1">
-                          <p className="text-[14px]">Went to</p>
-                          <p className="text-[14px] font-medium">
-                            {userdetails?.highschool.schoolname}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {userdetails?.ProfileAboutInfoVisibility.currentcity && (
-                    <div className="flex items-center gap-x-3">
-                      <Icons.HomeFilled className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                {userdetails?.ProfileAboutInfoVisibility.highschool && (
+                  <div className="flex items-center gap-x-3">
+                    <Icons.GraduationCapIcon className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                    <div className="flex flex-col">
                       <div className="relative flex items-center gap-x-1">
-                        <p className="text-[14px]">Lives in</p>
-                        <p className="text-[14px] font-semibold">
-                          {userdetails?.currentcity}
+                        <p className="text-[14px]">Went to</p>
+                        <p className="text-[14px] font-medium">
+                          {userdetails?.highschool.schoolname}
                         </p>
                       </div>
                     </div>
-                  )}
-                  {userdetails?.ProfileAboutInfoVisibility.hometown && (
-                    <div className="flex items-center gap-x-3">
-                      <MapPin className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
-                      <div className="relative flex items-center gap-x-1">
-                        <p className="text-[14px]">From</p>
-                        <p className="text-[14px] font-semibold">
-                          {userdetails?.hometown}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                  {userdetails?.ProfileAboutInfoVisibility.relationstatus && (
-                    <div className="flex items-center gap-x-3">
-                      <Heart className="w-8 h-8 fill-neutral-500 text-transparent" />
-                      <div className="relative">
-                        <p className="text-[14px]">
-                          {userdetails?.relationstatus}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
-                <EditDetailsModal
-                  user={user}
-                  userdetails={userdetails}
-                  isfetchingUserDetails={isfetchingUserDetails}
-                  refetch={refetch}
-                />
-
-                <Button
-                  variant="ghost"
-                  className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"
-                >
-                  Add Featured
-                </Button>
+                {userdetails?.ProfileAboutInfoVisibility.currentcity && (
+                  <div className="flex items-center gap-x-3">
+                    <Icons.HomeFilled className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                    <div className="relative flex items-center gap-x-1">
+                      <p className="text-[14px]">Lives in</p>
+                      <p className="text-[14px] font-semibold">
+                        {userdetails?.currentcity}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {userdetails?.ProfileAboutInfoVisibility.hometown && (
+                  <div className="flex items-center gap-x-3">
+                    <MapPin className="w-8 h-8 fill-neutral-500 text-white text-transparent" />
+                    <div className="relative flex items-center gap-x-1">
+                      <p className="text-[14px]">From</p>
+                      <p className="text-[14px] font-semibold">
+                        {userdetails?.hometown}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {userdetails?.ProfileAboutInfoVisibility.relationstatus && (
+                  <div className="flex items-center gap-x-3">
+                    <Heart className="w-8 h-8 fill-neutral-500 text-transparent" />
+                    <div className="relative">
+                      <p className="text-[14px]">
+                        {userdetails?.relationstatus}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
+
+              <EditDetailsModal
+                user={user}
+                userdetails={userdetails}
+                isfetchingUserDetails={isfetchingUserDetails}
+                refetch={refetch}
+              />
+
+              <Button
+                variant="ghost"
+                className="bg-neutral-300 hover:bg-neutral-400 font-semibold h-9"
+              >
+                Add Featured
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

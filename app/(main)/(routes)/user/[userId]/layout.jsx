@@ -2,57 +2,75 @@ import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banne
 import StickDiv from "@/components/UserProfile/sticky_div";
 import { db } from "@/lib/db";
 import { UTApi } from "uploadthing/server";
+import { unstable_cache } from "next/cache"; // 1. Import caching utility
+
+const getUserProfileData = unstable_cache(
+  async (userId) => {
+    const user = await db.user.findFirst({
+      where: {
+        id: userId,
+      },
+
+      select: {
+        blogs: true,
+        id: true,
+        type: true,
+        name: true,
+        bio: true,
+        email: true,
+        image: true,
+        category: true,
+        backgroundImage: true,
+      },
+    });
+
+    if (!user) return null;
+
+    if (user.backgroundImage) {
+      const coverPhotoBlog = await db.blog.findFirst({
+        where: {
+          image: {
+            path: ["url"],
+            equals: user.backgroundImage,
+          },
+        },
+        select: { id: true },
+      });
+
+      user.coverPhotoId = coverPhotoBlog?.id;
+    } else {
+      user.coverPhotoId = null;
+    }
+
+    return user;
+  },
+  ["user-profile-data"],
+  {
+    revalidate: 3600,
+    tags: ["user-profile"],
+  }
+);
 
 const Layout = async ({ children, params }) => {
   const { userId } = await params;
-  const user = await db.user.findFirst({
-    where: {
-      id: userId,
-    },
-    select: {
-      blogs: true,
-      id: true,
-      type: true,
-      name: true,
-      bio: true,
-      email: true,
-      image: true,
-      category: true,
-      backgroundImage: true,
-    },
-  });
 
-  const getCoverPhoto = await db.blog.findMany({
-    where: {
-      AND: [
-        { image: { not: null } }, // Ensure `image` is not null
-        {
-          image: {
-            equals: {
-              url: user?.backgroundImage, // Correctly reference the JSON key
-            },
-          },
-        },
-      ],
-    },
-  });
+  const user = await getUserProfileData(userId);
 
-  user.coverPhotoId = getCoverPhoto[0]?.id;
+  if (!user) {
+    return <div>User not found</div>;
+  }
 
-  // delete image in upload thing if the user click the cancel button
   const deleteImage = async (image) => {
     "use server";
     const utapi = new UTApi();
+
     await utapi.deleteFiles(image[0].key);
   };
 
   return (
     <div className="relative h-full">
-      {/* user profile page header */}
       <ProfileBanner user={user} deleteImage={deleteImage} />
-
       <StickDiv user={user} />
-      {/* content */}
       {children}
     </div>
   );

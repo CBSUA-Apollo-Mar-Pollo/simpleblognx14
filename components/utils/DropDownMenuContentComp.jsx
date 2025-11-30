@@ -21,20 +21,23 @@ const DropDownMenuContentComp = ({ user, setSubMenu, setActiveSubMenu }) => {
       <DropdownMenuSeparator className="my-4 bg-neutral-200 dark:bg-neutral-600" />
 
       <div className="space-y-1">
-        <DropdownMenuItem
-          onClick={() => router.push("/settings")}
-          className="cursor-pointer dark:hover:bg-neutral-700 rounded-md flex justify-between"
-        >
-          <div className="flex items-center gap-x-3">
-            <span className="p-2 bg-neutral-200  rounded-full dark:bg-neutral-700">
-              <Icons.SettingIcon className="h-5 w-5 fill-neutral-800  border-neutral-800 dark:fill-neutral-200" />
-            </span>
-            <span className="font-medium text-neutral-600 dark:text-neutral-100">
-              Settings
-            </span>
-          </div>
-          <ChevronRight className="h-9 w-9 stroke-[1.5px] text-neutral-600" />
-        </DropdownMenuItem>
+        <Link href="/settings">
+          <DropdownMenuItem
+            // Remove onClick and router.push
+            // The DropdownMenuItem receives the navigation behavior from Link
+            className="cursor-pointer dark:hover:bg-neutral-700 rounded-md flex justify-between"
+          >
+            <div className="flex items-center gap-x-3">
+              <span className="p-2 bg-neutral-200 rounded-full dark:bg-neutral-700">
+                <Icons.SettingIcon className="h-5 w-5 fill-neutral-800 border-neutral-800 dark:fill-neutral-200" />
+              </span>
+              <span className="font-medium text-neutral-600 dark:text-neutral-100">
+                Settings
+              </span>
+            </div>
+            <ChevronRight className="h-9 w-9 stroke-[1.5px] text-neutral-600" />
+          </DropdownMenuItem>
+        </Link>
 
         {/* dark mode */}
         <DropdownMenuItem

@@ -1,82 +1,93 @@
 import { db } from "@/lib/db";
-// session is handled client-side in HomePageLayout with `useSession`
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import { UTApi } from "uploadthing/server";
 import HomePageLayout from "@/components/utils/home-page-layout";
+import { unstable_cache } from "next/cache"; // 1. Import unstable_cache
+import { UTApi } from "uploadthing/server";
 
 export const metadata = {
   title: `Estorya | Home`,
 };
 
+// 2. Define the function to be cached
+// It takes no arguments because the data is the same for all unauthenticated users.
+const getHomePageData = unstable_cache(
+  async () => {
+    // All original data fetching logic goes inside the cached function
+    const [posts, shortVideos, communities] = await Promise.all([
+      // Blog Posts
+      db.blog.findMany({
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              handleName: true,
+              image: true,
+              bio: true,
+              birthdate: true,
+            },
+          },
+          comments: { select: { id: true } },
+          votes: { select: { userId: true, type: true } },
+          community: { include: { members: { select: { userId: true } } } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: INFINITE_SCROLL_PAGINATION_RESULTS,
+      }),
+
+      // Short Video Posts
+      db.shortsv.findMany({
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              handleName: true,
+              image: true,
+              bio: true,
+              birthdate: true,
+            },
+          },
+          comments: { select: { id: true } },
+          shortsVotes: { select: { userId: true, type: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: INFINITE_SCROLL_PAGINATION_RESULTS,
+      }),
+
+      // Communities
+      db.community.findMany({
+        include: { members: { select: { userId: true } } },
+      }),
+    ]);
+
+    // Perform the necessary data manipulation/merging here
+    const updatedShortVideos = shortVideos.map((item) => ({
+      ...item,
+      isShortsV: true,
+    }));
+
+    const normalizedPosts = posts.map((p) => ({
+      ...p,
+      createdAtMs: new Date(p.createdAt).getTime(),
+    }));
+    const normalizedShorts = updatedShortVideos.map((p) => ({
+      ...p,
+      createdAtMs: new Date(p.createdAt).getTime(),
+    }));
+    const mergeData = [...normalizedPosts, ...normalizedShorts];
+
+    const sortedData = mergeData.sort((a, b) => b.createdAtMs - a.createdAtMs);
+
+    return { sortedData, communities };
+  },
+  ["homepage-feed"], // Cache Key
+  { revalidate: 300 } // Revalidate every 5 minutes (300 seconds)
+);
+
 export default async function HomePage() {
-  // fetch posts, short videos and communities in parallel to reduce latency
-  const [posts, shortVideos, communities] = await Promise.all([
-    db.blog.findMany({
-      include: {
-        author: {
-          // only request author fields that are used in the UI to avoid overfetching
-          select: {
-            id: true,
-            name: true,
-            handleName: true,
-            image: true,
-            bio: true,
-            birthdate: true,
-          },
-        },
-        // comments: only need ids so components can show counts without loading full comment objects
-        comments: { select: { id: true } },
-        // select only fields required for computing votes on the client
-        votes: { select: { userId: true, type: true } },
-        // community members: we only need userId to compute membership
-        community: { include: { members: { select: { userId: true } } } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: INFINITE_SCROLL_PAGINATION_RESULTS,
-    }),
-
-    // short video posts
-    db.shortsv.findMany({
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            handleName: true,
-            image: true,
-            bio: true,
-            birthdate: true,
-          },
-        },
-        comments: { select: { id: true } },
-        shortsVotes: { select: { userId: true, type: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: INFINITE_SCROLL_PAGINATION_RESULTS,
-    }),
-    db.community.findMany({
-      include: { members: { select: { userId: true } } },
-    }),
-  ]);
-
-  // add an isShortsV flag for shorts
-  const updatedShortVideos = shortVideos.map((item) => ({
-    ...item,
-    isShortsV: true,
-  }));
-
-  // attach numeric timestamp to optimize JS sort and avoid creating Date objects repeatedly
-  const normalizedPosts = posts.map((p) => ({
-    ...p,
-    createdAtMs: new Date(p.createdAt).getTime(),
-  }));
-  const normalizedShorts = updatedShortVideos.map((p) => ({
-    ...p,
-    createdAtMs: new Date(p.createdAt).getTime(),
-  }));
-  const mergeData = [...normalizedPosts, ...normalizedShorts];
-
-  const sortedData = mergeData.sort((a, b) => b.createdAtMs - a.createdAtMs);
+  // 3. Call the cached function
+  const { sortedData, communities } = await getHomePageData();
 
   const deleteImage = async (image) => {
     "use server";
@@ -84,14 +95,6 @@ export default async function HomePage() {
     await utapi.deleteFiles(image.key);
   };
 
-  // Conversation list is fetched client-side inside `HomePageLayout` via `getContactList`.
-  // Avoid server-side fetching of conversations here since it's not used by the server-rendered UI and increases latency.
-  const conversationList = null;
-
-  // communities were fetched in parallel above; keep their reference.
-  // we only included members.userId to reduce payloads.
-
-  //
   return (
     <HomePageLayout
       sortedData={sortedData}

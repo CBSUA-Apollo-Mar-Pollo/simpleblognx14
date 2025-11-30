@@ -16,8 +16,6 @@ const ChatHomeContactList = ({ session, conversationList, isPending }) => {
   const { socket } = useSocket();
   const [userData, setUserData] = useState([]);
 
-  console.log(conversationList, "conversationList ");
-
   useMakeUserOnline({ session });
 
   useEffect(() => {
