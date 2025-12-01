@@ -12,7 +12,6 @@ const getUserProfileData = unstable_cache(
       },
 
       select: {
-        blogs: true,
         id: true,
         type: true,
         name: true,

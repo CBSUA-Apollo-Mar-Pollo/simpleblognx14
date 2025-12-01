@@ -8,13 +8,9 @@ export const metadata = {
   title: `Estorya | Home`,
 };
 
-// 2. Define the function to be cached
-// It takes no arguments because the data is the same for all unauthenticated users.
 const getHomePageData = unstable_cache(
   async () => {
-    // All original data fetching logic goes inside the cached function
     const [posts, shortVideos, communities] = await Promise.all([
-      // Blog Posts
       db.blog.findMany({
         include: {
           author: {

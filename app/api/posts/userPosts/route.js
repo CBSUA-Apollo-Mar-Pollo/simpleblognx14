@@ -2,17 +2,14 @@ import { db } from "@/lib/db";
 import { z } from "zod";
 import { unstable_cache } from "next/cache";
 
-// Define the select statement for related models to prevent over-fetching
 const AUTHOR_SELECT = {
   id: true,
   name: true,
   image: true,
-  // Only include other fields if they are strictly necessary for the UI
 };
 const COUNT_SELECT = { select: { id: true } }; // For comments
 const VOTE_SELECT = { select: { userId: true, type: true } };
 
-// Define the Zod schema and transform values to numbers/strings
 const queryParamsSchema = z.object({
   limit: z
     .string()
@@ -25,14 +22,9 @@ const queryParamsSchema = z.object({
   userId: z.string().min(1),
 });
 
-/**
- * Caches the results of the two concurrent Prisma queries based on user, limit, and page.
- */
 const getPostsByUserIdCached = unstable_cache(
   async (userId, limit, skip) => {
-    // Execute both queries concurrently to reduce total latency
     const [userPosts, shortVideos] = await Promise.all([
-      // 1. User Posts Query (Blog)
       db.blog.findMany({
         take: limit,
         skip: skip,
@@ -45,7 +37,6 @@ const getPostsByUserIdCached = unstable_cache(
         orderBy: { createdAt: "desc" },
       }),
 
-      // 2. Short Videos Query (ShortsV)
       db.shortsv.findMany({
         take: limit,
         skip: skip,
@@ -53,7 +44,7 @@ const getPostsByUserIdCached = unstable_cache(
         include: {
           author: { select: AUTHOR_SELECT },
           comments: COUNT_SELECT,
-          shortsVotes: VOTE_SELECT, // Assuming shortsVotes is used similarly to votes
+          shortsVotes: VOTE_SELECT,
         },
         orderBy: { createdAt: "desc" },
       }),
@@ -61,7 +52,6 @@ const getPostsByUserIdCached = unstable_cache(
 
     const mergeData = [...userPosts, ...shortVideos];
 
-    // Optimize sorting by converting dates to numbers once, then sorting
     const sortedData = mergeData.sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -69,10 +59,10 @@ const getPostsByUserIdCached = unstable_cache(
 
     return sortedData;
   },
-  ["user-feed-data"], // Base Cache Key
+  ["user-feed-data"],
   {
-    revalidate: 300, // Cache for 5 minutes (300 seconds)
-    // IMPORTANT: Use tags for on-demand revalidation when the user creates a new post
+    revalidate: 300,
+
     tags: ["user-posts"],
   }
 );
@@ -81,7 +71,6 @@ export async function GET(req) {
   const url = new URL(req.url);
 
   try {
-    // 3. Validation and Transformation
     const { limit, page, userId } = queryParamsSchema.parse({
       limit: url.searchParams.get("limit"),
       page: url.searchParams.get("page"),
@@ -90,14 +79,13 @@ export async function GET(req) {
 
     const skip = (page - 1) * limit;
 
-    // 4. Call the cached function
     const sortedData = await getPostsByUserIdCached(userId, limit, skip);
 
     return new Response(JSON.stringify(sortedData), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error(error); // Use console.error for actual errors
+    console.error(error);
 
     if (error instanceof z.ZodError) {
       return new Response(

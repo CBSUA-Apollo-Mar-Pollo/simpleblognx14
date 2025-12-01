@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { Suspense } from "react";
 import Sidebar from "./Sidebar";
 import { ChevronDown, Home, Plus } from "lucide-react";
 import { Icons } from "./Icons";
@@ -36,6 +36,8 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
       return res;
     },
     enabled: !!session?.user,
+    staleTime: 60 * 1000, // 1 minute
+    cacheTime: 5 * 60 * 1000, // 5 minutes
   });
 
   return (
@@ -159,7 +161,9 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
           {!session?.user && <Separator className="mb-4 mt-1 bg-neutral-300" />}
 
           {/* all post cards */}
-          <Posts initialPosts={sortedData} deleteImage={deleteImage} />
+          <Suspense fallback={<Skeleton className="h-48 w-full" />}>
+            <Posts initialPosts={sortedData} deleteImage={deleteImage} />
+          </Suspense>
         </div>
       </div>
       {/* third section recent posts and who to follow */}
@@ -170,11 +174,13 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
           {!session?.user && <PopularCommunities communities={communities} />}
 
           {session?.user && (
-            <ChatHomeContactList
-              conversationList={conversationList}
-              session={session}
-              isPending={isPending}
-            />
+            <Suspense fallback={<Skeleton className="h-24 w-full" />}>
+              <ChatHomeContactList
+                conversationList={conversationList}
+                session={session}
+                isPending={isPending}
+              />
+            </Suspense>
           )}
 
           {session?.user && (

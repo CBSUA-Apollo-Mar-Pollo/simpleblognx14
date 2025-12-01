@@ -93,11 +93,14 @@ const HomePageStoryCards = () => {
     status,
     isPending,
   } = useQuery({
-    queryKey: ["stories"],
+    queryKey: ["stories", session?.user?.id],
     queryFn: async () => {
       const res = await getStoryData(session.user.id);
       return res;
     },
+    enabled: !!session?.user?.id,
+    staleTime: 60 * 1000, // 1 minute
+    cacheTime: 5 * 60 * 1000, // 5 minutes
   });
 
   return (

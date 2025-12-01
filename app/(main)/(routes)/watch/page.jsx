@@ -6,40 +6,50 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
+import { unstable_cache as cache } from "next/cache";
 
-const WatchPage = async ({ searchParams }) => {
-  const searchQuery = searchParams?.v;
-  const session = await getAuthSession();
-  const videos = await db.blog.findMany({
-    where: {
-      video: {
-        not: null,
-      },
-    },
-    include: {
-      author: {
-        select: {
-          blogs: true,
-          id: true,
-          type: true,
-          name: true,
-          bio: true,
-          email: true,
-          image: true,
-          category: true,
-          backgroundImage: true,
+const getVideosCached = cache(
+  async () => {
+    return db.blog.findMany({
+      where: {
+        video: {
+          not: null,
         },
       },
-      comments: true,
-      votes: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: INFINITE_SCROLL_PAGINATION_RESULTS,
-  });
 
-  const video = await db.blog.findFirst({
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        comments: {
+          select: {
+            id: true,
+          },
+        },
+        votes: { select: { userId: true, type: true } },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: INFINITE_SCROLL_PAGINATION_RESULTS,
+    });
+  },
+  ["latest-videos-feed"],
+  {
+    tags: ["blog-videos-list"],
+
+    revalidate: 60,
+  }
+);
+
+const getSingleVideo = async (searchQuery) => {
+  if (!searchQuery) return null;
+
+  return db.blog.findFirst({
     where: {
       id: searchQuery,
     },
@@ -57,19 +67,40 @@ const WatchPage = async ({ searchParams }) => {
           backgroundImage: true,
         },
       },
-      comments: true,
-      votes: true,
+      comments: {
+        // Fetching only comment IDs is good for initial count/links
+        select: { id: true },
+      },
+      votes: { select: { userId: true, type: true } },
     },
   });
+};
 
-  console.log(video);
+const WatchPage = async ({ searchParams }) => {
+  const searchQuery = searchParams?.v;
+
+  const [session, videos, video] = await Promise.all([
+    getAuthSession(),
+    getVideosCached(),
+    getSingleVideo(searchQuery),
+  ]);
 
   if (searchQuery) {
+    if (!video) {
+      return <div>Video Not Found</div>;
+    }
+
     return (
       <>
         <WatchPageSingleVideo video={video} />
       </>
     );
+  }
+
+  console.log(video, "video");
+
+  if (!videos) {
+    return <div>Error loading videos. Please try again.</div>;
   }
 
   return (

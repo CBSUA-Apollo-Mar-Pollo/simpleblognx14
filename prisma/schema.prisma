@@ -114,6 +114,7 @@ model Blog {
 
   @@index([authorId])
   @@index([communityId])
+  @@index([createdAt])
 }
 
 model Shortsv {
@@ -134,6 +135,10 @@ model Shortsv {
 
   comments    Comment[]
   shortsVotes ShortsVidVote[]
+
+  @@index([authorId])
+  @@index([communityId])
+  @@index([createdAt])
 }
 
 model UserPostedImages {
@@ -172,6 +177,13 @@ model Comment {
   UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
   userPostedImagesId String?
   CommentVote        CommentVote[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([replyToId])
+  @@index([shortsvId])
+  @@index([userPostedImagesId])
+  @@index([postId, createdAt])
 }
 
 model RecentPosts {
@@ -210,6 +222,9 @@ model SearchHistory {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model searchData {
@@ -227,6 +242,9 @@ model Friend {
   isRequestAccepted String   @default("false")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
+
+  @@index([userId])
+  @@index([requesterUserId])
 }
 
 model Notification {
@@ -240,6 +258,10 @@ model Notification {
 
   isMarkAsRead String   @default("false")
   createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, isMarkAsRead])
+  @@index([userId, createdAt])
 }
 
 model FriendRequestNotification {
@@ -286,6 +308,7 @@ model Message {
 
   @@index([userId])
   @@index([conversationId])
+  @@index([conversationId, createdAt])
 }
 
 model Community {
@@ -322,6 +345,8 @@ model Subscription {
   communityId String
 
   @@id([userId, communityId])
+  @@index([userId])
+  @@index([communityId])
 }
 
 enum VoteType {
@@ -337,6 +362,8 @@ model Vote {
   type   VoteType
 
   @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
 }
 
 model ShortsVidVote {
@@ -347,6 +374,8 @@ model ShortsVidVote {
   type      VoteType
 
   @@id([userId, shortsvId])
+  @@index([userId])
+  @@index([shortsvId])
 }
 
 model CommentVote {
@@ -357,6 +386,8 @@ model CommentVote {
   type      VoteType
 
   @@id([userId, commentId])
+  @@index([userId])
+  @@index([commentId])
 }
 
 model Story {
@@ -369,6 +400,7 @@ model Story {
   authorId String
 
   @@index([authorId])
+  @@index([createdAt])
 }
 
 model History {
