@@ -1,0 +1,425 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+// datasource db {
+//   provider     = "mysql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())  
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String?   @unique
+  emailVerified    DateTime?
+  password         String?
+  onlineStatus     Boolean   @default(false)
+  lastStatusChange DateTime  @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @
+  
+  accounts Account[]
+  userProfiles UserProfile[]
+}
+
+model UserProfile {
+  id               String    @id @default(cuid())
+  type             String    @default("user")
+  name             String?
+  handleName       String?
+  bio              String?
+  image            String?
+  backgroundImage  String?
+  birthdate        DateTime?
+  categories         Json? 
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+
+  pageDetails          PageDetails? @relation(fields: [additionalPageInfoId], references: [id])
+  pageDetailsId String?
+
+  posts Post[]
+  shortsv Shortsv[]
+  comments Comment[]
+  searchHistories SearchHistory[]
+  userBeingRequested FriendList[] @relation("UserBeingRequested")
+  friendRequester    FriendList[] @relation("FriendRequester")
+  notifications Notification[]
+  userOne Conversation[] @relation("UserOne")
+  userTwo Conversation[] @relation("UserTwo")
+  messages Message[]
+  subscriptions Subscription[]
+  votes Vote[]
+  stories Story[]
+  profileAboutInfo ProfileAboutInfo[]
+}
+
+model Post {
+  id                  String   @id @default(cuid())
+  description         String?
+  image               Json?
+  video               Json?
+  userStatus          String?
+  textBackgroundStyle Json?
+  trashed      Boolean   @default(false)
+  trashedAt    DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  author   UserProfile   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  sharedPostId  String?
+  sharedPost    Post?   @relation("SharedPost", fields: [sharedPostId], references: [id])
+  shares        Post[]  @relation("SharedPost")  
+
+  community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId String?
+
+  comments Comment[]
+  votes Vote []
+
+  @@index([authorId])
+  @@index([communityId])
+  @@index([createdAt])
+}
+
+model Shortsv {
+  id          String   @id @default(cuid())
+  description String?
+  videoUrl    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  author   UserProfile   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  community   Community? @relation(fields: [communityId], references: [id])
+  communityId String?
+
+  comments  Comment[]
+  votes Vote[]
+
+  @@index([authorId])
+  @@index([communityId])
+  @@index([createdAt])
+}
+
+model Comment {
+  id   String  @id @default(cuid())
+  text String?
+  index  String?
+  createdAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  commentImageUrl String?
+
+  author   UserProfile   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  post Post @relation(fields: [postId], references: [id])
+  postId String
+
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
+  shortsvId          String?
+
+  commentVotes     CommentVote[]
+  votes Vote[]
+
+  @@index([postId])
+  @@index([authorId])
+  @@index([replyToId])
+  @@index([shortsvId])
+  @@index([userPostedImagesId])
+  @@index([postId, createdAt])
+}
+
+model verificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+  createdAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt 
+
+  @@unique([email, token])
+}
+
+model passwordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+  createdAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([email, token])
+}
+
+model SearchHistory {
+  id   String @id @default(cuid())
+  text String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  user   UserProfile  @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model FriendList {
+  id String @id @default(cuid())
+  isRequestAccepted String   @default("false")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now())
+  
+  user              UserProfile     @relation("UserBeingRequested", fields: [userId], references: [id])
+  userId            String
+
+  requesterUser     UserProfile     @relation("FriendRequester", fields: [requesterUserId], references: [id])
+  requesterUserId   String
+
+  @@index([userId])
+  @@index([requesterUserId])
+}
+
+model Notification {
+  id String @id @default(cuid())
+  text   String
+  isMarkAsRead String   @default("false")
+  createdAt    DateTime @default(now())
+  updatedAt         DateTime @default(now())
+
+  user   UserProfile   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+  @@index([userId, isMarkAsRead])
+  @@index([userId, createdAt])
+}
+
+model Conversation {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt         DateTime @default(now())
+
+  userOne   UserProfile   @relation("UserOne", fields: [userOneId], references: [id], onDelete: Cascade)
+  userOneId String
+
+  userTwo   UserProfile   @relation("UserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
+  userTwoId String
+
+  messages Message[]
+
+  @@unique([userOneId, userTwoId])
+  @@index([userOneId])
+  @@index([userTwoId])
+}
+
+model Message {
+  id      String @id @default(cuid())
+  content String @db.Text
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user   UserProfile   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String?
+
+  @@index([userId])
+  @@index([conversationId])
+  @@index([conversationId, createdAt])
+}
+
+model Community {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  description String?
+  banner String?
+  icon   String?
+  topics Json
+  accessType String
+  visibility String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator   UserProfile?   @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId String?
+
+  posts Post[]
+  members Subscription[]
+  shortsv Shortsv[]
+
+  @@index([name])
+}
+
+model Subscription {
+  id          String  @id @default(cuid())
+
+  user        UserProfile      @relation(fields: [userId], references: [id])
+  userId      String?
+
+  community   Community @relation(fields: [communityId], references: [id])
+  communityId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, communityId])
+  @@index([userId])
+  @@index([communityId])
+}
+
+enum VoteType {
+  UP
+  DOWN
+}
+
+model Vote {
+  id          String  @id @default(cuid())
+  type   VoteType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   UserProfile     @relation(fields: [userId], references: [id])
+  userId String
+
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  shortsv   Shortsv  @relation(fields: [shortsvId], references: [id], onDelete: Cascade)
+  shortsvId String 
+
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId String
+
+  @@id([userId, postId])
+  @@index([userId])
+  @@index([postId])
+  @@index([shortsvId])
+  @@index([commentId])
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  image     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   UserProfile   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+model PageDetails {
+  id String @id @default(cuid())
+  website String?
+  phone   String?
+  email   String?
+  businessHours Json?
+  photoUrl      String?
+  coverPhotoUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId String?   @unique
+
+  creator UserProfile[]
+}
+
+model Location {
+  id      String  @id @default(cuid())
+  address String?
+  city    String?
+  zipCode String?
+  country String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pageDetails PageDetails?
+}
+
+model ProfileAboutInfo {
+  id String @id @default(cuid())
+  phonenumber    Json?
+  relationstatus String?
+  hometown       String?
+  currentcity    String?
+  college        Json?
+  highschool     Json?
+  workplace      Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   UserProfile   @relation(fields: [userId], references: [id])
+  userId String
+
+  profileAboutInfoVisibility ProfileAboutInfoVisibility?
+}
+
+model ProfileAboutInfoVisibility {
+  id             String  @id @default(cuid())
+  workplace      Boolean @default(false)
+  highschool     Boolean @default(false)
+  college        Boolean @default(false)
+  hometown       Boolean @default(false)
+  currentcity    Boolean @default(false)
+  relationstatus Boolean @default(false)
+
+  profileAboutInfo   ProfileAboutInfo? @relation(fields: [profileAboutInfoId], references: [id])
+  profileAboutInfoId String?           @unique
+}
+
+model FriendRequestNotification {
+  id              String   @id @default(cuid())
+  userId          String
+  requesterUserId String
+  createdAt       DateTime @default(now())
+  updatedAt         DateTime @default(now())
+
+  @@index([userId, requesterUserId], name: "unique_user_requester")
+}
+
+
