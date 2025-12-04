@@ -19,7 +19,6 @@ datasource db {
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -31,260 +30,232 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   @@unique([provider, providerAccountId])
 }
 
 model User {
   id               String    @id @default(cuid())
-  type             String    @default("user")
-  name             String?
-  handleName       String?
-  bio              String?
   email            String?   @unique
-  emailVerified    DateTime?
+  name             String?
   image            String?
-  backgroundImage  String?
+  emailVerified    DateTime?
   password         String?
-  birthdate        DateTime?
+  onboarded        Boolean   @default(false)
   onlineStatus     Boolean   @default(false)
   lastStatusChange DateTime  @default(now())
-  category         Json? // array of categories for page profile
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  ownerId String?
-  owner   User?   @relation("PageOwner", fields: [ownerId], references: [id])
-  pages   User[]  @relation("PageOwner")
-
-  additional           PageAdditionalInfo? @relation(fields: [additionalPageInfoId], references: [id])
-  additionalPageInfoId String?
-
-  accounts         Account[]
-  blogs            Blog[]
-  Comment          Comment[]
-  UserPostedImages UserPostedImages[]
-  Shortsv          Shortsv[]
-  SearchHistory    SearchHistory[]
-
-  UserBeingRequested Friend[] @relation("UserBeingRequested")
-  FriendRequester    Friend[] @relation("FriendRequester")
-
-  UserOne Conversation[] @relation("UserOne")
-  UserTwo Conversation[] @relation("UserTwo")
-
-  Message Message[]
-
-  Notification Notification[]
-
-  subscriptions Subscription[]
-
-  createdSubreddits Community[]     @relation("CreatedBy")
-  Vote              Vote[]
-  CommentVote       CommentVote[]
-  ShortsVidVote     ShortsVidVote[]
-  Story             Story[]
-  History           History[]
-
-  ProfileAboutInfo ProfileAboutInfo[]
+  accounts     Account[]
+  userProfiles UserProfile[]
 }
 
-model Blog {
-  id                  String   @id @default(cuid())
+model UserProfile {
+  id              String    @id @default(cuid())
+  type            String    @default("user")
+  name            String?
+  handleName      String?
+  bio             String?
+  image           String?
+  backgroundImage String?
+  birthdate       DateTime?
+  categories      Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  pageDetails   PageDetails? @relation(fields: [pageDetailsId], references: [id])
+  pageDetailsId String?
+
+  posts              Post[]
+  shortsv            Shortsv[]
+  comments           Comment[]
+  searchHistories    SearchHistory[]
+  userBeingRequested FriendList[]       @relation("UserBeingRequested")
+  friendRequester    FriendList[]       @relation("FriendRequester")
+  notifications      Notification[]
+  userOne            Conversation[]     @relation("UserOne")
+  userTwo            Conversation[]     @relation("UserTwo")
+  messages           Message[]
+  subscriptions      Subscription[]
+  votes              Vote[]
+  shortsvVotes       ShortsvVote[]
+  commentVotes       CommentVote[]
+  stories            Story[]
+  profileAboutInfo   ProfileAboutInfo[]
+  createdCommunities Community[]        @relation("CreatedBy")
+
+  @@map("user_profiles")
+}
+
+model Post {
+  id                  String    @id @default(cuid())
   description         String?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
   image               Json?
   video               Json?
   userStatus          String?
   textBackgroundStyle Json?
+  trashed             Boolean   @default(false)
+  trashedAt           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
-  author   User   @relation(fields: [authorId], references: [id])
+  author   UserProfile @relation(fields: [authorId], references: [id])
   authorId String
 
   sharedPostId String?
-  trashed      Boolean   @default(false)
-  trashedAt    DateTime?
+  sharedPost   Post?   @relation("SharedPost", fields: [sharedPostId], references: [id])
+  shares       Post[]  @relation("SharedPost")
 
-  comments    Comment[]
-  RecentPosts RecentPosts[]
-  community   Community?    @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  community   Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
   communityId String?
-  votes       Vote[]
-  History     History[]
+
+  comments Comment[]
+  votes    Vote[]
 
   @@index([authorId])
   @@index([communityId])
   @@index([createdAt])
+  @@index([authorId, createdAt])
+  @@index([communityId, createdAt])
+  @@index([sharedPostId])
 }
 
 model Shortsv {
   id          String   @id @default(cuid())
   description String?
+  videoUrl    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  videoUrl    String
 
-  author   User   @relation(fields: [authorId], references: [id])
+  author   UserProfile @relation(fields: [authorId], references: [id])
   authorId String
-
-  sharedVideoId String?
-  videoStatus   String?
 
   community   Community? @relation(fields: [communityId], references: [id])
   communityId String?
 
-  comments    Comment[]
-  shortsVotes ShortsVidVote[]
+  comments     Comment[]
+  shortsvVotes ShortsvVote[]
 
   @@index([authorId])
   @@index([communityId])
   @@index([createdAt])
 }
 
-model UserPostedImages {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  image     String?
-
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId String
-  comments Comment[]
-}
-
 model Comment {
-  id   String  @id @default(cuid())
-  text String?
+  id              String   @id @default(cuid())
+  text            String?
+  index           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  commentImageUrl String?
 
-  createdAt DateTime @default(now())
-
-  author   User   @relation(fields: [authorId], references: [id])
+  author   UserProfile @relation(fields: [authorId], references: [id])
   authorId String
 
-  blog Blog @relation(fields: [postId], references: [id])
-
+  post   Post   @relation(fields: [postId], references: [id])
   postId String
-  index  String?
 
   replyToId String?
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  commentId       String?
-  commentImageUrl String?
+  Shortsv   Shortsv? @relation(fields: [shortsvId], references: [id], onDelete: Cascade)
+  shortsvId String?
 
-  Shortsv            Shortsv?          @relation(fields: [shortsvId], references: [id])
-  shortsvId          String?
-  UserPostedImages   UserPostedImages? @relation(fields: [userPostedImagesId], references: [id])
-  userPostedImagesId String?
-  CommentVote        CommentVote[]
+  commentVotes CommentVote[]
 
   @@index([postId])
   @@index([authorId])
   @@index([replyToId])
   @@index([shortsvId])
-  @@index([userPostedImagesId])
   @@index([postId, createdAt])
 }
 
-model RecentPosts {
-  id        String   @id @default(cuid())
-  blog      Blog     @relation(fields: [postId], references: [id])
-  postId    String
-  createdAt DateTime @default(now())
-
-  authorId String?
-}
-
 model verificationToken {
-  id      String   @id @default(cuid())
-  email   String
-  token   String   @unique
-  expires DateTime
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([email, token])
 }
 
 model passwordResetToken {
-  id      String   @id @default(cuid())
-  email   String
-  token   String   @unique
-  expires DateTime
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([email, token])
 }
 
 model SearchHistory {
-  id   String @id @default(cuid())
-  text String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
+  id        String   @id @default(cuid())
+  text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  user   UserProfile @relation(fields: [userId], references: [id])
+  userId String
 
   @@index([userId])
   @@index([createdAt])
 }
 
-model searchData {
-  id   String @id @default(cuid())
-  text String
-}
-
-model Friend {
-  id String @id @default(cuid())
-
-  user              User     @relation("UserBeingRequested", fields: [userId], references: [id])
-  userId            String
-  requesterUser     User     @relation("FriendRequester", fields: [requesterUserId], references: [id])
-  requesterUserId   String
+model FriendList {
+  id                String   @id @default(cuid())
   isRequestAccepted String   @default("false")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @default(now())
+
+  user   UserProfile @relation("UserBeingRequested", fields: [userId], references: [id])
+  userId String
+
+  requesterUser   UserProfile @relation("FriendRequester", fields: [requesterUserId], references: [id])
+  requesterUserId String
 
   @@index([userId])
   @@index([requesterUserId])
 }
 
 model Notification {
-  id String @id @default(cuid())
-
-  userId String
-  text   String
-
-  fromUser   User   @relation(fields: [fromUserId], references: [id])
-  fromUserId String
-
+  id           String   @id @default(cuid())
+  text         String
   isMarkAsRead String   @default("false")
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+
+  user   UserProfile @relation(fields: [userId], references: [id])
+  userId String
 
   @@index([userId])
   @@index([userId, isMarkAsRead])
   @@index([userId, createdAt])
-}
-
-model FriendRequestNotification {
-  id              String   @id @default(cuid())
-  userId          String
-  requesterUserId String
-  createdAt       DateTime @default(now())
-
-  @@index([userId, requesterUserId], name: "unique_user_requester")
+  @@index([userId, createdAt, isMarkAsRead])
 }
 
 model Conversation {
-  id String @id @default(cuid())
-
-  userOneId String
-  userOne   User   @relation("UserOne", fields: [userOneId], references: [id], onDelete: Cascade)
-
-  userTwoId String
-  userTwo   User   @relation("UserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
-  Message Message[]
+  userOne   UserProfile @relation("UserOne", fields: [userOneId], references: [id], onDelete: Cascade)
+  userOneId String
+
+  userTwo   UserProfile @relation("UserTwo", fields: [userTwoId], references: [id], onDelete: Cascade)
+  userTwoId String
+
+  messages Message[]
 
   @@unique([userOneId, userTwoId])
   @@index([userOneId])
@@ -292,19 +263,17 @@ model Conversation {
 }
 
 model Message {
-  id      String @id @default(cuid())
-  content String @db.Text
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  deleted Boolean @default(false)
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
 
   @@index([userId])
   @@index([conversationId])
@@ -312,37 +281,37 @@ model Message {
 }
 
 model Community {
-  id          String  @id @default(cuid())
-  name        String  @unique
+  id          String   @id @default(cuid())
+  name        String   @unique
   description String?
+  banner      String?
+  icon        String?
+  topics      Json
+  accessType  String
+  visibility  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  banner String?
-  icon   String?
-
-  topics Json
-
-  accessType String
-  visibility String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  posts Blog[]
-
-  Creator   User?   @relation("CreatedBy", fields: [creatorId], references: [id])
+  creator   UserProfile? @relation("CreatedBy", fields: [creatorId], references: [id])
   creatorId String?
 
+  posts   Post[]
   members Subscription[]
   shortsv Shortsv[]
 
   @@index([name])
+  @@index([createdAt])
 }
 
 model Subscription {
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
+  user   UserProfile @relation(fields: [userId], references: [id])
+  userId String
+
   community   Community @relation(fields: [communityId], references: [id])
   communityId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([userId, communityId])
   @@index([userId])
@@ -355,117 +324,101 @@ enum VoteType {
 }
 
 model Vote {
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
-  post   Blog     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId String
-  type   VoteType
+  id        String   @id @default(cuid())
+  type      VoteType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@id([userId, postId])
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  post   Post?  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  @@unique([userId, postId])
   @@index([userId])
   @@index([postId])
+  @@index([postId, type])
 }
 
-model ShortsVidVote {
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  shortsv   Shortsv  @relation(fields: [shortsvId], references: [id], onDelete: Cascade)
-  shortsvId String // Make this nullable
+model ShortsvVote {
+  id        String   @id @default(cuid())
   type      VoteType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@id([userId, shortsvId])
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  shortsv   Shortsv @relation(fields: [shortsvId], references: [id], onDelete: Cascade)
+  shortsvId String
+
+  @@unique([userId, shortsvId])
   @@index([userId])
   @@index([shortsvId])
 }
 
 model CommentVote {
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  comment   Comment  @relation(fields: [commentId], references: [id])
-  commentId String
+  id        String   @id @default(cuid())
   type      VoteType
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@id([userId, commentId])
+  user   UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String
+
+  @@unique([userId, commentId])
   @@index([userId])
   @@index([commentId])
 }
 
 model Story {
   id        String   @id @default(cuid())
+  image     Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  image     Json
 
-  author   User   @relation(fields: [authorId], references: [id])
+  author   UserProfile @relation(fields: [authorId], references: [id])
   authorId String
 
   @@index([authorId])
   @@index([createdAt])
 }
 
-model History {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  post   Blog   @relation(fields: [postId], references: [id])
-  postId String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  @@id([postId, userId])
-}
-
-// model Page {
-//   id       String  @id @default(cuid())
-//   name     String
-//   category Json // array of categories
-//   bio      String?
-
-//   additional   PageAdditionalInfo? @relation(fields: [additionalId], references: [id])
-//   additionalId String?
-
-//   user   User   @relation(fields: [userId], references: [id])
-//   userId String
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-model PageAdditionalInfo {
-  id String @id @default(cuid())
-
-  website String?
-  phone   String?
-  email   String?
+model PageDetails {
+  id            String   @id @default(cuid())
+  website       String?
+  phone         String?
+  email         String?
+  businessHours Json?
+  photoUrl      String?
+  coverPhotoUrl String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   location   Location? @relation(fields: [locationId], references: [id])
   locationId String?   @unique
 
-  businessHours Json?
-
-  photoUrl      String?
-  coverPhotoUrl String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  User User[]
+  creator UserProfile[]
 }
 
 model Location {
-  id      String  @id @default(cuid())
-  address String?
-  city    String?
-  zipCode String?
-  country String?
+  id        String   @id @default(cuid())
+  address   String?
+  city      String?
+  zipCode   String?
+  country   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  pageAdditionalInfo PageAdditionalInfo?
+  pageDetails PageDetails?
 }
 
 model ProfileAboutInfo {
-  id String @id @default(cuid())
-
+  id             String   @id @default(cuid())
   phonenumber    Json?
   relationstatus String?
   hometown       String?
@@ -473,11 +426,13 @@ model ProfileAboutInfo {
   college        Json?
   highschool     Json?
   workplace      Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   UserProfile @relation(fields: [userId], references: [id])
   userId String
 
-  ProfileAboutInfoVisibility ProfileAboutInfoVisibility?
+  profileAboutInfoVisibility ProfileAboutInfoVisibility?
 }
 
 model ProfileAboutInfoVisibility {
@@ -491,4 +446,14 @@ model ProfileAboutInfoVisibility {
 
   profileAboutInfo   ProfileAboutInfo? @relation(fields: [profileAboutInfoId], references: [id])
   profileAboutInfoId String?           @unique
+}
+
+model FriendRequestNotification {
+  id              String   @id @default(cuid())
+  userId          String
+  requesterUserId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+
+  @@index([userId, requesterUserId], name: "unique_user_requester")
 }

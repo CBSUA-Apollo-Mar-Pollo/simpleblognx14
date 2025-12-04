@@ -83,7 +83,7 @@ const CommentSectionCard = ({
                 )}
               </div>
               {/* comment text */}
-              {replyName ? (
+              {/* {replyName ? (
                 <p className="text-neutral-700 dark:text-neutral-100 text-sm">
                   <span className="text-blue-400">
                     <a
@@ -93,14 +93,17 @@ const CommentSectionCard = ({
                       @{replyName.name}
                     </a>
                   </span>{" "}
-                  {comment.text.startsWith("@") &&
-                    comment.text.substring(comment.text.indexOf(" ") + 1)}
+                  {typeof comment?.text === "string" &&
+                    comment.text.startsWith("@") &&
+                    (comment.text.indexOf(" ") >= 0
+                      ? comment.text.substring(comment.text.indexOf(" ") + 1)
+                      : "")}
                 </p>
               ) : (
                 <p className="text-neutral-700 dark:text-neutral-100 text-sm">
                   {comment?.text}
                 </p>
-              )}
+              )} */}
             </div>
 
             {session?.user && (

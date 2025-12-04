@@ -40,11 +40,17 @@ const UserProfilePagePhotos = async ({ params }) => {
   user.coverPhotoId = getCoverPhoto[0]?.id;
 
   // delete image in upload thing if the user click the cancel button
-  const deleteImage = async (image) => {
-    "use server";
-    const utapi = new UTApi();
-    await utapi.deleteFiles(image.substring(image.lastIndexOf("/") + 1));
-  };
+  // const deleteImage = async (image) => {
+  //   "use server";
+  //   if (!image || typeof image !== "string") return;
+  //   try {
+  //     const utapi = new UTApi();
+  //     const filename = image.substring(image.lastIndexOf("/") + 1);
+  //     await utapi.deleteFiles(filename);
+  //   } catch (err) {
+  //     console.error("deleteImage error:", err);
+  //   }
+  // };
 
   const userImages = await db.blog.findMany({
     where: {
