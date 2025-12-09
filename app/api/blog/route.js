@@ -12,6 +12,14 @@ export async function POST(req) {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    // Fetch the user's UserProfile
+    const userProfile = await db.userProfile.findFirst({
+      where: { userId: session.user.id },
+    });
+    if (!userProfile) {
+      return new Response("User profile not found", { status: 404 });
+    }
+
     const body = await req.json();
     const {
       description = "",
@@ -33,8 +41,6 @@ export async function POST(req) {
       );
     }
 
-    console.log(body);
-
     if (
       description?.length !== 0 &&
       images?.length === 0 &&
@@ -44,7 +50,7 @@ export async function POST(req) {
         data: {
           description,
           textBackgroundStyle: selectedBackgroundColor,
-          authorId: session.user.id,
+          authorId: userProfile.id,
         },
       });
 
@@ -62,7 +68,7 @@ export async function POST(req) {
             description,
             image: imageExist[0],
             userStatus: userStatus,
-            authorId: session.user.id,
+            authorId: userProfile.id,
           },
         });
       } else {
@@ -71,7 +77,7 @@ export async function POST(req) {
             description,
             image: imageExist,
             userStatus: userStatus,
-            authorId: session.user.id,
+            authorId: userProfile.id,
           },
         });
       }
@@ -83,7 +89,7 @@ export async function POST(req) {
           description,
           video: videos,
           userStatus: userStatus,
-          authorId: session.user.id,
+          authorId: userProfile.id,
         },
       });
     }
@@ -101,7 +107,7 @@ export async function POST(req) {
 
     await db.vote.create({
       data: {
-        userId: session.user.id,
+        userId: userProfile.id,
         postId: post.id,
         type: "UP",
       },
@@ -135,6 +141,14 @@ export async function PATCH(req) {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    // Fetch the user's UserProfile for authorId checks
+    const userProfile = await db.userProfile.findFirst({
+      where: { userId: session.user.id },
+    });
+    if (!userProfile) {
+      return new Response("User profile not found", { status: 404 });
+    }
+
     const { description, images, selectedBackgroundColor } = await req.json();
 
     const { searchParams } = new URL(req.url);
@@ -156,7 +170,7 @@ export async function PATCH(req) {
       await db.post.update({
         where: {
           id: postId,
-          authorId: session.user.id,
+          authorId: userProfile.id,
         },
         data: {
           description,
@@ -170,7 +184,7 @@ export async function PATCH(req) {
       await db.post.update({
         where: {
           id: postId,
-          authorId: session.user.id,
+          authorId: userProfile.id,
         },
         data: {
           description,
