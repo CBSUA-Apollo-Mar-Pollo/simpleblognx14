@@ -21,7 +21,7 @@ export async function GET(req) {
 
     let comments = [];
 
-    const post = await db.blog.findFirst({
+    const post = await db.post.findFirst({
       where: {
         id: postId,
       },

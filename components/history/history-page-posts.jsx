@@ -88,7 +88,7 @@ const HistoryPagePosts = ({ initialPosts, session, deleteImage }) => {
               (vote) => vote.userId === session?.user.id
             );
             // votes for shorts video post cards
-            const shortsvVotesAmt = blog.post?.shortsVotes?.reduce(
+            const shortsvVotesAmt = blog.post?.shortsvVotes?.reduce(
               (acc, vote) => {
                 if (vote.type === "UP") return acc + 1;
                 if (vote.type === "DOWN") return acc - 1;
@@ -97,7 +97,7 @@ const HistoryPagePosts = ({ initialPosts, session, deleteImage }) => {
               0
             );
 
-            const currentShortsvVote = blog.post?.shortsVotes?.find(
+            const currentShortsvVote = blog.post?.shortsvVotes?.find(
               (vote) => vote.userId === session?.user.id
             );
 

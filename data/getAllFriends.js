@@ -7,7 +7,7 @@ export const getAllFriends = async () => {
   const session = await getAuthSession();
   const currentUserId = session?.user.id;
 
-  const friends = await db.friend.findMany({
+  const friends = await db.friendList.findMany({
     where: {
       OR: [
         {

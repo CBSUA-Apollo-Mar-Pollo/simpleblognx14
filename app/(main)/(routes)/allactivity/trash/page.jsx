@@ -17,7 +17,7 @@ import { getAuthSession } from "@/lib/auth";
 
 const TrashPage = async () => {
   const session = await getAuthSession();
-  const trashPosts = await db.blog.findMany({
+  const trashPosts = await db.post.findMany({
     where: {
       authorId: session?.user.id,
       trashed: true,
@@ -52,7 +52,7 @@ const TrashPage = async () => {
 
   const expiredPostIds = expiredPosts.map((post) => post.id);
 
-  await db.blog.deleteMany({
+  await db.post.deleteMany({
     where: {
       id: {
         in: expiredPostIds,

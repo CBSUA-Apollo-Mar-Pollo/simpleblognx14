@@ -11,6 +11,8 @@ import AddPostModal from "../Post/AddPostModal";
 import AddGalleryPostModal from "../Post/AddImagePostModal";
 import { Separator } from "../ui/Separator";
 import Image from "next/image";
+import liveIcon from "@/public/ImageIcons/live.png";
+import smileIcon from "@/public/ImageIcons/smile.png";
 import HomePageStoryCards from "../stories/homepage-story-cards";
 import {
   DropdownMenu,
@@ -92,14 +94,12 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
 
                 <Separator className="mt-3 dark:bg-neutral-700 lg:block hidden" />
 
-                <div className="lg:flex items-center justify-center my-1 hidden">
+                <div className="flex items-center justify-center my-1">
                   <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
                     <Image
-                      src="/ImageIcons/live.png"
+                      src={liveIcon}
                       className="h-8 w-8"
                       alt="Live video icon"
-                      width={32}
-                      height={32}
                     />
                     <span className="dark:text-neutral-100 text-sm">
                       Live video
@@ -110,9 +110,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
                   </div>
                   <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
                     <Image
-                      width={28}
-                      height={28}
-                      src="/ImageIcons/smile.png"
+                      src={smileIcon}
                       className="h-7 w-7"
                       alt="Feeling or activity icon"
                     />
@@ -171,9 +169,9 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
         <div className="sticky top-16">
           {/* <RecentPostsCard /> */}
 
-          {!session?.user && <PopularCommunities communities={communities} />}
+          {/* {!session?.user && <PopularCommunities communities={communities} />} */}
 
-          {session?.user && (
+          {/* {session?.user && (
             <Suspense fallback={<Skeleton className="h-24 w-full" />}>
               <ChatHomeContactList
                 conversationList={conversationList}
@@ -181,7 +179,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
                 isPending={isPending}
               />
             </Suspense>
-          )}
+          )} */}
 
           {session?.user && (
             <>

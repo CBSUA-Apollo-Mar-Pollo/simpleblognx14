@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export const getFriendsList = async (id) => {
   if (id !== null) {
-    const friends = await db.friend.findMany({
+    const friends = await db.friendList.findMany({
       where: {
         OR: [{ userId: id }, { requesterUserId: id }],
       },

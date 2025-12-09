@@ -19,7 +19,7 @@ const getFeedData = unstable_cache(
     // Execute both queries concurrently to reduce total latency
     const [blogs, shortVideos] = await Promise.all([
       // 1. Blog Posts Query
-      db.blog.findMany({
+      db.post.findMany({
         take: limit,
         skip: skip,
         include: {
@@ -43,7 +43,7 @@ const getFeedData = unstable_cache(
         include: {
           author: { select: { id: true, name: true, image: true } },
           comments: { select: { id: true } },
-          shortsVotes: { select: { userId: true, type: true } },
+          shortsvVotes: { select: { userId: true, type: true } },
         },
         orderBy: { createdAt: "desc" },
       }),

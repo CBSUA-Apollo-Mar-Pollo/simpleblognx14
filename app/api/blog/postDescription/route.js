@@ -18,7 +18,7 @@ export async function PATCH(req) {
 
     const postId = searchParams.get("postId");
 
-    await db.blog.update({
+    await db.post.update({
       where: {
         id: postId,
         authorId: session.user.id,

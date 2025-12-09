@@ -89,6 +89,7 @@ model UserProfile {
   stories            Story[]
   profileAboutInfo   ProfileAboutInfo[]
   createdCommunities Community[]        @relation("CreatedBy")
+  userInterests      UserInterest[]
 
   @@map("user_profiles")
 }
@@ -456,4 +457,27 @@ model FriendRequestNotification {
   updatedAt       DateTime @default(now())
 
   @@index([userId, requesterUserId], name: "unique_user_requester")
+}
+
+model Interest {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users UserInterest[]
+}
+
+model UserInterest {
+  user   UserProfile @relation(fields: [userId], references: [id])
+  userId String
+
+  interest   Interest @relation(fields: [interestId], references: [id])
+  interestId String
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, interestId])
+  @@index([userId])
+  @@index([interestId])
 }

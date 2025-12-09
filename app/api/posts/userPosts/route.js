@@ -25,7 +25,7 @@ const queryParamsSchema = z.object({
 const getPostsByUserIdCached = unstable_cache(
   async (userId, limit, skip) => {
     const [userPosts, shortVideos] = await Promise.all([
-      db.blog.findMany({
+      db.post.findMany({
         take: limit,
         skip: skip,
         where: { authorId: userId },
@@ -44,7 +44,7 @@ const getPostsByUserIdCached = unstable_cache(
         include: {
           author: { select: AUTHOR_SELECT },
           comments: COUNT_SELECT,
-          shortsVotes: VOTE_SELECT,
+          shortsvVotes: VOTE_SELECT,
         },
         orderBy: { createdAt: "desc" },
       }),

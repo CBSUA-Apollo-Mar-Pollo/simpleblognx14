@@ -11,32 +11,16 @@ export const metadata = {
 
 const getNavbarData = unstable_cache(
   async (userId) => {
-    const user = await db.user.findFirst({
+    const user = await db.userProfile.findFirst({
       where: { id: userId },
       select: {
         id: true,
         name: true,
         bio: true,
-        email: true,
         image: true,
-        pages: {
+        user: {
           select: {
-            id: true,
-            name: true,
-            category: true,
-            image: true,
-            bio: true,
-            type: true,
-            ownerId: true,
-          },
-        },
-        owner: {
-          select: {
-            id: true,
-            name: true,
-            bio: true,
             email: true,
-            image: true,
           },
         },
       },
@@ -55,9 +39,7 @@ async function NavbarWrapper() {
   }
 
   const user = await getNavbarData(session.user.id);
-  const profiles = user
-    ? [user, ...user.pages, user.owner].filter(Boolean)
-    : [];
+  const profiles = user ? [user] : [];
 
   return <Navbar profiles={profiles} />;
 }

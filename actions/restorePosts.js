@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 export const restorePosts = async (ids) => {
   try {
     const idArray = ids.map((item) => item.postId);
-    await db.blog.updateMany({
+    await db.post.updateMany({
       where: {
         id: {
           in: idArray,

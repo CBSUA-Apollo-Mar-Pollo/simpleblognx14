@@ -103,13 +103,13 @@ export default function Posts({ initialPosts, deleteImage }) {
               (vote) => vote.userId === session?.user.id
             );
             // votes for shorts video post cards
-            const shortsvVotesAmt = blog?.shortsVotes?.reduce((acc, vote) => {
+            const shortsvVotesAmt = blog?.shortsvVotes?.reduce((acc, vote) => {
               if (vote.type === "UP") return acc + 1;
               if (vote.type === "DOWN") return acc - 1;
               return acc;
             }, 0);
 
-            const currentShortsvVote = blog?.shortsVotes?.find(
+            const currentShortsvVote = blog?.shortsvVotes?.find(
               (vote) => vote.userId === session?.user.id
             );
 

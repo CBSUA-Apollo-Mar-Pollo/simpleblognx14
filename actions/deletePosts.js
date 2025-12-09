@@ -6,7 +6,7 @@ import { UTApi } from "uploadthing/server";
 export const deletePosts = async (ids) => {
   try {
     const idArray = ids.map((item) => item.postId);
-    await db.blog.deleteMany({
+    await db.post.deleteMany({
       where: {
         id: {
           in: idArray,

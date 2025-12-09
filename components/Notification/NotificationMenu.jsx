@@ -161,15 +161,6 @@ const NotificationMenu = () => {
 
           {notificationData?.map((item, index) => (
             <DropdownMenuItem key={index} className="flex items-center gap-x-5">
-              <UserAvatar
-                post="user"
-                className="h-14 w-14 border"
-                user={{
-                  name: item?.fromUser.name || null,
-                  image: item.fromUser?.image || null,
-                }}
-              />
-
               <div className="max-w-[10vw]">
                 <p>{item.text}</p>
               </div>

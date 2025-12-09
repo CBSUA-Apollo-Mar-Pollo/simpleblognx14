@@ -7,9 +7,6 @@ export const getNotificationData = async (id) => {
     where: {
       userId: id,
     },
-    include: {
-      fromUser: true,
-    },
   });
 
   return data;

@@ -40,7 +40,7 @@ export async function POST(req) {
       images?.length === 0 &&
       videos?.length === 0
     ) {
-      await db.blog.create({
+      await db.post.create({
         data: {
           description,
           textBackgroundStyle: selectedBackgroundColor,
@@ -57,7 +57,7 @@ export async function POST(req) {
 
     if (images.length !== 0) {
       if (userStatus) {
-        post = await db.blog.create({
+        post = await db.post.create({
           data: {
             description,
             image: imageExist[0],
@@ -66,7 +66,7 @@ export async function POST(req) {
           },
         });
       } else {
-        post = await db.blog.create({
+        post = await db.post.create({
           data: {
             description,
             image: imageExist,
@@ -78,7 +78,7 @@ export async function POST(req) {
     }
 
     if (videos.length !== 0) {
-      post = await db.blog.create({
+      post = await db.post.create({
         data: {
           description,
           video: videos,
@@ -89,7 +89,7 @@ export async function POST(req) {
     }
 
     if (communityId) {
-      await db.blog.update({
+      await db.post.update({
         where: {
           id: post.id,
         },
@@ -153,7 +153,7 @@ export async function PATCH(req) {
     let imageExist = images.length !== 0 ? images : null;
 
     if (imageExist === null) {
-      await db.blog.update({
+      await db.post.update({
         where: {
           id: postId,
           authorId: session.user.id,
@@ -167,7 +167,7 @@ export async function PATCH(req) {
     }
 
     if (imageExist) {
-      await db.blog.update({
+      await db.post.update({
         where: {
           id: postId,
           authorId: session.user.id,

@@ -17,7 +17,7 @@ export async function GET(req) {
         communityId: url.searchParams.get("communityId"),
       });
 
-    const blogs = await db.blog.findMany({
+    const blogs = await db.post.findMany({
       where: {
         communityId: communityId,
       },

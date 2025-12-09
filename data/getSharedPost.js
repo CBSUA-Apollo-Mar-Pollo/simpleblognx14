@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export const getSharedPost = async (id) => {
   if (id !== null) {
-    const sharePost = await db.blog.findFirst({
+    const sharePost = await db.post.findFirst({
       where: {
         id: id,
       },

@@ -29,6 +29,7 @@ import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
+import galleryIcon from "@/public/ImageIcons/gallery.png";
 
 const AddGalleryPostModal = ({ user, communityId }) => {
   const { data: session } = useSession();
@@ -230,7 +231,7 @@ const AddGalleryPostModal = ({ user, communityId }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-3">
         <Image
-          src="/ImageIcons/gallery.png"
+          src={galleryIcon}
           className="h-8 w-8"
           alt="Gallery icon"
           width={32}

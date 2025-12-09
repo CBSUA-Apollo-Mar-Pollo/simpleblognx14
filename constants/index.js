@@ -27,90 +27,43 @@ import {
   Wrench,
 } from "lucide-react";
 import Image from "next/image";
+import friendsIcon from "@/public/ImageIcons/friends.png";
+import historyIcon from "@/public/ImageIcons/history.png";
+import bookmarkIcon from "@/public/ImageIcons/bookmark.png";
+import pageIcon from "@/public/ImageIcons/pageIcon.png";
+import eventIcon from "@/public/ImageIcons/event.png";
+import clapperIcon from "@/public/ImageIcons/clapper.png";
+import trendIcon from "@/public/ImageIcons/trend.png";
 
 export const SideBarFirstLinks = [
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/friends.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Friends"
-      />
-    ),
+    Icon: <Image src={friendsIcon} className="w-6 h-6" alt="Friends" />,
     label: "Friends",
     link: "/friends",
   },
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/history.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="History"
-      />
-    ),
+    Icon: <Image src={historyIcon} className="w-6 h-6" alt="History" />,
     label: "History",
     link: "/history/feed",
   },
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/bookmark.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Saved"
-      />
-    ),
+    Icon: <Image src={bookmarkIcon} className="w-6 h-6" alt="Saved" />,
     label: "Saved",
     link: "/saved",
   },
 
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/pageIcon.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Pages"
-      />
-    ),
+    Icon: <Image src={pageIcon} className="w-6 h-6" alt="Pages" />,
     label: "Pages",
     link: "/pages/feed",
   },
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/event.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Events"
-      />
-    ),
+    Icon: <Image src={eventIcon} className="w-6 h-6" alt="Events" />,
     label: "Events",
     link: "/events",
   },
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/clapper.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Shortsv"
-      />
-    ),
+    Icon: <Image src={clapperIcon} className="w-6 h-6" alt="Shortsv" />,
     label: "Shortsv",
     link: "/shortsv",
   },
@@ -123,16 +76,7 @@ export const SideBarSecondLinks = [
     link: "/",
   },
   {
-    Icon: (
-      <Image
-        sizes="100vw"
-        src={"/ImageIcons/trend.png"}
-        width="0"
-        height="0"
-        className="w-6 h-6"
-        alt="Popular"
-      />
-    ),
+    Icon: <Image src={trendIcon} className="w-6 h-6" alt="Popular" />,
     label: "Popular",
     link: "/e/popular",
   },

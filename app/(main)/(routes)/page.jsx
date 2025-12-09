@@ -11,7 +11,7 @@ export const metadata = {
 const getHomePageData = unstable_cache(
   async () => {
     const [posts, shortVideos, communities] = await Promise.all([
-      db.blog.findMany({
+      db.post.findMany({
         include: {
           author: {
             select: {
@@ -45,7 +45,7 @@ const getHomePageData = unstable_cache(
             },
           },
           comments: { select: { id: true } },
-          shortsVotes: { select: { userId: true, type: true } },
+          shortsvVotes: { select: { userId: true, type: true } },
         },
         orderBy: { createdAt: "desc" },
         take: INFINITE_SCROLL_PAGINATION_RESULTS,

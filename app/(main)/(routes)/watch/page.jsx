@@ -10,7 +10,7 @@ import { unstable_cache as cache } from "next/cache";
 
 const getVideosCached = cache(
   async () => {
-    return db.blog.findMany({
+    return db.post.findMany({
       where: {
         video: {
           not: null,
@@ -49,7 +49,7 @@ const getVideosCached = cache(
 const getSingleVideo = async (searchQuery) => {
   if (!searchQuery) return null;
 
-  return db.blog.findFirst({
+  return db.post.findFirst({
     where: {
       id: searchQuery,
     },

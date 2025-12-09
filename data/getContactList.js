@@ -12,7 +12,6 @@ export const getContactList = async (session) => {
         select: {
           id: true,
           name: true,
-          email: true,
           image: true,
         },
       },
@@ -20,7 +19,6 @@ export const getContactList = async (session) => {
         select: {
           id: true,
           name: true,
-          email: true,
           image: true,
         },
       },

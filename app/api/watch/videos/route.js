@@ -15,7 +15,7 @@ export async function GET(req) {
         page: url.searchParams.get("page"),
       });
 
-    const videos = await db.blog.findMany({
+    const videos = await db.post.findMany({
       where: {
         video: {
           not: null,

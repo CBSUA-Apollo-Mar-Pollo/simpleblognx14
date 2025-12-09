@@ -31,7 +31,7 @@ export async function PATCH(req) {
       },
       include: {
         author: true,
-        shortsVotes: true,
+        shortsvVotes: true,
       },
     });
 

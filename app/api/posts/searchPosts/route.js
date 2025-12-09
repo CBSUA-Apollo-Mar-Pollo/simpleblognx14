@@ -17,7 +17,7 @@ export async function GET(req) {
         searchQuery: url.searchParams.get("searchQuery"),
       });
 
-    const blogs = await db.blog.findMany({
+    const blogs = await db.post.findMany({
       where: {
         description: { contains: searchQuery },
       },

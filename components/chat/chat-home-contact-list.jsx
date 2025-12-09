@@ -126,7 +126,7 @@ const ChatHomeContactList = ({ session, conversationList, isPending }) => {
 
       {!isPending && (
         <div className=" mt-2">
-          {conversationList.map((user, index) => {
+          {(conversationList ?? []).map((user, index) => {
             // Generate a unique key for each item
             const key = user.id || index; // Prefer a unique identifier from user if available
 

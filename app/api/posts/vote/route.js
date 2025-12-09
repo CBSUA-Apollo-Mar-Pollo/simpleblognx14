@@ -24,7 +24,7 @@ export async function PATCH(req) {
       },
     });
 
-    const post = await db.blog.findUnique({
+    const post = await db.post.findUnique({
       // for caching purposes
       where: {
         id: postId,

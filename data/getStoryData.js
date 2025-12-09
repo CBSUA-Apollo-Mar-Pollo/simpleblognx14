@@ -8,7 +8,7 @@ export const getStoryData = async (authorId) => {
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   // Fetch the list of friends but only return the user id fields to minimize payload
-  const friends = await db.friend.findMany({
+  const friends = await db.friendList.findMany({
     where: {
       OR: [{ userId: authorId }, { requesterUserId: authorId }],
     },

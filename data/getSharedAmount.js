@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export const getSharedAmount = async (id) => {
   if (id !== null) {
-    const sharedAmount = await db.blog.findMany({
+    const sharedAmount = await db.post.findMany({
       where: {
         sharedPostId: id,
       },

@@ -9,7 +9,7 @@ export const checkIfIsAFriend = async (id) => {
 
   // Check if a friendship record exists where either `userId` or `requesterUserId` is the current user,
   // and the other ID matches the provided `id`.
-  const isAFriend = await db.friend.findFirst({
+  const isAFriend = await db.friendList.findFirst({
     where: {
       OR: [
         {
