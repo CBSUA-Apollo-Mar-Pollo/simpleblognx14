@@ -17,6 +17,8 @@ import { Skeleton } from "../ui/Skeleton";
 import { AlignJustify, Moon, Search, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import useCustomHooks from "@/hooks/use-custom-hooks";
+import Image from "next/image";
+import logo from "@/public/crowlogo2.jpg";
 
 const Navbar = ({ profiles }) => {
   const { setTheme, resolvedTheme } = useTheme();
@@ -45,9 +47,11 @@ const Navbar = ({ profiles }) => {
         {/* logo and search bar  */}
         <div className="flex items-center gap-x-2 col-span-1 ">
           <Link href="/" className="font-bold">
-            <span className=" px-3.5 py-[2px] rounded-full bg-yellow-500/80 text-[27px] ">
-              E
-            </span>
+            <Image
+              src={logo}
+              className="h-10 w-10 rounded-full"
+              alt="Feeling or activity icon"
+            />
           </Link>
           {/* search input */}
 

@@ -6,7 +6,7 @@ import { unstable_cache } from "next/cache"; // 1. Import caching utility
 
 const getUserProfileData = unstable_cache(
   async (userId) => {
-    const user = await db.user.findFirst({
+    const user = await db.userProfile.findFirst({
       where: {
         id: userId,
       },
@@ -16,9 +16,8 @@ const getUserProfileData = unstable_cache(
         type: true,
         name: true,
         bio: true,
-        email: true,
         image: true,
-        category: true,
+        categories: true,
         backgroundImage: true,
       },
     });

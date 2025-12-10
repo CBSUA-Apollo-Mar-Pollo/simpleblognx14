@@ -17,29 +17,29 @@ const AUTHOR_SELECT = {
   name: true,
   bio: true,
   image: true,
-  category: true,
+  categories: true,
   backgroundImage: true,
 };
 
 const getUserDataCached = unstable_cache(
   async (userId) => {
-    const user = await db.user.findFirst({
+    const user = await db.userProfile.findFirst({
       where: { id: userId },
       select: {
         id: true,
         type: true,
         name: true,
+        handleName: true,
         bio: true,
-        email: true,
         image: true,
-        category: true,
+        categories: true,
         backgroundImage: true,
       },
     });
 
     if (!user) return null;
 
-    const userImages = await db.blog.findMany({
+    const userImages = await db.post.findMany({
       where: {
         authorId: user.id,
         image: { not: null },
@@ -72,7 +72,7 @@ const UserProfilePage = async ({ params }) => {
   }
 
   const [initialPosts, shortVideos] = await Promise.all([
-    db.blog.findMany({
+    db.post.findMany({
       where: { authorId: user.id },
       include: {
         comments: { select: { id: true } }, // Only select IDs
@@ -88,7 +88,7 @@ const UserProfilePage = async ({ params }) => {
       include: {
         author: { select: AUTHOR_SELECT },
         comments: { select: { id: true } },
-        shortsVotes: { select: { userId: true, type: true } },
+        shortsvVotes: { select: { userId: true, type: true } },
       },
       orderBy: { createdAt: "desc" },
       take: INFINITE_SCROLL_PAGINATION_RESULTS,

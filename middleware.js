@@ -7,28 +7,38 @@ export async function middleware(request) {
 
   const pathname = request.nextUrl.pathname;
 
-  // Routes that should never trigger redirects
-  const publicRoutes = ["/sign-in", "/sign-up", "/reset", "/error", "/test"];
+  // Add "/" as an allowed public route
+  const publicRoutes = [
+    "/",
+    "/sign-in",
+    "/sign-up",
+    "/reset",
+    "/error",
+    "/test",
+  ];
 
-  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+  if (
+    publicRoutes.some(
+      (route) => pathname === route || pathname.startsWith(route)
+    )
+  ) {
     return NextResponse.next();
   }
 
-  // Not logged in → redirect to sign-in (except for onboarding if needed)
+  // Not logged in → redirect to sign-in (except onboarding)
   if (!session) {
-    // Allow access to onboarding even without session initially
     if (pathname === "/onboarding") {
       return NextResponse.next();
     }
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  // If onboarded but accessing onboarding page → go home
+  // Logged in but going to onboarding when already onboarded → redirect home
   if (pathname === "/onboarding" && session.user?.onboarded) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // If NOT onboarded and NOT on onboarding page → go to onboarding
+  // Logged in but NOT onboarded → force onboarding
   if (pathname !== "/onboarding" && !session.user?.onboarded) {
     const mainRoutes = ["/", "/chatbox", "/posts", "/reels", "/stories"];
     const isAccessingMainRoute = mainRoutes.some((route) =>

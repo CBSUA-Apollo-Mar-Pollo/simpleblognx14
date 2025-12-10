@@ -19,17 +19,13 @@ import Link from "next/link";
 import UserAvatar from "../utils/UserAvatar";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
-import Image from "next/image";
-import { Select, SelectItem, SelectTrigger, SelectValue } from "../ui/Select";
-import { SelectContent } from "@radix-ui/react-select";
+
 import {
   ALargeSmall,
   AlertCircle,
-  ArrowLeft,
   ChevronLeft,
   ImagePlus,
   LayoutGrid,
-  MoveDown,
   Triangle,
   X,
 } from "lucide-react";
@@ -143,6 +139,7 @@ const AddPostModal = ({ user, communityId }) => {
     },
     onError: (err) => {
       setIsLoading(false);
+      console.log(err);
       if (err instanceof AxiosError) {
         if (err.response?.status === 401) {
           setOpen(false);
@@ -328,102 +325,114 @@ const AddPostModal = ({ user, communityId }) => {
                     ${
                       selectedBackgroundColor !== null
                         ? "text-center text-2xl font-bold"
-                        : "text-2xl"
+                        : "text-xl"
                     }
                     focus-visible:ring-transparent focus:border-gray-500 focus:border-2 
-                    min-h-44 border-none resize-none px-4
+                    border-none resize-none px-4
                     placeholder:${
                       selectedBackgroundColor !== null
                         ? "text-white"
                         : "text-neutral-500"
                     } 
                     dark:placeholder-neutral-300
+                    ${setSelectedFiles.length > 0 ? "min-h-10" : " min-h-44"}
                   `}
                   />
+
+                  {selectedFiles.length > 0 && (
+                    <EmojiPicker
+                      triggerClassName="mr-2 bg-transparent"
+                      onChange={(emoji) => setDescription(description + emoji)}
+                    />
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between pt-2">
-                  {!toggleTextBackgroundColor && (
-                    <button
-                      onClick={() => setToggleTextBackgroundColor(true)}
-                      className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
-                    >
-                      <ALargeSmall className="text-white" />
-                    </button>
-                  )}
-
-                  {toggleTextBackgroundColor && (
-                    <div className="ml-3 flex items-center gap-x-2">
+                {selectedFiles.length === 0 && (
+                  <div className="flex items-center justify-between pt-2">
+                    {!toggleTextBackgroundColor && (
                       <button
-                        onClick={() => setToggleTextBackgroundColor(false)}
-                        className="bg-neutral-300 p-1 rounded-md"
+                        onClick={() => setToggleTextBackgroundColor(true)}
+                        className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
                       >
-                        <ChevronLeft className="text-neutral-700" />
+                        <ALargeSmall className="text-white" />
                       </button>
+                    )}
 
-                      <button
-                        onClick={() => setSelectedBackgroundColor(null)}
-                        className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
-                      />
+                    {toggleTextBackgroundColor && (
+                      <div className="ml-3 flex items-center gap-x-2">
+                        <button
+                          onClick={() => setToggleTextBackgroundColor(false)}
+                          className="bg-neutral-300 p-1 rounded-md"
+                        >
+                          <ChevronLeft className="text-neutral-700" />
+                        </button>
 
-                      {solidBackgroundColors.slice(0, 4).map((color, index) => (
+                        <button
+                          onClick={() => setSelectedBackgroundColor(null)}
+                          className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
+                        />
+
+                        {solidBackgroundColors
+                          .slice(0, 4)
+                          .map((color, index) => (
+                            <button
+                              onClick={() =>
+                                setSelectedBackgroundColor({
+                                  backgroundColorType: "solid",
+                                  color: color,
+                                })
+                              }
+                              style={{ backgroundColor: color }}
+                              key={index}
+                              className={`h-8 w-8  rounded-md  `}
+                            />
+                          ))}
+
+                        {Object.entries(gradients)
+                          .slice(0, 4)
+                          .map(([colorName, colors]) => (
+                            <button
+                              onClick={() =>
+                                setSelectedBackgroundColor({
+                                  backgroundColorType: "gradient",
+                                  color: colors,
+                                })
+                              }
+                              key={colorName}
+                              style={{
+                                backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                              }}
+                              className={`h-8 w-8  rounded-md  `}
+                            />
+                          ))}
+
                         <button
                           onClick={() =>
                             setSelectedBackgroundColor({
-                              backgroundColorType: "solid",
-                              color: color,
+                              backgroundColorType: "image",
+                              color:
+                                "/abstract_background_image/19965192_6193255.jpg",
                             })
                           }
-                          style={{ backgroundColor: color }}
-                          key={index}
-                          className={`h-8 w-8  rounded-md  `}
-                        />
-                      ))}
-
-                      {Object.entries(gradients)
-                        .slice(0, 4)
-                        .map(([colorName, colors]) => (
-                          <button
-                            onClick={() =>
-                              setSelectedBackgroundColor({
-                                backgroundColorType: "gradient",
-                                color: colors,
-                              })
-                            }
-                            key={colorName}
-                            style={{
-                              backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
-                            }}
-                            className={`h-8 w-8  rounded-md  `}
+                        >
+                          <img
+                            src="/abstract_background_image/19965192_6193255.jpg"
+                            className="h-8 w-8 object-fill rounded-md"
                           />
-                        ))}
+                        </button>
 
-                      <button
-                        onClick={() =>
-                          setSelectedBackgroundColor({
-                            backgroundColorType: "image",
-                            color:
-                              "/abstract_background_image/19965192_6193255.jpg",
-                          })
-                        }
-                      >
-                        <img
-                          src="/abstract_background_image/19965192_6193255.jpg"
-                          className="h-8 w-8 object-fill rounded-md"
-                        />
-                      </button>
+                        <button className="bg-neutral-300 p-1.5 rounded-md">
+                          <LayoutGrid className=" fill-black " />
+                        </button>
+                      </div>
+                    )}
 
-                      <button className="bg-neutral-300 p-1.5 rounded-md">
-                        <LayoutGrid className=" fill-black " />
-                      </button>
-                    </div>
-                  )}
-
-                  <EmojiPicker
-                    triggerClassName="mr-2 bg-transparent"
-                    onChange={(emoji) => setDescription(description + emoji)}
-                  />
-                </div>
+                    <EmojiPicker
+                      triggerClassName="mr-2 bg-transparent"
+                      onChange={(emoji) => setDescription(description + emoji)}
+                    />
+                  </div>
+                )}
 
                 {/* Image upload UI */}
                 {toggleImageUpload && (
