@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { usePathname } from "next/navigation";
 import { COMMENT_PAGE } from "@/config";
@@ -19,8 +19,10 @@ const ShortsVCommentSection = ({
   imageIndex,
 }) => {
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     // Remove the body scrollbar when the component mounts (guard against missing document.body)
     if (typeof document !== "undefined" && document.body) {
       document.body.style.overflow = "hidden";
@@ -131,7 +133,7 @@ const ShortsVCommentSection = ({
         </Button>
       )}
 
-      {session?.user && (
+      {isMounted && session?.user && (
         <div
           className={`fixed bottom-0 ${
             pathname.startsWith("/postComment") ||

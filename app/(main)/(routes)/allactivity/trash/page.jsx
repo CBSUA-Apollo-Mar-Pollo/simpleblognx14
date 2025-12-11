@@ -1,15 +1,4 @@
 import React from "react";
-import { Input } from "@/components/ui/Input";
-import { Separator } from "@/components/ui/Separator";
-import {
-  CalendarDays,
-  ChevronDown,
-  CircleEllipsisIcon,
-  List,
-  Search,
-  Trash2,
-} from "lucide-react";
-import Link from "next/link";
 import AllActivitySideBar from "@/components/allactivity/all-activity-sidebar";
 import TrashPosts from "@/components/allactivity/trash-posts";
 import { db } from "@/lib/db";
@@ -29,9 +18,8 @@ const TrashPage = async () => {
           type: true,
           name: true,
           bio: true,
-          email: true,
           image: true,
-          category: true,
+          categories: true,
         },
       },
       comments: true,

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button, buttonVariants } from "../../ui/Button";
 import { Separator } from "../../ui/Separator";
 import { useSession } from "next-auth/react";
@@ -32,11 +32,16 @@ import Link from "next/link";
 const ProfileBanner = ({ user, deleteImage }) => {
   const { data: session } = useSession();
   const [imageUrl, setImageUrl] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const { resolvedTheme } = useTheme();
   const [isRequestLoading, setIsRequestLoading] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { mutate: saveCoverImage } = useMutation({
     mutationFn: async () => {
@@ -255,6 +260,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
                 </div>
               ) : (
                 // if there is a logged in user show this ui
+                isMounted &&
                 session?.user && (
                   <div className=" mr-5 flex gap-x-2">
                     {isAFriend === "onhold" ? (

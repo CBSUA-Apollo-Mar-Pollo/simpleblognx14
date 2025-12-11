@@ -1,7 +1,7 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { z } from "zod";
-import { unstable_cache } from "next/cache"; // Import unstable_cache
+import { unstable_cache, revalidateTag } from "next/cache"; // Import unstable_cache
 
 const queryParamsSchema = z.object({
   limit: z
@@ -23,7 +23,16 @@ const getFeedData = unstable_cache(
         take: limit,
         skip: skip,
         include: {
-          author: { select: { id: true, name: true, image: true } },
+          author: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              handleName: true,
+              bio: true,
+              birthdate: true,
+            },
+          },
           comments: { select: { id: true } },
           votes: { select: { userId: true, type: true } },
           community: {
@@ -68,6 +77,7 @@ const getFeedData = unstable_cache(
   ["mixed-feed"],
   {
     revalidate: 60,
+    tags: ["homepage-feed"],
   }
 );
 

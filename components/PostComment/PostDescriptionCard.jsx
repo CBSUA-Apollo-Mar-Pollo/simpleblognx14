@@ -57,12 +57,17 @@ const PostDescriptionCard = ({
 }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const [volume, setVolume] = useState(1);
 
   const [isVolumeHovered, setIsVolumeHovered] = useState(false);
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -639,7 +644,7 @@ const PostDescriptionCard = ({
                 })}
             </div>
 
-            {hasNextPage && session?.user && (
+            {isMounted && hasNextPage && session?.user && (
               <Button
                 variant="ghost"
                 className="dark:text-white text-neutral-100 hover:underline hover:bg-neutral-800 dark:hover:text-neutral-300 focus:ring-0 focus:outline-none"
@@ -653,7 +658,7 @@ const PostDescriptionCard = ({
           </SimpleBar>
         </div>
 
-        {session?.user && (
+        {isMounted && session?.user && (
           <div>
             <CreateComment
               session={session}

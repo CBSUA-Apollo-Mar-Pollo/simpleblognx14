@@ -1,6 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { BlogValidator } from "@/lib/validators/blogValidator";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -46,15 +46,62 @@ export async function POST(req) {
       images?.length === 0 &&
       videos?.length === 0
     ) {
-      await db.post.create({
+      const newPost = await db.post.create({
         data: {
           description,
           textBackgroundStyle: selectedBackgroundColor,
           authorId: userProfile.id,
         },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              handleName: true,
+              image: true,
+              bio: true,
+              birthdate: true,
+            },
+          },
+          comments: { select: { id: true } },
+          votes: { select: { userId: true, type: true } },
+          community: { include: { members: { select: { userId: true } } } },
+        },
       });
 
-      return new Response("OK");
+      await db.vote.create({
+        data: {
+          userId: userProfile.id,
+          postId: newPost.id,
+          type: "UP",
+        },
+      });
+
+      // Refetch the post to include the newly created vote
+      const postWithVote = await db.post.findUnique({
+        where: { id: newPost.id },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              handleName: true,
+              image: true,
+              bio: true,
+              birthdate: true,
+            },
+          },
+          comments: { select: { id: true } },
+          votes: { select: { userId: true, type: true } },
+          community: { include: { members: { select: { userId: true } } } },
+        },
+      });
+
+      revalidateTag("homepage-feed");
+      revalidatePath("/");
+      return new Response(
+        JSON.stringify({ ...postWithVote, isShortsV: false })
+      );
     }
 
     let imageExist = images.length !== 0 ? images : null;
@@ -113,16 +160,30 @@ export async function POST(req) {
       },
     });
 
-    // if (images) {
-    //   await db.userPostedImages.create({
-    //     data: {
-    //       image: imageUrl,
-    //       authorId: session.user.id,
-    //     },
-    //   });
-    // }
+    // Fetch the complete post with all relations
+    const completePost = await db.post.findUnique({
+      where: { id: post.id },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            handleName: true,
+            image: true,
+            bio: true,
+            birthdate: true,
+          },
+        },
+        comments: { select: { id: true } },
+        votes: { select: { userId: true, type: true } },
+        community: { include: { members: { select: { userId: true } } } },
+      },
+    });
 
-    return new Response("OK");
+    revalidateTag("homepage-feed");
+    revalidatePath("/");
+
+    return new Response(JSON.stringify({ ...completePost, isShortsV: false }));
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

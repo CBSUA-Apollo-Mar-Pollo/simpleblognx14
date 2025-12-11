@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/Dropdown-menu";
 import { Forward, PlusCircle } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SharePostModal from "../SharePostModal";
 import { useToast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
@@ -17,6 +17,11 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const PostCardShareButton = ({ blog, session, sharedPost }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   // share post function using useMutation from tanstack query
   const { toast } = useToast();
   const { signinToast } = useCustomHooks();
@@ -97,7 +102,7 @@ const PostCardShareButton = ({ blog, session, sharedPost }) => {
             <Forward className="h-6 w-6" />
             <span>Share now</span>
           </Button>
-          {session?.user && (
+          {isMounted && session?.user && (
             <>
               {/* share to feed */}
               <SharePostModal

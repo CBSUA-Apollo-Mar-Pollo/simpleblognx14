@@ -33,7 +33,12 @@ const SearchInput = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [resEmpty, setResEmpty] = useState(false);
   const [active, setActive] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const searchParams = useSearchParams();
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const router = useRouter();
 
@@ -202,6 +207,7 @@ const SearchInput = () => {
         )}
 
         {session?.user &&
+          isMounted &&
           searchInput.length === 0 &&
           getSearchHistory?.data.map((item, index) => (
             <div key={index}>

@@ -14,7 +14,13 @@ const PostVote = ({ postId, initialVotesAmt, initialVote }) => {
   const { signinToast } = useCustomHooks();
   const [votesAmt, setVotesAmt] = useState(initialVotesAmt);
   const [currentVote, setCurrentVote] = useState(initialVote);
+  const [isMounted, setIsMounted] = useState(false);
   const prevVote = usePrevious(currentVote);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   useEffect(() => {
     setCurrentVote(initialVote);
   }, [initialVote]);
@@ -66,37 +72,41 @@ const PostVote = ({ postId, initialVotesAmt, initialVote }) => {
   return (
     <div className="flex items-center justify-center my-1 gap-x-1">
       {/* upvote button */}
-      <button onClick={() => vote("UP")} aria-label="upvote">
-        <ArrowBigUp
-          className={cn(
-            "h-10 w-10 stroke-[1.6px] text-neutral-600  hover:text-orange-600 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full p-[5px]",
-            {
-              "stroke-[1.6px] text-orange-700 fill-orange-500 hover:text-orange-700 dark:text-orange-200 dark:hover:text-orange-200 dark:hover:bg-orange-200/20 hover:bg-orange-200/80":
-                currentVote === "UP",
-            }
-          )}
-        />
-      </button>
+      {isMounted && (
+        <>
+          <button onClick={() => vote("UP")} aria-label="upvote">
+            <ArrowBigUp
+              className={cn(
+                "h-10 w-10 rounded-full p-[5px] stroke-[1.6px] text-neutral-600 hover:bg-neutral-200 hover:text-orange-600 dark:hover:bg-neutral-700",
+                {
+                  "fill-orange-500 stroke-[1.6px] text-orange-700 hover:bg-orange-200/80 hover:text-orange-700 dark:fill-orange-500 dark:text-orange-200 dark:hover:bg-orange-200/20 dark:hover:text-orange-200":
+                    currentVote === "UP",
+                }
+              )}
+            />
+          </button>
 
-      {/* currentvote */}
-      {/* <PostVoteDetails votesAmt={votesAmt} postId={postId} /> */}
+          {/* currentvote */}
+          {/* <PostVoteDetails votesAmt={votesAmt} postId={postId} /> */}
 
-      <p className="text-center font-semibold  text-neutral-600 px-1 dark:text-neutral-200  ">
-        {votesAmt}
-      </p>
+          <p className="px-1 text-center font-semibold text-neutral-600 dark:text-neutral-200 ">
+            {votesAmt}
+          </p>
 
-      {/* downvote button */}
-      <button onClick={() => vote("DOWN")} aria-label="downvote">
-        <ArrowBigDown
-          className={cn(
-            "h-10 w-10 stroke-[1.6px] p-[5px]  text-neutral-600  hover:text-violet-800 dark:hover:text-violet-500 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-full",
-            {
-              " stroke-[1.6px] text-violet-700 fill-violet-500 hover:text-violet-700 dark:text-violet-200 dark:fill-violet-800 dark:hover:text-violet-200 dark:hover:bg-violet-200/20 hover:bg-violet-200/80":
-                currentVote === "DOWN",
-            }
-          )}
-        />
-      </button>
+          {/* downvote button */}
+          <button onClick={() => vote("DOWN")} aria-label="downvote">
+            <ArrowBigDown
+              className={cn(
+                "h-10 w-10 rounded-full p-[5px] stroke-[1.6px] text-neutral-600 hover:bg-neutral-200 hover:text-violet-800 dark:hover:bg-neutral-700 dark:hover:text-violet-500",
+                {
+                  "fill-violet-500 stroke-[1.6px] text-violet-700 hover:bg-violet-200/80 hover:text-violet-700 dark:fill-violet-800 dark:text-violet-200 dark:hover:bg-violet-200/20 dark:hover:text-violet-200":
+                    currentVote === "DOWN",
+                }
+              )}
+            />
+          </button>
+        </>
+      )}
     </div>
   );
 };

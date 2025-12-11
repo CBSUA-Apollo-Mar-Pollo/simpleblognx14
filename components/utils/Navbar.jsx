@@ -25,12 +25,11 @@ const Navbar = ({ profiles }) => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const [isLoader, setIsloader] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const { signinToast } = useCustomHooks();
+
   useEffect(() => {
-    if (!session?.user) {
-      setIsloader(false);
-    }
+    setIsMounted(true);
   }, []);
 
   const handleNavigate = () => {
@@ -107,7 +106,7 @@ const Navbar = ({ profiles }) => {
 
         {/* notification and profile pic */}
         <div className=" flex items-center justify-end  gap-x-2 col-span-1">
-          {session ? (
+          {isMounted && session ? (
             <>
               {/* show in mobile */}
               <div className="xl:hidden ">
@@ -135,14 +134,7 @@ const Navbar = ({ profiles }) => {
                 </Link>
               </div>
             </>
-          ) : isLoader ? (
-            <div className="flex items-center gap-x-2">
-              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
-              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
-              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
-              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
-            </div>
-          ) : (
+          ) : isMounted ? (
             <div className="flex items-center gap-x-1">
               {resolvedTheme === "light" ? (
                 <Button
@@ -173,6 +165,13 @@ const Navbar = ({ profiles }) => {
               >
                 Sign in
               </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-x-2">
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
+              <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
             </div>
           )}
         </div>

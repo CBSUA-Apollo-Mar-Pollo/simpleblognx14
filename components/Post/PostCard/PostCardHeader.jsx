@@ -4,7 +4,7 @@ import UserAvatar from "@/components/utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
 import { Dot, Globe, X } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PostOption from "../PostOption";
 import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
@@ -13,6 +13,11 @@ import { Icons } from "@/components/utils/Icons";
 const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
   const router = useRouter();
   const { signinToast } = useCustomHooks();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleNavigateCommunity = (event) => {
     if (!session?.user.id) {
@@ -117,7 +122,7 @@ const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
       )}
 
       {/* option */}
-      {session?.user && (
+      {isMounted && session?.user && (
         <div className="flex items-center gap-x-1 pr-4">
           <PostOption
             blog={blog}

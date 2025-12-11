@@ -11,15 +11,13 @@ import {
 } from "../ui/Dialog";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
-import Link from "next/link";
 import UserAvatar from "../utils/UserAvatar";
 import { Button } from "../ui/Button";
 import { Separator } from "../ui/Separator";
-
 import {
   ALargeSmall,
   AlertCircle,
@@ -29,22 +27,20 @@ import {
   Triangle,
   X,
 } from "lucide-react";
-import { UploadDropzone } from "@uploadthing/react";
 import { LoaderContext } from "@/context/LoaderContext";
-import ToolTipComp from "../utils/ToolTipComp";
 import { uploadFiles } from "@/lib/uploadThing";
 import EmojiPicker from "../PostComment/EmojiPicker";
 import ImagePreviewCreatePost from "./image-preview-create-post";
 import { Icons } from "../utils/Icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { RadioGroup, RadioGroupItem } from "../ui/RadioGroup";
-import { Checkbox } from "../ui/Checkbox";
-import { Label } from "../ui/Label";
 import PostAudienceSelection from "./post-audience-selection";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const AddPostModal = ({ user, communityId }) => {
+  const router = useRouter();
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
@@ -169,12 +165,24 @@ const AddPostModal = ({ user, communityId }) => {
         variant: "destructive",
       });
     },
-    onSuccess: () => {
+    onSuccess: (newPost) => {
       setImageUrl("");
       setDescription("");
       setOpen(false);
       setIsLoading(false);
-      window.location.reload();
+
+      // Update the query cache with the new post
+      queryClient.setQueryData(["get-posts-infinite-query"], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: [[newPost, ...oldData.pages[0]], ...oldData.pages.slice(1)],
+        };
+      });
+
+      // Don't invalidate or refresh - just keep the optimistic update
+      // This prevents the post from disappearing due to cache revalidation
     },
   });
 

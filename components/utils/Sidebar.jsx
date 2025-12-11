@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, buttonVariants } from "../ui/Button";
 import { Separator } from "../ui/Separator";
 import { usePathname } from "next/navigation";
@@ -23,6 +23,11 @@ const Sidebar = () => {
   const pathname = usePathname();
   const [toggleScrollBar, setToggleScrollBar] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const handleScrollBar = () => {
     setToggleScrollBar(true);
   };
@@ -51,7 +56,7 @@ const Sidebar = () => {
     >
       <div className="space-y-2 pt-5">
         {/* different side bar depends if the user is log in or not */}
-        {session?.user && (
+        {isMounted && session?.user && (
           <div className="flex items-center gap-x-3 ml-[14px]">
             <div className="border  dark:border-neutral-700 rounded-full">
               <UserAvatar
@@ -68,7 +73,7 @@ const Sidebar = () => {
           </div>
         )}
 
-        {session?.user
+        {isMounted && session?.user
           ? SideBarFirstLinks.map((item, index) => (
               <Link
                 key={index}

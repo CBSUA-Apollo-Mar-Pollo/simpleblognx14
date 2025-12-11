@@ -1,5 +1,6 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 export async function POST(req) {
@@ -20,6 +21,7 @@ export async function POST(req) {
       },
     });
 
+    revalidateTag("homepage-feed");
     return new Response("OK");
   } catch (error) {
     console.log(error);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import { ChevronDown, Home, Plus } from "lucide-react";
 import { Icons } from "./Icons";
@@ -30,6 +30,11 @@ import { Skeleton } from "../ui/Skeleton";
 
 const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
   const { data: session } = useSession();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { data: conversationList, isPending } = useQuery({
     queryKey: ["contactlist", session?.user?.id],
@@ -73,7 +78,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
             </div>
           </div>
 
-          {session?.user && (
+          {isMounted && session?.user && (
             <>
               <div className=" lg:pt-3 lg:pb-1 lg:px-5 lg:rounded-lg rounded-none bg-white border-t border-neutral-200 dark:bg-neutral-800 drop-shadow dark:border-0">
                 <div className="flex flex-row items-center lg:space-x-4 gap-x-2 lg:px-0 lg:py-0 px-2 py-3">
@@ -125,7 +130,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
             </>
           )}
 
-          {!session?.user && (
+          {isMounted && !session?.user && (
             <DropdownMenu className="dark:border-none">
               <DropdownMenuTrigger className="flex items-center gap-x-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 px-3 py-2 rounded-full">
                 <span className="text-xs font-medium text-neutral-700 dark:text-white">
@@ -156,7 +161,9 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
             </DropdownMenu>
           )}
 
-          {!session?.user && <Separator className="mb-4 mt-1 bg-neutral-300" />}
+          {isMounted && !session?.user && (
+            <Separator className="mb-4 mt-1 bg-neutral-300" />
+          )}
 
           {/* all post cards */}
           <Suspense fallback={<Skeleton className="h-48 w-full" />}>
@@ -181,7 +188,7 @@ const HomePageLayout = ({ sortedData, deleteImage, communities }) => {
             </Suspense>
           )} */}
 
-          {session?.user && (
+          {isMounted && session?.user && (
             <>
               <Separator className="my-2" />
 
