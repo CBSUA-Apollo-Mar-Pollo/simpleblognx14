@@ -129,9 +129,9 @@ export default function Posts({ initialPosts, deleteImage }) {
                     currentShortsvVote={currentShortsvVote?.type}
                   />
 
-                  <div className="xl:mt-3 my-1">
+                  {/* <div className="xl:mt-3 my-1">
                     {index === randNumber && <ReelsHomeCard />}
-                  </div>
+                  </div> */}
                   <div ref={ref} className="h-1 w-full" />
                 </li>
               );
@@ -149,14 +149,14 @@ export default function Posts({ initialPosts, deleteImage }) {
                       currentVote={currentVote}
                       fetchNextPage={fetchNextPage}
                     />
-                    {index === randNumber && <ReelsHomeCard />}
+                    {/* {index === randNumber && <ReelsHomeCard />} */}
                     <div ref={ref} className="h-1 w-full" />
                   </li>
                 );
               } else {
                 return (
                   <li key={index} className="z-0">
-                    {index === randNumber && <ReelsHomeCard />}
+                    {/* {index === randNumber && <ReelsHomeCard />} */}
                     <PostCard
                       blog={blog}
                       key={blog.id}

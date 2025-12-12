@@ -7,6 +7,11 @@ export async function middleware(request) {
 
   const pathname = request.nextUrl.pathname;
 
+  // If the user is already signed in and tries to access /sign-in, redirect to home
+  if (session && pathname === "/sign-in") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   // Add "/" as an allowed public route
   const publicRoutes = [
     "/",

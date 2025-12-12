@@ -100,7 +100,11 @@ export async function POST(req) {
       revalidateTag("homepage-feed");
       revalidatePath("/");
       return new Response(
-        JSON.stringify({ ...postWithVote, isShortsV: false })
+        JSON.stringify({
+          ...postWithVote,
+          isShortsV: false,
+          createdAtMs: new Date(postWithVote.createdAt).getTime(),
+        })
       );
     }
 
@@ -183,7 +187,13 @@ export async function POST(req) {
     revalidateTag("homepage-feed");
     revalidatePath("/");
 
-    return new Response(JSON.stringify({ ...completePost, isShortsV: false }));
+    return new Response(
+      JSON.stringify({
+        ...completePost,
+        isShortsV: false,
+        createdAtMs: new Date(completePost.createdAt).getTime(),
+      })
+    );
   } catch (error) {
     console.log(error);
     if (error instanceof z.ZodError) {

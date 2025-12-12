@@ -3,53 +3,50 @@ import StickDiv from "@/components/UserProfile/sticky_div";
 import { db } from "@/lib/db";
 import { UTApi } from "uploadthing/server";
 import { unstable_cache } from "next/cache"; // 1. Import caching utility
+import { Suspense } from "react";
 
-const getUserProfileData = unstable_cache(
-  async (userId) => {
-    const user = await db.userProfile.findFirst({
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const getUserProfileData = async (userId) => {
+  // "use cache";
+  const user = await db.userProfile.findFirst({
+    where: {
+      id: userId,
+    },
+
+    select: {
+      id: true,
+      type: true,
+      name: true,
+      bio: true,
+      image: true,
+      categories: true,
+      backgroundImage: true,
+    },
+  });
+
+  if (!user) return null;
+
+  if (user.backgroundImage) {
+    const coverPhotoBlog = await db.blog.findFirst({
       where: {
-        id: userId,
+        image: {
+          path: ["url"],
+          equals: user.backgroundImage,
+        },
       },
-
-      select: {
-        id: true,
-        type: true,
-        name: true,
-        bio: true,
-        image: true,
-        categories: true,
-        backgroundImage: true,
-      },
+      select: { id: true },
     });
 
-    if (!user) return null;
-
-    if (user.backgroundImage) {
-      const coverPhotoBlog = await db.blog.findFirst({
-        where: {
-          image: {
-            path: ["url"],
-            equals: user.backgroundImage,
-          },
-        },
-        select: { id: true },
-      });
-
-      user.coverPhotoId = coverPhotoBlog?.id;
-    } else {
-      user.coverPhotoId = null;
-    }
-
-    return user;
-  },
-  ["user-profile-data"],
-  {
-    revalidate: 3600,
-    tags: ["user-profile"],
+    user.coverPhotoId = coverPhotoBlog?.id;
+  } else {
+    user.coverPhotoId = null;
   }
-);
 
-const Layout = async ({ children, params }) => {
+  return user;
+};
+
+async function ProfileWrapper({ params }) {
   const { userId } = await params;
 
   const user = await getUserProfileData(userId);
@@ -66,9 +63,19 @@ const Layout = async ({ children, params }) => {
   };
 
   return (
-    <div className="relative h-full">
+    <div>
       <ProfileBanner user={user} deleteImage={deleteImage} />
       <StickDiv user={user} />
+    </div>
+  );
+}
+
+const Layout = async ({ children, params }) => {
+  return (
+    <div className="relative h-full">
+      <Suspense fallback={<div>Loading profile...</div>}>
+        <ProfileWrapper params={params} />
+      </Suspense>
       {children}
     </div>
   );

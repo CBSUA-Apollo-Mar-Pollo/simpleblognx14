@@ -8,6 +8,7 @@ export const metadata = {
 };
 
 const getHomePageData = async () => {
+  "use cache";
   const [posts, shortVideos, communities] = await Promise.all([
     db.post.findMany({
       include: {

@@ -62,15 +62,18 @@ const getFeedData = unstable_cache(
     const updatedShortVideos = shortVideos.map((item) => ({
       ...item,
       isShortsV: true,
+      createdAtMs: new Date(item.createdAt).getTime(),
     }));
 
-    const mergeData = [...blogs, ...updatedShortVideos];
+    const normalizedBlogs = blogs.map((blog) => ({
+      ...blog,
+      createdAtMs: new Date(blog.createdAt).getTime(),
+    }));
+
+    const mergeData = [...normalizedBlogs, ...updatedShortVideos];
 
     // Sorting the merged data
-    const sortedData = mergeData.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    const sortedData = mergeData.sort((a, b) => b.createdAtMs - a.createdAtMs);
 
     return sortedData;
   },

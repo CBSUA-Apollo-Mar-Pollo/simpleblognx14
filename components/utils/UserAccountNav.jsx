@@ -17,6 +17,7 @@ import { Button } from "../ui/Button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
+import SelectProfile from "./select-profile";
 
 const UserAccountNav = ({ user, profiles, accountOwner }) => {
   const [open, setOpen] = useState(false);
@@ -42,6 +43,8 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
     setIsSwitchingProfile(false);
   };
 
+  console.log(profiles, "profiles");
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger className="drop-shadow relative xl:block hidden">
@@ -53,7 +56,7 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white dark:bg-neutral-800 dark:border-0 px-3 py-3 min-w-[22vw] drop-shadow-lg"
+        className="bg-white dark:bg-neutral-800 dark:border-0 px-2 py-3 min-w-[20vw] drop-shadow-lg rounded-xl"
         align="end"
       >
         {/* profile image and name */}
@@ -131,12 +134,21 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
                     ))}
                 </div>
 
-                <Separator className="bg-neutral-300 mb-3" />
+                {profiles?.length > 1 && (
+                  <Separator className="bg-neutral-300 mb-3 " />
+                )}
               </div>
             )}
 
             <div className="mx-4 mb-3">
-              <Button className="w-full font-semibold bg-neutral-300 hover:bg-neutral-400 text-black">
+              <Button
+                onClick={() => {
+                  setActiveSubMenu(true);
+                  setSubMenu(3);
+                }}
+                className="w-full font-semibold bg-neutral-300 hover:bg-neutral-400 text-black gap-x-3"
+              >
+                <Icons.ProfileChangeIcon className="h-5 w-5 " />
                 See all profiles
               </Button>
             </div>
@@ -156,6 +168,14 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
             setActiveSubMenu={setActiveSubMenu}
             setSubMenu={setSubMenu}
             setOpen={setOpen}
+          />
+        )}
+
+        {activeSubMenu && subMenu === 3 && (
+          <SelectProfile
+            setActiveSubMenu={setActiveSubMenu}
+            setSubMenu={setSubMenu}
+            profiles={profiles}
           />
         )}
       </DropdownMenuContent>
