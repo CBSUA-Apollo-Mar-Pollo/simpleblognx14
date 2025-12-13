@@ -84,8 +84,8 @@ const OnboardingClient = () => {
         </div>
         <div className="flex items-center h-full px-24">
           <h3 className="text-justify text-white leading-loose text-lg">
-            "Welcome to Estorias! Complete your profile to get started and
-            connect with friends."
+            &quot;Welcome to Estorias! Complete your profile to get started and
+            connect with friends&quot;
           </h3>
         </div>
       </div>

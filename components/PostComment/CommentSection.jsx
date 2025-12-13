@@ -8,15 +8,16 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { Button } from "../ui/Button";
 import CommentSectionCard from "./CommentSectionCard";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const CommentSection = ({
-  session,
   post,
   shortsvId,
   initialComments,
   getComments,
   imageIndex,
 }) => {
+  const { data: session } = useSession();
   const pathname = usePathname();
 
   useEffect(() => {

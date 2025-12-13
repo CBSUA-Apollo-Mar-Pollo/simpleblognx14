@@ -28,8 +28,11 @@ const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
       </div>
 
       <div className="mt-3">
-        {profiles?.map((profile) => (
-          <Button className="bg-transparent hover:bg-neutral-200 w-full flex justify-between  pl-3 py-7 rounded-xl">
+        {profiles?.map((profile, index) => (
+          <Button
+            key={index}
+            className="bg-transparent hover:bg-neutral-200 w-full flex justify-between  pl-3 py-7 rounded-xl"
+          >
             <div className="flex justify-start items-center gap-x-3">
               <UserAvatar
                 className="h-10 w-10"

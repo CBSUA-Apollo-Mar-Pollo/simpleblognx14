@@ -27,12 +27,14 @@ import EmojiPicker from "./EmojiPicker";
 import axios from "axios";
 import qs from "query-string";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const descriptionSchema = z.object({
   description: z.string(),
 });
 
-const PostDescription = ({ post, commentAmt, session, index }) => {
+const PostDescription = ({ post, commentAmt, index }) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [toggleEditDescription, setToggleEditDescription] = useState(false);
 

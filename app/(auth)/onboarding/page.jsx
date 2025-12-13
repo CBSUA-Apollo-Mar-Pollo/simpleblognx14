@@ -223,7 +223,7 @@ const OnboardingClient = () => {
         {/* Birth Date */}
         {onboardingStep === 1 && (
           <div className="mt-10 mb-32">
-            <h1 className="text-3xl font-bold">What's your birth date?</h1>
+            <h1 className="text-3xl font-bold">What&apos;s your birth date?</h1>
 
             <p className="text-sm text-slate-600 mt-2">
               Providing your birthday helps make sure you get the right
@@ -475,6 +475,7 @@ const OnboardingClient = () => {
             <div className="grid grid-cols-3 gap-3 mt-4">
               {topics.map((topic, index) => (
                 <div
+                  key={index}
                   onClick={() => {
                     if (selectedTopics.includes(topic)) {
                       setSelectedTopics(

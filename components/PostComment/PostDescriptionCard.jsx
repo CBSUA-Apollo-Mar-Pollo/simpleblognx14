@@ -55,6 +55,7 @@ const PostDescriptionCard = ({
   progress,
   setProgress,
 }) => {
+  const [open, setOpen] = useState(false);
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -76,7 +77,7 @@ const PostDescriptionCard = ({
     }
   }, [videoRef.current]);
 
-  const { mutate: getComments } = useMutation({
+  const { mutate: getComments, isPending } = useMutation({
     mutationFn: async () => {
       const payload = { postId: blog.id };
       const { data } = await axios.post(
@@ -200,8 +201,9 @@ const PostDescriptionCard = ({
 
   return (
     <Dialog
-      onOpenChange={() => {
-        getComments(), setVideoPaused((prev) => !prev);
+      open={open}
+      onOpenChange={(isOpen) => {
+        getComments(), setVideoPaused((prev) => !prev), setOpen(isOpen);
       }}
     >
       <DialogTrigger>

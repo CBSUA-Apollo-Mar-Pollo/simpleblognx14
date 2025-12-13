@@ -9,27 +9,24 @@ export const metadata = {
   description: "All in one social media app",
 };
 
-const getNavbarData = unstable_cache(
-  async (userId) => {
-    const user = await db.userProfile.findFirst({
-      where: { id: userId },
-      select: {
-        id: true,
-        name: true,
-        bio: true,
-        image: true,
-        user: {
-          select: {
-            email: true,
-          },
+const getNavbarData = async (userId) => {
+  "use cache";
+  const user = await db.userProfile.findFirst({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      bio: true,
+      image: true,
+      user: {
+        select: {
+          email: true,
         },
       },
-    });
-    return user;
-  },
-  ["navbar-data"], // cache key
-  { revalidate: 3600 } // revalidate every hour
-);
+    },
+  });
+  return user;
+};
 
 async function NavbarWrapper() {
   const session = await getAuthSession();

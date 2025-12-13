@@ -8,7 +8,7 @@ import { Suspense } from "react";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const getUserProfileData = async (userId) => {
-  // "use cache";
+  "use cache";
   const user = await db.userProfile.findFirst({
     where: {
       id: userId,

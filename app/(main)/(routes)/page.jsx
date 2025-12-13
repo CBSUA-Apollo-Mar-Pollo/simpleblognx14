@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const getHomePageData = async () => {
-  "use cache";
+  // "use cache";
   const [posts, shortVideos, communities] = await Promise.all([
     db.post.findMany({
       include: {
@@ -30,7 +30,6 @@ const getHomePageData = async () => {
       take: INFINITE_SCROLL_PAGINATION_RESULTS,
     }),
 
-    // Short Video Posts
     db.shortsv.findMany({
       include: {
         author: {
@@ -50,13 +49,11 @@ const getHomePageData = async () => {
       take: INFINITE_SCROLL_PAGINATION_RESULTS,
     }),
 
-    // Communities
     db.community.findMany({
       include: { members: { select: { userId: true } } },
     }),
   ]);
 
-  // Perform the necessary data manipulation/merging here
   const updatedShortVideos = shortVideos.map((item) => ({
     ...item,
     isShortsV: true,
@@ -78,7 +75,6 @@ const getHomePageData = async () => {
 };
 
 export default async function HomePage() {
-  // 3. Call the cached function
   const { sortedData, communities } = await getHomePageData();
 
   const deleteImage = async (image) => {

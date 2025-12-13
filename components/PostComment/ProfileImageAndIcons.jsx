@@ -1,3 +1,5 @@
+"use client";
+
 import { Grip } from "lucide-react";
 import React from "react";
 import { Icons } from "../utils/Icons";
@@ -7,8 +9,10 @@ import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/Button";
 import NotificationMenu from "../Notification/NotificationMenu";
 import Menu from "../utils/Menu";
+import { useSession } from "next-auth/react";
 
-const ProfileImageAndIcons = ({ session }) => {
+const ProfileImageAndIcons = () => {
+  const { data: session } = useSession();
   return (
     <div className="flex justify-end py-2 pr-4">
       {session ? (
