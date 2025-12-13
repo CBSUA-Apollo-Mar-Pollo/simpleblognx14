@@ -52,7 +52,7 @@
     "libphonenumber-js": "^1.12.24",
     "lucide-react": "^0.303.0",
     "moment": "^2.30.1",
-    "next": "^15.4.6",
+    "next": "15.4.10",
     "next-auth": "^4.24.7",
     "next-nprogress-bar": "^2.4.7",
     "next-scroll-restorer": "^0.9.7",
