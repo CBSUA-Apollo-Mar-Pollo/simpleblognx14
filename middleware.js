@@ -5,14 +5,12 @@ export async function middleware(request) {
   const token = await getToken({ req: request });
   const session = token ? { user: token } : null;
 
-  const pathname = request.nextUrl.pathname;
+  const { pathname } = request.nextUrl;
 
-  // If the user is already signed in and tries to access /sign-in, redirect to home
-  if (session && pathname === "/sign-in") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  // Add "/" as an allowed public route
+  /**
+   * PUBLIC ROUTES
+   * These are always accessible
+   */
   const publicRoutes = [
     "/",
     "/sign-in",
@@ -22,37 +20,39 @@ export async function middleware(request) {
     "/test",
   ];
 
-  if (
-    publicRoutes.some(
-      (route) => pathname === route || pathname.startsWith(route)
-    )
-  ) {
+  if (publicRoutes.includes(pathname)) {
+    // Logged-in users should not access sign-in
+    if (session && pathname === "/sign-in") {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
     return NextResponse.next();
   }
 
-  // Not logged in → redirect to sign-in (except onboarding)
-  if (!session) {
-    if (pathname === "/onboarding") {
-      return NextResponse.next();
+  /**
+   * ONBOARDING ROUTE (SPECIAL CASE)
+   */
+  if (pathname === "/onboarding") {
+    // ❌ Logged in AND already onboarded → block
+    if (session && session.user?.onboarded) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
+
+    // ✅ Not logged in OR logged in but not onboarded → allow
+    return NextResponse.next();
+  }
+
+  /**
+   * PROTECTED ROUTES (REQUIRE AUTH)
+   */
+  if (!session) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  // Logged in but going to onboarding when already onboarded → redirect home
-  if (pathname === "/onboarding" && session.user?.onboarded) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  // Logged in but NOT onboarded → force onboarding
-  if (pathname !== "/onboarding" && !session.user?.onboarded) {
-    const mainRoutes = ["/", "/chatbox", "/posts", "/reels", "/stories"];
-    const isAccessingMainRoute = mainRoutes.some((route) =>
-      pathname.startsWith(route)
-    );
-
-    if (isAccessingMainRoute) {
-      return NextResponse.redirect(new URL("/onboarding", request.url));
-    }
+  /**
+   * LOGGED IN BUT NOT ONBOARDED → FORCE ONBOARDING
+   */
+  if (!session.user?.onboarded) {
+    return NextResponse.redirect(new URL("/onboarding", request.url));
   }
 
   return NextResponse.next();

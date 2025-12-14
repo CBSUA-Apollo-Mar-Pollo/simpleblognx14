@@ -214,7 +214,7 @@ export async function PATCH(req) {
 
     // Fetch the user's UserProfile for authorId checks
     const userProfile = await db.userProfile.findFirst({
-      where: { userId: session.user.id },
+      where: { id: session.user.id },
     });
     if (!userProfile) {
       return new Response("User profile not found", { status: 404 });

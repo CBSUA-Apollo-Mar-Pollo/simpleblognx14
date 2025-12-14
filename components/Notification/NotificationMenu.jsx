@@ -29,6 +29,7 @@ const NotificationMenu = () => {
       const res = await getFriendRequestData(session.user.id);
       return res;
     },
+    suspense: true,
   });
 
   const { data: notificationData } = useQuery({
@@ -37,6 +38,7 @@ const NotificationMenu = () => {
       const res = await getNotificationData(session.user.id);
       return res;
     },
+    suspense: true,
   });
 
   const { mutate: handleCancelAndFriendRequest } = useMutation({

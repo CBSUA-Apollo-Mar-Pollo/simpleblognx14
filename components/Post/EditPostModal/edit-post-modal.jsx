@@ -269,8 +269,6 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
 
   let isBackgroundColorBeingEdited = selectedBackgroundColor;
 
-  console.log(selectedBackgroundColor, "selectedBackgroundColor");
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex items-center gap-x-2 cursor-pointer py-2 dark:hover:bg-neutral-600 w-full rounded px-2 hover:bg-gray-100">

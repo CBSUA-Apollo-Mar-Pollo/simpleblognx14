@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/Button";
@@ -20,7 +20,7 @@ import useCustomHooks from "@/hooks/use-custom-hooks";
 import Image from "next/image";
 import logo from "@/public/crowlogo2.jpg";
 
-const Navbar = ({ profiles }) => {
+const Navbar = () => {
   const { setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -115,14 +115,31 @@ const Navbar = ({ profiles }) => {
                 </div>
               </div>
               <Menu contentClassName="-mr-32" />
-              <ChatBoxMenu />
-              <NotificationMenu />
+              <Suspense
+                fallback={
+                  <div className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
+                }
+              >
+                <ChatBoxMenu />
+              </Suspense>
+              <Suspense
+                fallback={
+                  <div className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
+                }
+              >
+                <NotificationMenu />
+              </Suspense>
               {/* user profile */}
-              <UserAccountNav
-                user={session.user}
-                profiles={profiles}
-                accountOwner={session.accountOwner}
-              />
+              <Suspense
+                fallback={
+                  <div className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
+                }
+              >
+                <UserAccountNav
+                  user={session.user}
+                  accountOwner={session.accountOwner}
+                />
+              </Suspense>
 
               {/* show in mobile */}
               <div className="xl:hidden ">

@@ -8,6 +8,7 @@ import { Separator } from "../ui/Separator";
 import Link from "next/link";
 
 const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
+  console.log(profiles, "profiles from select prorfile");
   return (
     <div className="px-2">
       <div className="flex items-center gap-x-4">

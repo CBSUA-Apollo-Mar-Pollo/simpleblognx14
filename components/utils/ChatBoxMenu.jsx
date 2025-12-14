@@ -16,8 +16,10 @@ import { useSession } from "next-auth/react";
 import { getFriendsList } from "@/data/getFriendsList";
 import UserAvatar from "./UserAvatar";
 import { useChatWindowStore } from "@/hooks/use-chat-window-store";
+import { useRouter } from "next/navigation";
 
 const ChatBoxMenu = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const { onOpen, data } = useChatWindowStore();
   const { data: session, isLoading } = useSession();
@@ -30,6 +32,7 @@ const ChatBoxMenu = () => {
       const res = await getFriendsList(session.user.id);
       return res;
     },
+    suspense: true,
   });
 
   return (
@@ -148,7 +151,10 @@ const ChatBoxMenu = () => {
                 ) : (
                   <div
                     onClick={() => {
-                      onOpen("directMessage", [friend.user]), setOpen(false);
+                      setTimeout(() => {
+                        onOpen("directMessage", [friend.requesterUser]);
+                        setOpen(false);
+                      }, 0);
                     }}
                     key={index}
                     className="p-2 flex items-center gap-x-3 hover:bg-neutral-100 dark:hover:bg-neutral-600 rounded-md cursor-pointer"
@@ -184,9 +190,13 @@ const ChatBoxMenu = () => {
         </div>
 
         <div className="border-t dark:border-neutral-700 py-2 text-center text-sm mt-2">
-          <Link href="/chatbox" className="text-blue-600 hover:underline ">
+          <Button
+            variant="link"
+            onClick={() => router.push("/chatbox")}
+            className="text-blue-600 hover:underline"
+          >
             See All In ChatBox
-          </Link>
+          </Button>
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

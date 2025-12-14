@@ -2,13 +2,13 @@ import { db } from "@/lib/db";
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import HomePageLayout from "@/components/utils/home-page-layout";
 import { UTApi } from "uploadthing/server";
+import { cache } from "react";
 
 export const metadata = {
   title: `Estorya | Home`,
 };
 
-const getHomePageData = async () => {
-  // "use cache";
+const getHomePageData = cache(async () => {
   const [posts, shortVideos, communities] = await Promise.all([
     db.post.findMany({
       include: {
@@ -72,7 +72,7 @@ const getHomePageData = async () => {
   const sortedData = mergeData.sort((a, b) => b.createdAtMs - a.createdAtMs);
 
   return { sortedData, communities };
-};
+});
 
 export default async function HomePage() {
   const { sortedData, communities } = await getHomePageData();

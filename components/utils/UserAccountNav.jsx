@@ -18,14 +18,26 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
 import SelectProfile from "./select-profile";
+import { useQuery } from "@tanstack/react-query";
+import { getProfileData } from "@/actions/getProfileData";
 
-const UserAccountNav = ({ user, profiles, accountOwner }) => {
+const UserAccountNav = ({ user, accountOwner }) => {
   const [open, setOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState(false);
   const [subMenu, setSubMenu] = useState(null);
   const { update } = useSession();
-  const router = useRouter();
   const { setIsSwitchingProfile, setProfileInfo } = useContext(LoaderContext);
+
+  const { data } = useQuery({
+    queryKey: ["getProfileData"],
+    queryFn: async () => {
+      const res = await getProfileData(user.id);
+      return res;
+    },
+    suspense: true,
+  });
+
+  const profiles = data ? [data] : [];
 
   const switchProfile = async (profile) => {
     try {
@@ -42,8 +54,6 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
 
     setIsSwitchingProfile(false);
   };
-
-  console.log(profiles, "profiles");
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
@@ -95,8 +105,8 @@ const UserAccountNav = ({ user, profiles, accountOwner }) => {
 
                 <div className="mb-1">
                   {profiles
-                    .filter((profile) => profile?.id !== user?.id)
-                    .map((profile) => (
+                    ?.filter((profile) => profile?.id !== user?.id)
+                    ?.map((profile) => (
                       <div
                         onClick={() => switchProfile(profile)}
                         key={profile?.id}
