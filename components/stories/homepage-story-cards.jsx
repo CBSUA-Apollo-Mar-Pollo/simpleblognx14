@@ -101,6 +101,7 @@ const HomePageStoryCards = () => {
     enabled: !!session?.user?.id,
     staleTime: 60 * 1000, // 1 minute
     cacheTime: 5 * 60 * 1000, // 5 minutes
+    suspense: true,
   });
 
   return (
@@ -153,13 +154,6 @@ const HomePageStoryCards = () => {
             </p>
           </div>
         </button>
-
-        {isPending &&
-          [...Array(7)].map((_, index) => (
-            <div key={index}>
-              <Skeleton className="md:w-32 md:h-[23vh] w-40 h-40 bg-neutral-400 rounded-2xl" />
-            </div>
-          ))}
 
         {/* stories */}
         <div className="flex items-center gap-x-2 ">

@@ -1,8 +1,9 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { cache } from "react";
 
-export const getStoryData = async (authorId) => {
+export const getStoryData = cache(async (authorId) => {
   // Calculate 24-hour boundary once and query by it to avoid extra JS filtering
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -62,4 +63,4 @@ export const getStoryData = async (authorId) => {
   }
 
   return Array.from(groupedMap.values());
-};
+});

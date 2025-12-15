@@ -8,10 +8,23 @@ import { useChatWindowStore } from "@/hooks/use-chat-window-store";
 import { useSocket } from "../Providers/socket-provider";
 import { useMakeUserOnline } from "@/hooks/use-make-user-online";
 import { getContactList } from "@/data/getContactList";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/Skeleton";
+import { useSession } from "next-auth/react";
 
-const ChatHomeContactList = ({ session, conversationList, isPending }) => {
+const ChatHomeContactList = () => {
+  const { data: session } = useSession();
+  const { data: conversationList, isPending } = useQueryClient({
+    queryKey: ["contactlist", session?.user?.id],
+    queryFn: async () => {
+      const res = await getContactList(session);
+      return res;
+    },
+    enabled: !!session?.user,
+    staleTime: 60 * 1000, // 1 minute
+    cacheTime: 5 * 60 * 1000, // 5 minutes
+    suspense: true,
+  });
   const { onOpen, data } = useChatWindowStore();
   const { socket } = useSocket();
   const [userData, setUserData] = useState([]);
