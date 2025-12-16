@@ -81,8 +81,6 @@ export default function Posts({ initialPosts, deleteImage }) {
     }
   }, []);
 
-  console.log(posts, "posts");
-
   return (
     <div className="z-2 xl:space-y-3 space-y-1">
       <ul className={"flex flex-col col-span-2 xl:space-y-3 space-y-1 pb-2"}>

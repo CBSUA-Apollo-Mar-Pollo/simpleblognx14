@@ -6,6 +6,8 @@ import HomeFeed from "@/components/utils/home-page-components/home-feed";
 import { Separator } from "@/components/ui/Separator";
 import { Button } from "@/components/ui/Button";
 import { Loader2, Plus } from "lucide-react";
+import { Skeleton } from "@/components/ui/Skeleton";
+import HomeFeedLoader from "@/components/Loaders/home-feed-loader";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -29,13 +31,7 @@ export default async function HomePage() {
 
       {/* middle section all posts and adding posts */}
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-300">
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center mt-28">
-              <Loader2 className="w-10 h-10 text-zinc-500 animate-spin" />
-            </div>
-          }
-        >
+        <Suspense fallback={<HomeFeedLoader />}>
           <HomeFeed deleteImage={deleteImage} />
         </Suspense>
       </div>

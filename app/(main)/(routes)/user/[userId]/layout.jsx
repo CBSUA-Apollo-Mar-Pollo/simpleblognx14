@@ -2,13 +2,9 @@ import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banne
 import StickDiv from "@/components/UserProfile/sticky_div";
 import { db } from "@/lib/db";
 import { UTApi } from "uploadthing/server";
-import { unstable_cache } from "next/cache"; // 1. Import caching utility
-import { Suspense } from "react";
+import { cache, Suspense } from "react";
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const getUserProfileData = async (userId) => {
-  "use cache";
+const getUserProfileData = cache(async (userId) => {
   const user = await db.userProfile.findFirst({
     where: {
       id: userId,
@@ -44,7 +40,7 @@ const getUserProfileData = async (userId) => {
   }
 
   return user;
-};
+});
 
 async function ProfileWrapper({ params }) {
   const { userId } = await params;

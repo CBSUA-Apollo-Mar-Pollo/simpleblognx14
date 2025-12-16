@@ -53,6 +53,7 @@ const CommentSection = ({
         return maxPage ? nextPage : undefined;
       },
       initialData: { pages: [initialComments], pageParams: [1] },
+      suspense: true,
     });
 
   const comments = data?.pages?.flatMap((page) => page) ?? initialComments;

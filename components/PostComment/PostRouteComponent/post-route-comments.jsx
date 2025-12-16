@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ProfileImageAndIcons from "../ProfileImageAndIcons";
 import { Separator } from "@/components/ui/Separator";
 import PostDescription from "../PostDescription";
@@ -54,11 +54,17 @@ const PostRouteComments = async ({ postId, index }) => {
 
         <Separator className="bg-neutral-300 dark:bg-neutral-700" />
 
-        <CommentSection
-          post={post}
-          initialComments={comments}
-          imageIndex={index}
-        />
+        <Suspense
+          fallback={
+            <div className="col-span-1 h-screen bg-white animate-pulse"></div>
+          }
+        >
+          <CommentSection
+            post={post}
+            initialComments={comments}
+            imageIndex={index}
+          />
+        </Suspense>
       </div>
     </div>
   );

@@ -94,10 +94,6 @@ const PostDescriptionCard = ({
     },
   });
 
-  useEffect(() => {
-    getComments();
-  }, []);
-
   const { data: dominantColorPost, isLoading } = useQuery({
     queryKey: ["dominantColorPost", blog.image],
     queryFn: async () => {
@@ -126,6 +122,7 @@ const PostDescriptionCard = ({
         const nextPage = allPages.length + 1;
         return nextPage;
       },
+      suspense: true,
     });
 
   // Flatten the data from all pages

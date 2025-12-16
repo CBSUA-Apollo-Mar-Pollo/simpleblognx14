@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const CreateStoryPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [toggleAddText, setToggleAddText] = useState(false);
   const [image, setImage] = useState(null);
   const [isDiscarding, setIsDiscarding] = useState(false);
@@ -37,6 +37,10 @@ const CreateStoryPage = () => {
 
   const { mutate: createStory, isPending } = useMutation({
     mutationFn: async () => {
+      if (status === "unauthenticated") {
+        throw new Error("User not authenticated");
+      }
+
       // Upload the image in upload thing
       let file = cropImageLink;
       const response = await uploadFiles("imageUploader", {
@@ -51,7 +55,6 @@ const CreateStoryPage = () => {
     },
     onError: (err) => {
       console.log(err);
-
       return toast({
         title: "There was a problem",
         description: "Something went wrong. Please try again.",
@@ -62,6 +65,10 @@ const CreateStoryPage = () => {
       router.push("/");
     },
   });
+
+  if (!session) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="grid grid-cols-10 dark:bg-neutral-900 min-h-screen">
