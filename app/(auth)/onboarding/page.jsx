@@ -190,11 +190,16 @@ const OnboardingClient = () => {
         variant: "destructive",
       });
     },
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      await update({
+        type: "user",
+        activeProfileId: data.id,
+      });
       toast({
         description: "Onboarding completed successfully!",
         variant: "success",
       });
+      window.location.reload();
     },
   });
 

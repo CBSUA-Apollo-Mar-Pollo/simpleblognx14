@@ -113,8 +113,13 @@ const ChatHomeContactList = () => {
     return widths[Math.floor(Math.random() * widths.length)];
   };
 
+  if (!conversationList?.length) {
+    return null;
+  }
+
   return (
     <div className="mt-2 mx-1">
+      <Separator className="my-2" />
       <div className="flex justify-between mb-2">
         <h1 className="font-semibold  dark:text-neutral-50 pl-2">Contacts</h1>
 

@@ -104,12 +104,11 @@ const ProfileBanner = ({ user, deleteImage }) => {
     },
   });
 
-  const { data: dominantColor, error } = useQuery({
-    queryKey: ["dominantColor", user.backgroundImage],
-    queryFn: async () => {
-      const res = await getDominantColor(user.backgroundImage);
-      return res;
-    },
+  const { data: dominantColor } = useQuery({
+    queryKey: ["dominantColor", user?.backgroundImage],
+    queryFn: () => getDominantColor(user.backgroundImage),
+    enabled: !!user?.backgroundImage,
+    suspense: true,
   });
 
   const { data: isAFriend, refetch } = useQuery({

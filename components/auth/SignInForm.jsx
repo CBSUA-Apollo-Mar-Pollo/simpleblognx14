@@ -11,8 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PasswordInput } from "@/components/ui/PasswordInput";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Loader2 } from "lucide-react";
 import { loginCheck } from "@/actions/login";
+import { CredentialOnboardedCheck } from "@/actions/credential-onboarded-check";
 
 const SignInForm = () => {
   const searchParams = useSearchParams();
@@ -33,8 +34,6 @@ const SignInForm = () => {
   });
   // google sign in
   const loginWithGoogle = async () => {
-    setIsLoading(true);
-
     try {
       await signIn("google");
     } catch (error) {
@@ -50,6 +49,7 @@ const SignInForm = () => {
 
   // login credentials
   const loginInCredential = async (data) => {
+    setIsLoading(true);
     const { email, password } = data;
     // check if email has been verified
     loginCheck(email)
@@ -65,12 +65,14 @@ const SignInForm = () => {
       .catch((e) => {
         switch (e.message) {
           case "Email does not exist":
+            setIsLoading(false);
             return toast({
               title: "Invalid log in",
               description: "Email does not exist",
               variant: "destructive",
             });
           default:
+            setIsLoading(false);
             return toast({
               title: "Something went wrong",
               variant: "destructive",
@@ -78,6 +80,31 @@ const SignInForm = () => {
         }
       });
 
+    CredentialOnboardedCheck(email)
+      .then((res) => {
+        console.log(res.success);
+      })
+      .catch((e) => {
+        switch (e.message) {
+          case "Email does not exist":
+            setIsLoading(false);
+            return toast({
+              title: "Invalid log in",
+              description: "Email does not exist",
+              variant: "destructive",
+            });
+          case "User is not onboarded yet":
+            setIsLoading(false);
+            router.push("/onboarding");
+            break;
+          default:
+            setIsLoading(false);
+            return toast({
+              title: "Something went wrong",
+              variant: "destructive",
+            });
+        }
+      });
     try {
       const res = await signIn("credentials", {
         email,
@@ -101,8 +128,10 @@ const SignInForm = () => {
         });
       }
 
+      setIsLoading(false);
       window.location.replace("/");
     } catch (error) {
+      setIsLoading(false);
       toast({
         title: "Something went wrong",
         variant: "destructive",
@@ -157,7 +186,15 @@ const SignInForm = () => {
             </p>
           )}
 
-          <Button className="w-full rounded-full mt-1">
+          <Button
+            disabled={isLoading}
+            className="w-full rounded-full mt-1 flex items-center gap-x-2 cursor-pointer"
+          >
+            {isLoading && (
+              <span>
+                <Loader2 className="h-5 w-5 text-neutral-100 animate-spin my-4" />
+              </span>
+            )}
             Sign In with email
           </Button>
         </form>

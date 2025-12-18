@@ -18,7 +18,6 @@ const PostRouteImages = async ({ postId, index }) => {
       ) : (
         <ImagePost image={images.image} index={index} postId={images.id} />
       )}
-      wew
     </div>
   );
 };

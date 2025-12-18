@@ -22,7 +22,7 @@ import logo from "@/public/crowlogo2.jpg";
 
 const Navbar = () => {
   const { setTheme, resolvedTheme } = useTheme();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
@@ -106,7 +106,7 @@ const Navbar = () => {
 
         {/* notification and profile pic */}
         <div className=" flex items-center justify-end  gap-x-2 col-span-1">
-          {isMounted && session ? (
+          {isMounted && status === "authenticated" && (
             <>
               {/* show in mobile */}
               <div className="xl:hidden ">
@@ -151,7 +151,9 @@ const Navbar = () => {
                 </Link>
               </div>
             </>
-          ) : isMounted ? (
+          )}
+
+          {status === "unauthenticated" && (
             <div className="flex items-center gap-x-1">
               {resolvedTheme === "light" ? (
                 <Button
@@ -183,7 +185,9 @@ const Navbar = () => {
                 Sign in
               </Link>
             </div>
-          ) : (
+          )}
+
+          {status === "loading" && (
             <div className="flex items-center gap-x-2">
               <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />
               <Skeleton className="rounded-full bg-neutral-300 h-10 w-10" />

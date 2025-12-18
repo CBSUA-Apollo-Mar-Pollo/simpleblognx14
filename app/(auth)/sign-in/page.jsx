@@ -1,7 +1,8 @@
 import SignInForm from "@/components/auth/SignInForm";
-import { getAuthSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+
+export const metadata = {
+  title: `Estorias | Sign in`,
+};
 
 const SignInPage = () => {
   return (

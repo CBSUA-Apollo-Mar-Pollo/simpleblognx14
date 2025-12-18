@@ -39,9 +39,9 @@ export async function POST(req) {
       })),
     });
 
-    console.log(userCreateProfile);
-
-    return new Response("Onboarding completed successfully");
+    return new Response(
+      JSON.stringify({ ...userCreateProfile, isFirstSignIn: true })
+    );
   } catch (error) {
     console.log(error);
     return new Response("Something went wrong", { status: 500 });

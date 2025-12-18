@@ -24,7 +24,7 @@ const getUserProfileData = cache(async (userId) => {
   if (!user) return null;
 
   if (user.backgroundImage) {
-    const coverPhotoBlog = await db.blog.findFirst({
+    const coverPhotoBlog = await db.post.findFirst({
       where: {
         image: {
           path: ["url"],
@@ -60,7 +60,9 @@ async function ProfileWrapper({ params }) {
 
   return (
     <div>
-      <ProfileBanner user={user} deleteImage={deleteImage} />
+      <Suspense fallback={<div>Loading profile...</div>}>
+        <ProfileBanner user={user} deleteImage={deleteImage} />
+      </Suspense>
       <StickDiv user={user} />
     </div>
   );

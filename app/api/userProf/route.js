@@ -12,7 +12,7 @@ export async function POST(req) {
     const body = await req.json();
     const { image } = body;
 
-    await db.user.update({
+    await db.userProfile.update({
       where: {
         id: session?.user.id,
       },

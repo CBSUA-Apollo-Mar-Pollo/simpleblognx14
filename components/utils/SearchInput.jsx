@@ -206,7 +206,7 @@ const SearchInput = () => {
           </div>
         )}
 
-        {session?.user &&
+        {/* {session?.user &&
           isMounted &&
           searchInput.length === 0 &&
           getSearchHistory?.data.map((item, index) => (
@@ -223,7 +223,7 @@ const SearchInput = () => {
                 </DropdownMenuItem>
               </Link>
             </div>
-          ))}
+          ))} */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

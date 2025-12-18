@@ -110,9 +110,8 @@ const UserAccountNav = ({ user, accountOwner }) => {
                       <div
                         onClick={() => switchProfile(profile)}
                         key={profile?.id}
-                        className=""
                       >
-                        <div className="py-1 pl-2 flex items-center gap-x-2 hover:bg-neutral-200 rounded-lg cursor-pointer">
+                        <div className="py-1 pl-2 flex items-center gap-x-2 hover:bg-neutral-200 cursor-pointer">
                           {profile?.image ? (
                             <div className="relative">
                               <UserAvatar
@@ -156,7 +155,7 @@ const UserAccountNav = ({ user, accountOwner }) => {
                   setActiveSubMenu(true);
                   setSubMenu(3);
                 }}
-                className="w-full font-semibold bg-neutral-300 hover:bg-neutral-400 text-black gap-x-3"
+                className="w-full font-semibold bg-neutral-300 hover:bg-neutral-400 text-black gap-x-3 rounded-xl"
               >
                 <Icons.ProfileChangeIcon className="h-5 w-5 " />
                 See all profiles

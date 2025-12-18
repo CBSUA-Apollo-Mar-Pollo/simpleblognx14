@@ -3,14 +3,8 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request) {
   const token = await getToken({ req: request });
-  const session = token ? { user: token } : null;
-
   const { pathname } = request.nextUrl;
 
-  /**
-   * PUBLIC ROUTES
-   * These are always accessible
-   */
   const publicRoutes = [
     "/",
     "/sign-in",
@@ -18,41 +12,40 @@ export async function middleware(request) {
     "/reset",
     "/error",
     "/test",
+    "/new-verification",
   ];
 
-  if (publicRoutes.includes(pathname)) {
-    // Logged-in users should not access sign-in
-    if (session && pathname === "/sign-in") {
-      return NextResponse.redirect(new URL("/", request.url));
+  const isPublicRoute = publicRoutes.includes(pathname);
+  const isOnboardingRoute = pathname === "/onboarding";
+
+  // 1. If NOT logged in
+  if (!token) {
+    // Only let them see the public landing/auth pages
+    if (isPublicRoute) {
+      return NextResponse.next();
     }
-    return NextResponse.next();
-  }
-
-  /**
-   * ONBOARDING ROUTE (SPECIAL CASE)
-   */
-  if (pathname === "/onboarding") {
-    // ❌ Logged in AND already onboarded → block
-    if (session && session.user?.onboarded) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-
-    // ✅ Not logged in OR logged in but not onboarded → allow
-    return NextResponse.next();
-  }
-
-  /**
-   * PROTECTED ROUTES (REQUIRE AUTH)
-   */
-  if (!session) {
+    // Everything else (onboarding, dashboard, settings) is blocked
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  /**
-   * LOGGED IN BUT NOT ONBOARDED → FORCE ONBOARDING
-   */
-  if (!session.user?.onboarded) {
+  // 2. If LOGGED IN but NOT onboarded
+  if (!token.onboarded) {
+    // Allow them to be on the onboarding page
+    if (isOnboardingRoute) {
+      return NextResponse.next();
+    }
+    // Force them back to onboarding if they try to leave
     return NextResponse.redirect(new URL("/onboarding", request.url));
+  }
+
+  // 3. If logged in AND onboarded
+  // Prevent them from going to login/signup or back to onboarding
+  if (isPublicRoute && (pathname === "/sign-in" || pathname === "/sign-up")) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
+  if (isOnboardingRoute) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

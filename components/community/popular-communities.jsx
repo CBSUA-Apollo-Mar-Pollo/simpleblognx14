@@ -1,8 +1,20 @@
+import { getPopularCommunities } from "@/actions/getPopularCommunities";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const PopularCommunities = async ({ communities }) => {
+const PopularCommunities = async () => {
+  const { data: communities } = useQuery({
+    queryKey: ["popularCommunities"],
+    queryFn: async () => getPopularCommunities(),
+    suspense: true,
+  });
+
+  if (!communities.length) {
+    return null;
+  }
+
   return (
     <div className="bg-neutral-200/50 dark:bg-neutral-800  rounded-lg pb-2 mx-4 mt-2">
       <h1 className="pt-3 pb-1 dark:text-white font-semibold pl-4">
