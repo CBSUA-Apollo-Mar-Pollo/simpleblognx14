@@ -12,7 +12,7 @@ import { Separator } from "../ui/Separator";
 
 const UserPostsToolBar = () => {
   return (
-    <div className=" border pt-3 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
+    <div className=" border pt-3 rounded-2xl bg-white shadow-md drop-shadow  dark:bg-neutral-800 dark:border-0">
       <div className="flex items-center justify-between pl-5 pr-2">
         <h1 className="font-bold text-xl">Posts</h1>
         <div className="flex items-center gap-x-2">

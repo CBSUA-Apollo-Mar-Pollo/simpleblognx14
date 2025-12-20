@@ -22,7 +22,7 @@ const ChatBoxMenu = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { onOpen, data } = useChatWindowStore();
-  const { data: session, isLoading } = useSession();
+  const { data: session, isPending } = useSession();
   // get shared post data
   const { data: friends } = useQuery({
     // Query key (unique identifier)
@@ -111,7 +111,7 @@ const ChatBoxMenu = () => {
           </div>
 
           <div className="mt-2">
-            {isLoading ? (
+            {isPending ? (
               <span>loading</span>
             ) : (
               friends?.map((friend, index) =>

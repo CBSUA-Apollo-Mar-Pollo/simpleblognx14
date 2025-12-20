@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { newVerification } from "@/actions/new-verification";
 import { useToast } from "@/hooks/use-toast";
 import { UserCheck2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const NewVerificationForm = () => {
   const [error, setError] = useState();
@@ -49,10 +50,10 @@ const NewVerificationForm = () => {
   }, [onSubmit]);
 
   return (
-    <div className="h-screen flex items-center justify-center">
-      <Card className="w-[550px] shadow-md flex flex-col items-center">
+    <div className="h-screen flex items-center justify-center bg-neutral-100">
+      <Card className="w-[550px] shadow-md flex flex-col items-center rounded-2xl">
         <CardHeader>
-          <h2 className="font-bold text-2xl">Confirming your verification</h2>
+          <h2 className="font-bold text-3xl">Confirming your verification</h2>
         </CardHeader>
         <CardContent>
           {!success && !error && <BeatLoader />}
@@ -73,7 +74,10 @@ const NewVerificationForm = () => {
         <CardFooter>
           <Link
             href="/sign-in"
-            className={buttonVariants({ variant: "outline" })}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "bg-blue-500 text-white hover:bg-blue-400 hover:text-white rounded-md"
+            )}
           >
             Back to sign in
           </Link>

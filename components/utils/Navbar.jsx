@@ -115,20 +115,8 @@ const Navbar = () => {
                 </div>
               </div>
               <Menu contentClassName="-mr-32" />
-              <Suspense
-                fallback={
-                  <div className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
-                }
-              >
-                <ChatBoxMenu />
-              </Suspense>
-              <Suspense
-                fallback={
-                  <div className="h-10 w-10 bg-gray-600 animate-pulse rounded-full"></div>
-                }
-              >
-                <NotificationMenu />
-              </Suspense>
+              <ChatBoxMenu />
+              <NotificationMenu />
               {/* user profile */}
               <Suspense
                 fallback={

@@ -13,7 +13,7 @@ const UserPostCreationSection = ({ user }) => {
   return (
     <>
       {session?.user.id === user?.id && (
-        <div className=" border pt-3 pb-1 px-5 rounded-lg bg-white dark:bg-neutral-800 dark:border-0">
+        <div className=" border pt-3 pb-1 px-5 rounded-2xl bg-white shadow-md drop-shadow-sm dark:bg-neutral-800 dark:border-0">
           <div className="flex flex-row items-center space-x-4">
             <UserAvatar
               className="h-10 w-10 "
