@@ -11,6 +11,7 @@ import { getContactList } from "@/data/getContactList";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "../ui/Skeleton";
 import { useSession } from "next-auth/react";
+import { Separator } from "../ui/Separator";
 
 const ChatHomeContactList = () => {
   const { data: session } = useSession();

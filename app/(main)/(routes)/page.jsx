@@ -1,30 +1,16 @@
-import { UTApi } from "uploadthing/server";
 import { Suspense } from "react";
-import { getAuthSession } from "@/lib/auth";
 import Sidebar from "@/components/utils/Sidebar";
 import HomeFeed from "@/components/utils/home-page-components/home-feed";
-import { Separator } from "@/components/ui/Separator";
-import { Button } from "@/components/ui/Button";
-import { Loader2, Plus } from "lucide-react";
-import { Skeleton } from "@/components/ui/Skeleton";
 import HomeFeedLoader from "@/components/Loaders/home-feed-loader";
 import HomeRightSidebar from "@/components/utils/home-page-components/home-right-sidebar";
+import { getHomeFeedData } from "@/actions/get-home-feed-data";
 
 export const metadata = {
   title: `Estorya | Home`,
 };
 
 export default async function HomePage() {
-  const deleteImage = async (image) => {
-    "use server";
-    const utapi = new UTApi();
-    await utapi.deleteFiles(image.key);
-  };
-
-  const session = await getAuthSession();
-
-  console.log(session);
-
+  const sortedData = await getHomeFeedData();
   return (
     <div className="grid  xl:grid-cols-12 lg:grid-cols-7 grid-cols-1 dark:bg-neutral-900">
       {/* first column the side bar */}
@@ -35,7 +21,7 @@ export default async function HomePage() {
       {/* middle section all posts and adding posts */}
       <div className=" xl:col-span-6 lg:col-span-5  lg:pl-5 lg:pr-3 xl:bg-white  xl:dark:bg-neutral-900 bg-gray-300">
         <Suspense fallback={<HomeFeedLoader />}>
-          <HomeFeed deleteImage={deleteImage} />
+          <HomeFeed sortedData={sortedData} />
         </Suspense>
       </div>
       {/* third section recent posts and who to follow */}

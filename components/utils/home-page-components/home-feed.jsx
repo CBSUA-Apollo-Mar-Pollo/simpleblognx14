@@ -18,22 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/Dropdown-menu";
 import Posts from "@/components/Post/Posts";
-import { useQuery } from "@tanstack/react-query";
-import { getHomeFeedData } from "@/actions/get-home-feed-data";
 import { Skeleton } from "@/components/ui/Skeleton";
 import liveIcon from "@/public/ImageIcons/live.png";
 import smileIcon from "@/public/ImageIcons/smile.png";
 
-const HomeFeed = ({ deleteImage }) => {
+const HomeFeed = ({ sortedData }) => {
   const { data: session, status } = useSession();
-  const { data: sortedData } = useQuery({
-    queryKey: ["homeFeedData"],
-    queryFn: async () => {
-      const res = await getHomeFeedData();
-      return res;
-    },
-    suspense: true,
-  });
 
   return (
     <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[4vw]">
@@ -208,7 +198,7 @@ const HomeFeed = ({ deleteImage }) => {
 
       {/* all post cards */}
 
-      <Posts initialPosts={sortedData} deleteImage={deleteImage} />
+      <Posts initialPosts={sortedData} />
     </div>
   );
 };

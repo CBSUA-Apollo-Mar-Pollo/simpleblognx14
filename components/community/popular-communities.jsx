@@ -1,10 +1,12 @@
+"use client";
+
 import { getPopularCommunities } from "@/actions/getPopularCommunities";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const PopularCommunities = async () => {
+const PopularCommunities = () => {
   const { data: communities } = useQuery({
     queryKey: ["popularCommunities"],
     queryFn: async () => getPopularCommunities(),

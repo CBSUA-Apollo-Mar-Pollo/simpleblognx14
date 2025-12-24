@@ -6,12 +6,12 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
 import PostCard from "./PostCard/PostCard";
-import ReelsHomeCard from "../reels/reels-home-card";
 import { useScrollTracker } from "@/hooks/use-scroll-tracker";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
 import { useSession } from "next-auth/react";
+import { deleteImage } from "@/actions/deleteImage";
 
-export default function Posts({ initialPosts, deleteImage }) {
+export default function Posts({ initialPosts }) {
   const { data: session } = useSession();
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
@@ -51,6 +51,8 @@ export default function Posts({ initialPosts, deleteImage }) {
     data?.pages.flatMap((page) => page.filter((post) => !post.trashed)) ?? [];
 
   const [randNumber, setRandNumber] = useState(null);
+
+  console.log(posts);
 
   useEffect(() => {
     const numbers = [1, 2, 3];
