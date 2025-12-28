@@ -122,7 +122,6 @@ const PostDescriptionCard = ({
         const nextPage = allPages.length + 1;
         return nextPage;
       },
-      suspense: true,
     });
 
   // Flatten the data from all pages

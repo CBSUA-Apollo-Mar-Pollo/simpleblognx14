@@ -21,6 +21,7 @@ import Posts from "@/components/Post/Posts";
 import { Skeleton } from "@/components/ui/Skeleton";
 import liveIcon from "@/public/ImageIcons/live.png";
 import smileIcon from "@/public/ImageIcons/smile.png";
+import HomeFeedLoader from "@/components/Loaders/home-feed-loader";
 
 const HomeFeed = ({ sortedData }) => {
   const { data: session, status } = useSession();
@@ -198,7 +199,9 @@ const HomeFeed = ({ sortedData }) => {
 
       {/* all post cards */}
 
-      <Posts initialPosts={sortedData} />
+      <Suspense fallback={<HomeFeedLoader />}>
+        <Posts initialPosts={sortedData} />
+      </Suspense>
     </div>
   );
 };

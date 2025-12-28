@@ -52,8 +52,6 @@ export default function Posts({ initialPosts }) {
 
   const [randNumber, setRandNumber] = useState(null);
 
-  console.log(posts);
-
   useEffect(() => {
     const numbers = [1, 2, 3];
     const randomIndex = Math.floor(Math.random() * numbers.length);

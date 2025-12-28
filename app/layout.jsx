@@ -9,7 +9,6 @@ import ChatWindow from "@/components/chat/chat-window";
 import ClientSideScrollRestorer from "@/components/utils/client-side-scroll-restorer";
 import BeforeUnload from "@/components/utils/before-unload";
 import NextTopLoader from "nextjs-toploader";
-import { Loader2 } from "lucide-react";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,9 +26,7 @@ export default function RootLayout({ children }) {
         <Providers>
           <NextTopLoader color="#ffbb00" height={4} showSpinner={false} />
           <div className="mx-auto dark:bg-neutral-900">
-            <BeforeUnload>
-              <Suspense>{children}</Suspense>
-            </BeforeUnload>
+            <BeforeUnload>{children}</BeforeUnload>
           </div>
           <Suspense>
             <ClientSideScrollRestorer />

@@ -72,6 +72,7 @@ const SearchInput = () => {
       const res = await axios.get("/api/search/history");
       return res;
     },
+    // suspense: true,
   });
 
   const url = qs.stringifyUrl({

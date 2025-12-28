@@ -2,7 +2,7 @@ import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banne
 import StickDiv from "@/components/UserProfile/sticky_div";
 import { db } from "@/lib/db";
 import { UTApi } from "uploadthing/server";
-import { cache, Suspense } from "react";
+import { cache } from "react";
 
 const getUserProfileData = cache(async (userId) => {
   const user = await db.userProfile.findFirst({
@@ -42,7 +42,7 @@ const getUserProfileData = cache(async (userId) => {
   return user;
 });
 
-async function ProfileWrapper({ params }) {
+const Layout = async ({ children, params }) => {
   const { userId } = await params;
 
   const user = await getUserProfileData(userId);
@@ -59,21 +59,9 @@ async function ProfileWrapper({ params }) {
   };
 
   return (
-    <div>
-      <Suspense fallback={<div>Loading profile...</div>}>
-        <ProfileBanner user={user} deleteImage={deleteImage} />
-      </Suspense>
+    <div className="relative min-h-screen">
+      <ProfileBanner user={user} deleteImage={deleteImage} />
       <StickDiv user={user} />
-    </div>
-  );
-}
-
-const Layout = async ({ children, params }) => {
-  return (
-    <div className="relative h-full">
-      <Suspense fallback={<div>Loading profile...</div>}>
-        <ProfileWrapper params={params} />
-      </Suspense>
       {children}
     </div>
   );

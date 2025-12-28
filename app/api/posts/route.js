@@ -1,10 +1,8 @@
-import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { z } from "zod";
 
 export async function GET(req) {
   const url = new URL(req.url);
-  const session = await getAuthSession();
 
   try {
     const { limit, page } = z
@@ -33,12 +31,7 @@ export async function GET(req) {
         },
         comments: { select: { id: true } },
         votes: { select: { userId: true, type: true } },
-        community: {
-          select: {
-            id: true,
-            members: { select: { userId: true } },
-          },
-        },
+        community: { include: { members: { select: { userId: true } } } },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -47,7 +40,16 @@ export async function GET(req) {
       take: parseInt(limit),
       skip: (parseInt(page) - 1) * parseInt(limit),
       include: {
-        author: { select: { id: true, name: true, image: true } },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            handleName: true,
+            image: true,
+            bio: true,
+            birthdate: true,
+          },
+        },
         comments: { select: { id: true } },
         shortsvVotes: { select: { userId: true, type: true } },
       },
