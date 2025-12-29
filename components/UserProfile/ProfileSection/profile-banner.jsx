@@ -127,22 +127,14 @@ const ProfileBanner = ({ user, deleteImage }) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 
-  // Provide a fallback color to avoid hydration errors
-  const safeDominantColor =
-    Array.isArray(dominantColor) && dominantColor.length === 3
-      ? dominantColor
-      : [36, 36, 36]; // fallback to a neutral gray
-
-  // console.log(session, "session from profile banner");
-
   return (
     <div
       className=""
       style={{
         backgroundImage:
           resolvedTheme === "light"
-            ? `linear-gradient(to bottom,  rgba(${safeDominantColor[0]}, ${safeDominantColor[1]}, ${safeDominantColor[2]}, 0.9) 0%, rgba(255, 255, 255, 1) 100%) `
-            : `linear-gradient(to bottom, rgba(${safeDominantColor[0]}, ${safeDominantColor[1]}, ${safeDominantColor[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
+            ? `linear-gradient(to bottom,  rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 1) 5%, rgba(255, 255, 255, 1) 100%)`
+            : `linear-gradient(to bottom, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
       }}
     >
       {/* display when this buttons when the user is changing his/her cover photo */}

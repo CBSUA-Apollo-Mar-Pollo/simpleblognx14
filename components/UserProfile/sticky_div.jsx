@@ -55,6 +55,8 @@ const StickDiv = ({ user }) => {
 
   const [isSticky, ref, setIsSticky] = useDetectSticky();
 
+  console.log(isSticky, ref, "sticky hook");
+
   return (
     <div
       ref={ref}

@@ -104,6 +104,7 @@ const SignInForm = () => {
               variant: "destructive",
             });
         }
+        setIsLoading(false);
       });
     try {
       const res = await signIn("credentials", {
