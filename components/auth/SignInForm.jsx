@@ -191,12 +191,13 @@ const SignInForm = () => {
             disabled={isLoading}
             className="w-full rounded-full mt-1 flex items-center gap-x-2 cursor-pointer"
           >
-            {isLoading && (
+            {isLoading ? (
               <span>
                 <Loader2 className="h-5 w-5 text-neutral-100 animate-spin my-4" />
               </span>
+            ) : (
+              <span>Sign In with email</span>
             )}
-            Sign In with email
           </Button>
         </form>
 

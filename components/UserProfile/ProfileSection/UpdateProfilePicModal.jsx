@@ -71,35 +71,43 @@ const UpdateProfilePicModal = ({ userId }) => {
     setNewfile(newfile);
   };
 
-  const save = () => {
-    setIsLoading(true);
-    setLoaderDescription("Updating");
-    uploadFiles("imageUploader", {
-      files: [newfile],
-    })
-      .then(async (response) => {
-        const payload = {
-          imageUrl: response[0].url,
-        };
-        await axios.post("/api/userProf/updateProfilePic", payload);
-        setToggleUpload(false);
-        setIsLoading(false);
-        setOpen(false);
-        router.refresh();
-      })
-      .catch((error) => {
-        // Handle any errors that occur during the upload
-        setToggleUpload(false);
-        setIsLoading(false);
-        setOpen(false);
-        router.refresh();
-        return toast({
-          title: "Error",
-          description: "Error uploading file",
-          variant: "destructive",
-        });
+  const { mutate: save, isPending } = useMutation({
+    mutationFn: async () => {
+      const [uploaded] = await uploadFiles("imageUploader", {
+        files: [newfile],
       });
-  };
+
+      const payload = {
+        imageUrl: uploaded,
+      };
+
+      const { data } = await axios.post(
+        "/api/userProf/updateProfilePic",
+        payload
+      );
+
+      return data;
+    },
+    onMutate: () => {
+      setIsLoading(true);
+      setLoaderDescription("Updating");
+    },
+    onSuccess: () => {
+      setToggleUpload(false);
+      setOpen(false);
+      router.refresh();
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Error uploading file",
+        variant: "destructive",
+      });
+    },
+    onSettled: () => {
+      setIsLoading(false);
+    },
+  });
 
   return (
     <Dialog
@@ -164,10 +172,7 @@ const UpdateProfilePicModal = ({ userId }) => {
             >
               Cancel
             </Button>
-            <Button
-              className=" bg-blue-600 hover:bg-blue-400"
-              onClick={() => save()}
-            >
+            <Button className=" bg-blue-600 hover:bg-blue-400" onClick={save}>
               Save
             </Button>
           </div>

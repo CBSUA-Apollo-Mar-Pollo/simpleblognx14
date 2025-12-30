@@ -28,6 +28,23 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
               />
             </Link>
           )}
+          {blog.userStatus === "updated his profile picture" && (
+            <Link
+              href={`/postComment/${blog.id}/${0}`}
+              className="relative overflow-clip w-full flex flex-col"
+            >
+              <Image
+                sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
+                width={1200} // Example width, adjust based on design
+                height={800} // Example height, adjust based on design
+                priority={true}
+                src={blog.image.url}
+                alt="profile image"
+                referrerPolicy="no-referrer"
+                className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
+              />
+            </Link>
+          )}
 
           {/* Render single image */}
           {blog.image.length === 1 && (
