@@ -173,6 +173,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
           />
 
           <div className="mt-10  grid grid-cols-10">
+            {/* User Profile Picture */}
             <div className="col-span-2 relative">
               <ProfilePic user={user} session={session} />
             </div>
