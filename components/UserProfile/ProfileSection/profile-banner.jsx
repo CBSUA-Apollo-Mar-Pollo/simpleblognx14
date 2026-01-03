@@ -8,7 +8,6 @@ import BackgroundImage from "./BackgroundImage";
 import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import ProfileButtons from "./ProfileButtons";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
 import { getDominantColor } from "@/data/getDominantColor";

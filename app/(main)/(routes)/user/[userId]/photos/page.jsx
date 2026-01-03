@@ -5,39 +5,39 @@ import React from "react";
 import { UTApi } from "uploadthing/server";
 
 const UserProfilePagePhotos = async ({ params }) => {
-  const user = await db.user.findFirst({
+  const user = await db.userProfile.findFirst({
     where: {
       id: params?.userId,
     },
     select: {
-      blogs: true,
+      posts: true,
       id: true,
       type: true,
       name: true,
       bio: true,
-      email: true,
       image: true,
-      category: true,
+      categories: true,
       backgroundImage: true,
     },
   });
 
-  const getCoverPhoto = await db.blog.findMany({
-    where: {
-      AND: [
-        { image: { not: null } }, // Ensure `image` is not null
-        {
-          image: {
-            equals: {
-              url: user?.backgroundImage, // Correctly reference the JSON key
-            },
-          },
+  if (!user?.backgroundImage) {
+    user.coverPhotoId = null;
+  } else {
+    // 2. Only query if we have a valid URL
+    const getCoverPhoto = await db.post.findMany({
+      where: {
+        image: {
+          path: ["url"],
+          equals: user.backgroundImage,
         },
-      ],
-    },
-  });
+      },
+      select: { id: true }, // Optimization: only fetch the ID
+      take: 1, // We only need the first match
+    });
 
-  user.coverPhotoId = getCoverPhoto[0]?.id;
+    user.coverPhotoId = getCoverPhoto[0]?.id || null;
+  }
 
   // delete image in upload thing if the user click the cancel button
   // const deleteImage = async (image) => {
@@ -52,7 +52,7 @@ const UserProfilePagePhotos = async ({ params }) => {
   //   }
   // };
 
-  const userImages = await db.blog.findMany({
+  const userImages = await db.post.findMany({
     where: {
       authorId: params?.userId,
       image: {

@@ -51,7 +51,6 @@ const PostCard = ({
       const res = await getSharedAmount(blog.id);
       return res;
     },
-    suspense: true,
   });
 
   return (

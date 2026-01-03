@@ -9,7 +9,7 @@ const PostRouteImages = async ({ postId, index }) => {
   const images = await getPostRouteImages(postId);
   return (
     <div className="col-span-3 flex h-screen justify-center items-center relative bg-black">
-      {images.userStatus === "updated his cover photo" ? (
+      {images.userStatus ? (
         <BackgroundImagePost
           image={images.image}
           index={index}

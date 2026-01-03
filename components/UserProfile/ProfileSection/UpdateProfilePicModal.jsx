@@ -10,11 +10,17 @@ import {
 import { LoaderContext } from "@/context/LoaderContext";
 import { useToast } from "@/hooks/use-toast";
 import { uploadFiles } from "@/lib/uploadThing";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Camera, Loader2, Minus, Pencil, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import dynamic from "next/dynamic";
 const Avatar = dynamic(() => import("react-avatar-edit"), { ssr: false });
 import Cropper from "react-easy-crop";
@@ -25,10 +31,20 @@ import { Label } from "@/components/ui/Label";
 import { Slider } from "@/components/ui/Slider";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/utils/Icons";
+import getCroppedImg from "@/lib/crop-image";
+import { getProfilePicsSuggestion } from "@/actions/get-profilepics-suggestion";
+import { useSession } from "next-auth/react";
 
-const UpdateProfilePicModal = ({ userId }) => {
+const UpdateProfilePicModal = () => {
+  const { data: session, status } = useSession();
+  const userId = session?.user?.id;
+
+  const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [originalFile, setOriginalFile] = useState(null);
+
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
   const textAreaContainerRef = useRef(null);
@@ -48,7 +64,8 @@ const UpdateProfilePicModal = ({ userId }) => {
   });
   const [open, setOpen] = useState(false);
   const [newfile, setNewfile] = useState();
-  const [imageSrc, setImageSrc] = useState(null);
+
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -72,11 +89,12 @@ const UpdateProfilePicModal = ({ userId }) => {
     };
   }, [descriptionToggle]);
 
-  const onFileChange = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setImageSrc(URL.createObjectURL(file));
-    }
+  const onFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setOriginalFile(file); // 👈 keep original file
+    setImageSrc(URL.createObjectURL(file));
   };
 
   const handleInput = () => {
@@ -89,22 +107,17 @@ const UpdateProfilePicModal = ({ userId }) => {
     }
   };
 
+  const isUserReady = status === "authenticated" && !!userId;
+
   // fetch user's uploaded images so that user can choose between their past  or uploaded images in using it as profile pic
-  const { mutate: fetchUserImages, isLoading } = useMutation({
-    mutationFn: async () => {
-      const payload = {
-        userId: userId,
-      };
-      const { data } = await axios.post(
-        "/api/userProf/getUploadPhotos",
-        payload
-      );
-      return data;
-    },
-    onSuccess: (data) => {
-      setUserImages(data);
-    },
+  const { data: profilePicSuggestions, isLoading } = useQuery({
+    queryKey: ["profilepicsuggestions", { userId }],
+    queryFn: async () => await getProfilePicsSuggestion(userId),
+    enabled: isUserReady && open,
   });
+
+  console.log(profilePicSuggestions, "profilePicSuggestions");
+  console.log(userId, "user id");
 
   const onClose = () => {
     setToggleUpload(false);
@@ -114,14 +127,22 @@ const UpdateProfilePicModal = ({ userId }) => {
     setFile({ ...file, name: e.name, type: e.type });
   };
 
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
-  };
+  const onCropComplete = useCallback((_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
   const { mutate: save, isPending } = useMutation({
     mutationFn: async () => {
+      if (!originalFile) return;
+
+      const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+      const croppedFile = new File([croppedBlob], originalFile.name, {
+        type: croppedBlob.type,
+      });
+
       const [uploaded] = await uploadFiles("imageUploader", {
-        files: [newfile],
+        files: [croppedFile],
       });
 
       const payload = {
@@ -161,7 +182,6 @@ const UpdateProfilePicModal = ({ userId }) => {
       open={open}
       className="z-10"
       onOpenChange={() => {
-        fetchUserImages();
         setToggleUpload(false);
         setOpen((prevState) => !prevState);
       }}
@@ -263,7 +283,7 @@ const UpdateProfilePicModal = ({ userId }) => {
               </div>
             </div>
           ) : (
-            <div className="flex items-center mb-2 gap-x-3">
+            <div className="flex items-center mb-2 gap-x-3 px-2">
               <Button
                 className="w-full py-2 bg-blue-400/25 hover:bg-blue-200 flex gap-x-2 rounded-lg"
                 onClick={() => {
@@ -283,7 +303,17 @@ const UpdateProfilePicModal = ({ userId }) => {
             </div>
           )}
 
-          <Separator className="dark:bg-neutral-700  h-[0.1px] bg-neutral-400/60" />
+          {previewUrl && (
+            <img
+              src={previewUrl}
+              alt="Avatar preview"
+              className="w-24 h-24 rounded-full object-cover"
+            />
+          )}
+
+          {imageSrc && (
+            <Separator className="dark:bg-neutral-700  h-[0.1px] bg-neutral-400/60" />
+          )}
 
           {imageSrc && (
             <div className="flex justify-end gap-x-2 mr-2">
