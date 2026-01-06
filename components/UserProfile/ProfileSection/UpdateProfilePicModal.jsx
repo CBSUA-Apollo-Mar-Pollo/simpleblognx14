@@ -34,6 +34,7 @@ import { Icons } from "@/components/utils/Icons";
 import getCroppedImg from "@/lib/crop-image";
 import { getProfilePicsSuggestion } from "@/actions/get-profilepics-suggestion";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const UpdateProfilePicModal = () => {
   const { data: session, status } = useSession();
@@ -110,7 +111,7 @@ const UpdateProfilePicModal = () => {
   const isUserReady = status === "authenticated" && !!userId;
 
   // fetch user's uploaded images so that user can choose between their past  or uploaded images in using it as profile pic
-  const { data: profilePicSuggestions, isLoading } = useQuery({
+  const { data: profilePicSuggestions } = useQuery({
     queryKey: ["profilepicsuggestions", { userId }],
     queryFn: async () => await getProfilePicsSuggestion(userId),
     enabled: isUserReady && open,
@@ -334,32 +335,28 @@ const UpdateProfilePicModal = () => {
             </div>
           )}
 
-          {/* Uploads */}
-          {/* <div className="pt-4">
-            <h2 className="py-1">Uploads</h2>
+          {/* profile pic suggestions */}
+          {profilePicSuggestions && (
+            <div className="px-3 py-2">
+              <h2 className="text-black mb-2 font-semibold">
+                Profile pictures
+              </h2>
 
-            {isLoading ? (
-              <li className="flex justify-center my-20">
-                <Loader2 className="w-10 h-10 text-zinc-500 animate-spin my-10" />
-              </li>
-            ) : (
-              <div className="grid grid-cols-5 gap-2 my-4">
-                {userImages?.map((img, index) => (
+              <div className="flex items-center gap-x-3">
+                {profilePicSuggestions.map((profilePic, index) => (
                   <Image
-                    key={index}
-                    onClick={() => setSrc(img.image)}
                     sizes="100vw"
                     width={0}
                     height={0}
-                    src={img.image}
+                    src={profilePic.image.url}
                     alt="profile image"
                     referrerPolicy="no-referrer"
-                    className="w-[10rem] transition h-28 bg-black rounded-md object-cover cursor-pointer"
+                    className="h-32 w-32 transition bg-black rounded-md object-cover"
                   />
                 ))}
               </div>
-            )}
-          </div> */}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
