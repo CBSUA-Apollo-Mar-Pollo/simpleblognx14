@@ -15,12 +15,11 @@ const ProfilePic = ({ user, session }) => {
           }}
         />
 
-        {session?.user.id === user.id &&
-          !user.image?.includes("googleusercontent.com") && (
-            <div className="bg-neutral-50 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)]  absolute bottom-4 hover:bg-neutral-200 right-0 border rounded-full py-0.5 px-1 h-10 dark:bg-neutral-700 dark:hover:bg-neutral-600">
-              <UpdateProfilePicModal userId={user.id} />
-            </div>
-          )}
+        {session?.user.id === user.id && (
+          <div className="bg-neutral-50 drop-shadow-[0px_0px_4px_rgba(0,0,0,0.2)]  absolute bottom-4 hover:bg-neutral-200 right-0 border rounded-full py-0.5 px-1 h-10 dark:bg-neutral-700 dark:hover:bg-neutral-600">
+            <UpdateProfilePicModal userId={user.id} />
+          </div>
+        )}
       </div>
     </div>
   );

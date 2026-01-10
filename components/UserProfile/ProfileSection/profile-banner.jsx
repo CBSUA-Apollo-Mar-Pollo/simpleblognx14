@@ -27,10 +27,16 @@ import {
 import { checkIfIsAFriend } from "@/actions/checkIfIsAFriend";
 import ProfilePic from "./profile-pic";
 import Link from "next/link";
+import { Icons } from "@/components/utils/Icons";
+import getCroppedImg from "@/lib/crop-image";
+import { uploadFiles } from "@/lib/uploadThing";
 
 const ProfileBanner = ({ user, deleteImage }) => {
   const { data: session } = useSession();
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageSrc, setImageSrc] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [originalFile, setOriginalFile] = useState(null);
+
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -44,15 +50,30 @@ const ProfileBanner = ({ user, deleteImage }) => {
 
   const { mutate: saveCoverImage } = useMutation({
     mutationFn: async () => {
+      if (!originalFile) return;
+
+      const croppedBlob = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+      const croppedFile = new File([croppedBlob], originalFile.name, {
+        type: croppedBlob.type,
+      });
+
+      const [uploaded] = await uploadFiles("imageUploader", {
+        files: [croppedFile],
+      });
+
       const payload = {
-        image: imageUrl,
+        imageUrl: uploaded,
       };
 
       const { data } = await axios.post("/api/userProf", payload);
       return data;
     },
+    onMutate: () => {
+      setIsLoading(true);
+      setLoaderDescription("Updating");
+    },
     onError: (err) => {
-      setIsLoading(false);
       //  if there are any other errors beside the server error
       return toast({
         title: "There was an error",
@@ -61,26 +82,11 @@ const ProfileBanner = ({ user, deleteImage }) => {
       });
     },
     onSuccess: async () => {
-      const payload = {
-        userStatus: "updated his cover photo",
-        images: imageUrl,
-      };
-      axios
-        .post("/api/blog", payload)
-        .then((response) => {
-          setIsLoading(false);
-          // Success
-          window.location.reload();
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          setImageUrl("");
-          router.refresh();
-          return toast({
-            description: "Something went wrong",
-            variant: "destructive",
-          });
-        });
+      router.refresh();
+    },
+    onSettled: () => {
+      setImageSrc(null);
+      setIsLoading(false);
     },
   });
 
@@ -136,28 +142,30 @@ const ProfileBanner = ({ user, deleteImage }) => {
             : `linear-gradient(to bottom, rgba(${dominantColor?.[0]}, ${dominantColor?.[1]}, ${dominantColor?.[2]}, 0.3) 0%, rgba(36,36,36, 1) 100%)`,
       }}
     >
-      {/* display when this buttons when the user is changing his/her cover photo */}
-      {imageUrl.length !== 0 && (
-        <div className="bg-neutral-700 absolute top-0 z-10 opacity-80 text-white w-full">
-          <div className="flex justify-end py-2 gap-x-4 mx-5">
-            <Button
-              onClick={() => {
-                deleteImage(imageUrl);
-                setImageUrl("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              className="bg-blue-600 hover:bg-blue-700"
-              onClick={() => {
-                saveCoverImage();
-                setIsLoading(true);
-                setLoaderDescription("Updating");
-              }}
-            >
-              Save Changes
-            </Button>
+      {/* display when this buttons when the user is changing cover photo */}
+      {imageSrc !== null && (
+        <div className="bg-neutral-700/50 absolute top-0 z-10  text-white w-full">
+          <div className="flex items-center justify-between py-2 gap-x-4 mx-5">
+            <div className="flex items-center gap-x-2 font-medium">
+              <Icons.earthIcon className="h-6 w-6 fill-white" />
+              <p className="text-[15px]">Your cover photo is public.</p>
+            </div>
+            <div className="flex items-center gap-x-4">
+              <Button
+                className="h-[4.5vh] px-8 bg-white hover:bg-neutral-200 text-black font-semibold"
+                onClick={() => {
+                  setImageSrc(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 h-[4.5vh] px-8"
+                onClick={saveCoverImage}
+              >
+                Save Changes
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -165,9 +173,10 @@ const ProfileBanner = ({ user, deleteImage }) => {
       <div className="xl:mx-40 2xl:mx-52">
         <div className="">
           <BackgroundImage
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            session={session}
+            imageSrc={imageSrc}
+            setImageSrc={setImageSrc}
+            setCroppedAreaPixels={setCroppedAreaPixels}
+            setOriginalFile={setOriginalFile}
             user={user}
           />
 

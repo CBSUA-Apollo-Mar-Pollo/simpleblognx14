@@ -29,7 +29,6 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Label } from "@/components/ui/Label";
 import { Slider } from "@/components/ui/Slider";
-import { cn } from "@/lib/utils";
 import { Icons } from "@/components/utils/Icons";
 import getCroppedImg from "@/lib/crop-image";
 import { getProfilePicsSuggestion } from "@/actions/get-profilepics-suggestion";
@@ -70,7 +69,6 @@ const UpdateProfilePicModal = () => {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      // 2. Check if the click was outside the containerRef
       if (
         textAreaContainerRef.current &&
         !textAreaContainerRef.current.contains(event.target)
@@ -79,12 +77,10 @@ const UpdateProfilePicModal = () => {
       }
     }
 
-    // 3. Attach the event listener
     if (descriptionToggle) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
-    // 4. Cleanup the listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -159,7 +155,7 @@ const UpdateProfilePicModal = () => {
     },
     onMutate: () => {
       setIsLoading(true);
-      setLoaderDescription("Updating");
+      setLoaderDescription("Updating profile picture...");
     },
     onSuccess: () => {
       setToggleUpload(false);

@@ -1,59 +1,56 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
 import ProfilePIc from "./profile-pic";
-import { Loader2 } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import Cropper from "react-easy-crop";
 
-const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
-  const [dragging, setDragging] = useState(false);
-  const [dragStartY, setDragStartY] = useState(0);
-  const containerRef = useRef(null);
-  const imageRef = useRef(null);
-  const [childPosition, setChildPosition] = useState(null);
-  const [imageLoading, setImageLoading] = useState(true);
+const BackgroundImage = ({
+  imageSrc,
+  setImageSrc,
+  setCroppedAreaPixels,
+  setOriginalFile,
+  user,
+}) => {
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
 
-  const handleImageLoad = () => setImageLoading(false);
-  const handleImageError = () => setImageLoading(false);
+  const fileInputRef = useRef(null);
+
+  const onFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setOriginalFile(file); // 👈 keep original file
+
+    setImageSrc(URL.createObjectURL(file));
+  };
+
+  const onCropComplete = useCallback((_, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
   return (
     <div className="relative">
       {/* div if user is not yet to upload background image */}
-      {imageUrl.length ? (
+      {imageSrc ? (
         <div className="relative">
-          <div
-            className="overflow-y-auto h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move"
-            ref={containerRef}
-          >
-            {imageLoading && (
-              <div className="flex items-center justify-center gap-x-2 text-lg h-full">
-                <Loader2 className="w-10 h-10  animate-spin text-white" />
-              </div>
-            )}
-            {/* show the image that will be uploaded  */}
-            <div className="scroll-container relative">
-              <Image
-                sizes="100vw"
-                width={0}
-                height={0}
-                src={imageUrl[0].url}
-                alt="profile image"
-                referrerPolicy="no-referrer"
-                className="w-[80vw] max-h-fit"
-                draggable="false"
-                ref={imageRef}
-                onLoad={handleImageLoad}
-                onError={handleImageError}
-              />
-            </div>
+          <div className=" h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move">
+            <Cropper
+              image={imageSrc}
+              crop={crop}
+              zoom={1}
+              onZoomChange={() => {}}
+              minZoom={1}
+              maxZoom={1}
+              aspect={3.1 / 1.1}
+              showGrid={false}
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              objectFit="cover"
+            />
           </div>
-
-          {/* button for uploading cover photo */}
-          <UpdateCoverPhotoButton
-            setImageUrl={setImageUrl}
-            user={user}
-            session={session}
-          />
         </div>
       ) : (
         <div>
@@ -83,11 +80,34 @@ const BackgroundImage = ({ imageUrl, setImageUrl, session, user }) => {
             </div>
           )}
 
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+            style={{ display: "none" }}
+          />
+
+          <div className="absolute bottom-5 right-8">
+            <Button
+              onClick={() => {
+                fileInputRef.current?.click();
+              }}
+              className="flex items-center gap-x-2 bg-white hover:bg-neutral-200 shadow-md drop-shadow-md"
+            >
+              <Camera className="text-neutral-50 h-6 w-6 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
+              <span className="font-semibold text-sm text-black">
+                {user.backgroundImage ? "Edit cover photo" : "Add cover photo"}
+              </span>
+            </Button>
+          </div>
+
+          {/* 
           <UpdateCoverPhotoButton
             setImageUrl={setImageUrl}
             user={user}
             session={session}
-          />
+          /> */}
         </div>
       )}
     </div>
