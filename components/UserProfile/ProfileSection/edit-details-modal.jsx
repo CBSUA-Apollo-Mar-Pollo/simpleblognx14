@@ -82,9 +82,6 @@ const EditDetailsModal = ({
     },
   });
 
-  console.log(userdetails?.ProfileAboutInfoVisibility, "userdetails");
-  console.log(switchData, "switchData");
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

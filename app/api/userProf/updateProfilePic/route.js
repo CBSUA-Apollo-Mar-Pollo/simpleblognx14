@@ -12,7 +12,7 @@ export async function POST(req) {
   }
 
   const body = await req.json();
-  const { imageUrl } = body;
+  const { imageUrl, originalImage } = body;
 
   if (!imageUrl) {
     return new Response("Invalid payload", { status: 400 });
@@ -30,7 +30,7 @@ export async function POST(req) {
 
     await db.post.create({
       data: {
-        image: imageUrl,
+        image: originalImage,
         userStatus: "updated his profile picture",
         authorId: session?.user.id,
       },

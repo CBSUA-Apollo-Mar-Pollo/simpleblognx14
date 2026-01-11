@@ -44,6 +44,7 @@ const UpdateProfilePicModal = () => {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
+  const [orientation, setOrientation] = useState();
 
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
@@ -55,7 +56,6 @@ const UpdateProfilePicModal = () => {
   const [src, setSrc] = useState(
     "https://utfs.io/f/dfc00bb0-e905-45e1-a6b3-b8794eedd42e-naku7h.webp"
   );
-  const [userImages, setUserImages] = useState([]);
   const [toggleUpload, setToggleUpload] = useState(false);
   const avatarRef = useRef(null);
   const [file, setFile] = useState({
@@ -90,8 +90,19 @@ const UpdateProfilePicModal = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setOriginalFile(file); // 👈 keep original file
-    setImageSrc(URL.createObjectURL(file));
+    const objectUrl = URL.createObjectURL(file);
+    const img = new window.Image();
+
+    setOriginalFile(file);
+    setImageSrc(objectUrl);
+
+    img.onload = () => {
+      if (img.width > img.height) setOrientation("landscape");
+      else if (img.height > img.width) setOrientation("portrait");
+      else setOrientation("square");
+    };
+
+    img.src = objectUrl;
   };
 
   const handleInput = () => {
@@ -113,8 +124,7 @@ const UpdateProfilePicModal = () => {
     enabled: isUserReady && open,
   });
 
-  console.log(profilePicSuggestions, "profilePicSuggestions");
-  console.log(userId, "user id");
+  console.log(orientation, "orientation");
 
   const onClose = () => {
     setToggleUpload(false);
@@ -127,6 +137,8 @@ const UpdateProfilePicModal = () => {
   const onCropComplete = useCallback((_, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
+
+  console.log(originalFile, "original file");
 
   const { mutate: save, isPending } = useMutation({
     mutationFn: async () => {
@@ -142,8 +154,13 @@ const UpdateProfilePicModal = () => {
         files: [croppedFile],
       });
 
+      const [originalImageUploaded] = await uploadFiles("imageUploader", {
+        files: [originalFile],
+      });
+
       const payload = {
         imageUrl: uploaded,
+        originalImage: originalImageUploaded,
       };
 
       const { data } = await axios.post(
@@ -162,7 +179,8 @@ const UpdateProfilePicModal = () => {
       setOpen(false);
       router.refresh();
     },
-    onError: () => {
+    onError: (err) => {
+      console.log(err, "err");
       toast({
         title: "Error",
         description: "Error uploading file",
@@ -234,7 +252,7 @@ const UpdateProfilePicModal = () => {
               onClick={() => setDescriptionToggle(true)}
               className="border border-neutral-400/60 rounded-2xl pt-3 px-3 mx-4 pb-10 cursor-pointer"
             >
-              <Label className="text-neutral-800 text-[16px] font-light  ">
+              <Label className="text-neutral-800 text-[15px] font-light  ">
                 Description
               </Label>
             </div>
@@ -243,7 +261,13 @@ const UpdateProfilePicModal = () => {
           {toggleUpload ? (
             <div className="">
               <div className="flex flex-col items-center justify-center">
-                <div style={{ position: "relative", width: 340, height: 400 }}>
+                <div
+                  style={{
+                    position: "relative",
+                    width: `${orientation === "landscape" ? "100%" : "300px"}`,
+                    height: 300,
+                  }}
+                >
                   <Cropper
                     image={imageSrc}
                     crop={crop}
@@ -317,7 +341,10 @@ const UpdateProfilePicModal = () => {
               <Button
                 className="text-blue-600 hover:bg-neutral-600 font-semibold"
                 variant="ghost"
-                onClick={() => setToggleUpload(false)}
+                onClick={() => {
+                  setToggleUpload(false);
+                  setImageSrc(null);
+                }}
               >
                 Cancel
               </Button>
@@ -332,7 +359,7 @@ const UpdateProfilePicModal = () => {
           )}
 
           {/* profile pic suggestions */}
-          {profilePicSuggestions && (
+          {profilePicSuggestions && !imageSrc && (
             <div className="px-3 py-2">
               <h2 className="text-black mb-2 font-semibold">
                 Profile pictures
