@@ -110,6 +110,15 @@ const ChatBoxMenu = () => {
             </Button>
           </div>
 
+          {friends.length === 0 && (
+            <div className="flex flex-col items-center justify-center gap-3 mt-[10vh]">
+              <h1 className="text-lg font-medium">No chats</h1>
+              <p className="text-sm">
+                when you have friends, you'll see them here.
+              </p>
+            </div>
+          )}
+
           <div className="mt-2">
             {isPending ? (
               <span>loading</span>
@@ -183,7 +192,7 @@ const ChatBoxMenu = () => {
                       )}
                     </div>
                   </div>
-                )
+                ),
               )
             )}
           </div>

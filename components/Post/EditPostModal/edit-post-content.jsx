@@ -61,7 +61,7 @@ const EditPostContent = ({
             <div
               className={cn(
                 "absolute top-2 left-4 z-10 flex items-center w-full gap-x-2 px-2",
-                imagePreviews.length === 1 && "justify-between"
+                imagePreviews.length === 1 && "justify-between",
               )}
             >
               <div className="flex items-center gap-x-2">
@@ -77,13 +77,7 @@ const EditPostContent = ({
                   className="  bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
                 >
                   {" "}
-                  <Image
-                    src="/ImageIcons/imageadd.png"
-                    className="h-6 w-6"
-                    alt="Add image icon"
-                    width={24}
-                    height={24}
-                  />
+                  <ImagePlus className="h-5 w-5 text-neutral-800" />
                   <span className="text-sm font-semibold">
                     Add Photos/Videos
                   </span>
@@ -159,7 +153,7 @@ const EditPostContent = ({
                         "grid  gap-2 max-h-[60vh] overflow-y-auto pr-2",
                         imagePreviews.length === 2
                           ? "grid-cols-2"
-                          : "grid-cols-3"
+                          : "grid-cols-3",
                       )}
                     >
                       {imagePreviews.map((img, index) => (

@@ -11,7 +11,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               src={imagePreviews[0] && imagePreviews[0].url}
               alt="profile image"
               className="w-full h-auto object-cover"
-              style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
+              // Example aspect ratio (adjust as needed)
             />
           </div>
         </div>

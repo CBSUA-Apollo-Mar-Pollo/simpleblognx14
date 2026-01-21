@@ -111,10 +111,10 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(
-    blog.image !== null ? [...blog.image] : []
+    Array.isArray(blog?.image) ? blog.image : blog?.image ? [blog.image] : [],
   );
   const [videoPreviews, setVideoPreviews] = useState(
-    blog.video !== null ? [...blog.video] : []
+    Array.isArray(blog?.video) ? blog.video : blog?.video ? [blog.video] : [],
   );
 
   const { mutate: updatePost, isLoading } = useMutation({
@@ -230,7 +230,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
             reject(error);
           };
           reader.readAsDataURL(file);
-        })
+        }),
       );
     });
 
@@ -278,7 +278,7 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
         </span>
       </DialogTrigger>
 
-      <DialogContent className="[&>button]:hidden drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] min-w-[30vw] min-h-auto dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200">
+      <DialogContent className="[&>button]:hidden drop-shadow-[0px_0px_5px_rgba(0,0,0,0.11)] shadow-md w-[90vw] max-w-2xl dark:bg-neutral-800 dark:border-0 p-0 dark:text-neutral-200  flex flex-col rounded-xl">
         {/* main content of edit post modal */}
         {!isPostAudienceActive && (
           <>
@@ -295,30 +295,30 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
 
             <div className="relative">
               <div className="grid gap-3 py-1">
-                <SimpleBar style={{ maxHeight: "60vh" }}>
-                  <div className="flex items-center gap-2 px-4">
-                    <UserAvatar
-                      className="h-10 w-10"
-                      user={{
-                        name: session?.user.name || null || user?.name,
-                        image: session?.user.image || null || user?.image,
-                      }}
-                    />
-                    <div className="space-y-1">
-                      <p className="font-semibold text-gray-700 text-base pl-1 dark:text-neutral-200">
-                        {session?.user.name || user?.name}
-                      </p>
-                      <button
-                        onClick={() => setIsPostAudienceActive(true)}
-                        className="flex items-center gap-x-1 bg-neutral-200 px-2 py-0.5 rounded-lg"
-                      >
-                        <Icons.earthIcon className="h-3.5 w-3.5" />
-                        <span className="text-[13px] font-medium">Public</span>
-                        <Triangle className="rotate-180 h-2 w-2 fill-neutral-800 mb-[1px] ml-1" />
-                      </button>
-                    </div>
+                <div className="flex items-center gap-2 px-4">
+                  <UserAvatar
+                    className="h-10 w-10"
+                    user={{
+                      name: session?.user.name || null || user?.name,
+                      image: session?.user.image || null || user?.image,
+                    }}
+                  />
+                  <div className="space-y-1">
+                    <p className="font-semibold text-gray-700 text-base pl-1 dark:text-neutral-200">
+                      {session?.user.name || user?.name}
+                    </p>
+                    <button
+                      onClick={() => setIsPostAudienceActive(true)}
+                      className="flex items-center gap-x-1 bg-neutral-200 px-2 py-0.5 rounded-lg"
+                    >
+                      <Icons.earthIcon className="h-3.5 w-3.5" />
+                      <span className="text-[13px] font-medium">Public</span>
+                      <Triangle className="rotate-180 h-2 w-2 fill-neutral-800 mb-[1px] ml-1" />
+                    </button>
                   </div>
+                </div>
 
+                <SimpleBar style={{ maxHeight: "60vh" }}>
                   <div className="grid items-center my-2">
                     {/* Description of the post or background stylish that only contain  text */}
 
@@ -726,101 +726,100 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
                       />
                     )}
                   </div>
-
-                  {sharedPost ? null : (
-                    <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-4 flex justify-between items-center py-1 ">
-                      <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
-                        Add to your post
-                      </h1>
-                      <div className="flex items-center">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              disabled={selectedBackgroundColor}
-                              variant="ghost"
-                              className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                              onClick={() =>
-                                document.getElementById("fileInput").click()
-                              }
-                            >
-                              <ImagePlus
-                                className={`${
-                                  selectedBackgroundColor
-                                    ? "text-neutral-500"
-                                    : "text-green-600"
-                                }  h-6 w-6`}
-                              />
-                            </Button>
-                          </TooltipTrigger>
-
-                          <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
-                            <p className="text-white dark:text-black text-xs p-1 rounded-xl">
-                              Photo/video
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                            >
-                              <Icons.friendTagIcon className="fill-blue-600 h-7 w-7" />
-                            </Button>
-                          </TooltipTrigger>
-
-                          <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
-                            <p className="text-white dark:text-black text-xs p-1 rounded-xl">
-                              Tag people
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="hover:bg-gray-100 p-0 rounded-full cursor-pointer focus:ring-0"
-                            >
-                              <Icons.smileEmoteIcon className="fill-yellow-600 h-9 w-9" />
-                            </Button>
-                          </TooltipTrigger>
-
-                          <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
-                            <p className="text-white dark:text-black text-xs p-1 rounded-xl">
-                              Feeling/Activity
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              disabled={selectedBackgroundColor}
-                              variant="ghost"
-                              className="hover:bg-gray-100 p-1 rounded-full cursor-pointer focus:ring-0"
-                            >
-                              <Icons.GifIcon
-                                className={` ${
-                                  selectedBackgroundColor
-                                    ? "fill-neutral-600"
-                                    : "fill-cyan-600"
-                                }  h-9 w-9`}
-                              />
-                            </Button>
-                          </TooltipTrigger>
-
-                          <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
-                            <p className="text-white dark:text-black text-xs p-1 rounded-xl">
-                              GIF
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </div>
-                  )}
                 </SimpleBar>
+                {sharedPost ? null : (
+                  <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-4 flex justify-between items-center py-1 ">
+                    <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
+                      Add to your post
+                    </h1>
+                    <div className="flex items-center">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            disabled={selectedBackgroundColor}
+                            variant="ghost"
+                            className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                            onClick={() =>
+                              document.getElementById("fileInput").click()
+                            }
+                          >
+                            <ImagePlus
+                              className={`${
+                                selectedBackgroundColor
+                                  ? "text-neutral-500"
+                                  : "text-green-600"
+                              }  h-6 w-6`}
+                            />
+                          </Button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                          <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                            Photo/video
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
+                          >
+                            <Icons.friendTagIcon className="fill-blue-600 h-7 w-7" />
+                          </Button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                          <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                            Tag people
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="hover:bg-gray-100 p-0 rounded-full cursor-pointer focus:ring-0"
+                          >
+                            <Icons.smileEmoteIcon className="fill-yellow-600 h-9 w-9" />
+                          </Button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                          <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                            Feeling/Activity
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            disabled={selectedBackgroundColor}
+                            variant="ghost"
+                            className="hover:bg-gray-100 p-1 rounded-full cursor-pointer focus:ring-0"
+                          >
+                            <Icons.GifIcon
+                              className={` ${
+                                selectedBackgroundColor
+                                  ? "fill-neutral-600"
+                                  : "fill-cyan-600"
+                              }  h-9 w-9`}
+                            />
+                          </Button>
+                        </TooltipTrigger>
+
+                        <TooltipContent className="bg-black/85 dark:bg-white/85 border-0">
+                          <p className="text-white dark:text-black text-xs p-1 rounded-xl">
+                            GIF
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter className="pt-1 pb-4 mx-4 ">
