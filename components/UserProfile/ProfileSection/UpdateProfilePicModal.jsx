@@ -54,7 +54,7 @@ const UpdateProfilePicModal = () => {
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const { toast } = useToast();
   const [src, setSrc] = useState(
-    "https://utfs.io/f/dfc00bb0-e905-45e1-a6b3-b8794eedd42e-naku7h.webp"
+    "https://utfs.io/f/dfc00bb0-e905-45e1-a6b3-b8794eedd42e-naku7h.webp",
   );
   const [toggleUpload, setToggleUpload] = useState(false);
   const avatarRef = useRef(null);
@@ -165,7 +165,7 @@ const UpdateProfilePicModal = () => {
 
       const { data } = await axios.post(
         "/api/userProf/updateProfilePic",
-        payload
+        payload,
       );
 
       return data;
@@ -258,7 +258,7 @@ const UpdateProfilePicModal = () => {
             </div>
           )}
 
-          {toggleUpload ? (
+          {imageSrc ? (
             <div className="">
               <div className="flex flex-col items-center justify-center">
                 <div
@@ -309,7 +309,7 @@ const UpdateProfilePicModal = () => {
                 className="w-full py-2 bg-blue-400/25 hover:bg-blue-200 flex gap-x-2 rounded-lg"
                 onClick={() => {
                   setSrc("");
-                  setToggleUpload(true);
+
                   fileInputRef.current?.click();
                 }}
               >

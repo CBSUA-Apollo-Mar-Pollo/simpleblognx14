@@ -1,7 +1,17 @@
+"use client";
+
 import ColorThief from "colorthief";
 
 export async function getDominantColor(imageUrl) {
   if (!imageUrl) return null;
+
+  // Check if we're in a browser environment
+  if (typeof Image === "undefined") {
+    console.warn(
+      "getDominantColor: Image API not available in this environment",
+    );
+    return null;
+  }
 
   try {
     const response = await fetch(imageUrl);

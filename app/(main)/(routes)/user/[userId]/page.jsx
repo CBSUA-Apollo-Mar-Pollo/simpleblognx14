@@ -9,7 +9,7 @@ import PageSetupChecklists from "@/components/UserProfile/page-setup-checklists"
 import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { unstable_cache } from "next/cache"; // 1. Import caching utility
+import { unstable_cache } from "next/cache";
 
 const AUTHOR_SELECT = {
   id: true,
@@ -58,7 +58,7 @@ const getUserDataCached = unstable_cache(
   {
     revalidate: 3600,
     tags: ["user-profile"],
-  }
+  },
 );
 
 const UserProfilePage = async ({ params }) => {
@@ -98,7 +98,7 @@ const UserProfilePage = async ({ params }) => {
   const mergeData = [...initialPosts, ...shortVideos];
 
   const sortedData = mergeData.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
   return (

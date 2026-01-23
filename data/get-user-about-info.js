@@ -8,7 +8,7 @@ export const getUserAboutInfo = async (user) => {
       userId: user.id,
     },
     include: {
-      ProfileAboutInfoVisibility: true,
+      profileAboutInfoVisibility: true,
     },
   });
 

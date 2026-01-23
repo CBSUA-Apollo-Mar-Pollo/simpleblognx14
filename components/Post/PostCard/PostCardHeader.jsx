@@ -33,8 +33,6 @@ const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
     return router.push(`/user/${blog?.author.id}`);
   };
 
-  console.log(blog, "blog from post header");
-
   return (
     <div className="flex items-center justify-between gap-1 pl-5 py-0">
       {/* profile image  */}

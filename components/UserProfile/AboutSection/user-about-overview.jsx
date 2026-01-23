@@ -62,7 +62,9 @@ const UserAboutOverView = ({ user }) => {
 
   if (isPending) {
     return (
-      <Loader2 className="w-5 h-5 text-neutral-600 animate-spin my-10 mr-1" />
+      <div className="col-span-6 pl-4 pr-20 pt-10 pb-4 space-y-6">
+        <Loader2 className="w-5 h-5 text-neutral-600 animate-spin my-10 mr-1" />
+      </div>
     );
   }
 
@@ -144,7 +146,7 @@ const UserAboutOverView = ({ user }) => {
         </div>
       )}
 
-      {!toggleWorkPlaceForm && !userAboutInfo.workplace && (
+      {!toggleWorkPlaceForm && !userAboutInfo?.workplace && (
         <Button
           onClick={() => setToggleWorkPlaceForm(!toggleWorkPlaceForm)}
           variant="ghost"
@@ -226,7 +228,7 @@ const UserAboutOverView = ({ user }) => {
         </div>
       )}
 
-      {!toggleHighSchool && !userAboutInfo.highschool && (
+      {!toggleHighSchool && !userAboutInfo?.highschool && (
         <Button
           onClick={() => setToggleHighSchool(!toggleHighSchool)}
           variant="ghost"
@@ -514,7 +516,7 @@ const UserAboutOverView = ({ user }) => {
                     const phone = userAboutInfo?.phonenumber
                       ? parsePhoneNumberFromString(
                           userAboutInfo.phonenumber.number,
-                          userAboutInfo.phonenumber.selectedCode.code
+                          userAboutInfo.phonenumber.selectedCode.code,
                         )
                       : null;
 
