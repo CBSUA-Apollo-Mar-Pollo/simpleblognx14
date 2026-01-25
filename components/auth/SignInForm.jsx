@@ -80,6 +80,7 @@ const SignInForm = () => {
         }
       });
 
+    // check if the user has been onboarded
     CredentialOnboardedCheck(email)
       .then((res) => {
         console.log(res.success);
@@ -106,6 +107,8 @@ const SignInForm = () => {
         }
         setIsLoading(false);
       });
+
+    // signing in the user
     try {
       const res = await signIn("credentials", {
         email,

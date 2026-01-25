@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -24,6 +24,7 @@ import {
   ChevronLeft,
   ImagePlus,
   LayoutGrid,
+  Pencil,
   Triangle,
   X,
 } from "lucide-react";
@@ -38,7 +39,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const AddPostModal = ({ user, communityId }) => {
-  const router = useRouter();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
@@ -51,6 +51,8 @@ const AddPostModal = ({ user, communityId }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
     useState(false);
+
+  const fileInputRef = useRef(null);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -114,11 +116,11 @@ const AddPostModal = ({ user, communityId }) => {
           images = response;
         } catch (error) {
           setErrorMessage(
-            "Error uploading image, please upload an image with the extension of the following: jpeg, png"
+            "Error uploading image, please upload an image with the extension of the following: jpeg, png",
           );
           throw new UploadError(
             "Failed to upload image: " + error.message,
-            400
+            400,
           );
         }
       }
@@ -187,7 +189,7 @@ const AddPostModal = ({ user, communityId }) => {
   });
 
   // Function to handle file selection from input
-  const handleFileSelect = (event) => {
+  const onFileChange = (event) => {
     const files = event.target.files;
     const fileArray = Array.from(files);
 
@@ -238,7 +240,7 @@ const AddPostModal = ({ user, communityId }) => {
             reject(error);
           };
           reader.readAsDataURL(file);
-        })
+        }),
       );
     });
 
@@ -265,7 +267,7 @@ const AddPostModal = ({ user, communityId }) => {
         />
       </DialogTrigger>
 
-      <DialogContent className="[&>button]:hidden  min-w-[40vw]   dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 ">
+      <DialogContent className="[&>button]:hidden  min-w-[40vw]   dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 rounded-xl">
         {/* Create post contest */}
         {!isPostAudienceActive && (
           <>
@@ -443,95 +445,83 @@ const AddPostModal = ({ user, communityId }) => {
                 )}
 
                 {/* Image upload UI */}
-                {toggleImageUpload && (
-                  <div className="flex items-center justify-center w-auto border  border-gray-300 dark:border-neutral-700 rounded-md p-2 relative my-2 mx-4">
-                    {selectedFiles.length > 0 ? (
-                      <div
-                        className="w-full"
-                        onDrop={handleFileDrop}
-                        onDragOver={handleDragOver}
-                      >
-                        <div className="relative">
+                {selectedFiles.length > 0 && (
+                  <div className="flex items-center justify-center w-auto  dark:border-neutral-700 rounded-md relative my-2 mx-4">
+                    <div
+                      className="w-full"
+                      onDrop={handleFileDrop}
+                      onDragOver={handleDragOver}
+                    >
+                      <div className="relative">
+                        <div className="z-10 absolute top-2 left-4 flex gap-x-2">
                           <Button
                             onClick={() =>
                               document.getElementById("fileInput").click()
                             }
                             variant="secondary"
-                            className="z-10 absolute top-2 right-4 bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md"
+                            className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
+                          >
+                            {" "}
+                            <Pencil className="h-4 w-4 " />
+                            <span className="text-[13px] font-semibold">
+                              {selectedFiles.length > 1 ? "Edit all" : "Edit"}
+                            </span>
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              document.getElementById("fileInput").click()
+                            }
+                            variant="secondary"
+                            className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
                           >
                             {" "}
                             <img
                               src="/ImageIcons/imageadd.png"
-                              className="h-6 w-6"
+                              className="h-4 w-4"
                             />
-                            <span className="text-sm font-semibold">
+                            <span className="text-[13px] font-semibold">
                               Add Photos/Videos
                             </span>
                           </Button>
-                          <input
-                            id="fileInput"
-                            type="file"
-                            className="hidden"
-                            accept="image/*, video/*"
-                            onChange={handleFileSelect}
-                          />
                         </div>
 
-                        <ImagePreviewCreatePost imagePreviews={imagePreviews} />
-                      </div>
-                    ) : (
-                      <>
                         <Button
-                          variant="ghost"
-                          className="absolute right-2 top-2 py-0 px-3 rounded-full bg-gray-100 dark:bg-neutral-400 z-10"
-                          onClick={() =>
-                            setToggleImageUpload((prevState) => !prevState)
-                          }
+                          onClick={() => {
+                            setImagePreviews([]);
+                            setSelectedFiles([]);
+                          }}
+                          className="absolute top-2 right-2 bg-white drop-shadow-md shadow-md border dark:bg-neutral-700 z-10 px-2.5 rounded-full hover:bg-neutral-600"
                         >
-                          <X className="w-4 h-4 font-bold" />
+                          <X className="h-5 w-5 text-neutral-700" />
                         </Button>
-                        <div
-                          className="py-16 hover:bg-neutral-200 dark:hover:bg-neutral-600 w-full cursor-pointer relative"
-                          onDrop={handleFileDrop}
-                          onDragOver={handleDragOver}
-                          onClick={() =>
-                            document.getElementById("fileInput").click()
-                          }
-                        >
-                          <div className="space-y-2">
-                            <div className="flex justify-center">
-                              <div className="dark:bg-neutral-700 py-2 px-2 rounded-full">
-                                <ImagePlus className="h-7 w-7" />
-                              </div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                              <p className="text-center font-medium text-[17px] dark:text-neutral-100">
-                                Add Photos/Videos
-                              </p>
-                              <span className="text-xs dark:text-neutral-400">
-                                or drag and drop
-                              </span>
-                            </div>
-                          </div>
-                          <input
-                            id="fileInput"
-                            type="file"
-                            multiple
-                            className="hidden"
-                            accept="image/*, video/*"
-                            onChange={handleFileSelect}
-                          />
-                        </div>
-                      </>
-                    )}
+                        <input
+                          id="fileInput"
+                          type="file"
+                          className="hidden"
+                          multiple
+                          accept="image/*, video/*"
+                          onChange={onFileChange}
+                        />
+                      </div>
+
+                      <ImagePreviewCreatePost imagePreviews={imagePreviews} />
+                    </div>
                   </div>
                 )}
               </div>
 
               <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-4 flex justify-between items-center py-1 ">
-                <h1 className="font-semibold text-gray-600 dark:text-neutral-300">
+                <h1 className="font-semibold text-neutral-800 dark:text-neutral-300 text-sm">
                   Add to your post
                 </h1>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={onFileChange}
+                  style={{ display: "none" }}
+                />
                 <div className="flex items-center">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -539,9 +529,7 @@ const AddPostModal = ({ user, communityId }) => {
                         disabled={selectedBackgroundColor}
                         variant="ghost"
                         className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
-                        onClick={() =>
-                          setToggleImageUpload((prevState) => !prevState)
-                        }
+                        onClick={() => fileInputRef.current?.click()}
                       >
                         <ImagePlus
                           className={`${
