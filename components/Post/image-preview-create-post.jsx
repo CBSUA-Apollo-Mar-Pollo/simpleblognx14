@@ -38,17 +38,22 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
     previewMeta.length === 2 &&
     previewMeta.every((img) => img.orientation === "vertical");
 
-  const isBothHorizontal =
-    previewMeta.length === 2 &&
-    previewMeta.every((img) => img.orientation === "horizontal");
+  // const isBothHorizontal =
+  //   previewMeta.length === 2 &&
+  //   previewMeta.every((img) => img.orientation === "horizontal");
 
-  const isThreeVertical =
-    previewMeta.length === 3 &&
-    previewMeta.every((img) => img.orientation === "vertical");
+  // const isThreeVertical =
+  //   previewMeta.length === 3 &&
+  //   previewMeta.every((img) => img.orientation === "vertical");
+
+  const heroOrientation = previewMeta[0]?.orientation;
+  const secondaryOrientations = previewMeta
+    .slice(1)
+    .map((img) => img.orientation);
 
   const isThreeHorizontal =
-    previewMeta.length === 3 &&
-    previewMeta.every((img) => img.orientation === "horizontal");
+    heroOrientation === "horizontal" &&
+    secondaryOrientations.every((o) => o === "horizontal");
 
   const isFourVertical =
     previewMeta.length === 4 &&
@@ -100,51 +105,63 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
         </div>
       )}
 
-      {previewMeta.length === 3 && (
-        <div
-          className={`grid gap-1 ${
-            isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"
-          }`}
-        >
-          {/* HERO IMAGE */}
-          <div
-            className={`relative ${
-              isThreeHorizontal ? "row-span-1" : "col-span-5"
-            }`}
-          >
-            <img
-              src={previewMeta[0].src}
-              alt="preview"
-              className="w-full object-cover rounded-md"
-              style={{
-                aspectRatio: isThreeHorizontal ? "16 / 9" : "5 / 11",
-              }}
-            />
-          </div>
+      {previewMeta.length === 3 &&
+        (() => {
+          const verticalCount = previewMeta.filter(
+            (img) => img.orientation === "vertical",
+          ).length;
+          const horizontalCount = previewMeta.length - verticalCount;
 
-          {/* SECONDARY IMAGES */}
-          <div
-            className={`${
-              isThreeHorizontal
-                ? "grid grid-cols-2 gap-1 h-20"
-                : "flex flex-col gap-1 col-span-3"
-            }`}
-          >
-            {previewMeta.slice(1).map((img, index) => (
-              <div key={index} className="relative h-full">
-                <img
-                  src={img.src}
-                  alt="preview"
-                  className="w-full h-full object-cover rounded-md"
-                  style={{
-                    aspectRatio: isThreeHorizontal ? "16 / 9" : "9 / 12",
-                  }}
-                />
+          const isThreeHorizontal = horizontalCount > verticalCount;
+
+          return (
+            <div
+              className={`grid gap-1 ${isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"}`}
+            >
+              {/* HERO IMAGE */}
+              <div
+                className={`relative block ${isThreeHorizontal ? "row-span-1" : "col-span-5"}`}
+              >
+                <div className="relative w-full ">
+                  <img
+                    src={previewMeta[0].src}
+                    alt="preview"
+                    className="object-cover rounded-md"
+                    style={{
+                      aspectRatio: isThreeHorizontal ? "6 / 3" : "3 / 5",
+                    }}
+                  />
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+
+              {/* SECONDARY IMAGES */}
+              <div
+                className={`${
+                  isThreeHorizontal
+                    ? "grid grid-cols-2 gap-1"
+                    : "flex flex-col gap-1 col-span-3"
+                }`}
+              >
+                {previewMeta.slice(1).map((img, index) => (
+                  <div key={index} className="relative w-full rounded-md">
+                    <div className="relative w-full">
+                      <img
+                        src={img.src}
+                        alt="preview"
+                        className="object-cover rounded-md"
+                        style={{
+                          aspectRatio: isThreeHorizontal
+                            ? "16 / 9"
+                            : "3 / 4.17",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
       {previewMeta.length === 4 && (
         <div

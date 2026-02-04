@@ -2,10 +2,38 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [meta, setMeta] = useState([]);
+
+  const getOrientation = (url) =>
+    new Promise((resolve) => {
+      const img = new window.Image();
+      img.src = url;
+      img.onload = () =>
+        resolve(img.width >= img.height ? "horizontal" : "vertical");
+    });
+
+  useEffect(() => {
+    if (!blog.image?.length) return;
+
+    Promise.all(
+      blog.image.map(async (img) => ({
+        url: img.url,
+        orientation: await getOrientation(img.url),
+      })),
+    ).then(setMeta);
+  }, [blog.image]);
+
+  const isBothVertical =
+    meta.length === 2 && meta.every((img) => img.orientation === "vertical");
+  const isThreeHorizontal =
+    meta.length === 3 && meta.every((img) => img.orientation === "horizontal");
+
+  console.log(meta);
+
   return (
     <>
       {/* render if the user updated their cover photo */}
@@ -85,67 +113,111 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
           )}
 
           {/* Render 2 images */}
-          {blog.image.length === 2 && (
-            <div className="grid grid-cols-2 gap-x-1">
-              {blog.image.map((imageUrl, index) => (
+          {meta.length === 2 && (
+            <div
+              className={`grid gap-[1px] ${
+                isBothVertical ? "grid-cols-2" : "grid-cols-1"
+              }`}
+            >
+              {meta.map((img, index) => (
                 <Link
                   href={`/postComment/${blog.id}/${index}`}
                   key={index}
-                  className="relative hover:opacity-80"
+                  className="relative block hover:opacity-80"
                 >
-                  <Image
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    width={1200}
-                    height={800}
-                    src={imageUrl.url}
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "6/10" }}
-                  />
+                  <div
+                    className="relative w-full"
+                    style={{
+                      aspectRatio: isBothVertical ? "6 / 10" : "3 / 1",
+                    }}
+                  >
+                    <Image
+                      src={img.url}
+                      alt="preview"
+                      fill
+                      sizes={
+                        isBothVertical
+                          ? "(max-width: 768px) 100vw, 50vw"
+                          : "100vw"
+                      }
+                      className="object-cover"
+                    />
+                  </div>
                 </Link>
               ))}
             </div>
           )}
 
           {/* Render 3 images */}
-          {blog.image.length === 3 && (
-            <div className="grid grid-cols-8 gap-x-1">
+
+          {meta.length === 3 && (
+            <div
+              className={`grid gap-[1px] ${
+                isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"
+              }`}
+            >
+              {/* HERO IMAGE */}
               <Link
                 href={`/postComment/${blog.id}/${0}`}
-                className="relative col-span-5 hover:opacity-80"
+                className={`relative block hover:opacity-80 ${
+                  isThreeHorizontal ? "row-span-1" : "col-span-5"
+                }`}
               >
-                <Image
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  width={1200}
-                  height={800}
-                  src={blog.image[0].url}
-                  priority={true}
-                  alt="profile image"
-                  className="w-full h-auto object-cover my-1"
-                  style={{ aspectRatio: "14/17" }}
-                />
+                <div
+                  className="relative w-full"
+                  style={{
+                    aspectRatio: isThreeHorizontal ? "6 / 2" : "3 / 5",
+                  }}
+                >
+                  <Image
+                    src={meta[0].url}
+                    alt="preview"
+                    fill
+                    priority
+                    sizes={
+                      isThreeHorizontal
+                        ? "(max-width:768px) 100vw, 100vw"
+                        : "(max-width:768px) 100vw, 60vw"
+                    }
+                    className="object-cover"
+                  />
+                </div>
               </Link>
-              <div className="mt-[2px] flex flex-col col-span-3">
-                {blog.image.map((imageUrl, index) => {
-                  if (index === 0) return null;
-                  return (
-                    <Link
-                      href={`/postComment/${blog.id}/${index}`}
-                      key={index}
-                      className="relative mt-[4px] hover:opacity-80"
+
+              {/* SECONDARY IMAGES */}
+              <div
+                className={`${
+                  isThreeHorizontal
+                    ? "grid grid-cols-2 gap-[1px]"
+                    : "flex flex-col gap-[1px] col-span-3"
+                }`}
+              >
+                {meta.slice(1).map((img, index) => (
+                  <Link
+                    href={`/postComment/${blog.id}/${index + 1}`}
+                    key={index}
+                    className="relative block hover:opacity-80"
+                  >
+                    <div
+                      className="relative w-full"
+                      style={{
+                        aspectRatio: isThreeHorizontal ? "16 / 9" : "3 / 4.17",
+                      }}
                     >
                       <Image
-                        src={imageUrl.url}
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        width={1200}
-                        height={800}
-                        alt="profile image"
-                        className="w-full h-auto object-cover mt-[1px]"
-                        style={{ aspectRatio: "13/13" }}
+                        src={img.url}
+                        alt="preview"
+                        fill
+                        sizes={
+                          isThreeHorizontal
+                            ? "(max-width:768px) 50vw, 50vw"
+                            : "(max-width:768px) 50vw, 40vw"
+                        }
+                        className="object-cover"
                       />
-                    </Link>
-                  );
-                })}
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
           )}

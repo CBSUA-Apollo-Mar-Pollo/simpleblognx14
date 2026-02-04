@@ -296,11 +296,11 @@ const AddPostModal = ({ user, communityId }) => {
                   </p>
                   <button
                     onClick={() => setIsPostAudienceActive(true)}
-                    className="flex items-center gap-x-1 bg-neutral-200 px-2 py-0.5 rounded-lg"
+                    className="flex items-center gap-x-1 bg-neutral-200 dark:bg-neutral-700 px-2 py-0.5 rounded-lg"
                   >
-                    <Icons.earthIcon className="h-3.5 w-3.5" />
+                    <Icons.earthIcon className="h-3.5 w-3.5 dark:fill-white" />
                     <span className="text-[13px] font-medium">Public</span>
-                    <Triangle className="rotate-180 h-2 w-2 fill-neutral-800 mb-[1px] ml-1" />
+                    <Triangle className="rotate-180 h-2 w-2 fill-neutral-800 dark:fill-white mb-[1px] ml-1" />
                   </button>
                 </div>
               </div>
@@ -337,6 +337,7 @@ const AddPostModal = ({ user, communityId }) => {
                         ? "text-center text-2xl font-bold"
                         : "text-xl"
                     }
+                    dark:text-white
                     focus-visible:ring-transparent focus:border-gray-500 focus:border-2 
                     border-none resize-none px-4
                     placeholder:${
