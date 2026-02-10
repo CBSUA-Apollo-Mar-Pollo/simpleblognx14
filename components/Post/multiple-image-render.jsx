@@ -149,78 +149,79 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
           )}
 
           {/* Render 3 images */}
+          {meta.length === 3 &&
+            (() => {
+              const verticalCount = meta.filter(
+                (img) => img.orientation === "vertical",
+              ).length;
+              const horizontalCount = meta.length - verticalCount;
 
-          {meta.length === 3 && (
-            <div
-              className={`grid gap-[1px] ${
-                isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"
-              }`}
-            >
-              {/* HERO IMAGE */}
-              <Link
-                href={`/postComment/${blog.id}/${0}`}
-                className={`relative block hover:opacity-80 ${
-                  isThreeHorizontal ? "row-span-1" : "col-span-5"
-                }`}
-              >
+              const isThreeHorizontal = horizontalCount > verticalCount;
+
+              return (
                 <div
-                  className="relative w-full"
-                  style={{
-                    aspectRatio: isThreeHorizontal ? "6 / 2" : "3 / 5",
-                  }}
+                  className={`grid gap-[2px] ${isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"}`}
                 >
-                  <Image
-                    src={meta[0].url}
-                    alt="preview"
-                    fill
-                    priority
-                    sizes={
-                      isThreeHorizontal
-                        ? "(max-width:768px) 100vw, 100vw"
-                        : "(max-width:768px) 100vw, 60vw"
-                    }
-                    className="object-cover"
-                  />
-                </div>
-              </Link>
-
-              {/* SECONDARY IMAGES */}
-              <div
-                className={`${
-                  isThreeHorizontal
-                    ? "grid grid-cols-2 gap-[1px]"
-                    : "flex flex-col gap-[1px] col-span-3"
-                }`}
-              >
-                {meta.slice(1).map((img, index) => (
+                  {/* HERO IMAGE */}
                   <Link
-                    href={`/postComment/${blog.id}/${index + 1}`}
-                    key={index}
-                    className="relative block hover:opacity-80"
+                    href={`/postComment/${blog.id}/${0}`}
+                    className={`relative block hover:opacity-80 ${
+                      isThreeHorizontal ? "row-span-1" : "col-span-5"
+                    }`}
                   >
                     <div
-                      className="relative w-full"
+                      className={`relative  ${isThreeHorizontal ? "h-[25vh] w-full" : ""}`}
                       style={{
-                        aspectRatio: isThreeHorizontal ? "16 / 9" : "3 / 4.17",
+                        aspectRatio: isThreeHorizontal ? "4/ 11" : "3 / 5",
                       }}
                     >
                       <Image
-                        src={img.url}
+                        src={meta[0].url}
                         alt="preview"
                         fill
+                        priority
                         sizes={
                           isThreeHorizontal
-                            ? "(max-width:768px) 50vw, 50vw"
-                            : "(max-width:768px) 50vw, 40vw"
+                            ? "(max-width:768px) 100vw, 100vw"
+                            : "(max-width:768px) 100vw, 60vw"
                         }
-                        className="object-cover"
+                        className={`object-cover w-full `}
                       />
                     </div>
                   </Link>
-                ))}
-              </div>
-            </div>
-          )}
+
+                  {/* SECONDARY IMAGES */}
+                  <div
+                    className={`${
+                      isThreeHorizontal
+                        ? "grid grid-cols-2 gap-[2px]"
+                        : "flex flex-col gap-[2px] col-span-3"
+                    }`}
+                  >
+                    {meta.slice(1).map((img, index) => (
+                      <Link
+                        href={`/postComment/${blog.id}/${index + 1}`}
+                        key={index}
+                        className="relative block hover:opacity-80"
+                      >
+                        <div className="relative">
+                          <img
+                            src={img.url}
+                            alt="preview"
+                            className="object-cover"
+                            style={{
+                              aspectRatio: isThreeHorizontal
+                                ? "16/10"
+                                : "3 / 4.17",
+                            }}
+                          />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
           {/* Render 4 images */}
           {blog.image.length === 4 && (
