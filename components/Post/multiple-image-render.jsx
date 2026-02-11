@@ -31,6 +31,11 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
     meta.length === 2 && meta.every((img) => img.orientation === "vertical");
   const isThreeHorizontal =
     meta.length === 3 && meta.every((img) => img.orientation === "horizontal");
+  const isFiveHorizontal =
+    meta.length === 5 && meta.every((img) => img.orientation === "horizontal");
+
+  const isFiveVertical =
+    meta.length === 5 && meta.every((img) => img.orientation === "vertical");
 
   console.log(meta);
 
@@ -88,7 +93,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   backgroundImage: imageLoaded
                     ? `url(${blog.image[0].url})`
                     : "none",
-                  filter: imageLoaded ? "blur(4px)" : "none",
+                  filter: imageLoaded ? "blur(60px)" : "none",
                   zIndex: "-1",
                 }}
               />
@@ -96,12 +101,12 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 <Image
                   sizes="(max-width: 768px) 100vw, 50vw"
                   width={1200}
-                  height={800}
+                  height={900}
                   priority={true}
                   src={blog.image[0].url}
                   alt="profile image"
                   referrerPolicy="no-referrer"
-                  className="object-contain w-full transition max-h-[30rem]"
+                  className="object-contain w-full transition max-h-[45rem]"
                   style={{
                     backgroundImage: `linear-gradient(to bottom, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.1) 0%, rgba(${dominantColorPost?.[0]}, ${dominantColorPost?.[1]}, ${dominantColorPost?.[2]}, 0.2) 100%)`,
                     backgroundBlendMode: "overlay",
@@ -224,135 +229,171 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
             })()}
 
           {/* Render 4 images */}
-          {blog.image.length === 4 && (
-            <div className="flex flex-col">
-              <div className="relative grid grid-cols-2 gap-x-[2px]">
-                <Link
-                  href={`/postComment/${blog.id}/${0}`}
-                  className="hover:opacity-80"
+          {meta.length === 4 &&
+            (() => {
+              const verticalCount = meta.filter(
+                (img) => img.orientation === "vertical",
+              ).length;
+
+              const horizontalCount = meta.length - verticalCount;
+
+              const isFourVertical = verticalCount > horizontalCount;
+              const isFourHorizontal = horizontalCount > verticalCount;
+
+              const orderedPreviewMeta = (() => {
+                if (verticalCount === 4 || horizontalCount === 4) {
+                  return meta;
+                }
+
+                if (verticalCount === 3) {
+                  return [
+                    ...meta.filter((img) => img.orientation === "vertical"),
+                    ...meta.filter((img) => img.orientation === "horizontal"),
+                  ];
+                }
+
+                if (horizontalCount === 3) {
+                  return [
+                    ...meta.filter((img) => img.orientation === "horizontal"),
+                    ...meta.filter((img) => img.orientation === "vertical"),
+                  ];
+                }
+
+                return meta;
+              })();
+
+              return (
+                <div
+                  className={`grid gap-[2.5px] ${
+                    isFourHorizontal ? "grid-rows-2" : "grid-cols-7"
+                  }`}
                 >
-                  <Image
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    width={1200}
-                    height={800}
-                    priority={true}
-                    src={blog.image[0].url}
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                  />
-                </Link>
-                <Link
-                  href={`/postComment/${blog.id}/${1}`}
-                  className="hover:opacity-80"
-                >
-                  <Image
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    width={1200}
-                    height={800}
-                    src={blog.image[1].url}
-                    priority={true}
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                  />
-                </Link>
+                  {/* HERO IMAGE */}
+
+                  <Link
+                    href={`/postComment/${blog.id}/${0}`}
+                    className={`relative ${
+                      isFourHorizontal ? "row-span-1" : "col-span-5"
+                    } ${isFourHorizontal ? "h-[22vh]" : ""}`}
+                  >
+                    <Image
+                      src={orderedPreviewMeta[0].url}
+                      alt="preview"
+                      fill
+                      className="object-cover"
+                      sizes="100vw"
+                      style={{
+                        aspectRatio: isFourVertical
+                          ? "10 / 11"
+                          : isFourHorizontal
+                            ? "4/11"
+                            : "1 / 1",
+                      }}
+                    />
+                  </Link>
+
+                  {/* STACKED GRID */}
+                  <div
+                    className={`grid gap-[2px] ${
+                      isFourHorizontal
+                        ? "grid-cols-3 h-10"
+                        : "grid-cols-1 col-span-2"
+                    }`}
+                  >
+                    {orderedPreviewMeta.slice(1).map((img, index) => (
+                      <Link
+                        href={`/postComment/${blog.id}/${index + 1}`}
+                        key={index}
+                        className="relative hover:opacity-80"
+                      >
+                        <Image
+                          src={img.url}
+                          alt="preview"
+                          width={1000}
+                          height={1000}
+                          className="w-full h-full object-cover"
+                          style={{
+                            aspectRatio: isFourHorizontal
+                              ? "1.2 / 1"
+                              : "10 / 10",
+                          }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
+
+          {/* render if there are 5 image */}
+
+          {meta.length === 5 && isFiveHorizontal && (
+            <div className="grid grid-cols-[1fr_1fr] gap-1">
+              <div className="grid grid-rows-2 gap-1">
+                {meta.slice(0, 2).map((img, index) => (
+                  <Link key={index} href={`/postComment/${blog.id}/${index}`}>
+                    <img
+                      src={img.url}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  </Link>
+                ))}
               </div>
-              <div className="mt-[2px] grid grid-cols-2">
-                {blog.image.map((imageUrl, index) => {
-                  if (index === 0) {
-                    return null;
-                  }
 
-                  if (index === 1) {
-                    return null;
-                  }
-
-                  return (
-                    <Link
-                      href={`/postComment/${blog.id}/${index}`}
-                      key={index}
-                      className="relative hover:opacity-80"
-                    >
-                      <Image
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        width={1200}
-                        height={800}
-                        src={imageUrl.url}
-                        alt="profile image"
-                        className="w-full h-auto object-cover px-[1px]"
-                        style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                      />
-                    </Link>
-                  );
-                })}
+              <div className="grid grid-rows-3 gap-1">
+                {meta.slice(2).map((img, index) => (
+                  <Link
+                    key={index}
+                    href={`/postComment/${blog.id}/${index + 2}`}
+                  >
+                    <img
+                      src={img.url}
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
           )}
 
-          {/* render if there are 5 image */}
-          {blog.image.length === 5 && (
-            <div className="flex flex-col">
-              <div className="relative grid grid-cols-2 gap-x-[2px]">
-                <Link
-                  href={`/postComment/${blog.id}/${0}`}
-                  className="relative hover:opacity-80"
-                >
-                  <Image
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    width={1200}
-                    height={800}
-                    priority={true}
-                    src={blog.image[0].url}
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                  />
-                </Link>
-                <Link
-                  href={`/postComment/${blog.id}/${1}`}
-                  className="relative hover:opacity-80"
-                >
-                  <Image
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    width={1200}
-                    height={800}
-                    src={blog.image[1].url}
-                    alt="profile image"
-                    priority={true}
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-                  />
-                </Link>
-              </div>
-              <div className="mt-[2px] grid grid-cols-3">
-                {blog.image.map((imageUrl, index) => {
-                  if (index === 0) {
-                    return null;
-                  }
-
-                  if (index === 1) {
-                    return null;
-                  }
-
-                  return (
-                    <Link
-                      href={`/postComment/${blog.id}/${index}`}
+          {meta.length === 5 && isFiveVertical && (
+            <div className="grid grid-rows-2 gap-1">
+              {/* TOP ROW (2 images) */}
+              <div className="grid grid-cols-2 gap-1">
+                {meta.slice(0, 2).map((img, index) => (
+                  <Link
+                    href={`/postComment/${blog.id}/${index}`}
+                    key={index}
+                    className="relative hover:opacity-80"
+                  >
+                    <img
                       key={index}
-                      className="relative hover:opacity-80"
-                    >
-                      <Image
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        width={1200}
-                        height={800}
-                        src={imageUrl.url}
-                        alt="profile image"
-                        className="w-full h-auto object-cover px-[1px]"
-                        style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                      />
-                    </Link>
-                  );
-                })}
+                      src={img.url}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: "1 / 1" }}
+                    />
+                  </Link>
+                ))}
+              </div>
+
+              {/* BOTTOM ROW (3 images) */}
+              <div className="grid grid-cols-3 gap-1">
+                {meta.slice(2).map((img, index) => (
+                  <Link
+                    href={`/postComment/${blog.id}/${index + 2}`}
+                    key={index}
+                    className="relative hover:opacity-80"
+                  >
+                    <img
+                      key={index}
+                      src={img.url}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: "5 / 1" }}
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
           )}

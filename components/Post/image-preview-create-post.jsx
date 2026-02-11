@@ -204,6 +204,7 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
           );
         })()}
 
+      {/* preview image for 4 */}
       {previewMeta.length === 4 &&
         (() => {
           const verticalCount = previewMeta.filter(
@@ -282,7 +283,7 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
                       alt="preview"
                       className="w-full h-full object-cover rounded-md"
                       style={{
-                        aspectRatio: isFourHorizontal ? "1 / 1" : "10 / 10",
+                        aspectRatio: isFourHorizontal ? "1.2 / 1" : "10 / 10",
                       }}
                     />
                   </div>

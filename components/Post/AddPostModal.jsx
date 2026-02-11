@@ -45,7 +45,6 @@ const AddPostModal = ({ user, communityId }) => {
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
-  const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const [errorMessage, setErrorMessage] = useState("");
@@ -185,6 +184,13 @@ const AddPostModal = ({ user, communityId }) => {
 
       // Don't invalidate or refresh - just keep the optimistic update
       // This prevents the post from disappearing due to cache revalidation
+    },
+    onSettled: () => {
+      setSelectedBackgroundColor(null);
+      setSelectedFiles([]);
+      setImagePreviews([]);
+      setDescription("");
+      setVideoPreviews([]);
     },
   });
 
