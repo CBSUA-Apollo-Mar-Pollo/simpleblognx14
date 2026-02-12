@@ -33,11 +33,8 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
     meta.length === 3 && meta.every((img) => img.orientation === "horizontal");
   const isFiveHorizontal =
     meta.length === 5 && meta.every((img) => img.orientation === "horizontal");
-
   const isFiveVertical =
     meta.length === 5 && meta.every((img) => img.orientation === "vertical");
-
-  console.log(meta);
 
   return (
     <>
@@ -86,6 +83,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
               className="relative overflow-clip w-full flex flex-col"
               shallow
             >
+              {/* background blur image */}
               <div
                 className="absolute inset-0 z-[-1] bg-center"
                 style={{
