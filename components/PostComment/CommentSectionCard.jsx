@@ -83,27 +83,10 @@ const CommentSectionCard = ({
                 )}
               </div>
               {/* comment text */}
-              {/* {replyName ? (
-                <p className="text-neutral-700 dark:text-neutral-100 text-sm">
-                  <span className="text-blue-400">
-                    <a
-                      href={`/user/${replyName.id}`}
-                      className="font-medium hover:underline"
-                    >
-                      @{replyName.name}
-                    </a>
-                  </span>{" "}
-                  {typeof comment?.text === "string" &&
-                    comment.text.startsWith("@") &&
-                    (comment.text.indexOf(" ") >= 0
-                      ? comment.text.substring(comment.text.indexOf(" ") + 1)
-                      : "")}
-                </p>
-              ) : (
-                <p className="text-neutral-700 dark:text-neutral-100 text-sm">
-                  {comment?.text}
-                </p>
-              )} */}
+
+              <p className="text-neutral-700 dark:text-neutral-100 text-sm">
+                {comment?.text}
+              </p>
             </div>
 
             {session?.user && (
@@ -173,7 +156,7 @@ const CommentSectionCard = ({
           <Button
             onClick={() => setIsReplying(false)}
             variant="ghost"
-            className="dark:text-white dark:hover:text-neutral-300 flex justify-end w-full bg-neutral-800 hover:bg-neutral-800 p-0 pr-6 -mt-3 text-xs"
+            className="dark:text-white dark:hover:text-neutral-300 flex justify-end w-full dark:bg-neutral-800 dark:hover:bg-neutral-800 p-0 pr-6 -mt-3 text-xs"
           >
             Cancel
           </Button>

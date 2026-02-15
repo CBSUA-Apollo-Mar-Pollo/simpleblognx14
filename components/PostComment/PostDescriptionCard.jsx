@@ -82,7 +82,7 @@ const PostDescriptionCard = ({
       const payload = { postId: blog.id };
       const { data } = await axios.post(
         "/api/posts/postDescriptionComment",
-        payload
+        payload,
       );
       return data;
     },
@@ -146,7 +146,7 @@ const PostDescriptionCard = ({
       if (videoRef.current) {
         videoRef.current.removeEventListener(
           "loadedmetadata",
-          handleLoadedMetadata
+          handleLoadedMetadata,
         );
       }
     };
@@ -195,11 +195,13 @@ const PostDescriptionCard = ({
     setIsVolumeHovered(false);
   };
 
+  console.log(commentsData, "commentsData");
+
   return (
     <Dialog
       open={open}
       onOpenChange={(isOpen) => {
-        getComments(), setVideoPaused((prev) => !prev), setOpen(isOpen);
+        (getComments(), setVideoPaused((prev) => !prev), setOpen(isOpen));
       }}
     >
       <DialogTrigger>
@@ -213,7 +215,7 @@ const PostDescriptionCard = ({
 
       <DialogContent className="p-0 min-w-[45rem]  gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
         <DialogHeader className="px-4 py-4  border-b-[1px] dark:border-neutral-600 ">
-          <DialogTitle className="text-xl text-center font-semibold text-neutral-800 dark:text-white">
+          <DialogTitle className="text-xl text-center font-bold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
           </DialogTitle>
         </DialogHeader>

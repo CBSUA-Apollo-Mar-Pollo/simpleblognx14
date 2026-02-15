@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import AddPostModal from "@/components/Post/AddPostModal";
-import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
 import { Separator } from "@/components/ui/Separator";
 import Image from "next/image";
 import HomePageStoryCards from "@/components/stories/homepage-story-cards";

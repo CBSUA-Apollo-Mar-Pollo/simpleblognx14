@@ -125,25 +125,13 @@ const PostCard = ({
 
         {/* home post vote comment and share */}
         <div className="grid grid-cols-3">
-          {/* vote */}
+          {/* vote button*/}
           <PostVote
             postId={blog.id}
             initialVote={currentVote?.type}
             initialVotesAmt={votesAmt}
           />
-          {/* <HeartVote /> */}
-
-          {/* comment button */}
-          {/* {blog?.image ? (
-            <Link
-              onClick={() => storeToRecentPosts(blog.id)}
-              href={`/postComment/${blog.id}/${0}`}
-              className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
-            >
-              <MessageCircle className="h-6 w-6 text-neutral-700" />
-              <span className=" font-medium text-sm">Comment</span>
-            </Link>
-          ) : ( */}
+          {/* comment button*/}
           <div
             className="flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-neutral-600 rounded cursor-pointer"
             // onClick={() => storeToRecentPosts(blog.id)}
@@ -164,7 +152,6 @@ const PostCard = ({
               setProgress={setProgress}
             />
           </div>
-          {/* )} */}
 
           {/* share button*/}
           <PostCardShareButton

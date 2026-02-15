@@ -28,7 +28,7 @@ const CreateComment = ({
   imageIndex,
 }) => {
   const [textareaValue, setTextareaValue] = useState(
-    replyToName ? "@" + replyToName + " " : ""
+    replyToName ? "@" + replyToName + " " : "",
   );
   const [imageUrl, setImageUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
@@ -42,7 +42,6 @@ const CreateComment = ({
         shortsvId: shortsvId,
         text,
         replyToId,
-        commentId,
         commentImageUrl: imageUrl,
         imageIndex,
       };
@@ -185,17 +184,17 @@ const CreateComment = ({
               variant="ghost"
               disabled={textareaValue.length === 0 && imageUrl === null}
               className=" bg-neutral-200 dark:bg-neutral-600 hover:bg-neutral-300 dark:hover:bg-neutral-700/80 rounded-full cursor-pointer flex items-center focus:ring-0 p-2"
-              // onClick={() => {
-              //   comment({
-              //     postId,
-              //     text: textareaValue,
-              //     replyToId: replyToId ?? commentProps?.id,
-              //   });
+              onClick={() => {
+                comment({
+                  postId,
+                  text: textareaValue,
+                  replyToId: replyToId ?? commentProps?.id,
+                });
 
-              //   if (typeof setIsReplying === "function") {
-              //     setIsReplying(false);
-              //   }
-              // }}
+                if (typeof setIsReplying === "function") {
+                  setIsReplying(false);
+                }
+              }}
             >
               <SendHorizonal className="text-neutral-700 dark:text-neutral-300" />
             </Button>
