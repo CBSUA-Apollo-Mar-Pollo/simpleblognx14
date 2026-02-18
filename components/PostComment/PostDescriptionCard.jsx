@@ -195,7 +195,14 @@ const PostDescriptionCard = ({
     setIsVolumeHovered(false);
   };
 
-  console.log(commentsData, "commentsData");
+  const [expandedReplies, setExpandedReplies] = useState({});
+
+  const toggleReplies = (commentId) => {
+    setExpandedReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
 
   return (
     <Dialog
@@ -213,7 +220,7 @@ const PostDescriptionCard = ({
         </div>
       </DialogTrigger>
 
-      <DialogContent className="p-0 min-w-[45rem]  gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
+      <DialogContent className="p-0 min-w-[45rem] rounded-2xl gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
         <DialogHeader className="px-4 py-4  border-b-[1px] dark:border-neutral-600 ">
           <DialogTitle className="text-xl text-center font-bold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
@@ -617,28 +624,61 @@ const PostDescriptionCard = ({
                       />
 
                       {/* replies */}
-                      {topLevelComment.replies.map((reply, index) => {
-                        return (
-                          <div
-                            key={reply.id}
-                            className="pl-4 relative"
-                            // ref={divRefs[index]}
+                      {!expandedReplies[topLevelComment.id] && (
+                        <div className="relative z-30 bg-white">
+                          <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                          <Button
+                            onClick={() => toggleReplies(topLevelComment.id)}
+                            className="flex items-start justify-start ml-8 font-semibold hover:bg-transparent"
+                            variant="ghost"
                           >
-                            <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
-                            <div className="ml-8 mt-2">
-                              <CommentSectionCard
-                                comment={reply}
-                                session={session}
-                                index={index}
-                                getComments={getComments}
-                                refetch={refetch}
-                                post={blog}
-                                classNameForUserAvatarReplies="h-7 w-7"
-                              />
+                            {topLevelComment.replies.length > 1
+                              ? `View all ${topLevelComment.replies.length} replies`
+                              : "View reply"}
+                          </Button>
+                        </div>
+                      )}
+
+                      {expandedReplies[topLevelComment.id] &&
+                        topLevelComment.replies.map((reply, index) => {
+                          return (
+                            <div
+                              key={reply.id}
+                              className={`relative ${index === topLevelComment.replies.length - 1 && "pb-4"}`}
+                              // ref={divRefs[index]}
+                            >
+                              <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                              <div className={`ml-8 mt-2 `}>
+                                <CommentSectionCard
+                                  comment={reply}
+                                  session={session}
+                                  index={index}
+                                  getComments={getComments}
+                                  refetch={refetch}
+                                  post={blog}
+                                  classNameForUserAvatarReplies="h-7 w-7"
+                                />
+                              </div>
+
+                              {index === topLevelComment.replies.length - 1 && (
+                                <div className={`relative -mt-2`}>
+                                  <div className="absolute left-4 rounded-es-2xl border-l-2 w-6 border-b-2 border-neutral-600 h-6" />
+                                  <Button
+                                    onClick={() =>
+                                      toggleReplies(topLevelComment.id)
+                                    }
+                                    className="flex items-start justify-start ml-8 font-semibold hover:bg-transparent pl-6"
+                                    variant="ghost"
+                                  >
+                                    {topLevelComment.replies.length > 1
+                                      ? `Hide all ${topLevelComment.replies.length} replies`
+                                      : "Hide reply"}
+                                  </Button>
+                                </div>
+                              )}
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
                     </div>
                   );
                 })}

@@ -71,7 +71,7 @@ const CommentSectionCard = ({
         />
         <div>
           <div className="flex items-center gap-x-1">
-            <div className="bg-neutral-200 dark:bg-neutral-600 rounded-xl px-4 py-2">
+            <div className="bg-neutral-200 dark:bg-neutral-600 rounded-xl px-3 py-2">
               <div className="flex items-center gap-x-1">
                 <p className="text-neutral-700 dark:text-neutral-100 text-xs font-semibold">
                   {comment?.author?.name}
@@ -84,7 +84,7 @@ const CommentSectionCard = ({
               </div>
               {/* comment text */}
 
-              <p className="text-neutral-700 dark:text-neutral-100 text-sm">
+              <p className="text-neutral-900  dark:text-neutral-100 text-sm mt-1">
                 {comment?.text}
               </p>
             </div>
