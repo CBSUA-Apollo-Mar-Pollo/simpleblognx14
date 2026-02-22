@@ -36,6 +36,7 @@ import { Icons } from "../utils/Icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import PostAudienceSelection from "./post-audience-selection";
 import { useSession } from "next-auth/react";
+import PostFeelingsSelection from "./post-feelings-selection";
 
 const AddPostModal = ({
   openPostModal,
@@ -69,7 +70,10 @@ const AddPostModal = ({
   // state for if the user is canceling the post with image or description
   const [isDiscarding, setIsDiscarding] = useState(false);
 
+  // state for opening another contents in modal.
   const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
+  const [isFeelingSelectionActive, setIsFeelingSelectionActive] =
+    useState(false);
 
   const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
 
@@ -311,6 +315,13 @@ const AddPostModal = ({
     setIsDiscarding(false);
   };
 
+  const modalContentConditions = [
+    isPostAudienceActive,
+    isFeelingSelectionActive,
+  ];
+
+  const hideMainContent = modalContentConditions.some((cond) => cond);
+
   return (
     <>
       <Dialog open={open} onOpenChange={handleOpenChangePostModal}>
@@ -325,7 +336,7 @@ const AddPostModal = ({
 
         <DialogContent className="[&>button]:hidden  min-w-[35vw]   dark:bg-neutral-800  dark:border-0 p-0 dark:text-neutral-200 rounded-xl">
           {/* Create post contest */}
-          {!isPostAudienceActive && (
+          {!hideMainContent && (
             <>
               <DialogHeader className="pt-4 px-4">
                 <DialogTitle className="text-xl font-bold text-center">
@@ -629,6 +640,7 @@ const AddPostModal = ({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
+                          onClick={() => setIsFeelingSelectionActive(true)}
                           variant="ghost"
                           className="hover:bg-gray-100 p-0 rounded-full cursor-pointer focus:ring-0"
                         >
@@ -700,6 +712,12 @@ const AddPostModal = ({
           {isPostAudienceActive && (
             <PostAudienceSelection
               setIsPostAudienceActive={setIsPostAudienceActive}
+            />
+          )}
+
+          {isFeelingSelectionActive && (
+            <PostFeelingsSelection
+              setIsFeelingSelectionActive={setIsFeelingSelectionActive}
             />
           )}
         </DialogContent>

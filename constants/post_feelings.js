@@ -1,0 +1,46 @@
+export const postFeelings = [
+  { emoji: "😄", label: "happy" },
+  { emoji: "🥰", label: "loved" },
+  { emoji: "🙏", label: "blessed" },
+  { emoji: "😊", label: "thankful" },
+  { emoji: "🤩", label: "excited" },
+  { emoji: "💪", label: "motivated" },
+  { emoji: "😌", label: "proud" },
+  { emoji: "🌈", label: "hopeful" },
+  { emoji: "🙂", label: "optimistic" },
+  { emoji: "😌", label: "relaxed" },
+  { emoji: "😊", label: "content" },
+
+  { emoji: "😢", label: "sad" },
+  { emoji: "😞", label: "down" },
+  { emoji: "🥺", label: "lonely" },
+  { emoji: "💔", label: "heartbroken" },
+  { emoji: "😴", label: "tired" },
+  { emoji: "🤒", label: "sick" },
+  { emoji: "😫", label: "stressed" },
+  { emoji: "😵‍💫", label: "overwhelmed" },
+
+  { emoji: "😠", label: "angry" },
+  { emoji: "😒", label: "annoyed" },
+  { emoji: "😤", label: "frustrated" },
+  { emoji: "😔", label: "disappointed" },
+
+  { emoji: "😲", label: "surprised" },
+  { emoji: "😱", label: "shocked" },
+  { emoji: "😕", label: "confused" },
+  { emoji: "🤔", label: "curious" },
+
+  { emoji: "🥱", label: "bored" },
+  { emoji: "😪", label: "lazy" },
+  { emoji: "😴", label: "sleepy" },
+
+  { emoji: "😎", label: "cool" },
+  { emoji: "😜", label: "silly" },
+  { emoji: "😂", label: "funny" },
+  { emoji: "😛", label: "weird" },
+
+  { emoji: "😍", label: "in love" },
+  { emoji: "😊", label: "grateful" },
+  { emoji: "✨", label: "inspired" },
+  { emoji: "🔥", label: "determined" },
+];
