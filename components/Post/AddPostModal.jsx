@@ -1,5 +1,9 @@
 "use client";
 import React, { useContext, useRef, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
+
 import {
   Dialog,
   DialogClose,
@@ -11,8 +15,6 @@ import {
 } from "../ui/Dialog";
 import { Input } from "../ui/Input";
 import { Textarea } from "../ui/Textarea";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
 import { toast } from "@/hooks/use-toast";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import UserAvatar from "../utils/UserAvatar";
@@ -35,8 +37,9 @@ import ImagePreviewCreatePost from "./image-preview-create-post";
 import { Icons } from "../utils/Icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import PostAudienceSelection from "./post-audience-selection";
-import { useSession } from "next-auth/react";
 import PostFeelingsSelection from "./post-feelings-selection";
+import { gradientBackgroundColors } from "@/constants/gradient-background-color";
+import PostGIFSelection from "./post-gif-selection";
 
 const AddPostModal = ({
   openPostModal,
@@ -48,82 +51,49 @@ const AddPostModal = ({
   user,
   communityId,
 }) => {
-  const [localOpen, setLocalOpen] = useState(false);
   const { data: session } = useSession();
   const queryClient = useQueryClient();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const { signinToast } = useCustomHooks();
-  const [imageUrl, setImageUrl] = useState("");
-  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
-    useState(false);
-
   const fileInputRef = useRef(null);
 
-  const [localSelectedFiles, setLocalSelectedFiles] = useState([]);
-  const [localImagePreviews, setLocalImagePreviews] = useState([]);
-  const [videoPreviews, setVideoPreviews] = useState([]);
-  const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
-
+  const [localOpen, setLocalOpen] = useState(false);
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
+    useState(false);
   // state for if the user is canceling the post with image or description
   const [isDiscarding, setIsDiscarding] = useState(false);
-
   // state for opening another contents in modal.
   const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
   const [isFeelingSelectionActive, setIsFeelingSelectionActive] =
     useState(false);
+  const [isGifSelectionActive, setIsGifSelectionActive] = useState(false);
 
-  const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [localSelectedFiles, setLocalSelectedFiles] = useState([]);
+  const [localImagePreviews, setLocalImagePreviews] = useState([]);
+  const [videoPreviews, setVideoPreviews] = useState([]);
+  const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
+  const [userStatus, setUserStatus] = useState(null);
 
   const open = openPostModal ?? localOpen;
   const setOpen = setOpenPostModal ?? setLocalOpen;
-
   const selectedFiles = parentSelectedFiles ?? localSelectedFiles;
   const setSelectedFiles = setParentSelectedFiles ?? setLocalSelectedFiles;
-
   const imagePreviews = parentImagePreviews ?? localImagePreviews;
   const setImagePreviews = setParentImagePreviews ?? setLocalImagePreviews;
 
-  const gradientBackgroundColors = [
-    {
-      grayToBlack: {
-        from: "#3c4250",
-        to: "#0e1015",
-      },
-      purpleToPink: {
-        from: "#6e2de7",
-        to: "#ff3cd3",
-      },
-      purpleToOrange: {
-        from: "#8e2de2",
-        to: "#f27121",
-      },
-      indigoToCyan: {
-        from: "#4b6cb7",
-        to: "#182848",
-      },
-      redToYellow: {
-        from: "#f12711",
-        to: "#f5af19",
-      },
-      sunset: {
-        from: "#0b486b",
-        to: "#f56217",
-      },
-      skyToPeach: {
-        from: "#00c6ff",
-        to: "#f7797d",
-      },
-      royal: {
-        from: "#141e30",
-        to: "#243b55",
-      },
-    },
-  ];
-
+  const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
   const gradients = gradientBackgroundColors[0];
+
+  const modalContentConditions = [
+    isPostAudienceActive,
+    isFeelingSelectionActive,
+    isGifSelectionActive,
+  ];
+  const hideMainContent = modalContentConditions.some((cond) => cond);
 
   const {
     mutate: createBlog,
@@ -315,13 +285,6 @@ const AddPostModal = ({
     setIsDiscarding(false);
   };
 
-  const modalContentConditions = [
-    isPostAudienceActive,
-    isFeelingSelectionActive,
-  ];
-
-  const hideMainContent = modalContentConditions.some((cond) => cond);
-
   return (
     <>
       <Dialog open={open} onOpenChange={handleOpenChangePostModal}>
@@ -357,10 +320,18 @@ const AddPostModal = ({
                       image: session?.user.image || null || user?.image,
                     }}
                   />
+
                   <div className="space-y-1">
-                    <p className="font-semibold text-[15px] pl-1 dark:text-neutral-200">
-                      {session?.user.name || user?.name}
-                    </p>
+                    <div className="flex items-center">
+                      <p className="font-semibold text-[15px] pl-1 dark:text-neutral-200">
+                        {session?.user.name || user?.name}
+                      </p>
+                      {userStatus && (
+                        <p className="font-semibold text-[15px] pl-1">
+                          is {userStatus.emoji} feeling {userStatus.label}
+                        </p>
+                      )}
+                    </div>
                     <button
                       onClick={() => setIsPostAudienceActive(true)}
                       className="flex items-center gap-x-1 bg-neutral-200 dark:bg-neutral-700 px-3 py-1 rounded-lg"
@@ -658,6 +629,7 @@ const AddPostModal = ({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
+                          onClick={() => setIsGifSelectionActive(true)}
                           disabled={selectedBackgroundColor}
                           variant="ghost"
                           className="hover:bg-gray-100 p-1 rounded-full cursor-pointer focus:ring-0"
@@ -718,6 +690,13 @@ const AddPostModal = ({
           {isFeelingSelectionActive && (
             <PostFeelingsSelection
               setIsFeelingSelectionActive={setIsFeelingSelectionActive}
+              setUserStatus={setUserStatus}
+            />
+          )}
+
+          {isGifSelectionActive && (
+            <PostGIFSelection
+              setIsGifSelectionActive={setIsGifSelectionActive}
             />
           )}
         </DialogContent>

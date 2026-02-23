@@ -8,7 +8,10 @@ import { postFeelings } from "@/constants/post_feelings";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
 
-const PostFeelingsSelection = ({ setIsFeelingSelectionActive }) => {
+const PostFeelingsSelection = ({
+  setIsFeelingSelectionActive,
+  setUserStatus,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   // Filter feelings based on search term
@@ -69,6 +72,10 @@ const PostFeelingsSelection = ({ setIsFeelingSelectionActive }) => {
             {filteredFeelings.length > 0 ? (
               filteredFeelings.map((feeling, index) => (
                 <Button
+                  onClick={() => {
+                    (setIsFeelingSelectionActive(false),
+                      setUserStatus(feeling));
+                  }}
                   key={index}
                   variant="ghost"
                   className="flex justify-start gap-x-3 mr-4 hover:bg-neutral-200 py-6"
