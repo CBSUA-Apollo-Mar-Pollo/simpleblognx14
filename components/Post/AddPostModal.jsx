@@ -77,6 +77,7 @@ const AddPostModal = ({
   const [videoPreviews, setVideoPreviews] = useState([]);
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
+  const [gifPreview, setGifPreview] = useState(null);
 
   const open = openPostModal ?? localOpen;
   const setOpen = setOpenPostModal ?? setLocalOpen;
@@ -94,6 +95,8 @@ const AddPostModal = ({
     isGifSelectionActive,
   ];
   const hideMainContent = modalContentConditions.some((cond) => cond);
+
+  console.log(gifPreview, "gif preview data");
 
   const {
     mutate: createBlog,
@@ -258,7 +261,7 @@ const AddPostModal = ({
 
   const handleOpenChangePostModal = (nextOpen) => {
     const hasUnsavedChanges =
-      selectedFiles.length > 0 || description.length > 0;
+      selectedFiles.length > 0 || description.length > 0 || gifPreview;
 
     if (!nextOpen && hasUnsavedChanges) {
       setIsDiscarding(true);
@@ -283,6 +286,7 @@ const AddPostModal = ({
     setVideoPreviews([]);
     setOpen(false);
     setIsDiscarding(false);
+    setGifPreview({});
   };
 
   return (
@@ -384,7 +388,7 @@ const AddPostModal = ({
                         : "text-neutral-500"
                     } 
                     dark:placeholder-neutral-300
-                    ${selectedFiles.length > 0 ? "min-h-10" : " min-h-44"}
+                    ${selectedFiles.lengt > 0 || gifPreview ? "min-h-10" : " min-h-44"}
                   `}
                     />
 
@@ -398,6 +402,14 @@ const AddPostModal = ({
                     )}
                   </div>
 
+                  {gifPreview && (
+                    <img
+                      src={gifPreview.url}
+                      alt={gifPreview.title}
+                      className=" w-full h-auto"
+                      loading="lazy"
+                    />
+                  )}
                   {selectedFiles.length === 0 && (
                     <div className="flex items-center justify-between pt-2">
                       {!toggleTextBackgroundColor && (
@@ -697,6 +709,7 @@ const AddPostModal = ({
           {isGifSelectionActive && (
             <PostGIFSelection
               setIsGifSelectionActive={setIsGifSelectionActive}
+              setGifPreview={setGifPreview}
             />
           )}
         </DialogContent>

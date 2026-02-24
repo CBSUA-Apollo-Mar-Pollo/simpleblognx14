@@ -16,7 +16,7 @@ import { Separator } from "../ui/Separator";
 const giphyKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY || "";
 const gf = new GiphyFetch(giphyKey);
 
-const PostGIFSelection = ({ setIsGifSelectionActive }) => {
+const PostGIFSelection = ({ setIsGifSelectionActive, setGifPreview }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [width, setWidth] = useState(0); // Start at 0 to prevent hydration mismatch
   const containerRef = useRef(null);
@@ -75,7 +75,7 @@ const PostGIFSelection = ({ setIsGifSelectionActive }) => {
       </div>
 
       <div ref={containerRef} className="w-full">
-        <SimpleBar style={{ maxHeight: "62vh" }}>
+        <SimpleBar style={{ maxHeight: "62vh", minHeight: "62vh" }}>
           {/* 4. Only render the grid once we have a valid width */}
           {width > 0 && (
             <Grid
@@ -86,7 +86,17 @@ const PostGIFSelection = ({ setIsGifSelectionActive }) => {
               gutter={6}
               onGifClick={(gif, e) => {
                 e.preventDefault();
-                console.log("Gif clicked:", gif);
+                const gifData = {
+                  giphyId: gif.id,
+                  title: gif.title,
+                  url: gif.images.fixed_height.url,
+                  webp: gif.images.fixed_height.webp,
+                  preview: gif.images.fixed_height_still.url,
+                  width: gif.images.fixed_height.width,
+                  height: gif.images.fixed_height.height,
+                };
+                setIsGifSelectionActive(false);
+                setGifPreview(gifData);
               }}
             />
           )}
