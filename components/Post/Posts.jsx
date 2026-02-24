@@ -2,19 +2,28 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
-import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
+import { useIntersection } from "@mantine/hooks";
+import { useSession } from "next-auth/react";
+
+import { INFINITE_SCROLL_PAGINATION_RESULTS } from "@/config";
 import PostCard from "./PostCard/PostCard";
 import { useScrollTracker } from "@/hooks/use-scroll-tracker";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
-import { useSession } from "next-auth/react";
 import { deleteImage } from "@/actions/deleteImage";
 
 export default function Posts({ initialPosts }) {
   const { data: session } = useSession();
-  const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const lastPostRef = useRef(null);
+  const { ref, entry } = useIntersection({
+    root: null,
+    rootMargin: "40px",
+    threshold: 0.1,
+    enabled: hasNextPage,
+  });
+
+  const { scrolledNumber, setScrolledNumber } = useScrollTracker();
+  const [randNumber, setRandNumber] = useState(null);
 
   const fetchPosts = async ({ pageParam }) => {
     const query = `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}`;
@@ -34,23 +43,11 @@ export default function Posts({ initialPosts }) {
       initialData: { pages: [initialPosts], pageParams: [1] },
     });
 
-  const { ref, entry } = useIntersection({
-    root: null,
-    rootMargin: "40px",
-    threshold: 0.1,
-    enabled: hasNextPage,
-  });
-
   useEffect(() => {
     if (entry?.isIntersecting) {
       fetchNextPage();
     }
   }, [entry, fetchNextPage]);
-
-  const posts =
-    data?.pages.flatMap((page) => page.filter((post) => !post.trashed)) ?? [];
-
-  const [randNumber, setRandNumber] = useState(null);
 
   useEffect(() => {
     const numbers = [1, 2, 3];
@@ -81,6 +78,9 @@ export default function Posts({ initialPosts }) {
     }
   }, []);
 
+  const posts =
+    data?.pages.flatMap((page) => page.filter((post) => !post.trashed)) ?? [];
+
   return (
     <div className="z-2 xl:space-y-3 space-y-1">
       <ul className={"flex flex-col col-span-2 xl:space-y-3 space-y-1 pb-2"}>
@@ -88,8 +88,8 @@ export default function Posts({ initialPosts }) {
           .filter(
             (item) =>
               !item.community?.members.find(
-                (member) => member.userId !== session?.user.id
-              )
+                (member) => member.userId !== session?.user.id,
+              ),
           )
           .map((blog, index) => {
             // votes for post cards
@@ -100,7 +100,7 @@ export default function Posts({ initialPosts }) {
             }, 0);
 
             const currentVote = blog?.votes?.find(
-              (vote) => vote.userId === session?.user.id
+              (vote) => vote.userId === session?.user.id,
             );
             // votes for shorts video post cards
             const shortsvVotesAmt = blog?.shortsvVotes?.reduce((acc, vote) => {
@@ -110,7 +110,7 @@ export default function Posts({ initialPosts }) {
             }, 0);
 
             const currentShortsvVote = blog?.shortsvVotes?.find(
-              (vote) => vote.userId === session?.user.id
+              (vote) => vote.userId === session?.user.id,
             );
 
             // Check if the blog post is a video or an image

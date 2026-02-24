@@ -2,20 +2,21 @@
 
 import { ChevronDown, Home, Loader2, Plus } from "lucide-react";
 import React, { Suspense, useRef, useState } from "react";
-import { Icons } from "../Icons";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import UserAvatar from "../UserAvatar";
-import AddPostModal from "@/components/Post/AddPostModal";
-import { Separator } from "@/components/ui/Separator";
 import Image from "next/image";
-import HomePageStoryCards from "@/components/stories/homepage-story-cards";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/Dropdown-menu";
+import { Icons } from "../Icons";
+import UserAvatar from "../UserAvatar";
+import AddPostModal from "@/components/Post/AddPostModal";
+import { Separator } from "@/components/ui/Separator";
+import HomePageStoryCards from "@/components/stories/homepage-story-cards";
 import Posts from "@/components/Post/Posts";
 import { Skeleton } from "@/components/ui/Skeleton";
 import liveIcon from "@/public/ImageIcons/live.png";
@@ -25,9 +26,9 @@ import galleryIcon from "@/public/ImageIcons/gallery.png";
 
 const HomeFeed = ({ sortedData }) => {
   const { data: session, status } = useSession();
-  const [open, setOpen] = useState(false);
-
   const fileInputRef = useRef(null);
+
+  const [open, setOpen] = useState(false);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
@@ -87,6 +88,7 @@ const HomeFeed = ({ sortedData }) => {
     const videoUrls = files.map((file) => URL.createObjectURL(file));
     setVideoPreviews([...videoPreviews, ...videoUrls]);
   };
+
   return (
     <div className="xl:mt-5 2xl:mx-[5vw] xl:mx-[4vw]">
       {/*  ----------------------------------- show in mobile ------------------------------------------------ */}

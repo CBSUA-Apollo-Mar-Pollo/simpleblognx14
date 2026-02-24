@@ -1,25 +1,27 @@
 "use client";
 
-import { getStoryData } from "@/data/getStoryData";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
+
+import { getStoryData } from "@/data/getStoryData";
 import { Button } from "../ui/Button";
 import UserAvatar from "../utils/UserAvatar";
 import { Skeleton } from "../ui/Skeleton";
-import { useSession } from "next-auth/react";
 
 const HomePageStoryCards = () => {
   const { data: session } = useSession();
   const storyCardContainer = useRef(null);
-  const [scale, setScale] = useState(1);
+  const router = useRouter();
+
   const [hoveredStory, setHoveredStory] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAtTheEndOfScrolled, setIsAtTheEndOfScrolled] = useState(true);
 
-  const router = useRouter();
+  const [scale, setScale] = useState(1);
 
   const RightScroll = () => {
     if (storyCardContainer.current) {
