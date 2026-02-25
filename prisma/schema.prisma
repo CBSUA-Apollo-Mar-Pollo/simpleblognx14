@@ -97,8 +97,7 @@ model UserProfile {
 model Post {
   id                  String    @id @default(cuid())
   description         String?
-  image               Json?
-  video               Json?
+  media               Json?
   userStatus          String?
   textBackgroundStyle Json?
   trashed             Boolean   @default(false)

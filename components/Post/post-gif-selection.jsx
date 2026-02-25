@@ -87,6 +87,7 @@ const PostGIFSelection = ({ setIsGifSelectionActive, setGifPreview }) => {
               onGifClick={(gif, e) => {
                 e.preventDefault();
                 const gifData = {
+                  type: gif.type,
                   giphyId: gif.id,
                   title: gif.title,
                   url: gif.images.fixed_height.url,

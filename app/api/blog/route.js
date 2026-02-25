@@ -4,6 +4,52 @@ import { revalidateTag, revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+const postInclude = {
+  author: {
+    select: {
+      id: true,
+      name: true,
+      handleName: true,
+      image: true,
+      bio: true,
+      birthdate: true,
+    },
+  },
+  comments: { select: { id: true } },
+  votes: { select: { userId: true, type: true } },
+  community: { include: { members: { select: { userId: true } } } },
+};
+
+function hasContent({ description, media }) {
+  return description?.trim() || (media && media.length > 0);
+}
+
+function buildPostData({
+  description,
+  selectedBackgroundColor,
+  userStatus,
+  media,
+  authorId,
+  communityId,
+}) {
+  return {
+    description: description || null,
+    textBackgroundStyle: selectedBackgroundColor,
+    userStatus,
+    media,
+    authorId,
+    communityId,
+  };
+}
+
+function shapeResponse(post) {
+  return {
+    ...post,
+    isShortsV: false,
+    createdAtMs: new Date(post.createdAt).getTime(),
+  };
+}
+
 export async function POST(req) {
   try {
     const session = await getAuthSession();
@@ -12,195 +58,67 @@ export async function POST(req) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    // Fetch the user's UserProfile
-    const userProfile = await db.userProfile.findFirst({
+    const userProfile = await db.userProfile.findUnique({
       where: { id: session.user.id },
     });
+
     if (!userProfile) {
       return new Response("User profile not found", { status: 404 });
     }
 
     const body = await req.json();
+
     const {
       description = "",
       selectedBackgroundColor = null,
-      userStatus,
-      images = [],
-      videos = [],
+      userStatus = null,
+      media = [],
       communityId,
     } = body;
 
-    if (
-      description?.length === 0 &&
-      images.length === 0 &&
-      videos.length === 0
-    ) {
-      return new NextResponse(
-        "For you to create a post you need to put a description or upload an image or video",
-        { status: 400 }
-      );
+    if (!hasContent({ description, media })) {
+      return new Response("Post must have description or media content", {
+        status: 400,
+      });
     }
 
-    if (
-      description?.length !== 0 &&
-      images?.length === 0 &&
-      videos?.length === 0
-    ) {
-      const newPost = await db.post.create({
-        data: {
-          description,
-          textBackgroundStyle: selectedBackgroundColor,
-          authorId: userProfile.id,
-        },
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              handleName: true,
-              image: true,
-              bio: true,
-              birthdate: true,
-            },
-          },
-          comments: { select: { id: true } },
-          votes: { select: { userId: true, type: true } },
-          community: { include: { members: { select: { userId: true } } } },
-        },
+    const postData = buildPostData({
+      description,
+      selectedBackgroundColor,
+      userStatus,
+      media,
+      authorId: userProfile.id,
+      communityId,
+    });
+
+    const post = await db.$transaction(async (tx) => {
+      const created = await tx.post.create({
+        data: postData,
       });
 
-      await db.vote.create({
+      await tx.vote.create({
         data: {
           userId: userProfile.id,
-          postId: newPost.id,
+          postId: created.id,
           type: "UP",
         },
       });
 
-      // Refetch the post to include the newly created vote
-      const postWithVote = await db.post.findUnique({
-        where: { id: newPost.id },
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              handleName: true,
-              image: true,
-              bio: true,
-              birthdate: true,
-            },
-          },
-          comments: { select: { id: true } },
-          votes: { select: { userId: true, type: true } },
-          community: { include: { members: { select: { userId: true } } } },
-        },
+      return tx.post.findUnique({
+        where: { id: created.id },
+        include: postInclude,
       });
-
-      revalidateTag("homepage-feed");
-      revalidatePath("/");
-      return new Response(
-        JSON.stringify({
-          ...postWithVote,
-          isShortsV: false,
-          createdAtMs: new Date(postWithVote.createdAt).getTime(),
-        })
-      );
-    }
-
-    let imageExist = images.length !== 0 ? images : null;
-
-    let post = null;
-
-    if (images.length !== 0) {
-      if (userStatus) {
-        post = await db.post.create({
-          data: {
-            description,
-            image: imageExist[0],
-            userStatus: userStatus,
-            authorId: userProfile.id,
-          },
-        });
-      } else {
-        post = await db.post.create({
-          data: {
-            description,
-            image: imageExist,
-            userStatus: userStatus,
-            authorId: userProfile.id,
-          },
-        });
-      }
-    }
-
-    if (videos.length !== 0) {
-      post = await db.post.create({
-        data: {
-          description,
-          video: videos,
-          userStatus: userStatus,
-          authorId: userProfile.id,
-        },
-      });
-    }
-
-    if (communityId) {
-      await db.post.update({
-        where: {
-          id: post.id,
-        },
-        data: {
-          communityId,
-        },
-      });
-    }
-
-    await db.vote.create({
-      data: {
-        userId: userProfile.id,
-        postId: post.id,
-        type: "UP",
-      },
     });
 
-    // Fetch the complete post with all relations
-    const completePost = await db.post.findUnique({
-      where: { id: post.id },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            handleName: true,
-            image: true,
-            bio: true,
-            birthdate: true,
-          },
-        },
-        comments: { select: { id: true } },
-        votes: { select: { userId: true, type: true } },
-        community: { include: { members: { select: { userId: true } } } },
-      },
-    });
-
-    revalidateTag("homepage-feed");
-    revalidatePath("/");
-
-    return new Response(
-      JSON.stringify({
-        ...completePost,
-        isShortsV: false,
-        createdAtMs: new Date(completePost.createdAt).getTime(),
-      })
-    );
+    return new Response(JSON.stringify(shapeResponse(post)));
   } catch (error) {
-    console.log(error);
+    console.error(error);
+
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 422 });
     }
 
-    return new Response("Could not create blog", { status: 500 });
+    return new Response("Could not create post", { status: 500 });
   }
 }
 
@@ -229,7 +147,7 @@ export async function PATCH(req) {
     if (!images && !description) {
       return new NextResponse(
         "For you to create a post you need to put a description or upload an image.",
-        { status: 400 }
+        { status: 400 },
       );
     }
 

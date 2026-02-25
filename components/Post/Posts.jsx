@@ -15,12 +15,6 @@ import { deleteImage } from "@/actions/deleteImage";
 export default function Posts({ initialPosts }) {
   const { data: session } = useSession();
   const lastPostRef = useRef(null);
-  const { ref, entry } = useIntersection({
-    root: null,
-    rootMargin: "40px",
-    threshold: 0.1,
-    enabled: hasNextPage,
-  });
 
   const { scrolledNumber, setScrolledNumber } = useScrollTracker();
   const [randNumber, setRandNumber] = useState(null);
@@ -42,6 +36,13 @@ export default function Posts({ initialPosts }) {
       },
       initialData: { pages: [initialPosts], pageParams: [1] },
     });
+
+  const { ref, entry } = useIntersection({
+    root: null,
+    rootMargin: "40px",
+    threshold: 0.1,
+    enabled: hasNextPage,
+  });
 
   useEffect(() => {
     if (entry?.isIntersecting) {
@@ -127,9 +128,9 @@ export default function Posts({ initialPosts }) {
                     currentShortsvVote={currentShortsvVote?.type}
                   />
 
-                  {/* <div className="xl:mt-3 my-1">
+                  <div className="xl:mt-3 my-1">
                     {index === randNumber && <ReelsHomeCard />}
-                  </div> */}
+                  </div>
                   <div ref={ref} className="h-1 w-full" />
                 </li>
               );

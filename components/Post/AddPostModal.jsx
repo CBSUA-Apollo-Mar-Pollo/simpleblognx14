@@ -3,6 +3,8 @@ import React, { useContext, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 import {
   Dialog,
@@ -56,18 +58,18 @@ const AddPostModal = ({
   const { signinToast } = useCustomHooks();
   const fileInputRef = useRef(null);
 
+  // boolean states
   const [localOpen, setLocalOpen] = useState(false);
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
   const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
     useState(false);
-  // state for if the user is canceling the post with image or description
   const [isDiscarding, setIsDiscarding] = useState(false);
-  // state for opening another contents in modal.
   const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
   const [isFeelingSelectionActive, setIsFeelingSelectionActive] =
     useState(false);
   const [isGifSelectionActive, setIsGifSelectionActive] = useState(false);
 
+  // form state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -96,20 +98,20 @@ const AddPostModal = ({
   ];
   const hideMainContent = modalContentConditions.some((cond) => cond);
 
-  console.log(gifPreview, "gif preview data");
-
   const {
-    mutate: createBlog,
+    mutate: handleCreatePost,
     isLoading,
     isError,
   } = useMutation({
     mutationFn: async () => {
-      let images = [];
+      setIsLoading(true);
+      setLoaderDescription("Posting");
+      let media = [];
       const file = selectedFiles;
       if (selectedFiles.length > 0) {
         try {
           const response = await uploadFiles("imageUploader", { files: file });
-          images = response;
+          media = response;
         } catch (error) {
           setErrorMessage(
             "Error uploading image, please upload an image with the extension of the following: jpeg, png",
@@ -124,7 +126,7 @@ const AddPostModal = ({
       const payload = {
         description,
         selectedBackgroundColor,
-        images,
+        media,
         communityId,
       };
 
@@ -164,11 +166,6 @@ const AddPostModal = ({
       });
     },
     onSuccess: (newPost) => {
-      setImageUrl("");
-      setDescription("");
-      setOpen(false);
-      setIsLoading(false);
-
       // Update the query cache with the new post
       queryClient.setQueryData(["get-posts-infinite-query"], (oldData) => {
         if (!oldData) return oldData;
@@ -183,6 +180,10 @@ const AddPostModal = ({
       // This prevents the post from disappearing due to cache revalidation
     },
     onSettled: () => {
+      setImageUrl("");
+      setDescription("");
+      setOpen(false);
+      setIsLoading(false);
       setSelectedBackgroundColor(null);
       setSelectedFiles([]);
       setImagePreviews([]);
@@ -346,33 +347,35 @@ const AddPostModal = ({
                     </button>
                   </div>
                 </div>
-                <div className="grid items-center  max-h-[60vh] overflow-auto">
-                  <div
-                    style={{
-                      backgroundColor:
-                        selectedBackgroundColor?.backgroundColorType ===
-                          "solid" && selectedBackgroundColor?.color,
-                      backgroundImage:
-                        selectedBackgroundColor?.backgroundColorType ===
-                        "gradient"
-                          ? `linear-gradient(to bottom right, ${selectedBackgroundColor?.color.from}, ${selectedBackgroundColor?.color.to})`
-                          : `url('${selectedBackgroundColor?.color}') `,
-                      color: selectedBackgroundColor ? "white" : "black",
-                    }}
-                    className={`${
-                      selectedBackgroundColor && "h-[40vh]"
-                    } flex items-center justify-center `}
-                  >
-                    <Textarea
-                      id="desc"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      rows={1}
-                      placeholder={`What's on your mind, ${
-                        session?.user.name.split(" ")[0] ||
-                        user?.name.split(" ")[0]
-                      }?`}
-                      className={`
+
+                <SimpleBar forceVisible="y" style={{ maxHeight: "60vh" }}>
+                  <div className="grid items-center">
+                    <div
+                      style={{
+                        backgroundColor:
+                          selectedBackgroundColor?.backgroundColorType ===
+                            "solid" && selectedBackgroundColor?.color,
+                        backgroundImage:
+                          selectedBackgroundColor?.backgroundColorType ===
+                          "gradient"
+                            ? `linear-gradient(to bottom right, ${selectedBackgroundColor?.color.from}, ${selectedBackgroundColor?.color.to})`
+                            : `url('${selectedBackgroundColor?.color}') `,
+                        color: selectedBackgroundColor ? "white" : "black",
+                      }}
+                      className={`${
+                        selectedBackgroundColor && "h-[40vh]"
+                      } flex items-center justify-center `}
+                    >
+                      <Textarea
+                        id="desc"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={1}
+                        placeholder={`What's on your mind, ${
+                          session?.user.name.split(" ")[0] ||
+                          user?.name.split(" ")[0]
+                        }?`}
+                        className={`
                     dark:bg-neutral-800 bg-transparent 
                     ${
                       selectedBackgroundColor !== null
@@ -388,182 +391,190 @@ const AddPostModal = ({
                         : "text-neutral-500"
                     } 
                     dark:placeholder-neutral-300
-                    ${selectedFiles.lengt > 0 || gifPreview ? "min-h-10" : " min-h-44"}
+                    ${selectedFiles.length > 0 || gifPreview ? "min-h-10" : " min-h-44"}
                   `}
-                    />
+                      />
 
-                    {selectedFiles.length > 0 && (
-                      <EmojiPicker
-                        triggerClassName="mr-2 bg-transparent"
-                        onChange={(emoji) =>
-                          setDescription(description + emoji)
-                        }
+                      {selectedFiles.length > 0 && (
+                        <EmojiPicker
+                          triggerClassName="mr-2 bg-transparent"
+                          onChange={(emoji) =>
+                            setDescription(description + emoji)
+                          }
+                        />
+                      )}
+                    </div>
+
+                    {gifPreview && (
+                      <img
+                        src={gifPreview.url}
+                        alt={gifPreview.title}
+                        className=" w-full h-auto"
+                        loading="lazy"
                       />
                     )}
-                  </div>
 
-                  {gifPreview && (
-                    <img
-                      src={gifPreview.url}
-                      alt={gifPreview.title}
-                      className=" w-full h-auto"
-                      loading="lazy"
-                    />
-                  )}
-                  {selectedFiles.length === 0 && (
-                    <div className="flex items-center justify-between pt-2">
-                      {!toggleTextBackgroundColor && (
-                        <button
-                          onClick={() => setToggleTextBackgroundColor(true)}
-                          className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
-                        >
-                          <ALargeSmall className="text-white" />
-                        </button>
-                      )}
-
-                      {toggleTextBackgroundColor && (
-                        <div className="ml-3 flex items-center gap-x-2">
+                    {selectedFiles.length === 0 && (
+                      <div className="flex items-center justify-between pt-2">
+                        {!toggleTextBackgroundColor && (
                           <button
-                            onClick={() => setToggleTextBackgroundColor(false)}
-                            className="bg-neutral-300 p-1 rounded-md"
+                            onClick={() => setToggleTextBackgroundColor(true)}
+                            className="bg-gradient-to-br from-pink-500 via-purple-600 to-green-400 p-1 rounded-md ml-4 border border-white"
                           >
-                            <ChevronLeft className="text-neutral-700" />
+                            <ALargeSmall className="text-white" />
                           </button>
+                        )}
 
-                          <button
-                            onClick={() => setSelectedBackgroundColor(null)}
-                            className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
-                          />
+                        {toggleTextBackgroundColor && (
+                          <div className="ml-3 flex items-center gap-x-2">
+                            <button
+                              onClick={() =>
+                                setToggleTextBackgroundColor(false)
+                              }
+                              className="bg-neutral-300 p-1 rounded-md"
+                            >
+                              <ChevronLeft className="text-neutral-700" />
+                            </button>
 
-                          {solidBackgroundColors
-                            .slice(0, 4)
-                            .map((color, index) => (
-                              <button
-                                onClick={() =>
-                                  setSelectedBackgroundColor({
-                                    backgroundColorType: "solid",
-                                    color: color,
-                                  })
-                                }
-                                style={{ backgroundColor: color }}
-                                key={index}
-                                className={`h-8 w-8  rounded-md  `}
-                              />
-                            ))}
-
-                          {Object.entries(gradients)
-                            .slice(0, 4)
-                            .map(([colorName, colors]) => (
-                              <button
-                                onClick={() =>
-                                  setSelectedBackgroundColor({
-                                    backgroundColorType: "gradient",
-                                    color: colors,
-                                  })
-                                }
-                                key={colorName}
-                                style={{
-                                  backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
-                                }}
-                                className={`h-8 w-8  rounded-md  `}
-                              />
-                            ))}
-
-                          <button
-                            onClick={() =>
-                              setSelectedBackgroundColor({
-                                backgroundColorType: "image",
-                                color:
-                                  "/abstract_background_image/19965192_6193255.jpg",
-                              })
-                            }
-                          >
-                            <img
-                              src="/abstract_background_image/19965192_6193255.jpg"
-                              className="h-8 w-8 object-fill rounded-md"
+                            <button
+                              onClick={() => setSelectedBackgroundColor(null)}
+                              className="h-8 w-8 bg-white rounded-md border-2 border-neutral-400"
                             />
-                          </button>
 
-                          <button className="bg-neutral-300 p-1.5 rounded-md">
-                            <LayoutGrid className=" fill-black " />
-                          </button>
-                        </div>
-                      )}
+                            {solidBackgroundColors
+                              .slice(0, 4)
+                              .map((color, index) => (
+                                <button
+                                  onClick={() =>
+                                    setSelectedBackgroundColor({
+                                      backgroundColorType: "solid",
+                                      color: color,
+                                    })
+                                  }
+                                  style={{ backgroundColor: color }}
+                                  key={index}
+                                  className={`h-8 w-8  rounded-md  `}
+                                />
+                              ))}
 
-                      <EmojiPicker
-                        triggerClassName="mr-2 bg-transparent"
-                        onChange={(emoji) =>
-                          setDescription(description + emoji)
-                        }
-                      />
-                    </div>
-                  )}
+                            {Object.entries(gradients)
+                              .slice(0, 4)
+                              .map(([colorName, colors]) => (
+                                <button
+                                  onClick={() =>
+                                    setSelectedBackgroundColor({
+                                      backgroundColorType: "gradient",
+                                      color: colors,
+                                    })
+                                  }
+                                  key={colorName}
+                                  style={{
+                                    backgroundImage: `linear-gradient(to bottom right, ${colors.from}, ${colors.to})`,
+                                  }}
+                                  className={`h-8 w-8  rounded-md  `}
+                                />
+                              ))}
 
-                  {/* Image upload UI */}
-                  {selectedFiles.length > 0 && (
-                    <div className="flex items-center justify-center w-auto  dark:border-neutral-700 rounded-md relative my-2 mx-4">
-                      <div
-                        className="w-full"
-                        onDrop={handleFileDrop}
-                        onDragOver={handleDragOver}
-                      >
-                        <div className="relative">
-                          <div className="z-10 absolute top-2 left-4 flex gap-x-2">
-                            <Button
+                            <button
                               onClick={() =>
-                                document.getElementById("fileInput").click()
+                                setSelectedBackgroundColor({
+                                  backgroundColorType: "image",
+                                  color:
+                                    "/abstract_background_image/19965192_6193255.jpg",
+                                })
                               }
-                              variant="secondary"
-                              className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
                             >
-                              {" "}
-                              <Pencil className="h-4 w-4 " />
-                              <span className="text-[13px] font-semibold">
-                                {selectedFiles.length > 1 ? "Edit all" : "Edit"}
-                              </span>
-                            </Button>
-                            <Button
-                              onClick={() =>
-                                document.getElementById("fileInput").click()
-                              }
-                              variant="secondary"
-                              className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
-                            >
-                              {" "}
                               <img
-                                src="/ImageIcons/imageadd.png"
-                                className="h-4 w-4"
+                                src="/abstract_background_image/19965192_6193255.jpg"
+                                className="h-8 w-8 object-fill rounded-md"
                               />
-                              <span className="text-[13px] font-semibold">
-                                Add Photos/Videos
-                              </span>
+                            </button>
+
+                            <button className="bg-neutral-300 p-1.5 rounded-md">
+                              <LayoutGrid className=" fill-black " />
+                            </button>
+                          </div>
+                        )}
+
+                        <EmojiPicker
+                          triggerClassName="mr-2 bg-transparent"
+                          onChange={(emoji) =>
+                            setDescription(description + emoji)
+                          }
+                        />
+                      </div>
+                    )}
+
+                    {/* Image upload UI */}
+                    {selectedFiles.length > 0 && (
+                      <div className="flex items-center justify-center w-auto  dark:border-neutral-700 rounded-md relative my-2 mx-4">
+                        <div
+                          className="w-full"
+                          onDrop={handleFileDrop}
+                          onDragOver={handleDragOver}
+                        >
+                          <div className="relative">
+                            <div className="z-10 absolute top-2 left-4 flex gap-x-2">
+                              <Button
+                                onClick={() =>
+                                  document.getElementById("fileInput").click()
+                                }
+                                variant="secondary"
+                                className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
+                              >
+                                {" "}
+                                <Pencil className="h-4 w-4 " />
+                                <span className="text-[13px] font-semibold">
+                                  {selectedFiles.length > 1
+                                    ? "Edit all"
+                                    : "Edit"}
+                                </span>
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  document.getElementById("fileInput").click()
+                                }
+                                variant="secondary"
+                                className=" bg-white text-neutral-800 gap-x-2 hover:bg-neutral-200 drop-shadow-md rounded-lg px-3 h-9"
+                              >
+                                {" "}
+                                <img
+                                  src="/ImageIcons/imageadd.png"
+                                  className="h-4 w-4"
+                                />
+                                <span className="text-[13px] font-semibold">
+                                  Add Photos/Videos
+                                </span>
+                              </Button>
+                            </div>
+
+                            <Button
+                              onClick={() => {
+                                setImagePreviews([]);
+                                setSelectedFiles([]);
+                              }}
+                              className="absolute top-2 right-2 bg-white drop-shadow-md shadow-md border dark:bg-neutral-700 z-10 px-2.5 rounded-full hover:bg-neutral-600"
+                            >
+                              <X className="h-5 w-5 text-neutral-700" />
                             </Button>
+                            <input
+                              id="fileInput"
+                              type="file"
+                              className="hidden"
+                              multiple
+                              accept="image/*, video/*"
+                              onChange={onFileChange}
+                            />
                           </div>
 
-                          <Button
-                            onClick={() => {
-                              setImagePreviews([]);
-                              setSelectedFiles([]);
-                            }}
-                            className="absolute top-2 right-2 bg-white drop-shadow-md shadow-md border dark:bg-neutral-700 z-10 px-2.5 rounded-full hover:bg-neutral-600"
-                          >
-                            <X className="h-5 w-5 text-neutral-700" />
-                          </Button>
-                          <input
-                            id="fileInput"
-                            type="file"
-                            className="hidden"
-                            multiple
-                            accept="image/*, video/*"
-                            onChange={onFileChange}
+                          <ImagePreviewCreatePost
+                            imagePreviews={imagePreviews}
                           />
                         </div>
-
-                        <ImagePreviewCreatePost imagePreviews={imagePreviews} />
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                </SimpleBar>
 
                 <div className=" border border-gray-300 dark:border-neutral-600 rounded-md px-4 mx-4 flex justify-between items-center py-1 ">
                   <h1 className="font-semibold text-neutral-800 dark:text-neutral-300 text-sm">
@@ -581,14 +592,16 @@ const AddPostModal = ({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          disabled={selectedBackgroundColor}
+                          disabled={
+                            selectedBackgroundColor || gifPreview !== null
+                          }
                           variant="ghost"
                           className="hover:bg-gray-100 p-2 rounded-full cursor-pointer focus:ring-0"
                           onClick={() => fileInputRef.current?.click()}
                         >
                           <ImagePlus
                             className={`${
-                              selectedBackgroundColor
+                              selectedBackgroundColor || gifPreview !== null
                                 ? "text-neutral-500"
                                 : "text-green-600"
                             }  h-6 w-6`}
@@ -642,13 +655,16 @@ const AddPostModal = ({
                       <TooltipTrigger asChild>
                         <Button
                           onClick={() => setIsGifSelectionActive(true)}
-                          disabled={selectedBackgroundColor}
+                          disabled={
+                            selectedBackgroundColor || selectedFiles.length > 0
+                          }
                           variant="ghost"
                           className="hover:bg-gray-100 p-1 rounded-full cursor-pointer focus:ring-0"
                         >
                           <Icons.GifIcon
                             className={` ${
-                              selectedBackgroundColor
+                              selectedBackgroundColor ||
+                              selectedFiles.length > 0
                                 ? "fill-neutral-600"
                                 : "fill-cyan-600"
                             }  h-9 w-9`}
@@ -671,6 +687,7 @@ const AddPostModal = ({
                   <span className="text-xs">{errorMessage}</span>
                 </div>
               )}
+              {/* Create post */}
               <DialogFooter className="py-2 mx-4">
                 <Button
                   disabled={selectedFiles.length === 0 && description === ""}
@@ -680,11 +697,7 @@ const AddPostModal = ({
                       : "bg-blue-600 hover:bg-blue-500"
                   } `}
                   type="submit"
-                  onClick={() => {
-                    createBlog();
-                    setIsLoading(true);
-                    setLoaderDescription("Posting");
-                  }}
+                  onClick={handleCreatePost}
                 >
                   Post
                 </Button>
