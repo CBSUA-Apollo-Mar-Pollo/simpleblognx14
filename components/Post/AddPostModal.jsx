@@ -98,11 +98,7 @@ const AddPostModal = ({
   ];
   const hideMainContent = modalContentConditions.some((cond) => cond);
 
-  const {
-    mutate: handleCreatePost,
-    isLoading,
-    isError,
-  } = useMutation({
+  const { mutate: handleCreatePost, isError } = useMutation({
     mutationFn: async () => {
       setIsLoading(true);
       setLoaderDescription("Posting");
@@ -123,6 +119,10 @@ const AddPostModal = ({
         }
       }
 
+      if (gifPreview) {
+        media = [gifPreview];
+      }
+
       const payload = {
         description,
         selectedBackgroundColor,
@@ -130,7 +130,7 @@ const AddPostModal = ({
         communityId,
       };
 
-      const { data } = await axios.post("/api/blog", payload);
+      const { data } = await axios.post("/api/posts/create", payload);
       return data;
     },
     onError: (err) => {

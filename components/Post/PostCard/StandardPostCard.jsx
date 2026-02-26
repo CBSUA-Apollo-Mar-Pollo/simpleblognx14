@@ -1,10 +1,8 @@
 "use client";
 
-import { getDominantColor } from "@/data/getDominantColor";
-
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useRef, useState } from "react";
-import MultipleImageRender from "../multiple-image-render";
+import { getDominantColor } from "@/data/getDominantColor";
 import {
   Loader2,
   Maximize2,
@@ -13,10 +11,12 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Icons } from "@/components/utils/Icons";
 import { useIntersection } from "@mantine/hooks";
 import Link from "next/link";
+
+import MultipleImageRender from "../multiple-image-render";
+import { Button } from "@/components/ui/Button";
+import { Icons } from "@/components/utils/Icons";
 
 const StandardPostCard = ({
   blog,
@@ -29,14 +29,21 @@ const StandardPostCard = ({
   setProgress,
 }) => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isWaiting, setIsWaiting] = useState(false);
-  const [volume, setVolume] = useState(1);
-  const [isVolumeHovered, setIsVolumeHovered] = useState(false);
-  const [toggleVideoButton, setToggleVideoButton] = useState(false);
   const { ref, entry } = useIntersection({
     threshold: 1, // Adjust this value as needed
   });
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [isVolumeHovered, setIsVolumeHovered] = useState(false);
+  const [toggleVideoButton, setToggleVideoButton] = useState(false);
+
+  const [volume, setVolume] = useState(1);
+
+  const media = Array.isArray(blog.media) ? blog.media : [];
+
+  const images = media.filter((m) => m?.type?.startsWith("image/"));
+  const videos = media.filter((m) => m?.type?.startsWith("video/"));
 
   useEffect(() => {
     const handleLoadedMetadata = () => {
@@ -53,7 +60,7 @@ const StandardPostCard = ({
       if (videoRef.current) {
         videoRef.current.removeEventListener(
           "loadedmetadata",
-          handleLoadedMetadata
+          handleLoadedMetadata,
         );
       }
     };
@@ -229,9 +236,22 @@ const StandardPostCard = ({
         </div>
       )}
 
+      {/* render GIF */}
+      {blog?.media &&
+        blog.media.length > 0 &&
+        blog?.media[0]?.type === "gif" && (
+          <img
+            src={blog.media[0].url}
+            alt={blog.media[0].title}
+            className=" w-full h-auto"
+            loading="lazy"
+          />
+        )}
+
       {/* if image render this  */}
-      {blog.image && (
+      {images.length > 0 && (
         <MultipleImageRender
+          images={images}
           blog={blog}
           dominantColorPost={dominantColorPost}
           isLoading={isLoading}

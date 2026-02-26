@@ -4,7 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
+const MultipleImageRender = ({
+  images,
+  blog,
+  dominantColorPost,
+  isLoading,
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [meta, setMeta] = useState([]);
 
@@ -17,15 +22,15 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
     });
 
   useEffect(() => {
-    if (!blog.image?.length) return;
+    if (!images?.length) return;
 
     Promise.all(
-      blog.image.map(async (img) => ({
+      images.map(async (img) => ({
         url: img.url,
         orientation: await getOrientation(img.url),
       })),
     ).then(setMeta);
-  }, [blog.image]);
+  }, [images]);
 
   const isBothVertical =
     meta.length === 2 && meta.every((img) => img.orientation === "vertical");
@@ -36,10 +41,12 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
   const isFiveVertical =
     meta.length === 5 && meta.every((img) => img.orientation === "vertical");
 
+  console.log(images, "images");
+
   return (
     <>
       {/* render if the user updated their cover photo */}
-      {blog.image && (
+      {images && (
         <div className="w-full ">
           {blog.userStatus === "updated his cover photo" && (
             <Link
@@ -51,7 +58,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 width={1200} // Example width, adjust based on design
                 height={800} // Example height, adjust based on design
                 priority={true}
-                src={blog.image.url}
+                src={images.url}
                 alt="profile image"
                 referrerPolicy="no-referrer"
                 className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
@@ -68,7 +75,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 width={1200} // Example width, adjust based on design
                 height={800} // Example height, adjust based on design
                 priority={true}
-                src={blog.image.url}
+                src={images.url}
                 alt="profile image"
                 referrerPolicy="no-referrer"
                 className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
@@ -77,7 +84,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
           )}
 
           {/* Render single image */}
-          {blog.image.length === 1 && (
+          {images.length === 1 && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
@@ -89,7 +96,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 style={{
                   backgroundColor: "black",
                   backgroundImage: imageLoaded
-                    ? `url(${blog.image[0].url})`
+                    ? `url(${images[0].url})`
                     : "none",
                   filter: imageLoaded ? "blur(60px)" : "none",
                   zIndex: "-1",
@@ -101,7 +108,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                   width={1200}
                   height={900}
                   priority={true}
-                  src={blog.image[0].url}
+                  src={images[0].url}
                   alt="profile image"
                   referrerPolicy="no-referrer"
                   className="object-contain w-full transition max-h-[45rem]"
@@ -397,7 +404,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
           )}
 
           {/* render if there are 6 or more image */}
-          {blog.image.length >= 6 && (
+          {images.length >= 6 && (
             <div className=" flex flex-col">
               <div className="relative grid grid-cols-2 gap-x-[1px] px-[1px]">
                 <Link
@@ -408,7 +415,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     width={1200}
                     height={800}
-                    src={blog.image[0].url}
+                    src={images[0].url}
                     priority={true}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -423,7 +430,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                     sizes="(max-width: 768px) 100vw, 50vw"
                     width={1200}
                     height={800}
-                    src={blog.image[1].url}
+                    src={images[1].url}
                     priority={true}
                     alt="profile image"
                     className="w-full h-auto object-cover"
@@ -432,7 +439,7 @@ const MultipleImageRender = ({ blog, dominantColorPost, isLoading }) => {
                 </Link>
               </div>
               <div className="mt-[2px] grid grid-cols-3">
-                {blog.image.map((imageUrl, index) => {
+                {images.map((imageUrl, index) => {
                   if (index === 0) {
                     return null;
                   }
