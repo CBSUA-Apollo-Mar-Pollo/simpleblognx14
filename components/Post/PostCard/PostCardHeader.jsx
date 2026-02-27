@@ -1,18 +1,19 @@
 "use client";
+import React, { useState, useEffect } from "react";
+import { Dot, Globe, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import UserAvatar from "@/components/utils/UserAvatar";
 import { formatTimeToNow } from "@/lib/utils";
-import { Dot, Globe, X } from "lucide-react";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
 import PostOption from "../PostOption";
-import { useRouter } from "next/navigation";
 import useCustomHooks from "@/hooks/use-custom-hooks";
 import { Icons } from "@/components/utils/Icons";
 
 const PostCardHeader = ({ blog, session, deleteImage, fetchNextPage }) => {
   const router = useRouter();
   const { signinToast } = useCustomHooks();
+
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

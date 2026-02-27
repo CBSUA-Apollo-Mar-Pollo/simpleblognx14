@@ -49,7 +49,7 @@ const PostGIFSelection = ({ setIsGifSelectionActive, setGifPreview }) => {
     <>
       <DialogHeader className="pt-4 px-4">
         <DialogTitle className="text-xl font-bold text-center">
-          How are you feeling?
+          Choose a GIF
         </DialogTitle>
 
         <Button

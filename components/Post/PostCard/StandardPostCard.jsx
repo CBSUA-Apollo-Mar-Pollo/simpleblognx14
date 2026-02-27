@@ -248,7 +248,7 @@ const StandardPostCard = ({
           />
         )}
 
-      {/* if image render this  */}
+      {/* render post Images */}
       {images.length > 0 && (
         <MultipleImageRender
           images={images}

@@ -180,9 +180,9 @@ const MultipleImageRender = ({
                     }`}
                   >
                     <div
-                      className={`relative  ${isThreeHorizontal ? "h-[25vh] w-full" : ""}`}
+                      className={`relative  ${isThreeHorizontal ? "h-auto w-full" : ""}`}
                       style={{
-                        aspectRatio: isThreeHorizontal ? "4/ 11" : "3 / 5",
+                        aspectRatio: isThreeHorizontal ? "16/ 5" : "3 / 5",
                       }}
                     >
                       <Image

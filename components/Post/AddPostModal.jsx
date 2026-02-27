@@ -288,6 +288,7 @@ const AddPostModal = ({
     setOpen(false);
     setIsDiscarding(false);
     setGifPreview({});
+    setUserStatus(null);
   };
 
   return (

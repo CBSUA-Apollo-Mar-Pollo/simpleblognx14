@@ -66,6 +66,11 @@ const PostDescriptionCard = ({
   const { data: session } = useSession();
   const [comments, setComments] = useState([]);
 
+  const media = Array.isArray(blog.media) ? blog.media : [];
+
+  const images = media.filter((m) => m?.type?.startsWith("image/"));
+  const videos = media.filter((m) => m?.type?.startsWith("video/"));
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -284,9 +289,23 @@ const PostDescriptionCard = ({
               </div>
             )}
 
-            {blog.image && (
+            {/* render GIF */}
+            {blog?.media &&
+              blog.media.length > 0 &&
+              blog?.media[0]?.type === "gif" && (
+                <img
+                  src={blog.media[0].url}
+                  alt={blog.media[0].title}
+                  className=" w-full h-auto"
+                  loading="lazy"
+                />
+              )}
+
+            {/* render post Images */}
+            {images.length > 0 && (
               <MultipleImageRender
-                blog={blog.sharedPostId === null ? blog : null}
+                images={images}
+                blog={blog}
                 dominantColorPost={dominantColorPost}
                 isLoading={isLoading}
               />
