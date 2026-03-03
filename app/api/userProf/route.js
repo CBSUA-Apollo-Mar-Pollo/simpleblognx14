@@ -9,6 +9,7 @@ export async function POST(req) {
     return new Response("Unauthorized", { status: 401 });
   }
   const body = await req.json();
+
   const { imageUrl } = body;
 
   if (!imageUrl) {
@@ -27,7 +28,7 @@ export async function POST(req) {
 
     await db.post.create({
       data: {
-        image: imageUrl,
+        media: [imageUrl],
         userStatus: "updated his cover photo",
         authorId: session?.user.id,
       },

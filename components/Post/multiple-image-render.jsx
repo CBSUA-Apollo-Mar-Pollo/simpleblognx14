@@ -41,8 +41,6 @@ const MultipleImageRender = ({
   const isFiveVertical =
     meta.length === 5 && meta.every((img) => img.orientation === "vertical");
 
-  console.log(images, "images");
-
   return (
     <>
       {/* render if the user updated their cover photo */}
@@ -58,7 +56,7 @@ const MultipleImageRender = ({
                 width={1200} // Example width, adjust based on design
                 height={800} // Example height, adjust based on design
                 priority={true}
-                src={images.url}
+                src={images[0].url}
                 alt="profile image"
                 referrerPolicy="no-referrer"
                 className="object-contain w-full transition max-h-[30rem] bg-neutral-700"
@@ -84,13 +82,12 @@ const MultipleImageRender = ({
           )}
 
           {/* Render single image */}
-          {images.length === 1 && (
+          {images.length === 1 && blog.userStatus === null && (
             <Link
               href={`/postComment/${blog.id}/${0}`}
               className="relative overflow-clip w-full flex flex-col"
               shallow
             >
-              {/* background blur image */}
               <div
                 className="absolute inset-0 z-[-1] bg-center"
                 style={{

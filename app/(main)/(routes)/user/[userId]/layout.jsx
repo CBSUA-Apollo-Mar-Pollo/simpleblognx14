@@ -27,7 +27,7 @@ const getUserProfileData = cache(async (userId) => {
   if (user.backgroundImage) {
     const coverPhotoBlog = await db.post.findFirst({
       where: {
-        image: {
+        media: {
           path: ["url"],
           equals: user.backgroundImage,
         },
