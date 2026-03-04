@@ -58,17 +58,29 @@ import PostAudienceSelection from "../post-audience-selection";
 
 const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   const { data: session } = useSession();
-  const [description, setDescription] = useState(blog?.description || "");
-  const [open, setOpen] = useState(false);
   const { signinToast } = useCustomHooks();
   const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const media = Array.isArray(blog.media) ? blog.media : [];
+  const images = media.filter((m) => m?.type?.startsWith("image/"));
+  const videos = media.filter((m) => m?.type?.startsWith("video/"));
+
+  const [open, setOpen] = useState(false);
+  const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
+  const [isBackGroundColorCleared, setIsBackGroundColorCleared] =
+    useState(false);
+
+  const [description, setDescription] = useState(blog?.description || "");
   const [toggleTextBackgroundColor, setToggleTextBackgroundColor] =
     useState(false);
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(null);
   const solidBackgroundColors = ["#696969", "#7f00ba", "#cf001c", "#000000"];
-  const [isPostAudienceActive, setIsPostAudienceActive] = useState(false);
-  const [isBackGroundColorCleared, setIsBackGroundColorCleared] =
-    useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState(
+    images.length > 0 ? images : [],
+  );
+  const [videoPreviews, setVideoPreviews] = useState(
+    videos.length > 0 ? videos : [],
+  );
 
   const gradientBackgroundColors = [
     {
@@ -108,14 +120,6 @@ const EditPostModal = ({ blog, deleteImage, sharedPost }) => {
   ];
 
   const gradients = gradientBackgroundColors[0];
-
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState(
-    Array.isArray(blog?.image) ? blog.image : blog?.image ? [blog.image] : [],
-  );
-  const [videoPreviews, setVideoPreviews] = useState(
-    Array.isArray(blog?.video) ? blog.video : blog?.video ? [blog.video] : [],
-  );
 
   const { mutate: updatePost, isLoading } = useMutation({
     mutationFn: async () => {

@@ -201,11 +201,7 @@ const EditPostContent = ({
           </div>
 
           {/* preview the images */}
-          {blog.image && (
-            <ImagePreviewEditPost imagePreviews={imagePreviews} blog={blog} />
-          )}
-
-          {imagePreviews && !blog.image && (
+          {imagePreviews && (
             <ImagePreviewEditPost imagePreviews={imagePreviews} />
           )}
 

@@ -100,6 +100,8 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
   const isFiveVertical =
     previewMeta.length === 5 &&
     previewMeta.every((img) => img.orientation === "vertical");
+  const isFiveMixed =
+    previewMeta.length === 5 && !isFiveHorizontal && !isFiveVertical;
 
   console.log(isFourHorizontal, "isFourHorizontal");
 
@@ -352,6 +354,78 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
           </div>
         </div>
       )}
+
+      {previewMeta.length === 5 &&
+        isFiveMixed &&
+        (() => {
+          const verticalCount = previewMeta.filter(
+            (img) => img.orientation === "vertical",
+          ).length;
+
+          console.log(verticalCount, "vertical count");
+
+          if (verticalCount >= 3) {
+            // More vertical images, use vertical-style layout
+            return (
+              <div className="grid grid-rows-2 gap-1">
+                <div className="grid grid-cols-2 gap-1">
+                  {previewMeta.slice(0, 2).map((img, index) => (
+                    <div key={index} className="relative hover:opacity-80">
+                      <img
+                        src={img.url}
+                        alt="preview"
+                        className="w-full h-full object-cover rounded-md"
+                        style={{ aspectRatio: "1 / 1" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-3 gap-1">
+                  {previewMeta.slice(2).map((img, index) => (
+                    <div key={index} className="relative hover:opacity-80">
+                      <img
+                        src={img.src}
+                        alt="preview"
+                        className="w-full h-full object-cover rounded-md"
+                        style={{ aspectRatio: "5 / 1" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          // More horizontal images or equal mix, use horizontal-style layout
+          return (
+            <div className="grid grid-rows-[1fr_1fr] gap-1">
+              <div className="grid grid-cols-2 gap-1">
+                {previewMeta.slice(0, 2).map((img, index) => (
+                  <div key={index}>
+                    <img
+                      src={img.src}
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: "5 / 1" }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-3 gap-1">
+                {previewMeta.slice(2).map((img, index) => (
+                  <div>
+                    <img
+                      src={img.src}
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: " 6 / 6" }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
 
       {imagePreviews.length >= 6 && (
         <div className="flex flex-col">

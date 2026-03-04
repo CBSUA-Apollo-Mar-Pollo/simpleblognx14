@@ -40,6 +40,7 @@ const MultipleImageRender = ({
     meta.length === 5 && meta.every((img) => img.orientation === "horizontal");
   const isFiveVertical =
     meta.length === 5 && meta.every((img) => img.orientation === "vertical");
+  const isFiveMixed = meta.length === 5 && !isFiveHorizontal && !isFiveVertical;
 
   return (
     <>
@@ -399,6 +400,91 @@ const MultipleImageRender = ({
               </div>
             </div>
           )}
+
+          {/* render if there are 5 images with mixed orientation */}
+          {meta.length === 5 &&
+            isFiveMixed &&
+            (() => {
+              const verticalCount = meta.filter(
+                (img) => img.orientation === "vertical",
+              ).length;
+
+              if (verticalCount >= 3) {
+                // More vertical images, use vertical-style layout
+                return (
+                  <div className="grid grid-rows-2 gap-1">
+                    <div className="grid grid-cols-2 gap-1">
+                      {meta.slice(0, 2).map((img, index) => (
+                        <Link
+                          href={`/postComment/${blog.id}/${index}`}
+                          key={index}
+                          className="relative hover:opacity-80"
+                        >
+                          <img
+                            src={img.url}
+                            alt="preview"
+                            className="w-full h-full object-cover rounded-md"
+                            style={{ aspectRatio: "1 / 1" }}
+                          />
+                        </Link>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-1">
+                      {meta.slice(2).map((img, index) => (
+                        <Link
+                          href={`/postComment/${blog.id}/${index + 2}`}
+                          key={index}
+                          className="relative hover:opacity-80"
+                        >
+                          <img
+                            src={img.url}
+                            alt="preview"
+                            className="w-full h-full object-cover rounded-md"
+                            style={{ aspectRatio: "5 / 1" }}
+                          />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // More horizontal images or equal mix, use horizontal-style layout
+              return (
+                <div className="grid grid-rows-[1fr_1fr] gap-1">
+                  <div className="grid grid-cols-2 gap-1">
+                    {meta.slice(0, 2).map((img, index) => (
+                      <Link
+                        key={index}
+                        href={`/postComment/${blog.id}/${index}`}
+                      >
+                        <img
+                          src={img.url}
+                          className="w-full h-full object-cover rounded-md"
+                          style={{ aspectRatio: "5 / 1" }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1">
+                    {meta.slice(2).map((img, index) => (
+                      <Link
+                        href={`/postComment/${blog.id}/${index + 2}`}
+                        key={index}
+                      >
+                        <img
+                          src={img.url}
+                          className="w-full h-full object-cover rounded-md"
+                          style={{ aspectRatio: " 6 / 6" }}
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
 
           {/* render if there are 6 or more image */}
           {images.length >= 6 && (

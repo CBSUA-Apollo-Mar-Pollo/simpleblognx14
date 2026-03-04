@@ -1,229 +1,463 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
-  console.log(imagePreviews, "image previews in edit post");
+  const [previewMeta, setPreviewMeta] = useState([]);
+  const getImageOrientation = (imageInput) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+
+      // Determine if it's a base64 string or uploadthing object
+      const imageSource =
+        typeof imageInput === "string" ? imageInput : imageInput.url;
+
+      img.src = imageSource;
+
+      img.onload = () => {
+        const orientation = img.width >= img.height ? "horizontal" : "vertical";
+        resolve(orientation);
+      };
+
+      img.onerror = () => {
+        // Fallback in case image fails to load
+        resolve("horizontal");
+      };
+    });
+  };
+
+  useEffect(() => {
+    if (!imagePreviews?.length) return;
+
+    Promise.all(
+      imagePreviews.map(async (img) => {
+        const imageSource = typeof img === "string" ? img : img.url;
+        return {
+          src: imageSource,
+          orientation: await getImageOrientation(img),
+        };
+      }),
+    ).then(setPreviewMeta);
+  }, [imagePreviews]);
+
+  const verticalCount = previewMeta.filter(
+    (img) => img.orientation === "vertical",
+  ).length;
+
+  const horizontalCount = previewMeta.length - verticalCount;
+
+  const isSingleHorizontal =
+    previewMeta.length === 1 && previewMeta[0].orientation === "horizontal";
+
+  const isBothVertical =
+    previewMeta.length === 2 &&
+    previewMeta.every((img) => img.orientation === "vertical");
+
+  // const isBothHorizontal =
+  //   previewMeta.length === 2 &&
+  //   previewMeta.every((img) => img.orientation === "horizontal");
+
+  // const isThreeVertical =
+  //   previewMeta.length === 3 &&
+  //   previewMeta.every((img) => img.orientation === "vertical");
+
+  const heroOrientation = previewMeta[0]?.orientation;
+  const secondaryOrientations = previewMeta
+    .slice(1)
+    .map((img) => img.orientation);
+
+  const isThreeHorizontal =
+    heroOrientation === "horizontal" &&
+    secondaryOrientations.every((o) => o === "horizontal");
+
+  // dominant orientation
+  const isFourVertical = verticalCount > horizontalCount;
+  const isFourHorizontal = horizontalCount > verticalCount;
+
+  const orderedPreviewMeta = (() => {
+    // all same → keep original order
+    if (verticalCount === 4 || horizontalCount === 4) {
+      return previewMeta;
+    }
+
+    // 3 vertical, 1 horizontal → horizontal last
+    if (verticalCount === 3) {
+      return [
+        ...previewMeta.filter((img) => img.orientation === "vertical"),
+        ...previewMeta.filter((img) => img.orientation === "horizontal"),
+      ];
+    }
+
+    // 3 horizontal, 1 vertical → vertical last
+    if (horizontalCount === 3) {
+      return [
+        ...previewMeta.filter((img) => img.orientation === "horizontal"),
+        ...previewMeta.filter((img) => img.orientation === "vertical"),
+      ];
+    }
+
+    return previewMeta;
+  })();
+
+  const isFiveHorizontal =
+    previewMeta.length === 5 &&
+    previewMeta.every((img) => img.orientation === "horizontal");
+
+  const isFiveVertical =
+    previewMeta.length === 5 &&
+    previewMeta.every((img) => img.orientation === "vertical");
+  const isFiveMixed =
+    previewMeta.length === 5 && !isFiveHorizontal && !isFiveVertical;
+
+  console.log(isFiveHorizontal, "isFiveHorizontal");
+  console.log(isFiveVertical, "isFiveVertical");
+  console.log(previewMeta, "ImagePreviewEditPost");
+  console.log(imagePreviews, "ImagePreviewEditPost image preview");
+
   return (
-    <>
-      {imagePreviews.length === 1 && blog?.image && (
+    <div>
+      {previewMeta.length === 1 && (
         <div>
-          <div className="relative">
-            <img
-              src={imagePreviews[0] && imagePreviews[0].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              // Example aspect ratio (adjust as needed)
-            />
-          </div>
-        </div>
-      )}
-
-      {imagePreviews.length === 1 && !blog?.image && (
-        <div>
-          <div className="relative">
-            <img
-              src={imagePreviews[0]}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "10/9" }} // Example aspect ratio (adjust as needed)
-            />
-          </div>
-        </div>
-      )}
-
-      {imagePreviews.length === 2 && (
-        <div className="grid grid-cols-2 gap-x-1">
-          {imagePreviews.map((imageData, index) => (
+          {previewMeta.map((imageUrl, index) => (
             <div key={index} className="relative">
               <img
-                src={
-                  typeof imageData === "string"
-                    ? imageData
-                    : imageData.url || imageData.ufsUrl
-                }
-                alt={
-                  typeof imageData === "string"
-                    ? "profile image"
-                    : imageData.name
-                }
-                className="w-full h-auto object-cover"
-                style={{ aspectRatio: "6 / 10" }}
+                src={imageUrl.src}
+                alt="profile image"
+                className="w-full h-auto object-cover rounded-lg"
+                style={{
+                  aspectRatio: isSingleHorizontal ? "16 / 9" : "3 / 4 ",
+                }}
               />
             </div>
           ))}
         </div>
       )}
 
-      {imagePreviews.length === 3 && (
+      {previewMeta.length === 2 && (
         <div
-          className={`${
-            imagePreviews.length === 3 && "grid grid-cols-10 gap-x-1"
+          className={`grid gap-1 ${
+            isBothVertical ? "grid-cols-2" : "grid-cols-1"
           }`}
         >
-          <div className="relative col-span-6">
-            <img
-              src={imagePreviews[0].url}
-              alt="profile image"
-              className=" h-full object-fill"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-          </div>
-          <div className=" flex flex-col space-y-[4px] col-span-4">
-            {imagePreviews.map((imageData, index) => {
-              if (index === 0) {
-                return null;
-              }
+          {previewMeta.map((img, index) => (
+            <div key={index} className="relative">
+              <img
+                src={img.src}
+                alt="preview"
+                className="w-full object-cover rounded-md"
+                style={{
+                  aspectRatio: isBothVertical ? "6 / 10" : "3 / 1",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
-              return (
-                <div key={index} className="relative">
+      {previewMeta.length === 3 &&
+        (() => {
+          const verticalCount = previewMeta.filter(
+            (img) => img.orientation === "vertical",
+          ).length;
+          const horizontalCount = previewMeta.length - verticalCount;
+
+          const isThreeHorizontal = horizontalCount > verticalCount;
+
+          return (
+            <div
+              className={`grid gap-1 ${isThreeHorizontal ? "grid-rows-2" : "grid-cols-8"}`}
+            >
+              {/* HERO IMAGE */}
+              <div
+                className={`relative block ${isThreeHorizontal ? "row-span-1" : "col-span-5"}`}
+              >
+                <div className="relative w-full ">
                   <img
-                    src={
-                      typeof imageData === "string" ? imageData : imageData.url
-                    }
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "11/13" }} // Example aspect ratio (adjust as needed)
+                    src={previewMeta[0].src}
+                    alt="preview"
+                    className="object-cover rounded-md"
+                    style={{
+                      aspectRatio: isThreeHorizontal ? "6 / 3" : "3 / 5",
+                    }}
                   />
                 </div>
-              );
-            })}
+              </div>
+
+              {/* SECONDARY IMAGES */}
+              <div
+                className={`${
+                  isThreeHorizontal
+                    ? "grid grid-cols-2 gap-1"
+                    : "flex flex-col gap-1 col-span-3"
+                }`}
+              >
+                {previewMeta.slice(1).map((img, index) => (
+                  <div
+                    key={index}
+                    className="relative w-full h-full rounded-md"
+                  >
+                    <div className="relative w-full">
+                      <img
+                        src={img.src}
+                        alt="preview"
+                        className="object-cover rounded-md"
+                        style={{
+                          aspectRatio: isThreeHorizontal
+                            ? "16 / 9"
+                            : "3 / 4.17",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
+      {/* preview image for 4 */}
+      {previewMeta.length === 4 &&
+        (() => {
+          const verticalCount = previewMeta.filter(
+            (img) => img.orientation === "vertical",
+          ).length;
+
+          const horizontalCount = previewMeta.length - verticalCount;
+
+          const isFourVertical = verticalCount > horizontalCount;
+          const isFourHorizontal = horizontalCount > verticalCount;
+
+          const orderedPreviewMeta = (() => {
+            if (verticalCount === 4 || horizontalCount === 4) {
+              return previewMeta;
+            }
+
+            if (verticalCount === 3) {
+              return [
+                ...previewMeta.filter((img) => img.orientation === "vertical"),
+                ...previewMeta.filter(
+                  (img) => img.orientation === "horizontal",
+                ),
+              ];
+            }
+
+            if (horizontalCount === 3) {
+              return [
+                ...previewMeta.filter(
+                  (img) => img.orientation === "horizontal",
+                ),
+                ...previewMeta.filter((img) => img.orientation === "vertical"),
+              ];
+            }
+
+            return previewMeta;
+          })();
+
+          return (
+            <div
+              className={`grid gap-1 ${
+                isFourHorizontal ? "grid-rows-2" : "grid-cols-7"
+              }`}
+            >
+              {/* HERO IMAGE */}
+              <div
+                className={`relative ${
+                  isFourHorizontal ? "row-span-1" : "col-span-5"
+                }`}
+              >
+                <img
+                  src={orderedPreviewMeta[0].src}
+                  alt="preview"
+                  className="w-full h-full object-cover rounded-md"
+                  style={{
+                    aspectRatio: isFourVertical
+                      ? "10 / 11"
+                      : isFourHorizontal
+                        ? "16 / 9"
+                        : "1 / 1",
+                  }}
+                />
+              </div>
+
+              {/* STACKED GRID */}
+              <div
+                className={`grid gap-1 ${
+                  isFourHorizontal
+                    ? "grid-cols-3 h-10"
+                    : "grid-cols-1 col-span-2"
+                }`}
+              >
+                {orderedPreviewMeta.slice(1).map((img, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={img.src}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-md"
+                      style={{
+                        aspectRatio: isFourHorizontal ? "1.2 / 1" : "10 / 10",
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
+      {/* 5 images horizontal layout */}
+      {previewMeta.length === 5 && isFiveHorizontal && (
+        <div className="grid grid-cols-2 gap-1">
+          {/* LEFT COLUMN (2 images) */}
+          <div className="flex flex-col gap-1">
+            {previewMeta.slice(0, 2).map((img, index) => (
+              <img
+                key={index}
+                src={img.src}
+                alt="preview"
+                className="w-full h-full object-cover rounded-md"
+                style={{ aspectRatio: "16 / 9" }}
+              />
+            ))}
+          </div>
+
+          {/* RIGHT COLUMN (3 images) */}
+          <div className="flex flex-col gap-1">
+            {previewMeta.slice(2).map((img, index) => (
+              <img
+                key={index}
+                src={img.src}
+                alt="preview"
+                className="w-full h-full object-cover rounded-md"
+                style={{ aspectRatio: "16 / 9" }}
+              />
+            ))}
           </div>
         </div>
       )}
 
-      {imagePreviews.length === 4 && (
+      {previewMeta.length === 5 && isFiveVertical && (
+        <div className="grid grid-rows-2 gap-1">
+          {/* TOP ROW (2 images) */}
+          <div className="grid grid-cols-2 gap-1">
+            {previewMeta.slice(0, 2).map((img, index) => (
+              <img
+                key={index}
+                src={img.src}
+                alt="preview"
+                className="w-full h-full object-cover rounded-md"
+                style={{ aspectRatio: "1 / 1" }}
+              />
+            ))}
+          </div>
+
+          {/* BOTTOM ROW (3 images) */}
+          <div className="grid grid-cols-3 gap-1">
+            {previewMeta.slice(2).map((img, index) => (
+              <img
+                key={index}
+                src={img.src}
+                alt="preview"
+                className="w-full h-full object-cover rounded-md"
+                style={{ aspectRatio: "5 / 1" }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {previewMeta.length === 5 &&
+        isFiveMixed &&
+        (() => {
+          const verticalCount = previewMeta.filter(
+            (img) => img.orientation === "vertical",
+          ).length;
+
+          console.log(verticalCount, "vertical count");
+
+          if (verticalCount >= 3) {
+            // More vertical images, use vertical-style layout
+            return (
+              <div className="grid grid-rows-2 gap-1">
+                <div className="grid grid-cols-2 gap-1">
+                  {previewMeta.slice(0, 2).map((img, index) => (
+                    <div key={index} className="relative hover:opacity-80">
+                      <img
+                        src={img.url}
+                        alt="preview"
+                        className="w-full h-full object-cover rounded-md"
+                        style={{ aspectRatio: "1 / 1" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-3 gap-1">
+                  {previewMeta.slice(2).map((img, index) => (
+                    <div key={index} className="relative hover:opacity-80">
+                      <img
+                        src={img.src}
+                        alt="preview"
+                        className="w-full h-full object-cover rounded-md"
+                        style={{ aspectRatio: "5 / 1" }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          // More horizontal images or equal mix, use horizontal-style layout
+          return (
+            <div className="grid grid-rows-[1fr_1fr] gap-1">
+              <div className="grid grid-cols-2 gap-1">
+                {previewMeta.slice(0, 2).map((img, index) => (
+                  <div key={index}>
+                    <img
+                      src={img.src}
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: "5 / 1" }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-3 gap-1">
+                {previewMeta.slice(2).map((img, index) => (
+                  <div>
+                    <img
+                      src={img.src}
+                      className="w-full h-full object-cover rounded-md"
+                      style={{ aspectRatio: " 6 / 6" }}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
+      {previewMeta.length >= 6 && (
         <div className="flex flex-col">
-          <div className="relative grid grid-cols-2 gap-x-1">
+          <div className="relative grid grid-cols-2 gap-1">
             <img
-              src={imagePreviews[0].url || imagePreviews[0]}
+              src={previewMeta[0].src}
               alt="profile image"
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover rounded-md"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
             />
             <img
-              src={imagePreviews[1].url || imagePreviews[1]}
+              src={previewMeta[1].src}
               alt="profile image"
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover rounded-md"
               style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
             />
           </div>
-          <div className="mt-[2px] grid grid-cols-2 gap-x-1">
-            <img
-              src={imagePreviews[2].url || imagePreviews[2]}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-            {imagePreviews.map((imageUrl, index) => {
+          <div className="mt-[4px] grid grid-cols-3 gap-1 ">
+            {previewMeta.map((imageUrl, index) => {
               if (index === 0) {
                 return null;
               }
 
               if (index === 1) {
-                return null;
-              }
-              if (index === 2) {
-                return null;
-              }
-
-              return (
-                <div key={index} className="relative">
-                  <img
-                    src={imageUrl || imageUrl.url}
-                    alt={imageUrl.name}
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {imagePreviews.length === 5 && (
-        <div className="flex flex-col">
-          <div className="relative grid grid-cols-2">
-            <img
-              src={imagePreviews[0] && imagePreviews[0].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-            <img
-              src={imagePreviews[1] && imagePreviews[1].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-          </div>
-          <div className="mt-[2px] grid grid-cols-3 gap-x-[3px]">
-            <img
-              src={imagePreviews[2] && imagePreviews[2].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-            {imagePreviews.map((imageUrl, index) => {
-              if (index === 0) {
-                return null;
-              }
-
-              if (index === 1) {
-                return null;
-              }
-
-              if (index === 2) {
-                return null;
-              }
-
-              return (
-                <div key={index} className="relative">
-                  <img
-                    src={(imageUrl && imageUrl.url) || imageUrl}
-                    alt="profile image"
-                    className="w-full h-auto object-cover"
-                    style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {imagePreviews.length >= 6 && (
-        <div className="flex flex-col">
-          <div className="relative grid grid-cols-2">
-            <img
-              src={imagePreviews[0] && imagePreviews[0].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-            <img
-              src={imagePreviews[1] && imagePreviews[1].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-          </div>
-          <div className="mt-[2px] grid grid-cols-3 gap-x-[2px]">
-            <img
-              src={imagePreviews[2] && imagePreviews[2].url}
-              alt="profile image"
-              className="w-full h-auto object-cover"
-              style={{ aspectRatio: "12/12" }} // Example aspect ratio (adjust as needed)
-            />
-            {imagePreviews?.map((imageUrl, index) => {
-              if (index === 0) {
-                return null;
-              }
-
-              if (index === 1) {
-                return null;
-              }
-
-              if (index === 2) {
                 return null;
               }
 
@@ -232,11 +466,11 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
               }
 
               return (
-                <div key={index} className="relative ">
+                <div key={index} className="relative">
                   <img
-                    src={imageUrl.url}
+                    src={imageUrl.src}
                     alt="profile image"
-                    className={`w-full h-auto object-cover ${
+                    className={`w-full h-auto object-cover rounded-md ${
                       index === 4 && "opacity-55"
                     }`}
                     style={{ aspectRatio: "5/5" }} // Example aspect ratio (adjust as needed)
@@ -252,7 +486,7 @@ const ImagePreviewEditPost = ({ imagePreviews, blog }) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
