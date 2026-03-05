@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Checkbox } from "../ui/Checkbox";
 import { Archive, Trash2, Undo2, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+import { Checkbox } from "../ui/Checkbox";
 import { Button } from "../ui/Button";
 import UserAvatar from "../utils/UserAvatar";
-import Image from "next/image";
 import ArchiveOrTrashPostOption from "./interactives/archive-or-trash-post-option";
 import {
   Dialog,
@@ -17,7 +19,6 @@ import {
 } from "../ui/Dialog";
 import { Separator } from "../ui/Separator";
 import { deletePosts } from "@/actions/deletePosts";
-import Link from "next/link";
 import { restorePosts } from "@/actions/restorePosts";
 
 const TrashPosts = ({ trashPosts }) => {
@@ -46,7 +47,7 @@ const TrashPosts = ({ trashPosts }) => {
       // Add post to the respective group
       groups[date].posts.push(post);
       return groups;
-    }, {})
+    }, {}),
   );
 
   // Sort groups by trashedAt date in descending order
@@ -118,7 +119,7 @@ const TrashPosts = ({ trashPosts }) => {
       return {
         trashedAt: group.trashedAt,
         posts: group.posts.filter(
-          (post) => !checkedItems.some((item) => item.postId === post.id)
+          (post) => !checkedItems.some((item) => item.postId === post.id),
         ),
       };
     });
@@ -161,7 +162,7 @@ const TrashPosts = ({ trashPosts }) => {
       return {
         trashedAt: group.trashedAt,
         posts: group.posts.filter(
-          (post) => !checkedItems.some((item) => item.postId === post.id)
+          (post) => !checkedItems.some((item) => item.postId === post.id),
         ),
       };
     });
@@ -194,6 +195,14 @@ const TrashPosts = ({ trashPosts }) => {
       console.error("Failed to delete posts:", error);
       setGroupedPostsByTrashedAt(formattedTrashPosts);
     }
+  };
+
+  const getMediaType = (type) => {
+    if (!type) return "unknown";
+    if (type === "image/gif") return "gif";
+    if (type.startsWith("image/")) return "image";
+    if (type.startsWith("video/")) return "video";
+    return "other";
   };
 
   return (
@@ -341,6 +350,7 @@ const TrashPosts = ({ trashPosts }) => {
         </div>
       </div>
 
+      {/* posts list */}
       {groupedPostsByTrashedAt.map((item, index) => (
         <div
           key={index}
@@ -367,18 +377,20 @@ const TrashPosts = ({ trashPosts }) => {
               minutes < 10 ? "0" + minutes : minutes
             } ${ampm}`;
 
+            const mediaType = getMediaType(post?.media[0]?.type);
+
             return (
               <div key={index} className="mx-1 flex items-center my-3 gap-x-4">
                 <Checkbox
                   checked={checkedItems.some((item) => item.postId === post.id)}
                   onCheckedChange={(e) =>
-                    handlePostChange(post.id, post.image, e)
+                    handlePostChange(post.id, post.media, e)
                   }
                   className="border dark:border-neutral-50 h-5 w-5 mr-4 "
                 />
 
                 <div className="flex items-start gap-x-2 w-full">
-                  {post.image === null && post.video === null && (
+                  {post.media && (
                     <UserAvatar
                       className="h-14 w-14 hover:bg-slate-100"
                       user={{
@@ -386,25 +398,28 @@ const TrashPosts = ({ trashPosts }) => {
                       }}
                     />
                   )}
-                  {post.image !== null && (
-                    <Image
-                      width={80}
-                      height={80}
-                      src={
-                        post?.image && post?.image.length > 0
-                          ? post.image[0].url
-                          : "/ImageIcons/gallery.png"
-                      }
-                      alt="profile image"
-                      referrerPolicy="no-referrer"
-                      className="transition rounded-xl object-contain"
-                    />
-                  )}
 
-                  {post.video !== null && (
+                  {post.media &&
+                    post.media.length > 0 &&
+                    mediaType === "image" && (
+                      <Image
+                        width={80}
+                        height={80}
+                        src={
+                          post?.media && post?.media.length > 0
+                            ? post.media[0].url
+                            : "/ImageIcons/gallery.png"
+                        }
+                        alt="profile image"
+                        referrerPolicy="no-referrer"
+                        className="transition rounded-xl object-contain"
+                      />
+                    )}
+
+                  {/* {post?.video !== null && (
                     <div className="">
                       <video
-                        src={post.video[0].url}
+                        src={post?.video[0].url}
                         autoPlay
                         muted
                         loop
@@ -412,11 +427,11 @@ const TrashPosts = ({ trashPosts }) => {
                         className="object-fit w-28 mt-2 rounded-xl"
                       />
                     </div>
-                  )}
+                  )} */}
 
                   <div className="flex-1 flex items-center justify-between">
                     <div>
-                      {post.image === null && post.video === null && (
+                      {post.media === null && (
                         <p className="text-[15px] dark:text-neutral-200 ">
                           {" "}
                           <span className="font-semibold">
@@ -426,19 +441,23 @@ const TrashPosts = ({ trashPosts }) => {
                         </p>
                       )}
 
-                      {post.image !== null && (
-                        <p className="text-[15px] dark:text-neutral-200">
-                          {" "}
-                          <span className="font-semibold">
-                            {post?.author?.name}{" "}
-                          </span>
-                          {post.image !== null && post.image.length > 1
-                            ? `added ${post.image.length} new photos.`
-                            : "added a new photo."}
-                        </p>
-                      )}
+                      {post.media &&
+                        post.media.length > 0 &&
+                        mediaType === "image" && (
+                          <p className="text-[15px] dark:text-neutral-200">
+                            {" "}
+                            <span className="font-semibold">
+                              {post?.author?.name}{" "}
+                            </span>
+                            {post.media &&
+                            post.media.length > 0 &&
+                            mediaType === "image"
+                              ? `added ${post.media.length} new photos.`
+                              : "added a new photo."}
+                          </p>
+                        )}
 
-                      {post.video !== null && (
+                      {/* {post.video !== null && (
                         <p className="text-[15px] dark:text-neutral-200 mt-1">
                           {" "}
                           <span className="font-semibold">
@@ -448,7 +467,7 @@ const TrashPosts = ({ trashPosts }) => {
                             ? `added ${post.image.length} new videos.`
                             : "added a new video."}
                         </p>
-                      )}
+                      )} */}
 
                       <p className="text-[13px] dark:text-neutral-200">
                         {post.description}
@@ -474,7 +493,7 @@ const TrashPosts = ({ trashPosts }) => {
                       >
                         View
                       </Link>
-                      <ArchiveOrTrashPostOption
+                      {/* <ArchiveOrTrashPostOption
                         postId={post.id}
                         postImage={post.image}
                         handleDeleteSinglePost={handleDeleteSinglePost}
@@ -483,7 +502,7 @@ const TrashPosts = ({ trashPosts }) => {
                         handleRestoreSinglePost={handleRestoreSinglePost}
                         isRestorePostModalOpen={isRestorePostModalOpen}
                         setIsRestorePostModalOpen={setIsRestorePostModalOpen}
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>

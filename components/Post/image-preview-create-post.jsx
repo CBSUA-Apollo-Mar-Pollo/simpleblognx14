@@ -187,11 +187,11 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
                     key={index}
                     className="relative w-full h-full rounded-md"
                   >
-                    <div className="relative w-full">
+                    <div className="relative w-full h-full">
                       <img
                         src={img.src}
-                        alt="preview"
-                        className="object-cover rounded-md"
+                        alt="preview "
+                        className="object-cover w-full h-full rounded-md"
                         style={{
                           aspectRatio: isThreeHorizontal
                             ? "16 / 9"

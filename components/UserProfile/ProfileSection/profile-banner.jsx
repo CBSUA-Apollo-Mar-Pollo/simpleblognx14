@@ -178,6 +178,7 @@ const ProfileBanner = ({ user, deleteImage }) => {
             setCroppedAreaPixels={setCroppedAreaPixels}
             setOriginalFile={setOriginalFile}
             user={user}
+            session={session}
           />
 
           <div className="mt-10  grid grid-cols-10">

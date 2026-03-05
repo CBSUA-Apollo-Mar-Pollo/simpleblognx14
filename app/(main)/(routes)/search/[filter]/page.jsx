@@ -14,7 +14,7 @@ export async function generateMetadata({ searchParams }) {
 
 const SearchQueryPage = async ({ params, searchParams }) => {
   const searchQuery = searchParams.q;
-  const people = await db.user.findMany({
+  const people = await db.userProfile.findMany({
     where: {
       OR: [
         { name: { contains: searchQuery } },
@@ -26,13 +26,12 @@ const SearchQueryPage = async ({ params, searchParams }) => {
       type: true,
       name: true,
       bio: true,
-      email: true,
       image: true,
-      category: true,
+      categories: true,
     },
   });
 
-  const posts = await db.blog.findMany({
+  const posts = await db.post.findMany({
     where: {
       description: { contains: searchQuery },
     },
@@ -43,9 +42,8 @@ const SearchQueryPage = async ({ params, searchParams }) => {
           type: true,
           name: true,
           bio: true,
-          email: true,
           image: true,
-          category: true,
+          categories: true,
         },
       },
       comments: true,
@@ -56,8 +54,6 @@ const SearchQueryPage = async ({ params, searchParams }) => {
     },
     take: INFINITE_SCROLL_PAGINATION_RESULTS,
   });
-
-  console.log(people);
 
   return (
     <div className="grid grid-cols-4">

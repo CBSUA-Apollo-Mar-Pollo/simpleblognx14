@@ -24,7 +24,7 @@ import { UTApi } from "uploadthing/server";
 const PostDetailPage = async ({ params }) => {
   const session = await getAuthSession();
   const { authorName, postId } = params;
-  const post = await db.blog.findFirst({
+  const post = await db.post.findFirst({
     where: {
       id: postId,
     },
@@ -35,17 +35,20 @@ const PostDetailPage = async ({ params }) => {
           type: true,
           name: true,
           bio: true,
-          email: true,
           image: true,
-          category: true,
+          categories: true,
         },
       },
     },
   });
 
-  const dominantColorPost = post?.image?.[0]?.url
-    ? getDominantColor(post.image[0].url)
-    : null;
+  const dominantColorPost =
+    post?.media.length === 1 ? getDominantColor(post.media[0].url) : null;
+
+  const media = Array.isArray(post.media) ? post.media : [];
+
+  const images = media.filter((m) => m?.type?.startsWith("image/"));
+  const videos = media.filter((m) => m?.type?.startsWith("video/"));
 
   return (
     <div className="bg-neutral-200 dark:bg-neutral-900 w-full h-screen flex justify-center ">
@@ -84,7 +87,7 @@ const PostDetailPage = async ({ params }) => {
                 <p className="font-semibold text-sm hover:underline text-[12px]">
                   {post?.author?.name}
                 </p>
-                {post.userStatus && (
+                {post?.userStatus && (
                   <span className="text-[13px] font-light">
                     {post.userStatus}
                   </span>
@@ -114,10 +117,11 @@ const PostDetailPage = async ({ params }) => {
           <p className="">{post.description}</p>
         </div>
 
-        {post.video && <VideoRenderer post={post} />}
+        {/* {videos && <VideoRenderer post={post} />} */}
 
-        {post.image && (
+        {images.length > 0 && (
           <MultipleImageRender
+            images={images}
             blog={post}
             dominantColorPost={dominantColorPost}
           />

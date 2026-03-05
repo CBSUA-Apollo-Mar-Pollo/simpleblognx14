@@ -74,7 +74,7 @@ const SearchPageContent = ({ people, initialPosts, searchQuery, filter }) => {
 
   return (
     <div className="">
-      <div className=" border-x  border-neutral-200 dark:border-neutral-700 min-w-[45vw] max-w-[50vw] min-h-screen relative">
+      <div className=" border-x  border-neutral-200 dark:border-neutral-700 min-w-[40vw] max-w-[50vw] min-h-screen relative">
         <div className="sticky top-[3.55em] z-50">
           <div className="grid grid-cols-6 px-4 border-b border-neutral-200 pt-1  dark:border-neutral-700 bg-white dark:bg-neutral-900 gap-x-2">
             <Button
@@ -83,7 +83,7 @@ const SearchPageContent = ({ people, initialPosts, searchQuery, filter }) => {
                 "px-2 py-1 w-24 pt-2 border-b-4 rounded-none  font-semibold ",
                 {
                   "text-blue-500 border-blue-500": filter === "top",
-                }
+                },
               )}
             >
               Top
@@ -183,7 +183,7 @@ const SearchPageContent = ({ people, initialPosts, searchQuery, filter }) => {
                 }, 0);
 
                 const currentVote = blog.votes.find(
-                  (vote) => vote.userId === session?.user?.id
+                  (vote) => vote.userId === session?.user?.id,
                 );
 
                 if (index === posts.length - 1) {

@@ -216,7 +216,7 @@ const MultipleImageRender = ({
                           <img
                             src={img.url}
                             alt="preview"
-                            className="object-cover"
+                            className="object-cover w-full h-full"
                             style={{
                               aspectRatio: isThreeHorizontal
                                 ? "16/10"
@@ -423,7 +423,7 @@ const MultipleImageRender = ({
                           <img
                             src={img.url}
                             alt="preview"
-                            className="w-full h-full object-cover rounded-md"
+                            className="w-full h-full object-cover"
                             style={{ aspectRatio: "1 / 1" }}
                           />
                         </Link>
@@ -440,7 +440,7 @@ const MultipleImageRender = ({
                           <img
                             src={img.url}
                             alt="preview"
-                            className="w-full h-full object-cover rounded-md"
+                            className="w-full h-full object-cover"
                             style={{ aspectRatio: "5 / 1" }}
                           />
                         </Link>
@@ -452,31 +452,33 @@ const MultipleImageRender = ({
 
               // More horizontal images or equal mix, use horizontal-style layout
               return (
-                <div className="grid grid-rows-[1fr_1fr] gap-1">
-                  <div className="grid grid-cols-2 gap-1">
+                <div className="grid grid-rows-[1fr_1fr] gap-[2px]">
+                  <div className="grid grid-cols-2 gap-[2px]">
                     {meta.slice(0, 2).map((img, index) => (
                       <Link
                         key={index}
+                        className="hover:opacity-80"
                         href={`/postComment/${blog.id}/${index}`}
                       >
                         <img
                           src={img.url}
-                          className="w-full h-full object-cover rounded-md"
+                          className="w-full h-full object-cover "
                           style={{ aspectRatio: "5 / 1" }}
                         />
                       </Link>
                     ))}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-1">
+                  <div className="grid grid-cols-3 gap-[2px]">
                     {meta.slice(2).map((img, index) => (
                       <Link
+                        className="hover:opacity-80"
                         href={`/postComment/${blog.id}/${index + 2}`}
                         key={index}
                       >
                         <img
                           src={img.url}
-                          className="w-full h-full object-cover rounded-md"
+                          className="w-full h-full object-cover "
                           style={{ aspectRatio: " 6 / 6" }}
                         />
                       </Link>

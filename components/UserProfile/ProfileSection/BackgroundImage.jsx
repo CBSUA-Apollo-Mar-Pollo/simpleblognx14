@@ -6,6 +6,14 @@ import ProfilePIc from "./profile-pic";
 import { Camera, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Cropper from "react-easy-crop";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/Dropdown-menu";
+import { Separator } from "@/components/ui/Separator";
+import { Icons } from "@/components/utils/Icons";
 
 const BackgroundImage = ({
   imageSrc,
@@ -13,10 +21,11 @@ const BackgroundImage = ({
   setCroppedAreaPixels,
   setOriginalFile,
   user,
+  session,
 }) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-
   const fileInputRef = useRef(null);
+
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
 
   const onFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -30,6 +39,8 @@ const BackgroundImage = ({
   const onCropComplete = useCallback((_, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
+
+  console.log(user, "user");
 
   return (
     <div className="relative">
@@ -88,19 +99,75 @@ const BackgroundImage = ({
             style={{ display: "none" }}
           />
 
-          <div className="absolute bottom-5 right-8">
-            <Button
-              onClick={() => {
-                fileInputRef.current?.click();
-              }}
-              className="flex items-center gap-x-2 bg-white hover:bg-neutral-200 shadow-md drop-shadow-md"
-            >
-              <Camera className="text-neutral-50 h-6 w-6 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
-              <span className="font-semibold text-sm text-black">
-                {user.backgroundImage ? "Edit cover photo" : "Add cover photo"}
-              </span>
-            </Button>
-          </div>
+          {user?.id === session?.user.id && (
+            <div className="relative">
+              <div className="absolute bottom-5 right-8">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button
+                      // onClick={() => {
+                      //   fileInputRef.current?.click();
+                      // }}
+                      className="flex items-center gap-x-2 bg-white hover:bg-neutral-200 shadow-md drop-shadow-md rounded-lg"
+                    >
+                      <Camera className="text-neutral-50 h-6 w-6 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
+                      <span className="font-semibold text-sm text-black">
+                        {user.backgroundImage
+                          ? "Edit cover photo"
+                          : "Add cover photo"}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="min-w-[20vw] mr-[9.4vw] rounded-lg drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)] shadow-md p-2 border-0">
+                    {user.backgroundImage && (
+                      <div>
+                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
+                          <Icons.addCoverPhotoOutlineIcon className="h-5 w-5" />
+                          <span>Choose cover photo</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            fileInputRef.current?.click();
+                          }}
+                          className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4"
+                        >
+                          <Icons.outlineUploadIcon className="h-5 w-5" />
+                          Upload photo
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
+                          <Icons.outlineRepositionIcon className="h-5 w-5" />
+                          Reposition
+                        </DropdownMenuItem>
+                        <Separator className="my-1" />
+                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
+                          <Icons.outlineTrashIcon className="h-5 w-5" />
+                          Remove
+                        </DropdownMenuItem>
+                      </div>
+                    )}
+
+                    {user.BackgroundImage === null && (
+                      <div>
+                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
+                          <Icons.addCoverPhotoOutlineIcon className="h-5 w-5" />
+                          <span>Choose cover photo</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            fileInputRef.current?.click();
+                          }}
+                          className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4"
+                        >
+                          <Icons.outlineUploadIcon className="h-5 w-5" />
+                          Upload photo
+                        </DropdownMenuItem>
+                      </div>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          )}
 
           {/* 
           <UpdateCoverPhotoButton

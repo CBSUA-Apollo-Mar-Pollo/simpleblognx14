@@ -48,6 +48,8 @@ const TrashPage = async () => {
     },
   });
 
+  console.log(trashPosts);
+
   return (
     <div className="flex">
       <AllActivitySideBar />

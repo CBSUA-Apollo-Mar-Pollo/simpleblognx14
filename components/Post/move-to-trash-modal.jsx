@@ -25,8 +25,8 @@ const MoveToTrashModal = ({ blog, session, fetchNextPage }) => {
         ...oldData,
         pages: oldData.pages.map((page) =>
           page.map((post) =>
-            post.id === postId ? { ...post, trashed: true } : post
-          )
+            post.id === postId ? { ...post, trashed: true } : post,
+          ),
         ),
       };
     });
@@ -56,7 +56,7 @@ const MoveToTrashModal = ({ blog, session, fetchNextPage }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="[&>button]:hidden p-0  drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)]">
+      <DialogContent className="[&>button]:hidden p-0  drop-shadow-[0px_0px_5px_rgba(0,0,0,0.20)] rounded-2xl">
         <DialogHeader className="pt-4 relative">
           <DialogTitle className="text-center font-bold text-xl">
             Move to your trash?
