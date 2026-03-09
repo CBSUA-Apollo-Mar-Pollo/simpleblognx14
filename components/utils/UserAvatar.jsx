@@ -1,6 +1,7 @@
-import React from "react";
-import { Avatar, AvatarFallback } from "../ui/Avatar";
 import Image from "next/image";
+import React from "react";
+
+import { Avatar, AvatarFallback } from "../ui/Avatar";
 import { Icons } from "./Icons";
 import ToolTipComp from "./ToolTipComp";
 

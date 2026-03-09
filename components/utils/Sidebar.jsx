@@ -1,10 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { useSession } from "next-auth/react";
+
 import { Button, buttonVariants } from "../ui/Button";
 import { Separator } from "../ui/Separator";
-import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import UserAvatar from "./UserAvatar";
 import {
   AnotherLinks,
   Resources,
@@ -12,15 +17,12 @@ import {
   SideBarFirstLinks,
   SideBarSecondLinks,
 } from "@/constants";
-import Link from "next/link";
-import UserAvatar from "./UserAvatar";
-import { useTheme } from "next-themes";
-import { useSession } from "next-auth/react";
 
 const Sidebar = () => {
   const { data: session } = useSession();
   const { theme } = useTheme();
   const pathname = usePathname();
+
   const [toggleScrollBar, setToggleScrollBar] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -28,6 +30,7 @@ const Sidebar = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   const handleScrollBar = () => {
     setToggleScrollBar(true);
   };
@@ -45,6 +48,7 @@ const Sidebar = () => {
   const handleSeeMoreClick = () => {
     setShowAll(!showAll);
   };
+
   return (
     <div
       className={`sticky top-[7vh]  z-0 px-4 max-h-[93vh] sidebarContainer ${
@@ -83,7 +87,7 @@ const Sidebar = () => {
                   pathname === item.link
                     ? "bg-gray-200 dark:bg-neutral-700"
                     : "",
-                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 w-full focus:ring-transparent gap-4"
+                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 w-full focus:ring-transparent gap-4",
                 )}
               >
                 <div className="text-gray-500 dark:text-neutral-300">
@@ -103,7 +107,7 @@ const Sidebar = () => {
                   pathname === item.link
                     ? "bg-gray-200 dark:bg-neutral-800"
                     : "",
-                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-3"
+                  "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent gap-3",
                 )}
               >
                 <div className="text-gray-500 dark:text-neutral-300">
@@ -130,7 +134,7 @@ const Sidebar = () => {
                 pathname === item.link
                   ? "bg-gray-200 dark:bg-neutral-700 "
                   : "",
-                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600  w-full focus:ring-transparent"
+                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600  w-full focus:ring-transparent",
               )}
             >
               <div className="text-gray-500 dark:text-neutral-300">
@@ -153,7 +157,7 @@ const Sidebar = () => {
         <div className="space-y-0 mt-1 mb-2">
           {SideBarExploreLinks.slice(
             0,
-            showAll ? SideBarExploreLinks.length : 6
+            showAll ? SideBarExploreLinks.length : 6,
           ).map((item, index) => (
             <Link
               key={index}
@@ -161,7 +165,7 @@ const Sidebar = () => {
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 pathname === item.link ? "bg-gray-200 dark:bg-neutral-700" : "",
-                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent"
+                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent",
               )}
             >
               <div className="text-gray-500 dark:text-white">{item.Icon}</div>
@@ -196,7 +200,7 @@ const Sidebar = () => {
               className={cn(
                 buttonVariants({ variant: "ghost" }),
                 pathname === item.link ? "bg-gray-200 dark:bg-neutral-700" : "",
-                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent"
+                "flex justify-start hover:bg-gray-200 dark:hover:bg-neutral-600 py-2 w-full focus:ring-transparent",
               )}
             >
               <div className="text-gray-500 dark:text-neutral-300">

@@ -43,7 +43,8 @@ const EditPostContent = ({
   const isPostHaveImageOrVideos =
     selectedFiles.length > 0 ||
     imagePreviews.length !== 0 ||
-    videoPreviews.length !== 0;
+    videoPreviews.length !== 0 ||
+    (blog?.media && blog?.media.length > 0);
 
   return (
     <div
@@ -199,6 +200,15 @@ const EditPostContent = ({
               )}
             </div>
           </div>
+
+          {blog?.media && blog?.media[0]?.type === "gif" && (
+            <img
+              src={blog.media[0].url}
+              alt={blog.media[0].title}
+              className=" w-full h-auto"
+              loading="lazy"
+            />
+          )}
 
           {/* preview the images */}
           {imagePreviews && (

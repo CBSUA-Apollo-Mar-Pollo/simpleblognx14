@@ -2,6 +2,12 @@
 
 import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { AlignJustify, Moon, Search, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/Button";
 import UserAccountNav from "./UserAccountNav";
@@ -9,15 +15,10 @@ import NotificationMenu from "../Notification/NotificationMenu";
 import ToolTipComp from "./ToolTipComp";
 import SearchInput from "./SearchInput";
 import { Icons } from "./Icons";
-import { usePathname, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import Menu from "./Menu";
 import ChatBoxMenu from "./ChatBoxMenu";
 import { Skeleton } from "../ui/Skeleton";
-import { AlignJustify, Moon, Search, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import useCustomHooks from "@/hooks/use-custom-hooks";
-import Image from "next/image";
 import logo from "@/public/crowlogo2.jpg";
 
 const Navbar = () => {
@@ -25,8 +26,9 @@ const Navbar = () => {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
   const { signinToast } = useCustomHooks();
+
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -166,7 +168,7 @@ const Navbar = () => {
               <Link
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 rounded-full"
+                  "dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-50 rounded-full",
                 )}
                 href="/sign-in"
               >

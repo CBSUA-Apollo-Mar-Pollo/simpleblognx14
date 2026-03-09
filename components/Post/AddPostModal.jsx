@@ -96,6 +96,7 @@ const AddPostModal = ({
     isFeelingSelectionActive,
     isGifSelectionActive,
   ];
+
   const hideMainContent = modalContentConditions.some((cond) => cond);
 
   const { mutate: handleCreatePost, isError } = useMutation({

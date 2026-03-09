@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from "react";
-import { Button, buttonVariants } from "../../ui/Button";
-import { Separator } from "../../ui/Separator";
 import { useSession } from "next-auth/react";
-import BackgroundImage from "./BackgroundImage";
-import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "next-themes";
+import Link from "next/link";
+
+import { Button, buttonVariants } from "../../ui/Button";
+import { Separator } from "../../ui/Separator";
+import BackgroundImage from "./BackgroundImage";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
 import { getDominantColor } from "@/data/getDominantColor";
-import { useTheme } from "next-themes";
 import {
   Dot,
   Loader2,
@@ -26,23 +28,23 @@ import {
 } from "lucide-react";
 import { checkIfIsAFriend } from "@/actions/checkIfIsAFriend";
 import ProfilePic from "./profile-pic";
-import Link from "next/link";
 import { Icons } from "@/components/utils/Icons";
 import getCroppedImg from "@/lib/crop-image";
 import { uploadFiles } from "@/lib/uploadThing";
 
 const ProfileBanner = ({ user, deleteImage }) => {
   const { data: session } = useSession();
+  const router = useRouter();
+  const { toast } = useToast();
+  const { resolvedTheme } = useTheme();
+
+  const [isMounted, setIsMounted] = useState(false);
+  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
+  const [isRequestLoading, setIsRequestLoading] = useState(false);
+
   const [imageSrc, setImageSrc] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
-
-  const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
-  const { toast } = useToast();
-  const { setIsLoading, setLoaderDescription } = useContext(LoaderContext);
-  const { resolvedTheme } = useTheme();
-  const [isRequestLoading, setIsRequestLoading] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);

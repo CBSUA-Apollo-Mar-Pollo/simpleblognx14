@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useRef, useState } from "react";
-import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
-import ProfilePIc from "./profile-pic";
-import { Camera, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { Camera, Loader2, X } from "lucide-react";
 import Cropper from "react-easy-crop";
+
+import { Button } from "@/components/ui/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +13,18 @@ import {
 } from "@/components/ui/Dropdown-menu";
 import { Separator } from "@/components/ui/Separator";
 import { Icons } from "@/components/utils/Icons";
+import UpdateCoverPhotoButton from "./UpdateCoverPhotoButton";
+import ProfilePIc from "./profile-pic";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/Dialog";
+import { useMutation } from "@tanstack/react-query";
+import { removeCoverPhoto } from "@/actions/remove-cover-photo";
 
 const BackgroundImage = ({
   imageSrc,
@@ -24,6 +35,9 @@ const BackgroundImage = ({
   session,
 }) => {
   const fileInputRef = useRef(null);
+
+  const [toggleRemoveCoverPhotoModal, setToggleRemoveCoverPhotoModal] =
+    useState(false);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
 
@@ -40,7 +54,16 @@ const BackgroundImage = ({
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
-  console.log(user, "user");
+  const { mutate: handleRemoveCoverPhoto, isPending } = useMutation({
+    mutationFn: async (userProfileId) => {
+      const data = await removeCoverPhoto(userProfileId);
+      return data;
+    },
+    onSuccess: () => {
+      user.backgroundImage = null;
+      setToggleRemoveCoverPhotoModal(false);
+    },
+  });
 
   return (
     <div className="relative">
@@ -102,14 +125,9 @@ const BackgroundImage = ({
           {user?.id === session?.user.id && (
             <div className="relative">
               <div className="absolute bottom-5 right-8">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger>
-                    <Button
-                      // onClick={() => {
-                      //   fileInputRef.current?.click();
-                      // }}
-                      className="flex items-center gap-x-2 bg-white hover:bg-neutral-200 shadow-md drop-shadow-md rounded-lg"
-                    >
+                    <Button className="flex items-center gap-x-2 bg-white hover:bg-neutral-200 shadow-md drop-shadow-md rounded-lg">
                       <Camera className="text-neutral-50 h-6 w-6 fill-black dark:fill-neutral-200 dark:stroke-neutral-700 dark:hover:stroke-neutral-600" />
                       <span className="font-semibold text-sm text-black">
                         {user.backgroundImage
@@ -139,14 +157,64 @@ const BackgroundImage = ({
                           Reposition
                         </DropdownMenuItem>
                         <Separator className="my-1" />
-                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
-                          <Icons.outlineTrashIcon className="h-5 w-5" />
-                          Remove
+                        {/* remove cover photo modal */}
+                        <DropdownMenuItem
+                          asChild
+                          className="hover:cursor-pointer hover:bg-neutral-400  "
+                        >
+                          <Dialog
+                            open={toggleRemoveCoverPhotoModal}
+                            onOpenChange={setToggleRemoveCoverPhotoModal}
+                          >
+                            <DialogTrigger className="flex items-center pl-2 gap-x-4 text-sm font-semibold hover:bg-neutral-200 w-full py-1 rounded">
+                              <Icons.outlineTrashIcon className="h-5 w-5" />
+                              Remove
+                            </DialogTrigger>
+                            <DialogContent className="[&>button]:hidden rounded-2xl p-0">
+                              <DialogHeader className="pt-5">
+                                <DialogTitle className="font-bold text-[20px]  text-black dark:text-neutral-50 text-center">
+                                  Remove cover photo
+                                </DialogTitle>
+
+                                <DialogClose asChild>
+                                  <X className="w-9 h-9 absolute right-4 top-2.5 cursor-pointer p-1.5 bg-neutral-200 text-black dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
+                                </DialogClose>
+                              </DialogHeader>
+
+                              <Separator className=" bg-neutral-300" />
+
+                              <div className="pl-5">
+                                <p className="">
+                                  Are you sure you want to remove your cover
+                                  photo ?
+                                </p>
+
+                                <div className="flex justify-end items-center mr-3 mb-4 mt-8 gap-x-2">
+                                  <Button
+                                    onClick={() =>
+                                      setToggleRemoveCoverPhotoModal(false)
+                                    }
+                                    className="bg-transparent hover:bg-neutral-200 text-neutral-900 font-semibold"
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    onClick={() =>
+                                      handleRemoveCoverPhoto(session.user.id)
+                                    }
+                                    className="px-10 rounded-lg bg-blue-700 hover:bg-blue-500"
+                                  >
+                                    Confirm
+                                  </Button>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </DropdownMenuItem>
                       </div>
                     )}
 
-                    {user.BackgroundImage === null && (
+                    {user.backgroundImage === null && (
                       <div>
                         <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
                           <Icons.addCoverPhotoOutlineIcon className="h-5 w-5" />

@@ -1,9 +1,8 @@
-import { Suspense } from "react";
 import Sidebar from "@/components/utils/Sidebar";
 import HomeFeed from "@/components/utils/home-page-components/home-feed";
-import HomeFeedLoader from "@/components/Loaders/home-feed-loader";
 import HomeRightSidebar from "@/components/utils/home-page-components/home-right-sidebar";
 import { getHomeFeedData } from "@/actions/get-home-feed-data";
+import { getAuthSession } from "@/lib/auth";
 
 export const metadata = {
   title: `Estorya | Home`,
@@ -11,6 +10,7 @@ export const metadata = {
 
 export default async function HomePage() {
   const sortedData = await getHomeFeedData();
+  const session = await getAuthSession();
 
   return (
     <div className="grid  xl:grid-cols-12 lg:grid-cols-7 grid-cols-1 dark:bg-neutral-900">
@@ -24,7 +24,9 @@ export default async function HomePage() {
         <HomeFeed sortedData={sortedData} />
       </div>
       {/* third section recent posts and who to follow */}
-      <div className="   lg:flex lg:col-span-3 hidden relative  flex-col border-l border-neutral-300 dark:border-neutral-800 px-2 ml-[5vw]">
+      <div
+        className={`${session?.user && "border-l border-neutral-300 dark:border-neutral-800"} lg:flex lg:col-span-3 hidden relative  flex-col  px-2 ml-[5vw]`}
+      >
         <HomeRightSidebar />
       </div>
     </div>
