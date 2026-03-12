@@ -46,6 +46,8 @@ const ProfileBanner = ({ user, deleteImage }) => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [originalFile, setOriginalFile] = useState(null);
 
+  console.log(originalFile, "originalFile");
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -64,8 +66,13 @@ const ProfileBanner = ({ user, deleteImage }) => {
         files: [croppedFile],
       });
 
+      const originalImage = await uploadFiles("imageUploader", {
+        files: [originalFile],
+      });
+
       const payload = {
         imageUrl: uploaded,
+        originalImage: originalImage,
       };
 
       const { data } = await axios.post("/api/userProf", payload);

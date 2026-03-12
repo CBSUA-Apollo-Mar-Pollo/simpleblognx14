@@ -23,8 +23,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/Dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { removeCoverPhoto } from "@/actions/remove-cover-photo";
+import { getUserCoverPhotos } from "@/actions/get-user-cover-photos";
+import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 const BackgroundImage = ({
   imageSrc,
@@ -34,10 +37,12 @@ const BackgroundImage = ({
   user,
   session,
 }) => {
+  console.log(session, "user data from background image");
   const fileInputRef = useRef(null);
 
   const [toggleRemoveCoverPhotoModal, setToggleRemoveCoverPhotoModal] =
     useState(false);
+  const [toggleSelectCoverPhoto, setToggleSelectCoverPhoto] = useState(false);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
 
@@ -65,12 +70,55 @@ const BackgroundImage = ({
     },
   });
 
+  const {
+    data: coverPhotos,
+    isLoading: isCoverPhotosFetching,
+    isError,
+  } = useQuery({
+    queryKey: ["coverPhotos", session?.user?.id],
+    queryFn: () => getUserCoverPhotos(session.user.id),
+    enabled: !!toggleSelectCoverPhoto,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const handleToggleSelectCoverPhoto = (isOpen) => {
+    setToggleSelectCoverPhoto(isOpen);
+  };
+
+  const urlToFile = async (url, fileName) => {
+    // 1. Fetch the data from the URL
+    const response = await fetch(url);
+
+    // 2. Convert the response to a Blob
+    const blob = await response.blob();
+
+    // 3. Create a File object from the Blob
+    // Use the metadata from the blob (size/type) automatically
+    return new File([blob], fileName, {
+      type: blob.type,
+      lastModified: new Date().getTime(),
+    });
+  };
+
+  const loadUrlIntoState = async (url) => {
+    try {
+      // 1. Convert URL to File (using the function from before)
+      const file = await urlToFile(url, "downloaded-image.jpg");
+
+      // 2. Manual "onFileChange" logic
+      setOriginalFile(file); // 👈 keep original file
+      setImageSrc(URL.createObjectURL(file)); // 👈 create preview
+    } catch (error) {
+      console.error("Failed to load image from URL:", error);
+    }
+  };
+
   return (
     <div className="relative">
       {/* div if user is not yet to upload background image */}
       {imageSrc ? (
         <div className="relative">
-          <div className=" h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move">
+          <div className="relative h-[55vh] rounded-b-3xl scroll-container bg-neutral-900 cursor-move">
             <Cropper
               image={imageSrc}
               crop={crop}
@@ -78,11 +126,17 @@ const BackgroundImage = ({
               onZoomChange={() => {}}
               minZoom={1}
               maxZoom={1}
-              aspect={3.1 / 1.1}
+              aspect={3 / 1}
               showGrid={false}
               onCropChange={setCrop}
               onCropComplete={onCropComplete}
               objectFit="cover"
+              style={{
+                containerStyle: {
+                  width: "100%",
+                  height: "100%",
+                },
+              }}
             />
           </div>
         </div>
@@ -139,9 +193,86 @@ const BackgroundImage = ({
                   <DropdownMenuContent className="min-w-[20vw] mr-[9.4vw] rounded-lg drop-shadow-[0px_0px_7px_rgba(0,0,0,0.20)] shadow-md p-2 border-0">
                     {user.backgroundImage && (
                       <div>
-                        <DropdownMenuItem className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4">
-                          <Icons.addCoverPhotoOutlineIcon className="h-5 w-5" />
-                          <span>Choose cover photo</span>
+                        <DropdownMenuItem
+                          asChild
+                          className="hover:cursor-pointer hover:bg-neutral-400 font-semibold gap-x-4 "
+                        >
+                          <Dialog
+                            open={toggleSelectCoverPhoto}
+                            onOpenChange={handleToggleSelectCoverPhoto}
+                          >
+                            <DialogTrigger className="flex items-center pl-2 py-2 gap-x-4 text-sm font-semibold hover:bg-neutral-200 w-full rounded">
+                              <Icons.addCoverPhotoOutlineIcon className="h-5 w-5" />
+                              <span>Choose cover photo</span>
+                            </DialogTrigger>
+                            <DialogContent className="[&>button]:hidden rounded-2xl p-0 min-w-[32vw]">
+                              <DialogHeader className="pt-5">
+                                <DialogTitle className="font-bold text-[20px]  text-black dark:text-neutral-50 text-center">
+                                  Select photo
+                                </DialogTitle>
+
+                                <DialogClose asChild>
+                                  <X className="w-9 h-9 absolute right-4 top-2.5 cursor-pointer p-1.5 bg-neutral-200 text-black dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
+                                </DialogClose>
+                              </DialogHeader>
+
+                              <Separator className=" bg-neutral-300" />
+
+                              <div className="">
+                                <div className="flex justify-center w-full px-4 gap-x-2">
+                                  <Button className="w-full bg-transparent hover:bg-transparent text-blue-600 text-[15px] font-semibold border-b-4 border-blue-600 rounded-none">
+                                    Recent photos
+                                  </Button>
+                                  <Button className="w-full bg-transparent hover:bg-transparent text-black text-[15px] font-semibold">
+                                    Photo albums
+                                  </Button>
+                                </div>
+
+                                <div className="min-h-[40vh] px-4">
+                                  {isError && (
+                                    <p>Error fetching cover photos</p>
+                                  )}
+
+                                  {isCoverPhotosFetching && (
+                                    <div className="grid grid-cols-3 gap-2 mt-4">
+                                      {[...Array(9)].map((_, index) => (
+                                        <div key={index}>
+                                          <Skeleton className="h-[12vh] bg-neutral-800 rounded-none" />
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+
+                                  <div className="grid grid-cols-3 gap-x-2 mt-4">
+                                    {!isCoverPhotosFetching &&
+                                      coverPhotos &&
+                                      coverPhotos.map((coverPhoto, index) => (
+                                        <button
+                                          key={index}
+                                          onClick={() =>
+                                            loadUrlIntoState(coverPhoto.url)
+                                          }
+                                        >
+                                          <Image
+                                            sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
+                                            width={1200} // Example width, adjust based on design
+                                            height={800} // Example height, adjust based on design
+                                            priority={true}
+                                            src={coverPhoto.url}
+                                            alt="profile image"
+                                            referrerPolicy="no-referrer"
+                                            className="object-cover w-full transition max-h-[30rem] bg-neutral-700 border border-neutral-400"
+                                            style={{
+                                              aspectRatio: "16/ 10",
+                                            }}
+                                          />
+                                        </button>
+                                      ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => {

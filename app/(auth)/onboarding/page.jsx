@@ -48,6 +48,7 @@ const OnboardingClient = () => {
   const { toast } = useToast();
   const router = useRouter();
   const { data: session, update } = useSession();
+
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [suggestedUsernames, setSuggestedUsernames] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState([]);
@@ -119,7 +120,7 @@ const OnboardingClient = () => {
       suggestions.push(withNumbers);
     } else {
       suggestions.push(
-        cleanName.slice(0, 20 - 4) + Math.floor(Math.random() * 99)
+        cleanName.slice(0, 20 - 4) + Math.floor(Math.random() * 99),
       );
     }
 
@@ -129,7 +130,7 @@ const OnboardingClient = () => {
       suggestions.push(withUnderscore);
     } else {
       suggestions.push(
-        cleanName.slice(0, 20 - 5) + "_" + Math.floor(Math.random() * 99)
+        cleanName.slice(0, 20 - 5) + "_" + Math.floor(Math.random() * 99),
       );
     }
 
@@ -170,7 +171,7 @@ const OnboardingClient = () => {
       const usernameValue = usernameForm.getValues();
       const dateString = `${year}-${monthNumber}-${String(day).padStart(
         2,
-        "0"
+        "0",
       )}`;
       const payload = {
         birthDate: dateString,
@@ -275,7 +276,7 @@ const OnboardingClient = () => {
                                           className="cursor-pointer"
                                         >
                                           {year}
-                                        </SelectItem>
+                                        </SelectItem>,
                                       );
                                     }
                                     return years;
@@ -361,7 +362,7 @@ const OnboardingClient = () => {
                                           value={day.toString()}
                                         >
                                           {day}
-                                        </SelectItem>
+                                        </SelectItem>,
                                       );
                                     }
                                     return daysArray;
@@ -484,7 +485,7 @@ const OnboardingClient = () => {
                   onClick={() => {
                     if (selectedTopics.includes(topic)) {
                       setSelectedTopics(
-                        selectedTopics.filter((t) => t !== topic)
+                        selectedTopics.filter((t) => t !== topic),
                       );
                     } else {
                       setSelectedTopics([...selectedTopics, topic]);
