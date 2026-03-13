@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useRef, useState } from "react";
-import { Camera, Loader2, X } from "lucide-react";
+import { ArrowLeft, Camera, Loader2, X } from "lucide-react";
 import Cropper from "react-easy-crop";
+import SimpleBar from "simplebar-react";
 
+import "simplebar-react/dist/simplebar.min.css";
 import { Button } from "@/components/ui/Button";
 import {
   DropdownMenu,
@@ -25,8 +27,7 @@ import {
 } from "@/components/ui/Dialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { removeCoverPhoto } from "@/actions/remove-cover-photo";
-import { getUserCoverPhotos } from "@/actions/get-user-cover-photos";
-import { useToast } from "@/hooks/use-toast";
+import { getUserPhotos } from "@/actions/get-user-photos";
 import { Skeleton } from "@/components/ui/Skeleton";
 
 const BackgroundImage = ({
@@ -37,7 +38,6 @@ const BackgroundImage = ({
   user,
   session,
 }) => {
-  console.log(session, "user data from background image");
   const fileInputRef = useRef(null);
 
   const [toggleRemoveCoverPhotoModal, setToggleRemoveCoverPhotoModal] =
@@ -45,6 +45,9 @@ const BackgroundImage = ({
   const [toggleSelectCoverPhoto, setToggleSelectCoverPhoto] = useState(false);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [toggleBetweenAlbumOrCoverPhotos, setToggleBetweenAlbumOrCoverPhotos] =
+    useState(1);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
 
   const onFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -71,15 +74,17 @@ const BackgroundImage = ({
   });
 
   const {
-    data: coverPhotos,
+    data: photos,
     isLoading: isCoverPhotosFetching,
     isError,
   } = useQuery({
     queryKey: ["coverPhotos", session?.user?.id],
-    queryFn: () => getUserCoverPhotos(session.user.id),
+    queryFn: () => getUserPhotos(session.user.id),
     enabled: !!toggleSelectCoverPhoto,
     staleTime: 1000 * 60 * 5,
   });
+
+  console.log(photos, "photos");
 
   const handleToggleSelectCoverPhoto = (isOpen) => {
     setToggleSelectCoverPhoto(isOpen);
@@ -112,6 +117,8 @@ const BackgroundImage = ({
       console.error("Failed to load image from URL:", error);
     }
   };
+
+  const albumData = photos?.find((a) => Object.keys(a)[0] === selectedAlbum);
 
   return (
     <div className="relative">
@@ -206,9 +213,19 @@ const BackgroundImage = ({
                               <span>Choose cover photo</span>
                             </DialogTrigger>
                             <DialogContent className="[&>button]:hidden rounded-2xl p-0 min-w-[32vw]">
-                              <DialogHeader className="pt-5">
+                              <DialogHeader className="pt-3 flex ">
+                                {selectedAlbum && (
+                                  <button
+                                    onClick={() => setSelectedAlbum(null)}
+                                    asChild
+                                  >
+                                    <ArrowLeft className="w-9 h-9 absolute left-4 top-4 cursor-pointer p-1.5 bg-neutral-200 text-black dark:bg-neutral-700 dark:text-neutral-200 rounded-full" />
+                                  </button>
+                                )}
                                 <DialogTitle className="font-bold text-[20px]  text-black dark:text-neutral-50 text-center">
-                                  Select photo
+                                  {selectedAlbum
+                                    ? selectedAlbum
+                                    : "Select photo"}
                                 </DialogTitle>
 
                                 <DialogClose asChild>
@@ -216,60 +233,168 @@ const BackgroundImage = ({
                                 </DialogClose>
                               </DialogHeader>
 
-                              <Separator className=" bg-neutral-300" />
+                              <Separator className=" bg-neutral-300 " />
 
                               <div className="">
-                                <div className="flex justify-center w-full px-4 gap-x-2">
-                                  <Button className="w-full bg-transparent hover:bg-transparent text-blue-600 text-[15px] font-semibold border-b-4 border-blue-600 rounded-none">
-                                    Recent photos
-                                  </Button>
-                                  <Button className="w-full bg-transparent hover:bg-transparent text-black text-[15px] font-semibold">
-                                    Photo albums
-                                  </Button>
-                                </div>
-
-                                <div className="min-h-[40vh] px-4">
-                                  {isError && (
-                                    <p>Error fetching cover photos</p>
-                                  )}
-
-                                  {isCoverPhotosFetching && (
-                                    <div className="grid grid-cols-3 gap-2 mt-4">
-                                      {[...Array(9)].map((_, index) => (
-                                        <div key={index}>
-                                          <Skeleton className="h-[12vh] bg-neutral-800 rounded-none" />
-                                        </div>
-                                      ))}
-                                    </div>
-                                  )}
-
-                                  <div className="grid grid-cols-3 gap-x-2 mt-4">
-                                    {!isCoverPhotosFetching &&
-                                      coverPhotos &&
-                                      coverPhotos.map((coverPhoto, index) => (
-                                        <button
-                                          key={index}
-                                          onClick={() =>
-                                            loadUrlIntoState(coverPhoto.url)
-                                          }
-                                        >
-                                          <Image
-                                            sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
-                                            width={1200} // Example width, adjust based on design
-                                            height={800} // Example height, adjust based on design
-                                            priority={true}
-                                            src={coverPhoto.url}
-                                            alt="profile image"
-                                            referrerPolicy="no-referrer"
-                                            className="object-cover w-full transition max-h-[30rem] bg-neutral-700 border border-neutral-400"
-                                            style={{
-                                              aspectRatio: "16/ 10",
-                                            }}
-                                          />
-                                        </button>
-                                      ))}
+                                {!selectedAlbum && (
+                                  <div className="flex justify-center w-full px-4 gap-x-2">
+                                    <Button
+                                      onClick={() =>
+                                        setToggleBetweenAlbumOrCoverPhotos(1)
+                                      }
+                                      className={`w-full bg-transparent hover:bg-transparent  text-[15px] font-semibold ${toggleBetweenAlbumOrCoverPhotos === 1 ? "text-blue-600 border-b-4 border-blue-600 " : "text-black border-none "}rounded-none`}
+                                    >
+                                      Recent photos
+                                    </Button>
+                                    <Button
+                                      onClick={() =>
+                                        setToggleBetweenAlbumOrCoverPhotos(2)
+                                      }
+                                      className={`w-full bg-transparent hover:bg-transparent  text-[15px] font-semibold ${toggleBetweenAlbumOrCoverPhotos === 2 ? "text-blue-600 border-b-4 border-blue-600 " : "text-black border-none "}rounded-none`}
+                                    >
+                                      Photo albums
+                                    </Button>
                                   </div>
-                                </div>
+                                )}
+
+                                {!selectedAlbum && (
+                                  <div className="min-h-[70vh] pb-2">
+                                    {isError && (
+                                      <p>Error fetching cover photos</p>
+                                    )}
+
+                                    {isCoverPhotosFetching && (
+                                      <div className="grid grid-cols-3 gap-2 mt-4 px-4">
+                                        {[...Array(9)].map((_, index) => (
+                                          <div key={index}>
+                                            <Skeleton className="h-[12vh] bg-neutral-600 rounded-none" />
+                                          </div>
+                                        ))}
+                                      </div>
+                                    )}
+
+                                    <SimpleBar
+                                      forceVisible="y"
+                                      style={{ maxHeight: "70vh" }}
+                                    >
+                                      {toggleBetweenAlbumOrCoverPhotos ===
+                                        1 && (
+                                        <div className="grid grid-cols-3 gap-2 mt-4 px-4 pb-4">
+                                          {!isCoverPhotosFetching &&
+                                            photos &&
+                                            photos?.[0]?.["Cover photos"]?.map(
+                                              (coverPhoto, index) => (
+                                                <button
+                                                  key={index}
+                                                  onClick={() =>
+                                                    loadUrlIntoState(
+                                                      coverPhoto.url,
+                                                    )
+                                                  }
+                                                >
+                                                  <Image
+                                                    sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
+                                                    width={1200} // Example width, adjust based on design
+                                                    height={800} // Example height, adjust based on design
+                                                    priority={true}
+                                                    src={coverPhoto.url}
+                                                    alt="profile image"
+                                                    referrerPolicy="no-referrer"
+                                                    className="object-cover w-full transition max-h-[30rem] bg-neutral-700 border border-neutral-400 "
+                                                    style={{
+                                                      aspectRatio: "16/ 10",
+                                                    }}
+                                                  />
+                                                </button>
+                                              ),
+                                            )}
+                                        </div>
+                                      )}
+                                      {toggleBetweenAlbumOrCoverPhotos ===
+                                        2 && (
+                                        <div className="grid grid-cols-3 gap-2 mt-4 px-4 pb-4">
+                                          {!isCoverPhotosFetching &&
+                                            photos &&
+                                            photos.map((album, index) => {
+                                              const [title, media] =
+                                                Object.entries(album)[0];
+                                              const cover = media[0];
+
+                                              if (!cover) return null;
+
+                                              return (
+                                                <button
+                                                  onClick={() =>
+                                                    setSelectedAlbum(title)
+                                                  }
+                                                  key={index}
+                                                  className="text-left"
+                                                >
+                                                  <Image
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    width={1200}
+                                                    height={800}
+                                                    priority
+                                                    src={cover.url}
+                                                    alt={title}
+                                                    referrerPolicy="no-referrer"
+                                                    className="object-cover w-full transition max-h-[30rem] bg-neutral-700 border border-neutral-400 rounded-sm"
+                                                    style={{
+                                                      aspectRatio: "16/10",
+                                                    }}
+                                                  />
+
+                                                  {/* Album title */}
+                                                  <p className="text-sm mt-1 font-semibold text-neutral-700">
+                                                    {title}
+                                                  </p>
+
+                                                  {/* Photo count */}
+                                                  <p className="text-xs text-neutral-500">
+                                                    {media.length} uploads
+                                                  </p>
+                                                </button>
+                                              );
+                                            })}
+                                        </div>
+                                      )}
+                                    </SimpleBar>
+                                  </div>
+                                )}
+
+                                {selectedAlbum && (
+                                  <SimpleBar
+                                    forceVisible="y"
+                                    style={{ maxHeight: "70vh" }}
+                                  >
+                                    <div className="grid grid-cols-3 gap-2 mt-4 px-4 pb-4">
+                                      {albumData[selectedAlbum]?.map(
+                                        (photo, index) => (
+                                          <button
+                                            key={index}
+                                            onClick={() =>
+                                              loadUrlIntoState(photo.url)
+                                            }
+                                          >
+                                            <Image
+                                              sizes="(max-width: 768px) 100vw, 50vw" // Responsive sizes
+                                              width={1200} // Example width, adjust based on design
+                                              height={800} // Example height, adjust based on design
+                                              priority={true}
+                                              src={photo.url}
+                                              alt="cover photo"
+                                              referrerPolicy="no-referrer"
+                                              className="object-cover w-full transition max-h-[30rem] bg-neutral-700  rounded-lg "
+                                              style={{
+                                                aspectRatio: "16/ 10",
+                                              }}
+                                            />
+                                          </button>
+                                        ),
+                                      )}
+                                    </div>
+                                  </SimpleBar>
+                                )}
                               </div>
                             </DialogContent>
                           </Dialog>

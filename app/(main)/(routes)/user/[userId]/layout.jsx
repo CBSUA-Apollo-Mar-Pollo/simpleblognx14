@@ -1,8 +1,9 @@
+import { cache, Suspense } from "react";
+import { UTApi } from "uploadthing/server";
+
+import { db } from "@/lib/db";
 import ProfileBanner from "@/components/UserProfile/ProfileSection/profile-banner";
 import StickDiv from "@/components/UserProfile/sticky_div";
-import { db } from "@/lib/db";
-import { UTApi } from "uploadthing/server";
-import { cache, Suspense } from "react";
 import UserProfileLoader from "@/components/Loaders/user-profile-loader";
 
 const getUserProfileData = cache(async (userId) => {

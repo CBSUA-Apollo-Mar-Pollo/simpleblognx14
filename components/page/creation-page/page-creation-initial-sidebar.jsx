@@ -242,7 +242,7 @@ const PageCreationInitialSideBar = ({
                                     .filter((item) =>
                                       item
                                         .toLowerCase()
-                                        .includes(pagecategory.toLowerCase())
+                                        .includes(pagecategory.toLowerCase()),
                                     )
                                     .map((item) => (
                                       <div
