@@ -254,7 +254,7 @@ const HomeFeed = ({ sortedData }) => {
       </div>
 
       {!session?.user && (
-        <DropdownMenu className="dark:border-none">
+        <DropdownMenu modal={false} className="dark:border-none">
           <DropdownMenuTrigger className="flex items-center gap-x-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 px-3 py-2 rounded-full">
             <span className="text-xs font-medium text-neutral-700 dark:text-white">
               Best

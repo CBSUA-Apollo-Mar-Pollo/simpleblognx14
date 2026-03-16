@@ -74,7 +74,7 @@ const UserAccountNav = ({ user, accountOwner }) => {
           <div className=" drop-shadow-[0px_0px_5px_rgba(0,0,0,0.2)] pb-1 dark:drop-shadow-[0px_0px_8px_rgba(0,0,0,0.20)] bg-white dark:bg-neutral-700 dark:hover:bg-neutral-700 rounded-xl pt-1">
             <Link
               href={`/user/${user?.id}`}
-              className="pl-2 flex items-center py-1.5 justify-start gap-x-3 hover:bg-neutral-200 rounded-lg cursor-pointer mx-3"
+              className="pl-2 flex items-center py-1.5 justify-start gap-x-3 hover:bg-neutral-200 dark:hover:bg-neutral-600 rounded-lg cursor-pointer mx-3"
             >
               <UserAvatar
                 className="h-12 w-12 "
@@ -101,7 +101,7 @@ const UserAccountNav = ({ user, accountOwner }) => {
 
             {profiles?.length > 0 && (
               <div className="mx-4 mt-1">
-                <Separator className="bg-neutral-300 mb-1" />
+                <Separator className="bg-neutral-300 my-2" />
 
                 <div className="mb-1">
                   {profiles
@@ -132,7 +132,7 @@ const UserAccountNav = ({ user, accountOwner }) => {
                             </div>
                           )}
 
-                          <p className="font-semibold">
+                          <p className="font-semibold ">
                             {profile?.name
                               ? profile?.name.charAt(0).toUpperCase() +
                                 profile?.name.slice(1)

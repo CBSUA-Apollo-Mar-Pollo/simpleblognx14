@@ -219,7 +219,7 @@ const PostDescriptionCard = ({
       <DialogTrigger>
         <div className="flex items-center gap-2  px-10  py-3 rounded cursor-pointer">
           <MessageCircle className="h-6 w-6 text-neutral-700 dark:text-neutral-200" />
-          <span className=" font-semibold text-sm text-neutral-800">
+          <span className=" font-semibold text-sm text-neutral-800 dark:text-neutral-200">
             Comment
           </span>
         </div>

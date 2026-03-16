@@ -56,10 +56,10 @@ const ChatBoxMenu = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className="bg-white p-0 min-w-[22vw]  shadow-md -mr-24 dark:bg-neutral-800 dark:border-0"
+        className="bg-white p-0 min-w-[22vw] shadow-md -mr-24 dark:bg-neutral-800 dark:border-0"
         align="end"
       >
-        <div className="flex items-center justify-between mx-2 ">
+        <div className="flex items-center justify-between mx-2 mt-3">
           <DropdownMenuLabel className="text-2xl font-bold dark:text-white">
             Chats
           </DropdownMenuLabel>
@@ -92,7 +92,7 @@ const ChatBoxMenu = () => {
           />
         </div>
 
-        <div className="min-h-[70vh] mx-3 py-2">
+        <div className=" xl:min-h-[60vh] 2xl:min-h-[70vh] mx-3 py-2">
           <div className="gap-x-2 flex">
             <Button
               size="small"
@@ -112,8 +112,10 @@ const ChatBoxMenu = () => {
 
           {friends.length === 0 && (
             <div className="flex flex-col items-center justify-center gap-3 mt-[10vh]">
-              <h1 className="text-lg font-medium">No chats</h1>
-              <p className="text-sm">
+              <h1 className="text-lg font-medium dark:text-neutral-200">
+                No chats
+              </h1>
+              <p className="text-sm dark:text-neutral-200">
                 when you have friends, you'll see them here.
               </p>
             </div>

@@ -32,7 +32,7 @@ const HomeRightSidebar = () => {
         <div className="mt-2 ml-2">
           <h1 className="font-semibold dark:text-neutral-50">Group chats</h1>
 
-          <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 w-full py-7 my-2 hover:rounded-xl">
+          <Button className="bg-transparent flex items-center justify-start gap-x-3 p-0 pl-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 w-full py-7 my-2 hover:rounded-xl">
             <Plus className="text-black bg-neutral-100 p-2 h-9 w-9 rounded-full" />
             <span className="text-black dark:text-white">
               Create group chat

@@ -10,7 +10,7 @@ import Link from "next/link";
 const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
   console.log(profiles, "profiles from select prorfile");
   return (
-    <div className="px-2">
+    <div className="px-2 min-w-[23vw]">
       <div className="flex items-center gap-x-4">
         <Button
           onClick={() => {
@@ -32,7 +32,7 @@ const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
         {profiles?.map((profile, index) => (
           <Button
             key={index}
-            className="bg-transparent hover:bg-neutral-200 w-full flex justify-between  pl-3 py-7 rounded-xl"
+            className="bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700 w-full flex justify-between  pl-3 py-7 rounded-xl"
           >
             <div className="flex justify-start items-center gap-x-3">
               <UserAvatar
@@ -42,20 +42,24 @@ const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
                   image: profile.image || null,
                 }}
               />
-              <p className="text-black text-[17px]">{profile.name}</p>
+              <p className="text-black dark:text-neutral-200 text-[17px]">
+                {profile.name}
+              </p>
             </div>
             <Check className="bg-blue-600 h-5 w-5 rounded-full p-0.5" />
           </Button>
         ))}
-        <Separator className="my-1 bg-neutral-300" />
+        <Separator className="my-2 bg-neutral-300" />
         <Link
           href={"/pages/creation"}
-          className="bg-transparent hover:bg-neutral-200 w-full flex justify-start items-center gap-x-3 pl-3 py-2 rounded-xl"
+          className="bg-transparent hover:bg-neutral-200 dark:hover:bg-neutral-700 w-full flex justify-start items-center gap-x-3 pl-3 py-2 rounded-xl"
         >
           <div className="bg-neutral-100 p-2 rounded-full">
             <Plus className="text-neutral-800" />
           </div>
-          <p className="text-black text-[15px] font-semibold">Create page</p>
+          <p className="text-black dark:text-neutral-200 text-[15px] font-semibold">
+            Create page
+          </p>
         </Link>
       </div>
     </div>
