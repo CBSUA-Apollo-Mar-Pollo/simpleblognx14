@@ -53,7 +53,7 @@ const BackgroundImagePost = ({ image, index, setToggleExpand }) => {
         sizes="100vw"
         width={0}
         height={0}
-        src={image.url || image[0].url}
+        src={image}
         alt="profile image"
         referrerPolicy="no-referrer"
         className="object-contain w-auto transition max-h-screen"

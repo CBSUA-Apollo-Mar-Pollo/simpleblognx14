@@ -7,16 +7,16 @@ export const getPostRouteComments = async (postId, index, session) => {
   const post = await db.post.findFirst({
     where: { id: postId },
     select: {
-      image: true,
+      media: true,
     },
   });
 
-  const commentImageIndex = post.image?.length === 1 ? null : index;
+  const commentImageIndex = post.media?.length === 1 ? null : index;
 
   // Fetch initial comment page limited to COMMENT_PAGE to avoid large payloads
   const comments = await db.comment.findMany({
     where: {
-      postId: post.id,
+      postId,
       replyToId: null,
       index: commentImageIndex,
     },

@@ -85,7 +85,7 @@ const ImagePost = ({ image, index, postId, setToggleExpand }) => {
         src={image[parseInt(index)]?.url}
         alt="profile image"
         referrerPolicy="no-referrer"
-        className="object-fill w-auto transition max-h-screen"
+        className="object-cover w-auto transition max-h-screen"
       />
 
       {image.length > 1 && (

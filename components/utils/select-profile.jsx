@@ -10,7 +10,7 @@ import Link from "next/link";
 const SelectProfile = ({ setActiveSubMenu, setSubMenu, profiles }) => {
   console.log(profiles, "profiles from select prorfile");
   return (
-    <div className="px-2 min-w-[23vw]">
+    <div className="px-2 xl:min-w-[23vw] 2xl:min-w-[19vw]">
       <div className="flex items-center gap-x-4">
         <Button
           onClick={() => {

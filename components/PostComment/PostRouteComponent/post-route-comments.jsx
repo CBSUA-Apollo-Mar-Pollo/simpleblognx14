@@ -10,15 +10,14 @@ import { db } from "@/lib/db";
 const PostRouteComments = async ({ postId, index }) => {
   const { comments, initialVote, initialVotesAmt } = await getPostRouteComments(
     postId,
-    index
+    index,
   );
   const post = await db.post.findFirst({
     where: { id: postId },
     select: {
       id: true,
       description: true,
-      image: true,
-      video: true,
+      media: true,
       userStatus: true,
       createdAt: true,
       author: {
@@ -30,6 +29,8 @@ const PostRouteComments = async ({ postId, index }) => {
       },
     },
   });
+
+  console.log(comments);
 
   return (
     <div className="col-span-1 dark:bg-neutral-800 max-h-full relative">

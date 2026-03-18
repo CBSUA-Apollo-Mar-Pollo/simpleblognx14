@@ -3,13 +3,12 @@
 import { db } from "@/lib/db";
 
 export const getPostRouteImages = async (postId) => {
-  const images = await db.post.findUnique({
+  const media = await db.post.findUnique({
     where: { id: postId },
     select: {
       id: true,
       description: true,
-      image: true,
-      video: true,
+      media: true,
       createdAt: true,
       userStatus: true,
 
@@ -23,7 +22,7 @@ export const getPostRouteImages = async (postId) => {
     },
   });
 
-  if (!images) return null;
+  if (!media) return null;
 
-  return images;
+  return media;
 };

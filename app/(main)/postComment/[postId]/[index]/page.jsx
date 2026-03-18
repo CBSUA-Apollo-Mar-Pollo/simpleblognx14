@@ -10,6 +10,8 @@ export const metadata = {
 const postCommentPage = async ({ params }) => {
   const { postId, index } = await params;
 
+  console.log(postId, "post id");
+
   return (
     <div className="grid grid-cols-4 relative">
       <Suspense
