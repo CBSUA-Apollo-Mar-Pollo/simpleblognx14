@@ -225,7 +225,7 @@ const PostDescriptionCard = ({
         </div>
       </DialogTrigger>
 
-      <DialogContent className="p-0 min-w-[45rem] rounded-2xl gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
+      <DialogContent className="p-0 2xl:min-w-[45rem] rounded-2xl gap-0 bg-neutral-50 dark:bg-neutral-800  border-none dark:text-neutral-50">
         <DialogHeader className="px-4 py-4  border-b-[1px] dark:border-neutral-600 ">
           <DialogTitle className="text-xl text-center font-bold text-neutral-800 dark:text-white">
             {blog?.author.name.split(" ")[0]}&apos;s Post
@@ -282,7 +282,7 @@ const PostDescriptionCard = ({
                     blog?.textBackgroundStyle
                       ? "text-2xl font-bold"
                       : "text-[15px] "
-                  }  px-5 text-justify leading-snug font-[12px] py-1`}
+                  } dark:text-white px-5 text-justify leading-snug font-[12px] py-1`}
                 >
                   {blog.description}
                 </p>

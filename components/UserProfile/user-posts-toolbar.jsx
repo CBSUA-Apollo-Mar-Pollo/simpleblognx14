@@ -14,7 +14,7 @@ const UserPostsToolBar = () => {
   return (
     <div className=" border pt-3 rounded-2xl bg-white shadow-md drop-shadow  dark:bg-neutral-800 dark:border-0">
       <div className="flex items-center justify-between pl-5 pr-2">
-        <h1 className="font-bold text-xl">Posts</h1>
+        <h1 className="font-bold text-xl dark:text-white">Posts</h1>
         <div className="flex items-center gap-x-2">
           <Button className="flex gap-x-2 px-4 bg-neutral-300 hover:bg-neutral-400 h-9">
             <SlidersHorizontal className="h-4 w-4 text-black" />
@@ -35,8 +35,10 @@ const UserPostsToolBar = () => {
           <p className="text-blue-600 font-semibold text-md">List view</p>
         </Button>
         <Button className="flex gap-x-2 px-4 bg-transparent hover:bg-neutral-200 h-9 w-full ">
-          <LayoutGrid className="h-5 w-5 text-black" />
-          <p className="text-black font-semibold text-md">Grid view</p>
+          <LayoutGrid className="h-5 w-5 text-black dark:text-white" />
+          <p className="text-black dark:text-white font-semibold text-md">
+            Grid view
+          </p>
         </Button>
       </div>
     </div>

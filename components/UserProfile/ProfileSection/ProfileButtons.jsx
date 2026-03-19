@@ -32,7 +32,7 @@ const ProfileButtons = ({ userId }) => {
   const router = useRouter();
 
   return (
-    <ul className="flex justify-end bg-white shadow-[0_1px_1px_rgba(0,0,0,0.1)] text-neutral-800 dark:text-neutral-100 pt-2 pr-[14vw]">
+    <ul className="flex justify-end bg-white dark:bg-neutral-800 shadow-[0_1px_1px_rgba(0,0,0,0.1)] text-neutral-800 dark:text-neutral-100 pt-2 pr-[14vw]">
       <Link
         href={`/user/${userId}`}
         className={cn(
@@ -40,7 +40,7 @@ const ProfileButtons = ({ userId }) => {
           `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100  py-5 dark:hover:bg-neutral-700 ${
             pathname === `/user/${userId}` &&
             "border-b-4 rounded-none border-blue-600 text-blue-600 dark:text-blue-600 dark:hover:bg-neutral-800 dark:hover:text-blue-700"
-          }`
+          }`,
         )}
       >
         Posts
@@ -52,7 +52,7 @@ const ProfileButtons = ({ userId }) => {
           `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 ${
             pathname.startsWith(`/user/${userId}/about_`) &&
             "border-b-4 rounded-none border-blue-600 text-blue-600 dark:hover:bg-inherit"
-          }`
+          }`,
         )}
       >
         About
@@ -70,7 +70,7 @@ const ProfileButtons = ({ userId }) => {
           `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 ${
             pathname === `/user/${userId}/photos` &&
             "border-b-4 rounded-none border-blue-600 text-blue-600 dark:hover:bg-inherit"
-          }`
+          }`,
         )}
       >
         Photos
@@ -82,7 +82,7 @@ const ProfileButtons = ({ userId }) => {
           `px-6 hover:bg-neutral-200 cursor-pointer text-sm font-semibold py-5  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200 ${
             pathname === `/user/${userId}/videos` &&
             "border-b-4 rounded-none border-blue-600 text-blue-600 dark:hover:bg-inherit"
-          }`
+          }`,
         )}
       >
         Videos
@@ -90,10 +90,10 @@ const ProfileButtons = ({ userId }) => {
       <DropdownMenu>
         <DropdownMenuTrigger className="px-6 focus-visible:outline-none mb-1 flex items-center justify-center gap-x-2 rounded-md hover:bg-neutral-200 cursor-pointer text-sm font-semibold  dark:text-neutral-100 dark:hover:bg-neutral-700 dark:hover:text-neutral-200">
           More
-          <Triangle className="rotate-180 h-[9px] w-[9px] fill-neutral-700" />
+          <Triangle className="rotate-180 h-[9px] w-[9px] fill-neutral-300 dark:text-neutral-300 mt-[2px]" />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="ml-48 drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)] shadow-none min-w-[17vw] rounded-xl py-2 px-2 *:cursor-pointer  *:py-1.5">
+        <DropdownMenuContent className="dark:bg-neutral-700 dark:border-0 dark:text-white ml-48 drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)] shadow-none min-w-[17vw] rounded-xl py-2 px-2 *:cursor-pointer  *:py-1.5">
           <DropdownMenuItem className="font-semibold">Sports</DropdownMenuItem>
           <DropdownMenuItem className="font-semibold">Music</DropdownMenuItem>
           <DropdownMenuItem className="font-semibold">Movies</DropdownMenuItem>
@@ -131,9 +131,9 @@ const ProfileButtons = ({ userId }) => {
             className="p-2 min-w-[22vw] bg-transparent border-0 drop-shadow-[0_4px_9px_rgba(0,0,0,0.4)] shadow-none group"
           >
             <div className="relative z-0 mb-2">
-              <Triangle className="fill-white text-white h-10 w-10 rotate-90 absolute group-data-[side=bottom]:-top-4  left-1/2 -translate-x-1/2 z-30" />
+              <Triangle className="fill-white dark:fill-neutral-700 text-white dark:text-neutral-700 h-10 w-10 rotate-90 absolute group-data-[side=bottom]:-top-4  left-1/2 -translate-x-1/2 z-30" />
               {session?.user.id === userId ? (
-                <div className="bg-white   mt-2 z-40 relative ml-[3.2px] rounded-xl p-2">
+                <div className="bg-white dark:bg-neutral-700   mt-2 z-40 relative ml-[3.2px] rounded-xl p-2">
                   <DropdownMenuItem className="cursor-pointer dark:text-white flex-row items-center gap-x-4 dark:hover:bg-neutral-600">
                     <Eye className="h-6 w-6 text-neutral-800 dark:text-neutral-100" />
                     <span className="font-semibold">View As</span>
@@ -202,7 +202,7 @@ const ProfileButtons = ({ userId }) => {
                   </DropdownMenuItem>
                 </>
               )}
-              <Triangle className="fill-white text-white h-10 w-10 rotate-90 absolute group-data-[side=bottom]:hidden group-data-[side=top]:-bottom-4 left-1/2 -translate-x-1/2 z-30" />
+              <Triangle className="fill-white text-white  dark:fill-neutral-700  dark:text-neutral-700 h-10 w-10 rotate-90 absolute group-data-[side=bottom]:hidden group-data-[side=top]:-bottom-4 left-1/2 -translate-x-1/2 z-30" />
             </div>
           </DropdownMenuContent>
         </DropdownMenu>

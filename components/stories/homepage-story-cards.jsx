@@ -127,7 +127,7 @@ const HomePageStoryCards = () => {
           className="relative bg-white border dark:border-0 xl:rounded-2xl rounded-xl  dark:bg-neutral-800 xl:drop-shadow hover:bg-neutral-100 dark:hover:bg-neutral-700 hover:opacity-85 hover:cursor-pointer ease-in-out duration-100"
         >
           {/* create story */}
-          <div className="relative md:w-32 md:h-[18vh] w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
+          <div className="relative md:w-32 md:h-[23vh] w-28 h-28 overflow-hidden rounded-t-2xl bg-white dark:bg-neutral-900">
             {session?.user.image && (
               <Image
                 sizes="100vw"

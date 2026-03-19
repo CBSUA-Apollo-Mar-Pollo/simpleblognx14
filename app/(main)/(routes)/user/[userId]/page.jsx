@@ -42,11 +42,11 @@ const getUserDataCached = unstable_cache(
     const userImages = await db.post.findMany({
       where: {
         authorId: user.id,
-        image: { not: null },
+        media: { not: null },
       },
       orderBy: { createdAt: "desc" },
       select: {
-        image: true,
+        media: true,
         id: true,
         trashed: true,
       },
@@ -102,7 +102,7 @@ const UserProfilePage = async ({ params }) => {
   );
 
   return (
-    <div className="grid grid-cols-7 justify-center bg-neutral-100 xl:pr-56 xl:pl-72 pt-5 gap-x-2 dark:bg-neutral-900">
+    <div className="grid grid-cols-7 justify-center bg-neutral-100 md:pr-40 xl:pl-44  2xl:pr-56 2xl:pl-72 pt-5 gap-x-2 dark:bg-neutral-900">
       <div className="col-span-3 relative space-y-4">
         {session?.user.id === user.id && user.type === "page" && (
           <PageSetupChecklists />

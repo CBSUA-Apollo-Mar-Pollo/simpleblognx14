@@ -39,7 +39,7 @@ const StickDiv = ({ user }) => {
       const cachedRef = ref.current,
         observer = new IntersectionObserver(
           ([e]) => setIsSticky(e.intersectionRatio < 1),
-          observerSettings
+          observerSettings,
         );
 
       observer.observe(cachedRef);
@@ -71,7 +71,7 @@ const StickDiv = ({ user }) => {
       <div
         className={`${
           isSticky ? "block" : "hidden"
-        } py-3 flex items-center justify-between bg-white drop-shadow-md`}
+        } py-3 flex items-center justify-between bg-white dark:bg-neutral-800 drop-shadow-md`}
       >
         <div className="flex items-center gap-x-3  pl-[14vw]">
           <UserAvatar

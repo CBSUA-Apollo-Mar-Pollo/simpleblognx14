@@ -27,18 +27,21 @@ const UserBio = ({ userImages, user }) => {
   const [toggleEditBioInput, setToggleEditBioInput] = useState(false);
   const [bioInput, setBioInput] = useState(user?.bio || "");
   const [keyCharactersAmount, setKeyCharactersAmount] = useState(
-    MAX_CHARS - bioInput.length
+    MAX_CHARS - bioInput.length,
   );
 
   useEffect(() => {
     setKeyCharactersAmount(MAX_CHARS - bioInput.length);
   }, [bioInput]);
 
+  console.log(userImages, "user images");
+
   const mergedImages = userImages
-    .filter(({ trashed }) => !trashed) // Filter out trashed items first
-    .flatMap(({ id, image }) => {
-      if (image) {
-        return (Array.isArray(image) ? image : [image]).map((img, index) => ({
+    .filter(({ trashed }) => !trashed)
+    // Filter out trashed items first
+    .flatMap(({ id, media }) => {
+      if (media) {
+        return (Array.isArray(media) ? media : [media]).map((img, index) => ({
           image: img,
           postId: id,
           index,
@@ -46,7 +49,10 @@ const UserBio = ({ userImages, user }) => {
       }
       return [];
     })
-    .filter((item) => item.image !== null);
+    .filter((item) => item.image !== null)
+    .filter((item) => item.image.type.startsWith("image/")); // Ensure it's an image
+
+  console.log(mergedImages, "merged images");
 
   const { mutate: updateBio, isPending } = useMutation({
     mutationFn: async () => {
@@ -302,7 +308,7 @@ const UserBio = ({ userImages, user }) => {
                 href={`/user/${user.id}/photos`}
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-                  "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400 dark:hover:text-blue-300"
+                  "font-medium text-md text-blue-500 dark:hover:bg-neutral-700 dark:text-blue-400 dark:hover:text-blue-300",
                 )}
               >
                 See all photos
