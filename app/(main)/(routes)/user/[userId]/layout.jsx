@@ -72,7 +72,7 @@ async function ProfileWrapper({ params, children }) {
 const Layout = async ({ children, params }) => {
   return (
     <Suspense fallback={<UserProfileLoader />}>
-      <ProfileWrapper params={params} children={children} />
+      <ProfileWrapper params={params}>{children}</ProfileWrapper>
     </Suspense>
   );
 };

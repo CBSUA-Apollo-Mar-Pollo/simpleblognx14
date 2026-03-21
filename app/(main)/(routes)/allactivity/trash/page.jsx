@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import AllActivitySideBar from "@/components/allactivity/all-activity-sidebar";
 import TrashPosts from "@/components/allactivity/trash-posts";
 import { db } from "@/lib/db";
@@ -48,11 +48,15 @@ const TrashPage = async () => {
     },
   });
 
-  console.log(trashPosts);
+  function Fallback() {
+    return <div className="w-64 h-screen animate-pulse bg-neutral-200" />;
+  }
 
   return (
     <div className="flex">
-      <AllActivitySideBar />
+      <Suspense fallback={<Fallback />}>
+        <AllActivitySideBar />
+      </Suspense>
       <TrashPosts trashPosts={trashPosts} />
     </div>
   );

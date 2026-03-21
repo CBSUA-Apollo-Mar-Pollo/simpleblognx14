@@ -1,4 +1,3 @@
-import AddGalleryPostModal from "@/components/Post/AddImagePostModal";
 import AddPostModal from "@/components/Post/AddPostModal";
 import { Separator } from "@/components/ui/Separator";
 import UserAvatar from "@/components/utils/UserAvatar";
@@ -34,7 +33,7 @@ const CommunityCreatePostModal = ({ session, communityId }) => {
           <span className="dark:text-neutral-100 text-sm">Live video</span>
         </div>
         <div className="flex flex-1 items-center justify-center space-x-3 py-1 dark:hover:bg-neutral-700 rounded-md">
-          <AddGalleryPostModal session={session} communityId={communityId} />
+          <AddPostModal session={session} communityId={communityId} />
         </div>
         <div className="flex flex-1 items-center justify-center space-x-3 py-2 dark:hover:bg-neutral-700 rounded-md">
           <Image

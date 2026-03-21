@@ -1,5 +1,5 @@
 import Navbar from "@/components/utils/Navbar";
-import React from "react";
+import React, { Suspense } from "react";
 
 export const metadata = {
   title: "Estorya",
@@ -8,9 +8,9 @@ export const metadata = {
 
 export default function Layout({ children }) {
   return (
-    <>
+    <Suspense fallback={null}>
       <Navbar />
       {children}
-    </>
+    </Suspense>
   );
 }

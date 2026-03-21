@@ -367,15 +367,17 @@ const UpdateProfilePicModal = () => {
 
               <div className="flex items-center gap-x-3">
                 {profilePicSuggestions.map((profilePic, index) => (
-                  <Image
-                    sizes="100vw"
-                    width={0}
-                    height={0}
-                    src={profilePic.image.url}
-                    alt="profile image"
-                    referrerPolicy="no-referrer"
-                    className="h-32 w-32 transition bg-black rounded-md object-cover"
-                  />
+                  <div key={index}>
+                    <Image
+                      sizes="100vw"
+                      width={0}
+                      height={0}
+                      src={profilePic.image.url}
+                      alt="profile image"
+                      referrerPolicy="no-referrer"
+                      className="h-32 w-32 transition bg-black rounded-md object-cover"
+                    />
+                  </div>
                 ))}
               </div>
             </div>

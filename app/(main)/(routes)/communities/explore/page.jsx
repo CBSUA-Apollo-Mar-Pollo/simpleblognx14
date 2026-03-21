@@ -3,6 +3,9 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React, { Suspense } from "react";
 
+// Mark as dynamic to handle useSearchParams() in Client Components
+export const dynamic = "force-dynamic";
+
 const LoadingFallback = () => {
   return (
     <div className="w-full h-screen bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
@@ -28,9 +31,9 @@ const ExploreCommunitiesPage = async () => {
 
   return (
     <Suspense fallback={<LoadingFallback />}>
-      {/* <CommunityInitialPageExplore
+      <CommunityInitialPageExplore
         {...{ communitiesCreated, communities, session }}
-      /> */}
+      />
     </Suspense>
   );
 };

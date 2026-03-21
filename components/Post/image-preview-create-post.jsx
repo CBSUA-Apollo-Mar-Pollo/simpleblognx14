@@ -414,7 +414,7 @@ const ImagePreviewCreatePost = ({ imagePreviews }) => {
 
               <div className="grid grid-cols-3 gap-1">
                 {previewMeta.slice(2).map((img, index) => (
-                  <div>
+                  <div key={index}>
                     <img
                       src={img.src}
                       className="w-full h-full object-cover rounded-md"

@@ -11,6 +11,7 @@ import PostCard from "./PostCard/PostCard";
 import { useScrollTracker } from "@/hooks/use-scroll-tracker";
 import ShortsVPostCard from "../shortsv/shortsv-post-card";
 import { deleteImage } from "@/actions/deleteImage";
+import ReelsHomeCard from "../reels/reels-home-card";
 
 export default function Posts({ initialPosts }) {
   const { data: session } = useSession();

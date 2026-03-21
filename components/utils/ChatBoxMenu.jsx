@@ -116,7 +116,7 @@ const ChatBoxMenu = () => {
                 No chats
               </h1>
               <p className="text-sm dark:text-neutral-200">
-                when you have friends, you'll see them here.
+                when you have friends, you&apos;ll see them here.
               </p>
             </div>
           )}
