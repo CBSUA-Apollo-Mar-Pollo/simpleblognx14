@@ -17,6 +17,12 @@ const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
+const LoadingFallback = () => {
+  return (
+    <div className="w-full h-screen bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
+  );
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
